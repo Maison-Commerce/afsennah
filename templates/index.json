@@ -522,20 +522,20 @@
         "title_9znben": {
           "type": "title",
           "settings": {
-            "title_text": "Born from Personal Struggle"
+            "title_text": "The Problem Isn't Your Hair. \nIt's Your Products."
           }
         },
         "text_GzMYgf": {
           "type": "text",
           "settings": {
-            "text_content": "<p>Afsennah was born from personal hair loss experience. After many failed products, it was clear that one-size-fits-all solutions don’t work for individual hair and scalp health.</p><p>I became a <strong>certified trichologist</strong> and studied scalp science. I created my first custom oil for my sensitive scalp and stress-related shedding.</p><p>The results were tangible: shedding slowed within weeks, new growth followed, and my confidence returned.</p><p>Over <strong>150,000 </strong>women trust Afsennah. Each formula is crafted with expertise and care, as hair care should be personal.</p>"
+            "text_content": "<p>for no one. They don't know if you're dealing with postpartum shedding, hormonal thinning, or scalp sensitivity. They just guess.</p><p><strong>Afsennah is different. </strong>We start with you — your hair type, your scalp condition, your lifestyle, your goals. Then our founder, a Certified Advanced Trichologist, personally selects the exact blend of natural ingredients your hair needs.</p><p>No guessing. No wasted bottles. Just results.</p>"
           }
         },
-        "quote_WFeQwL": {
-          "type": "quote",
+        "button_WV3Dii": {
+          "type": "button",
           "settings": {
-            "quote_text": "“I created Afsennah not just as a product, but as the solution I needed. Your hair journey is personal — and your treatment should be too.”",
-            "quote_author": "— Afsennah, Founder & Certified Trichologist"
+            "button_text": "Start Your Free Consultation",
+            "button_url": "#"
           }
         }
       },
@@ -543,7 +543,7 @@
         "visual_nWB3MY",
         "title_9znben",
         "text_GzMYgf",
-        "quote_WFeQwL"
+        "button_WV3Dii"
       ],
       "name": "Maison Content Blocks",
       "settings": {
