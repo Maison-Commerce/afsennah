@@ -148,6 +148,7 @@
     "after_add_to_cart": "drawer",
     "cart_item_show_single_variant": true,
     "show_free_shipping_bar": true,
+    "free_shipping_amounts": "USD:100",
     "free_shipping_bar_col_under": "#00800a",
     "free_shipping_bar_col_met": "#00800a",
     "product_currency_code_enabled": false,
