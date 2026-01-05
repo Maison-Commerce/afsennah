@@ -360,7 +360,9 @@
         "testimonial_wzdhLp": {
           "type": "testimonial",
           "settings": {
+            "before_image": "shopify://shop_images/96b06679f1a4b5e39ab6219c681bcb21d694b5bb.png",
             "before_label": "Before",
+            "after_image": "shopify://shop_images/772defb52073d081faa34f16c48213b17e5d844d.png",
             "after_label": "After 1 Months",
             "show_rating": true,
             "rating": 5,
@@ -372,7 +374,9 @@
         "testimonial_GWqx6c": {
           "type": "testimonial",
           "settings": {
+            "before_image": "shopify://shop_images/0c7df8715ed88496810fe1e8d2860a3b0e28bcdc.jpg",
             "before_label": "Before",
+            "after_image": "shopify://shop_images/fe35bb96eee2c907db4eb3e7d457339012797e40.jpg",
             "after_label": "After 1 Months",
             "show_rating": true,
             "rating": 5,
@@ -384,7 +388,9 @@
         "testimonial_nDJNNf": {
           "type": "testimonial",
           "settings": {
+            "before_image": "shopify://shop_images/9022797871685173c258de9469f950b0f84ab2ba.jpg",
             "before_label": "Before",
+            "after_image": "shopify://shop_images/cc5ce6ea05108db8b5b05377de72aba43f0104bf.jpg",
             "after_label": "After 1 Months",
             "show_rating": true,
             "rating": 5,
