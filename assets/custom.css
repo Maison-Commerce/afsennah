@@ -462,6 +462,7 @@ video-section-play-button {
     height: calc(100% - 20px);
     border-radius: 24px;
     background: #F7F7FC;
+    overflow: hidden;
 }
 
 .cart-drawer__footer,
