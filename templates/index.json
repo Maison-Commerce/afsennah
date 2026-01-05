@@ -512,11 +512,12 @@
     "maison_content_blocks_cAcXrb": {
       "type": "maison-content-blocks",
       "blocks": {
-        "visual_nWB3MY": {
-          "type": "visual",
+        "image_AjBnCT": {
+          "type": "image",
           "settings": {
-            "visual_image": "shopify://shop_images/Frame_1484581021.png",
-            "show_features": true
+            "image": "shopify://shop_images/Frame_1484581021.png",
+            "image_alt": "",
+            "image_position": "right"
           }
         },
         "title_9znben": {
@@ -540,7 +541,7 @@
         }
       },
       "block_order": [
-        "visual_nWB3MY",
+        "image_AjBnCT",
         "title_9znben",
         "text_GzMYgf",
         "button_WV3Dii"
