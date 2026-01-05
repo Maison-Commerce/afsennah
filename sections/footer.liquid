@@ -33,9 +33,9 @@
       {% if section.settings.show_brand_section %}
         <div class="maison_commerce_maison_footer__brand-section">
           {% if section.settings.brand_description != blank %}
-            <p class="maison_commerce_maison_footer__brand-description">
+            <div class="maison_commerce_maison_footer__brand-description">
               {{ section.settings.brand_description }}
-            </p>
+            </div>
           {% endif %}
           {% if section.settings.cta_button_url != blank and section.settings.cta_button_text != blank %}
             <a href="{{ section.settings.cta_button_url }}" class="maison_commerce_maison_footer__cta-button">
