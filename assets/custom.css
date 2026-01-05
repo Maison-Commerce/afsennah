@@ -468,3 +468,8 @@ video-section-play-button {
 .cart-drawer__header {
     background: #FFFFFF;
 }
+
+.cart-drawer__header {
+    margin: 0;
+    padding: 13px 24px;
+}
