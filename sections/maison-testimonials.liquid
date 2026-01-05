@@ -802,19 +802,26 @@
         // Update progress bar
         const dividerProgress = sectionElement.querySelector('.maison_commerce_maison_testimonials__divider-progress');
         if (dividerProgress) {
+          // Function to update progress with minimum 25%
+          function updateProgress(progress) {
+            // Ensure progress is at least 25% (0.25)
+            const minProgress = 0.25;
+            const adjustedProgress = Math.max(progress, minProgress);
+            dividerProgress.style.width = (adjustedProgress * 100) + '%';
+          }
+          
           // Update progress on slide change
           swiper.on('progress', function(swiper, progress) {
-            dividerProgress.style.width = (progress * 100) + '%';
+            updateProgress(progress);
           });
           
           // Update progress on slide change transition
           swiper.on('slideChangeTransitionStart', function(swiper) {
-            const progress = swiper.progress;
-            dividerProgress.style.width = (progress * 100) + '%';
+            updateProgress(swiper.progress);
           });
           
           // Set initial progress
-          dividerProgress.style.width = (swiper.progress * 100) + '%';
+          updateProgress(swiper.progress);
         }
         
         return true;
