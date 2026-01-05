@@ -1,0 +1,1462 @@
+<section class="maison_commerce_maison_products_grid">
+  <div class="maison_commerce_maison_products_grid__container">
+    {% if section.settings.heading != blank or section.settings.subtitle != blank %}
+      <div class="maison_commerce_maison_products_grid__header">
+        {% if section.settings.heading != blank %}
+          <h2 class="maison_commerce_maison_products_grid__heading">
+            {{ section.settings.heading }}
+          </h2>
+        {% endif %}
+        {% if section.settings.subtitle != blank %}
+          <p class="maison_commerce_maison_products_grid__subtitle">
+            {{ section.settings.subtitle }}
+          </p>
+        {% endif %}
+      </div>
+    {% endif %}
+
+    {% if section.blocks.size > 0 %}
+      <div class="maison_commerce_maison_products_grid__products">
+        {% for block in section.blocks %}
+          {% if block.type == 'product' and block.settings.product != blank %}
+            {% assign product = block.settings.product %}
+            <div class="maison_commerce_maison_products_grid__product" {{ block.shopify_attributes }}>
+              {% if block.settings.show_bestseller_badge %}
+                <div class="maison_commerce_maison_products_grid__bestseller-badge">
+                  🔥 BEST SELLER
+                </div>
+              {% endif %}
+
+              <div class="maison_commerce_maison_products_grid__product-image-wrapper">
+                <a href="{{ product.url }}" class="maison_commerce_maison_products_grid__product-link">
+                  {% if product.featured_image %}
+                    <img 
+                      src="{{ product.featured_image | image_url: width: 600 }}" 
+                      alt="{{ product.featured_image.alt | default: product.title | escape }}"
+                      class="maison_commerce_maison_products_grid__product-image"
+                      width="{{ product.featured_image.width }}"
+                      height="{{ product.featured_image.height }}"
+                      loading="lazy"
+                    />
+                  {% else %}
+                    {{ 'product-1' | placeholder_svg_tag: 'maison_commerce_maison_products_grid__product-image' }}
+                  {% endif %}
+                </a>
+              </div>
+
+              <div class="maison_commerce_maison_products_grid__product-info">
+                <h3 class="maison_commerce_maison_products_grid__product-title">
+                  <a href="{{ product.url }}">{{ product.title }}</a>
+                </h3>
+
+                {% if block.settings.show_rating %}
+                  <div class="maison_commerce_maison_products_grid__rating">
+                    <div class="maison_commerce_maison_products_grid__stars">
+                      {% for i in (1..5) %}
+                        <svg class="maison_commerce_maison_products_grid__star" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M8 0L10.1631 5.52786L16 6.11146L12 10.0557L12.9443 16L8 13.5279L3.05573 16L4 10.0557L0 6.11146L5.83686 5.52786L8 0Z" fill="#E98C36"/>
+                        </svg>
+                      {% endfor %}
+                    </div>
+                    {% if block.settings.review_count != blank %}
+                      <span class="maison_commerce_maison_products_grid__review-count">
+                        ({{ block.settings.review_count }} Reviews)
+                      </span>
+                    {% endif %}
+                  </div>
+                {% endif %}
+
+                <div class="maison_commerce_maison_products_grid__price">
+                  {% if product.compare_at_price > product.price %}
+                    <span class="maison_commerce_maison_products_grid__price-current">
+                      {{ product.price | money }}
+                    </span>
+                    <span class="maison_commerce_maison_products_grid__price-compare">
+                      {{ product.compare_at_price | money }}
+                    </span>
+                    {% assign discount_percent = product.compare_at_price | minus: product.price | times: 100 | divided_by: product.compare_at_price %}
+                    <span class="maison_commerce_maison_products_grid__discount-badge">
+                      You Save {{ discount_percent }}%
+                    </span>
+                  {% else %}
+                    <span class="maison_commerce_maison_products_grid__price-current">
+                      {{ product.price | money }}
+                    </span>
+                  {% endif %}
+                </div>
+
+                <a href="{{ product.url }}" class="maison_commerce_maison_products_grid__button">
+                  {{ block.settings.button_text | default: 'Shop now' }}
+                </a>
+              </div>
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    {% if section.settings.quiz_text != blank or section.settings.quiz_button_text != blank %}
+      <div class="maison_commerce_maison_products_grid__quiz">
+        {% if section.settings.quiz_text != blank %}
+          <p class="maison_commerce_maison_products_grid__quiz-text">
+            {{ section.settings.quiz_text }}
+          </p>
+        {% endif %}
+        {% if section.settings.quiz_button_url != blank and section.settings.quiz_button_text != blank %}
+          <a href="{{ section.settings.quiz_button_url }}" class="maison_commerce_maison_products_grid__quiz-button">
+            <span>{{ section.settings.quiz_button_text }}</span>
+            <svg class="maison_commerce_maison_products_grid__quiz-button-arrow" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </a>
+        {% endif %}
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+<style>
+  #shopify-section-{{ section.id }} {
+    padding: 0;
+  }
+
+  /* Section Container */
+  .maison_commerce_maison_products_grid {
+    background-color: {{ section.settings.bg_color }};
+    padding-top: {{ section.settings.padding_top_desktop }}px;
+    padding-bottom: {{ section.settings.padding_bottom_desktop }}px;
+    padding-left: {{ section.settings.padding_left_desktop }}px;
+    padding-right: {{ section.settings.padding_right_desktop }}px;
+  }
+
+  @media (max-width: 768px) {
+    .maison_commerce_maison_products_grid {
+      padding-top: {{ section.settings.padding_top_mobile }}px;
+      padding-bottom: {{ section.settings.padding_bottom_mobile }}px;
+      padding-left: {{ section.settings.padding_left_mobile }}px;
+      padding-right: {{ section.settings.padding_right_mobile }}px;
+    }
+  }
+
+  /* Container */
+  .maison_commerce_maison_products_grid__container {
+    max-width: {{ section.settings.max_width }}px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: {{ section.settings.content_gap_desktop }}px;
+  }
+
+  @media (max-width: 768px) {
+    .maison_commerce_maison_products_grid__container {
+      gap: {{ section.settings.content_gap_mobile }}px;
+    }
+  }
+
+  /* Header */
+  .maison_commerce_maison_products_grid__header {
+    display: flex;
+    flex-direction: column;
+    gap: {{ section.settings.header_gap_desktop }}px;
+    align-items: center;
+    text-align: center;
+  }
+
+  @media (max-width: 768px) {
+    .maison_commerce_maison_products_grid__header {
+      gap: {{ section.settings.header_gap_mobile }}px;
+    }
+  }
+
+  .maison_commerce_maison_products_grid__heading {
+    font-family: 'Vanilla Ravioli', serif;
+    font-size: {{ section.settings.heading_font_size_desktop }}px;
+    font-weight: 400;
+    line-height: {{ section.settings.heading_line_height_desktop }};
+    color: {{ section.settings.heading_color }};
+    margin: 0;
+    text-transform: capitalize;
+  }
+
+  @media (max-width: 768px) {
+    .maison_commerce_maison_products_grid__heading {
+      font-size: {{ section.settings.heading_font_size_mobile }}px;
+      line-height: {{ section.settings.heading_line_height_mobile }};
+    }
+  }
+
+  .maison_commerce_maison_products_grid__subtitle {
+    font-family: 'Neue Haas Grotesk Display Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    font-size: {{ section.settings.subtitle_font_size_desktop }}px;
+    font-weight: 400;
+    line-height: 1.5;
+    color: {{ section.settings.subtitle_color }};
+    margin: 0;
+    max-width: {{ section.settings.subtitle_max_width }}px;
+  }
+
+  @media (max-width: 768px) {
+    .maison_commerce_maison_products_grid__subtitle {
+      font-size: {{ section.settings.subtitle_font_size_mobile }}px;
+      max-width: 100%;
+    }
+  }
+
+  /* Products Grid */
+  .maison_commerce_maison_products_grid__products {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: {{ section.settings.product_gap_desktop }}px;
+  }
+
+  @media (max-width: 768px) {
+    .maison_commerce_maison_products_grid__products {
+      grid-template-columns: repeat(2, 1fr);
+      gap: {{ section.settings.product_gap_mobile }}px;
+    }
+
+    /* Hide products beyond the first 2 on mobile */
+    .maison_commerce_maison_products_grid__product:nth-child(n+3) {
+      display: none;
+    }
+  }
+
+  /* Product Card */
+  .maison_commerce_maison_products_grid__product {
+    background-color: {{ section.settings.product_bg_color }};
+    border: 1px solid {{ section.settings.product_border_color }};
+    border-radius: {{ section.settings.product_border_radius }}px;
+    padding: {{ section.settings.product_padding }}px;
+    display: flex;
+    flex-direction: column;
+    gap: {{ section.settings.product_inner_gap }}px;
+    position: relative;
+  }
+
+  /* Best Seller Badge */
+  .maison_commerce_maison_products_grid__bestseller-badge {
+    position: absolute;
+    top: -{{ section.settings.badge_offset }}px;
+    left: {{ section.settings.badge_position_left }}px;
+    background-color: {{ section.settings.badge_bg_color }};
+    color: {{ section.settings.badge_text_color }};
+    border-radius: {{ section.settings.badge_border_radius }}px;
+    padding: {{ section.settings.badge_padding_vertical }}px {{ section.settings.badge_padding_horizontal }}px;
+    font-family: 'Neue Haas Grotesk Display Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    font-size: {{ section.settings.badge_font_size }}px;
+    font-weight: 600;
+    line-height: 1.5;
+    white-space: nowrap;
+    z-index: 1;
+  }
+
+  /* Product Image */
+  .maison_commerce_maison_products_grid__product-image-wrapper {
+    position: relative;
+    aspect-ratio: 1 / 1;
+    border-radius: {{ section.settings.image_border_radius }}px;
+    overflow: hidden;
+    background-color: {{ section.settings.image_bg_color }};
+  }
+
+  .maison_commerce_maison_products_grid__product-link {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  .maison_commerce_maison_products_grid__product-image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+  }
+
+  /* Product Info */
+  .maison_commerce_maison_products_grid__product-info {
+    display: flex;
+    flex-direction: column;
+    gap: {{ section.settings.product_info_gap }}px;
+    padding-top: {{ section.settings.product_info_padding_top }}px;
+  }
+
+  .maison_commerce_maison_products_grid__product-title {
+    font-family: 'Gotham', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    font-size: {{ section.settings.product_title_font_size_desktop }}px;
+    font-weight: 500;
+    line-height: 1.5;
+    color: {{ section.settings.product_title_color }};
+    margin: 0;
+  }
+
+  @media (max-width: 768px) {
+    .maison_commerce_maison_products_grid__product-title {
+      font-size: {{ section.settings.product_title_font_size_mobile }}px;
+    }
+  }
+
+  .maison_commerce_maison_products_grid__product-title a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  /* Rating */
+  .maison_commerce_maison_products_grid__rating {
+    display: flex;
+    align-items: center;
+    gap: {{ section.settings.rating_gap }}px;
+  }
+
+  .maison_commerce_maison_products_grid__stars {
+    display: flex;
+    align-items: center;
+    gap: {{ section.settings.star_gap }}px;
+  }
+
+  .maison_commerce_maison_products_grid__star {
+    width: {{ section.settings.star_size }}px;
+    height: {{ section.settings.star_size }}px;
+    flex-shrink: 0;
+  }
+
+  .maison_commerce_maison_products_grid__review-count {
+    font-family: 'Neue Haas Grotesk Display Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    font-size: {{ section.settings.review_font_size_desktop }}px;
+    font-weight: 400;
+    line-height: 1.5;
+    color: {{ section.settings.review_color }};
+  }
+
+  @media (max-width: 768px) {
+    .maison_commerce_maison_products_grid__review-count {
+      font-size: {{ section.settings.review_font_size_mobile }}px;
+    }
+  }
+
+  /* Price */
+  .maison_commerce_maison_products_grid__price {
+    display: flex;
+    align-items: center;
+    gap: {{ section.settings.price_gap }}px;
+    flex-wrap: wrap;
+  }
+
+  .maison_commerce_maison_products_grid__price-current {
+    font-family: 'Neue Haas Grotesk Display Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    font-size: {{ section.settings.price_font_size_desktop }}px;
+    font-weight: 600;
+    line-height: 1.5;
+    color: {{ section.settings.price_color }};
+  }
+
+  @media (max-width: 768px) {
+    .maison_commerce_maison_products_grid__price-current {
+      font-size: {{ section.settings.price_font_size_mobile }}px;
+    }
+  }
+
+  .maison_commerce_maison_products_grid__price-compare {
+    font-family: 'Neue Haas Grotesk Display Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    font-size: {{ section.settings.price_compare_font_size_desktop }}px;
+    font-weight: 400;
+    line-height: 1.5;
+    color: {{ section.settings.price_compare_color }};
+    text-decoration: line-through;
+  }
+
+  @media (max-width: 768px) {
+    .maison_commerce_maison_products_grid__price-compare {
+      font-size: {{ section.settings.price_compare_font_size_mobile }}px;
+    }
+  }
+
+  .maison_commerce_maison_products_grid__discount-badge {
+    background-color: {{ section.settings.discount_badge_bg_color }};
+    color: {{ section.settings.discount_badge_text_color }};
+    border-radius: {{ section.settings.discount_badge_border_radius }}px;
+    padding: {{ section.settings.discount_badge_padding_vertical }}px {{ section.settings.discount_badge_padding_horizontal }}px;
+    font-family: 'Avenir Next', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    font-size: {{ section.settings.discount_badge_font_size }}px;
+    font-weight: 600;
+    line-height: 1.5;
+    white-space: nowrap;
+  }
+
+  /* Button */
+  .maison_commerce_maison_products_grid__button {
+    background-color: {{ section.settings.button_bg_color }};
+    border: 1px solid {{ section.settings.button_border_color }};
+    border-radius: {{ section.settings.button_border_radius }}px;
+    padding: {{ section.settings.button_padding_vertical }}px {{ section.settings.button_padding_horizontal }}px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    transition: opacity 0.3s ease;
+    height: {{ section.settings.button_height_desktop }}px;
+  }
+
+  @media (max-width: 768px) {
+    .maison_commerce_maison_products_grid__button {
+      height: {{ section.settings.button_height_mobile }}px;
+    }
+  }
+
+  .maison_commerce_maison_products_grid__button:hover {
+    opacity: 0.9;
+  }
+
+  .maison_commerce_maison_products_grid__button {
+    font-family: 'Gotham', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    font-size: {{ section.settings.button_font_size_desktop }}px;
+    font-weight: 500;
+    line-height: 1.5;
+    color: {{ section.settings.button_text_color }};
+  }
+
+  @media (max-width: 768px) {
+    .maison_commerce_maison_products_grid__button {
+      font-size: {{ section.settings.button_font_size_mobile }}px;
+    }
+  }
+
+  /* Quiz Section */
+  .maison_commerce_maison_products_grid__quiz {
+    display: flex;
+    flex-direction: column;
+    gap: {{ section.settings.quiz_gap }}px;
+    align-items: center;
+    text-align: center;
+  }
+
+  .maison_commerce_maison_products_grid__quiz-text {
+    font-family: 'Gotham', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    font-size: {{ section.settings.quiz_text_font_size_desktop }}px;
+    font-weight: 400;
+    line-height: 1.5;
+    color: {{ section.settings.quiz_text_color }};
+    margin: 0;
+    max-width: {{ section.settings.quiz_text_max_width }}px;
+  }
+
+  @media (max-width: 768px) {
+    .maison_commerce_maison_products_grid__quiz-text {
+      font-size: {{ section.settings.quiz_text_font_size_mobile }}px;
+      max-width: 100%;
+    }
+  }
+
+  .maison_commerce_maison_products_grid__quiz-button {
+    background-color: {{ section.settings.quiz_button_bg_color }};
+    color: {{ section.settings.quiz_button_text_color }};
+    border-radius: {{ section.settings.quiz_button_border_radius }}px;
+    padding: {{ section.settings.quiz_button_padding_vertical }}px {{ section.settings.quiz_button_padding_horizontal }}px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: {{ section.settings.quiz_button_gap }}px;
+    text-decoration: none;
+    transition: opacity 0.3s ease;
+    height: {{ section.settings.quiz_button_height_desktop }}px;
+    width: fit-content;
+  }
+
+  @media (max-width: 768px) {
+    .maison_commerce_maison_products_grid__quiz-button {
+      height: {{ section.settings.quiz_button_height_mobile }}px;
+      width: 100%;
+    }
+  }
+
+  .maison_commerce_maison_products_grid__quiz-button:hover {
+    opacity: 0.9;
+  }
+
+  .maison_commerce_maison_products_grid__quiz-button span {
+    font-family: 'Gotham', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    font-size: {{ section.settings.quiz_button_font_size_desktop }}px;
+    font-weight: 500;
+    line-height: 1.5;
+    text-transform: capitalize;
+  }
+
+  @media (max-width: 768px) {
+    .maison_commerce_maison_products_grid__quiz-button span {
+      font-size: {{ section.settings.quiz_button_font_size_mobile }}px;
+    }
+  }
+
+  .maison_commerce_maison_products_grid__quiz-button-arrow {
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Maison Products Grid",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section Settings"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "range",
+      "id": "max_width",
+      "min": 800,
+      "max": 1600,
+      "step": 20,
+      "unit": "px",
+      "label": "Max Width",
+      "default": 1280
+    },
+    {
+      "type": "range",
+      "id": "padding_top_desktop",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Top (Desktop)",
+      "default": 64
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_desktop",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Bottom (Desktop)",
+      "default": 64
+    },
+    {
+      "type": "range",
+      "id": "padding_left_desktop",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Left (Desktop)",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_right_desktop",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Right (Desktop)",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Top (Mobile)",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Bottom (Mobile)",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "padding_left_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Left (Mobile)",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "padding_right_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Right (Mobile)",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "content_gap_desktop",
+      "min": 20,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "label": "Content Gap (Desktop)",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "content_gap_mobile",
+      "min": 12,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Content Gap (Mobile)",
+      "default": 24
+    },
+    {
+      "type": "header",
+      "content": "Header Settings"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Custom Products for Every Concern"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "Each formula is personally created by our certified Trichologist"
+    },
+    {
+      "type": "range",
+      "id": "heading_font_size_desktop",
+      "min": 20,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "label": "Heading Font Size (Desktop)",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "heading_font_size_mobile",
+      "min": 18,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Heading Font Size (Mobile)",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "heading_line_height_desktop",
+      "min": 1.0,
+      "max": 2.0,
+      "step": 0.1,
+      "label": "Heading Line Height (Desktop)",
+      "default": 1.3
+    },
+    {
+      "type": "range",
+      "id": "heading_line_height_mobile",
+      "min": 1.0,
+      "max": 2.0,
+      "step": 0.1,
+      "label": "Heading Line Height (Mobile)",
+      "default": 1.4
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading Color",
+      "default": "#1A1A1A"
+    },
+    {
+      "type": "range",
+      "id": "subtitle_font_size_desktop",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Subtitle Font Size (Desktop)",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "subtitle_font_size_mobile",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Subtitle Font Size (Mobile)",
+      "default": 16
+    },
+    {
+      "type": "color",
+      "id": "subtitle_color",
+      "label": "Subtitle Color",
+      "default": "rgba(47,57,54,0.75)"
+    },
+    {
+      "type": "range",
+      "id": "subtitle_max_width",
+      "min": 200,
+      "max": 1000,
+      "step": 8,
+      "unit": "px",
+      "label": "Subtitle Max Width",
+      "default": 824
+    },
+    {
+      "type": "range",
+      "id": "header_gap_desktop",
+      "min": 8,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Header Gap (Desktop)",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "header_gap_mobile",
+      "min": 8,
+      "max": 30,
+      "step": 2,
+      "unit": "px",
+      "label": "Header Gap (Mobile)",
+      "default": 18
+    },
+    {
+      "type": "header",
+      "content": "Product Card Settings"
+    },
+    {
+      "type": "range",
+      "id": "product_gap_desktop",
+      "min": 16,
+      "max": 60,
+      "step": 4,
+      "unit": "px",
+      "label": "Product Gap (Desktop)",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "product_gap_mobile",
+      "min": 8,
+      "max": 30,
+      "step": 2,
+      "unit": "px",
+      "label": "Product Gap (Mobile)",
+      "default": 16
+    },
+    {
+      "type": "color",
+      "id": "product_bg_color",
+      "label": "Product Card Background Color",
+      "default": "#F7F7FC"
+    },
+    {
+      "type": "color",
+      "id": "product_border_color",
+      "label": "Product Card Border Color",
+      "default": "#F1F1F9"
+    },
+    {
+      "type": "range",
+      "id": "product_border_radius",
+      "min": 0,
+      "max": 30,
+      "step": 2,
+      "unit": "px",
+      "label": "Product Card Border Radius",
+      "default": 18
+    },
+    {
+      "type": "range",
+      "id": "product_padding",
+      "min": 12,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Product Card Padding",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "product_inner_gap",
+      "min": 8,
+      "max": 30,
+      "step": 2,
+      "unit": "px",
+      "label": "Product Inner Gap",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "product_info_padding_top",
+      "min": 0,
+      "max": 30,
+      "step": 2,
+      "unit": "px",
+      "label": "Product Info Padding Top",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "product_info_gap",
+      "min": 4,
+      "max": 20,
+      "step": 2,
+      "unit": "px",
+      "label": "Product Info Gap",
+      "default": 8
+    },
+    {
+      "type": "header",
+      "content": "Best Seller Badge Settings"
+    },
+    {
+      "type": "color",
+      "id": "badge_bg_color",
+      "label": "Badge Background Color",
+      "default": "#DD1A3A"
+    },
+    {
+      "type": "color",
+      "id": "badge_text_color",
+      "label": "Badge Text Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "range",
+      "id": "badge_font_size",
+      "min": 10,
+      "max": 16,
+      "step": 1,
+      "unit": "px",
+      "label": "Badge Font Size",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "badge_border_radius",
+      "min": 20,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "label": "Badge Border Radius",
+      "default": 90
+    },
+    {
+      "type": "range",
+      "id": "badge_padding_vertical",
+      "min": 2,
+      "max": 8,
+      "step": 1,
+      "unit": "px",
+      "label": "Badge Padding Vertical",
+      "default": 2
+    },
+    {
+      "type": "range",
+      "id": "badge_padding_horizontal",
+      "min": 4,
+      "max": 16,
+      "step": 1,
+      "unit": "px",
+      "label": "Badge Padding Horizontal",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "badge_offset",
+      "min": 0,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Badge Offset from Top",
+      "default": 11
+    },
+    {
+      "type": "range",
+      "id": "badge_position_left",
+      "min": 0,
+      "max": 200,
+      "step": 5,
+      "unit": "px",
+      "label": "Badge Position Left",
+      "default": 95
+    },
+    {
+      "type": "header",
+      "content": "Image Settings"
+    },
+    {
+      "type": "range",
+      "id": "image_border_radius",
+      "min": 0,
+      "max": 20,
+      "step": 2,
+      "unit": "px",
+      "label": "Image Border Radius",
+      "default": 8
+    },
+    {
+      "type": "color",
+      "id": "image_bg_color",
+      "label": "Image Background Color",
+      "default": "transparent"
+    },
+    {
+      "type": "header",
+      "content": "Product Title Settings"
+    },
+    {
+      "type": "range",
+      "id": "product_title_font_size_desktop",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Product Title Font Size (Desktop)",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "product_title_font_size_mobile",
+      "min": 10,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "label": "Product Title Font Size (Mobile)",
+      "default": 10
+    },
+    {
+      "type": "color",
+      "id": "product_title_color",
+      "label": "Product Title Color",
+      "default": "#15130E"
+    },
+    {
+      "type": "header",
+      "content": "Rating Settings"
+    },
+    {
+      "type": "range",
+      "id": "star_size",
+      "min": 8,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Star Size",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "star_gap",
+      "min": 0,
+      "max": 8,
+      "step": 1,
+      "unit": "px",
+      "label": "Star Gap",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "rating_gap",
+      "min": 2,
+      "max": 8,
+      "step": 1,
+      "unit": "px",
+      "label": "Gap Between Stars and Review Count",
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "review_font_size_desktop",
+      "min": 10,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "label": "Review Count Font Size (Desktop)",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "review_font_size_mobile",
+      "min": 8,
+      "max": 14,
+      "step": 1,
+      "unit": "px",
+      "label": "Review Count Font Size (Mobile)",
+      "default": 8
+    },
+    {
+      "type": "color",
+      "id": "review_color",
+      "label": "Review Count Color",
+      "default": "rgba(44,41,38,0.75)"
+    },
+    {
+      "type": "header",
+      "content": "Price Settings"
+    },
+    {
+      "type": "range",
+      "id": "price_font_size_desktop",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Price Font Size (Desktop)",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "price_font_size_mobile",
+      "min": 10,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "label": "Price Font Size (Mobile)",
+      "default": 10
+    },
+    {
+      "type": "color",
+      "id": "price_color",
+      "label": "Price Color",
+      "default": "#1A365D"
+    },
+    {
+      "type": "range",
+      "id": "price_compare_font_size_desktop",
+      "min": 10,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Compare Price Font Size (Desktop)",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "price_compare_font_size_mobile",
+      "min": 8,
+      "max": 16,
+      "step": 1,
+      "unit": "px",
+      "label": "Compare Price Font Size (Mobile)",
+      "default": 10
+    },
+    {
+      "type": "color",
+      "id": "price_compare_color",
+      "label": "Compare Price Color",
+      "default": "#98A2B3"
+    },
+    {
+      "type": "range",
+      "id": "price_gap",
+      "min": 4,
+      "max": 12,
+      "step": 1,
+      "unit": "px",
+      "label": "Price Gap",
+      "default": 8
+    },
+    {
+      "type": "header",
+      "content": "Discount Badge Settings"
+    },
+    {
+      "type": "color",
+      "id": "discount_badge_bg_color",
+      "label": "Discount Badge Background Color",
+      "default": "#DADAEF"
+    },
+    {
+      "type": "color",
+      "id": "discount_badge_text_color",
+      "label": "Discount Badge Text Color",
+      "default": "#1A365D"
+    },
+    {
+      "type": "range",
+      "id": "discount_badge_font_size",
+      "min": 10,
+      "max": 16,
+      "step": 1,
+      "unit": "px",
+      "label": "Discount Badge Font Size",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "discount_badge_border_radius",
+      "min": 20,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "label": "Discount Badge Border Radius",
+      "default": 90
+    },
+    {
+      "type": "range",
+      "id": "discount_badge_padding_vertical",
+      "min": 1,
+      "max": 6,
+      "step": 1,
+      "unit": "px",
+      "label": "Discount Badge Padding Vertical",
+      "default": 2
+    },
+    {
+      "type": "range",
+      "id": "discount_badge_padding_horizontal",
+      "min": 4,
+      "max": 16,
+      "step": 1,
+      "unit": "px",
+      "label": "Discount Badge Padding Horizontal",
+      "default": 8
+    },
+    {
+      "type": "header",
+      "content": "Button Settings"
+    },
+    {
+      "type": "color",
+      "id": "button_bg_color",
+      "label": "Button Background Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "button_border_color",
+      "label": "Button Border Color",
+      "default": "#E0E0F1"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button Text Color",
+      "default": "#1A365D"
+    },
+    {
+      "type": "range",
+      "id": "button_border_radius",
+      "min": 0,
+      "max": 20,
+      "step": 2,
+      "unit": "px",
+      "label": "Button Border Radius",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "button_padding_vertical",
+      "min": 8,
+      "max": 20,
+      "step": 2,
+      "unit": "px",
+      "label": "Button Padding Vertical",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "button_padding_horizontal",
+      "min": 16,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Button Padding Horizontal",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "button_height_desktop",
+      "min": 32,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "label": "Button Height (Desktop)",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "button_height_mobile",
+      "min": 28,
+      "max": 50,
+      "step": 2,
+      "unit": "px",
+      "label": "Button Height (Mobile)",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "button_font_size_desktop",
+      "min": 12,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "label": "Button Font Size (Desktop)",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "button_font_size_mobile",
+      "min": 10,
+      "max": 16,
+      "step": 1,
+      "unit": "px",
+      "label": "Button Font Size (Mobile)",
+      "default": 10
+    },
+    {
+      "type": "header",
+      "content": "Quiz Section Settings"
+    },
+    {
+      "type": "text",
+      "id": "quiz_text",
+      "label": "Quiz Text",
+      "default": "Not sure what you need? Take the quiz and we'll recommend the perfect routine."
+    },
+    {
+      "type": "text",
+      "id": "quiz_button_text",
+      "label": "Quiz Button Text",
+      "default": "Take the Quiz"
+    },
+    {
+      "type": "url",
+      "id": "quiz_button_url",
+      "label": "Quiz Button URL"
+    },
+    {
+      "type": "range",
+      "id": "quiz_gap",
+      "min": 12,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Quiz Section Gap",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "quiz_text_font_size_desktop",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Quiz Text Font Size (Desktop)",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "quiz_text_font_size_mobile",
+      "min": 12,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "label": "Quiz Text Font Size (Mobile)",
+      "default": 14
+    },
+    {
+      "type": "color",
+      "id": "quiz_text_color",
+      "label": "Quiz Text Color",
+      "default": "rgba(21,19,14,0.75)"
+    },
+    {
+      "type": "range",
+      "id": "quiz_text_max_width",
+      "min": 300,
+      "max": 800,
+      "step": 20,
+      "unit": "px",
+      "label": "Quiz Text Max Width",
+      "default": 500
+    },
+    {
+      "type": "color",
+      "id": "quiz_button_bg_color",
+      "label": "Quiz Button Background Color",
+      "default": "#FBF7BD"
+    },
+    {
+      "type": "color",
+      "id": "quiz_button_text_color",
+      "label": "Quiz Button Text Color",
+      "default": "#1A365D"
+    },
+    {
+      "type": "range",
+      "id": "quiz_button_border_radius",
+      "min": 0,
+      "max": 30,
+      "step": 2,
+      "unit": "px",
+      "label": "Quiz Button Border Radius",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "quiz_button_padding_vertical",
+      "min": 8,
+      "max": 24,
+      "step": 2,
+      "unit": "px",
+      "label": "Quiz Button Padding Vertical",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "quiz_button_padding_horizontal",
+      "min": 16,
+      "max": 48,
+      "step": 4,
+      "unit": "px",
+      "label": "Quiz Button Padding Horizontal",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "quiz_button_gap",
+      "min": 8,
+      "max": 20,
+      "step": 2,
+      "unit": "px",
+      "label": "Gap Between Text and Arrow",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "quiz_button_height_desktop",
+      "min": 40,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "label": "Quiz Button Height (Desktop)",
+      "default": 56
+    },
+    {
+      "type": "range",
+      "id": "quiz_button_height_mobile",
+      "min": 36,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "label": "Quiz Button Height (Mobile)",
+      "default": 44
+    },
+    {
+      "type": "range",
+      "id": "quiz_button_font_size_desktop",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Quiz Button Font Size (Desktop)",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "quiz_button_font_size_mobile",
+      "min": 12,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "label": "Quiz Button Font Size (Mobile)",
+      "default": 14
+    }
+  ],
+  "blocks": [
+    {
+      "type": "product",
+      "name": "Product",
+      "limit": 4,
+      "settings": [
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Product"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_bestseller_badge",
+          "label": "Show Best Seller Badge",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "show_rating",
+          "label": "Show Rating",
+          "default": true
+        },
+        {
+          "type": "text",
+          "id": "review_count",
+          "label": "Review Count",
+          "default": "1,299",
+          "info": "Enter the review count to display"
+        },
+        {
+          "type": "text",
+          "id": "button_text",
+          "label": "Button Text",
+          "default": "Shop now"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Maison Products Grid",
+      "blocks": [
+        {
+          "type": "product",
+          "settings": {
+            "show_bestseller_badge": true,
+            "show_rating": true,
+            "review_count": "1,299"
+          }
+        },
+        {
+          "type": "product",
+          "settings": {
+            "show_bestseller_badge": false,
+            "show_rating": true,
+            "review_count": "1,299"
+          }
+        },
+        {
+          "type": "product",
+          "settings": {
+            "show_bestseller_badge": true,
+            "show_rating": true,
+            "review_count": "1,299"
+          }
+        },
+        {
+          "type": "product",
+          "settings": {
+            "show_bestseller_badge": false,
+            "show_rating": true,
+            "review_count": "1,299"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
+
