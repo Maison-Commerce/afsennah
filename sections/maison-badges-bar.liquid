@@ -55,14 +55,14 @@
     display: flex;
     align-items: center;
     justify-content: {{ section.settings.badge_alignment }};
-    gap: 0;
+    gap: 16px;
     flex-wrap: wrap;
   }
 
   @media (max-width: 950px) {
     .maison_commerce_maison_badges_bar__wrapper {
       justify-content: {{ section.settings.badge_alignment }};
-      overflow-x: auto;
+      overflow-x: scroll;
       -webkit-overflow-scrolling: touch;
       scrollbar-width: none;
       -ms-overflow-style: none;
