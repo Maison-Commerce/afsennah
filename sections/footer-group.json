@@ -145,14 +145,22 @@
         "menu_aNMxGJ": {
           "type": "menu",
           "settings": {
-            "menu_title": "Quick links",
+            "menu_title": "Store",
             "menu": "customer-account-main-menu"
+          }
+        },
+        "menu_fCyMVV": {
+          "type": "menu",
+          "settings": {
+            "menu_title": "Help",
+            "menu": "footer"
           }
         }
       },
       "block_order": [
         "1601374621546",
-        "menu_aNMxGJ"
+        "menu_aNMxGJ",
+        "menu_fCyMVV"
       ],
       "custom_css": [],
       "settings": {
