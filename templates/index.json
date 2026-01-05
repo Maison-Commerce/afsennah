@@ -625,11 +625,12 @@
     "maison_content_blocks_rcgVU9": {
       "type": "maison-content-blocks",
       "blocks": {
-        "visual_DJNNLN": {
-          "type": "visual",
+        "image_Tz8W7C": {
+          "type": "image",
           "settings": {
-            "visual_image": "shopify://shop_images/dcd7ab602ee67f9afe3d182307e58a34b77fe6c4.png",
-            "show_features": true
+            "image": "shopify://shop_images/dcd7ab602ee67f9afe3d182307e58a34b77fe6c4.png",
+            "image_alt": "",
+            "image_position": "left"
           }
         },
         "title_DWJpGY": {
@@ -653,7 +654,7 @@
         }
       },
       "block_order": [
-        "visual_DJNNLN",
+        "image_Tz8W7C",
         "title_DWJpGY",
         "text_P7nydg",
         "quote_36fKBb"
