@@ -454,3 +454,7 @@ video-section-play-button {
     margin-top: 8px;
     width: fit-content;
 }
+
+.instastory-title {
+  display: none !important;
+}
