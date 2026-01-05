@@ -1,10 +1,18 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "type": "aside",
   "name": "Overlay Group",
   "sections": {
     "cart-drawer": {
       "type": "cart-drawer",
-      "disabled": true,
       "settings": {
         "show_order_note": true,
         "show_tax_and_shipping": true,
@@ -16,14 +24,14 @@
         "inventory_threshold": 10,
         "show_announcement": true,
         "announcement_position": "below-items",
-        "announcement_text": "<a href=\"#\" title=\"Clearance\"><strong>Summer Sale!<\/strong><\/a> Bag a bargain whilst stocks last!",
+        "announcement_text": "<a href=\"#\" title=\"Clearance\"><strong>Summer Sale!</strong></a> Bag a bargain whilst stocks last!",
         "announcement_icon": "price_tag",
         "announcement_icon_size": "small",
         "announcement_enable_box": true,
         "announcement_box_color": "#ececec",
         "empty_icon": "bag",
         "empty_heading": "Your bag is empty",
-        "empty_text": "<p>Looking for ideas?<\/p>",
+        "empty_text": "<p>Looking for ideas?</p>",
         "empty_button_text": "Start shopping",
         "empty_button_link": "",
         "empty_button_style": "primary",
@@ -51,7 +59,7 @@
         "text": {
           "type": "text",
           "settings": {
-            "text": "<p>Receive 15% OFF your first order and get priority access to sales & exclusive deals.<\/p>",
+            "text": "<p>Receive 15% OFF your first order and get priority access to sales & exclusive deals.</p>",
             "text_size": "small-text"
           }
         },
@@ -89,7 +97,7 @@
         "dismiss_days": 30,
         "position": "justify-end items-end",
         "text_align": "text-center",
-        "bg_image": "shopify:\/\/shop_images\/Ontwerp_zonder_titel_2_-min.png",
+        "bg_image": "shopify://shop_images/Ontwerp_zonder_titel_2_-min.png",
         "heading_color": "#ffffff",
         "text_color": "#ffffff",
         "bg_color": "#232323",
