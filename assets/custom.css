@@ -463,3 +463,8 @@ video-section-play-button {
     border-radius: 24px;
     background: #F7F7FC;
 }
+
+.cart-drawer__footer,
+.cart-drawer__header {
+    background: #FFFFFF;
+}
