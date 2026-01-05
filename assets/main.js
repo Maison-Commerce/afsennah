@@ -3861,7 +3861,7 @@ const PageHeader = class extends HTMLElement {
 
     conosle.log('document.querySelector(.js-cart-drawer)', document.querySelector('.js-cart-drawer'))
     conosle.log('theme.settings.cartType', theme.settings.cartType)
-    conosle.log('this.querySelector('.cart-link')', this.querySelector('.cart-link'))
+    conosle.log('this.querySelector(.cart-link)', this.querySelector('.cart-link'))
     // Reveal cart drawer
     if (theme.settings.cartType === 'drawer' && document.querySelector('.js-cart-drawer') && this.querySelector('.cart-link')) {
       theme.addDelegateEventListener(this, 'click', '.cart-link', (evt) => {
