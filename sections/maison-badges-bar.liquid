@@ -1,0 +1,469 @@
+<section class="maison_commerce_maison_badges_bar">
+  <div class="maison_commerce_maison_badges_bar__container">
+    <div class="maison_commerce_maison_badges_bar__wrapper">
+      {% for block in section.blocks %}
+        {% if block.type == 'badge' %}
+          {% unless forloop.first %}
+            <div class="maison_commerce_maison_badges_bar__divider"></div>
+          {% endunless %}
+          <div class="maison_commerce_maison_badges_bar__badge" {{ block.shopify_attributes }}>
+            <div class="maison_commerce_maison_badges_bar__icon">
+              <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="11" cy="11" r="11" fill="#1A365D"/>
+                <path d="M6.5 11L9.5 14L15.5 8" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <span class="maison_commerce_maison_badges_bar__text">{{ block.settings.badge_text }}</span>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<style>
+  #shopify-section-{{ section.id }} {
+    padding: 0;
+  }
+
+  /* Section Container */
+  .maison_commerce_maison_badges_bar {
+    background-color: {{ section.settings.bg_color }};
+    padding-top: {{ section.settings.padding_top_desktop }}px;
+    padding-bottom: {{ section.settings.padding_bottom_desktop }}px;
+    padding-left: {{ section.settings.padding_left_desktop }}px;
+    padding-right: {{ section.settings.padding_right_desktop }}px;
+  }
+
+  @media (max-width: 768px) {
+    .maison_commerce_maison_badges_bar {
+      padding-top: {{ section.settings.padding_top_mobile }}px;
+      padding-bottom: {{ section.settings.padding_bottom_mobile }}px;
+      padding-left: {{ section.settings.padding_left_mobile }}px;
+      padding-right: {{ section.settings.padding_right_mobile }}px;
+    }
+  }
+
+  /* Container */
+  .maison_commerce_maison_badges_bar__container {
+    max-width: 100%;
+    margin: 0 auto;
+  }
+
+  /* Wrapper */
+  .maison_commerce_maison_badges_bar__wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: {{ section.settings.badge_alignment }};
+    gap: 0;
+    flex-wrap: wrap;
+  }
+
+  @media (max-width: 768px) {
+    .maison_commerce_maison_badges_bar__wrapper {
+      justify-content: {{ section.settings.badge_alignment_mobile }};
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+
+    .maison_commerce_maison_badges_bar__wrapper::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
+  /* Badge */
+  .maison_commerce_maison_badges_bar__badge {
+    display: flex;
+    align-items: center;
+    gap: {{ section.settings.icon_text_gap }}px;
+    flex-shrink: 0;
+  }
+
+  /* Icon */
+  .maison_commerce_maison_badges_bar__icon {
+    width: {{ section.settings.icon_size }}px;
+    height: {{ section.settings.icon_size }}px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .maison_commerce_maison_badges_bar__icon svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  .maison_commerce_maison_badges_bar__icon circle {
+    fill: {{ section.settings.icon_bg_color }};
+  }
+
+  .maison_commerce_maison_badges_bar__icon path {
+    stroke: {{ section.settings.icon_checkmark_color }};
+  }
+
+  /* Text */
+  .maison_commerce_maison_badges_bar__text {
+    font-family: 'Gotham', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    font-size: {{ section.settings.text_font_size_desktop }}px;
+    font-weight: 400;
+    line-height: 1.5;
+    color: {{ section.settings.text_color }};
+    white-space: nowrap;
+  }
+
+  @media (max-width: 768px) {
+    .maison_commerce_maison_badges_bar__text {
+      font-size: {{ section.settings.text_font_size_mobile }}px;
+    }
+  }
+
+  /* Divider */
+  .maison_commerce_maison_badges_bar__divider {
+    width: {{ section.settings.divider_width }}px;
+    height: {{ section.settings.divider_height }}px;
+    background-color: {{ section.settings.divider_color }};
+    margin: 0 {{ section.settings.divider_margin }}px;
+    flex-shrink: 0;
+  }
+
+  @media (max-width: 768px) {
+    .maison_commerce_maison_badges_bar__divider {
+      width: {{ section.settings.divider_width_mobile }}px;
+      height: {{ section.settings.divider_height_mobile }}px;
+      margin: 0 {{ section.settings.divider_margin_mobile }}px;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Maison Badges Bar",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section Settings"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#E5E5F4"
+    },
+    {
+      "type": "range",
+      "id": "padding_top_desktop",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Top (Desktop)",
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_desktop",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Bottom (Desktop)",
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "padding_left_desktop",
+      "min": 0,
+      "max": 200,
+      "step": 5,
+      "unit": "px",
+      "label": "Padding Left (Desktop)",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_right_desktop",
+      "min": 0,
+      "max": 200,
+      "step": 5,
+      "unit": "px",
+      "label": "Padding Right (Desktop)",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "min": 0,
+      "max": 30,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Top (Mobile)",
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "min": 0,
+      "max": 30,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Bottom (Mobile)",
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "padding_left_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Padding Left (Mobile)",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "padding_right_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Padding Right (Mobile)",
+      "default": 20
+    },
+    {
+      "type": "select",
+      "id": "badge_alignment",
+      "label": "Badge Alignment (Desktop)",
+      "options": [
+        {
+          "value": "flex-start",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "flex-end",
+          "label": "Right"
+        },
+        {
+          "value": "space-between",
+          "label": "Space Between"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "select",
+      "id": "badge_alignment_mobile",
+      "label": "Badge Alignment (Mobile)",
+      "options": [
+        {
+          "value": "flex-start",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "flex-end",
+          "label": "Right"
+        }
+      ],
+      "default": "flex-start"
+    },
+    {
+      "type": "header",
+      "content": "Icon Settings"
+    },
+    {
+      "type": "range",
+      "id": "icon_size",
+      "min": 16,
+      "max": 32,
+      "step": 1,
+      "unit": "px",
+      "label": "Icon Size",
+      "default": 22
+    },
+    {
+      "type": "color",
+      "id": "icon_bg_color",
+      "label": "Icon Background Color",
+      "default": "#1A365D"
+    },
+    {
+      "type": "color",
+      "id": "icon_checkmark_color",
+      "label": "Icon Checkmark Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "range",
+      "id": "icon_text_gap",
+      "min": 4,
+      "max": 16,
+      "step": 1,
+      "unit": "px",
+      "label": "Gap Between Icon and Text",
+      "default": 8
+    },
+    {
+      "type": "header",
+      "content": "Text Settings"
+    },
+    {
+      "type": "range",
+      "id": "text_font_size_desktop",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Text Font Size (Desktop)",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "text_font_size_mobile",
+      "min": 12,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "label": "Text Font Size (Mobile)",
+      "default": 14
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#1A365D"
+    },
+    {
+      "type": "header",
+      "content": "Divider Settings"
+    },
+    {
+      "type": "range",
+      "id": "divider_width",
+      "min": 0,
+      "max": 2,
+      "step": 1,
+      "unit": "px",
+      "label": "Divider Width (Desktop)",
+      "default": 1
+    },
+    {
+      "type": "range",
+      "id": "divider_height",
+      "min": 8,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Divider Height (Desktop)",
+      "default": 13
+    },
+    {
+      "type": "range",
+      "id": "divider_margin",
+      "min": 0,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Divider Margin (Desktop)",
+      "default": 0
+    },
+    {
+      "type": "color",
+      "id": "divider_color",
+      "label": "Divider Color",
+      "default": "#CCCCE8"
+    },
+    {
+      "type": "range",
+      "id": "divider_width_mobile",
+      "min": 0,
+      "max": 2,
+      "step": 1,
+      "unit": "px",
+      "label": "Divider Width (Mobile)",
+      "default": 1
+    },
+    {
+      "type": "range",
+      "id": "divider_height_mobile",
+      "min": 8,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Divider Height (Mobile)",
+      "default": 13
+    },
+    {
+      "type": "range",
+      "id": "divider_margin_mobile",
+      "min": 0,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Divider Margin (Mobile)",
+      "default": 0
+    }
+  ],
+  "blocks": [
+    {
+      "type": "badge",
+      "name": "Badge",
+      "settings": [
+        {
+          "type": "text",
+          "id": "badge_text",
+          "label": "Badge Text",
+          "default": "Carbon neutral"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Maison Badges Bar",
+      "blocks": [
+        {
+          "type": "badge",
+          "settings": {
+            "badge_text": "Carbon neutral"
+          }
+        },
+        {
+          "type": "badge",
+          "settings": {
+            "badge_text": "Mineral oils cruelty-free"
+          }
+        },
+        {
+          "type": "badge",
+          "settings": {
+            "badge_text": "Phthalate free"
+          }
+        },
+        {
+          "type": "badge",
+          "settings": {
+            "badge_text": "Sulfate free"
+          }
+        },
+        {
+          "type": "badge",
+          "settings": {
+            "badge_text": "Carbon neutral"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
+
