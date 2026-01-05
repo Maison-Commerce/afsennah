@@ -16,21 +16,21 @@
           "type": "feature_badge",
           "settings": {
             "feature_text": "150,000+ women growing with us",
-            "checkmark_color": "#1A365D"
+            "checkmark_color": "#1a365d"
           }
         },
         "feature_badge_nHGfmp": {
           "type": "feature_badge",
           "settings": {
             "feature_text": "Clean Ingredients",
-            "checkmark_color": "#1A365D"
+            "checkmark_color": "#1a365d"
           }
         },
         "feature_badge_Yiiwed": {
           "type": "feature_badge",
           "settings": {
             "feature_text": "Results in 2-3 weeks",
-            "checkmark_color": "#1A365D"
+            "checkmark_color": "#1a365d"
           }
         }
       },
@@ -41,7 +41,7 @@
       ],
       "name": "Maison Banner",
       "settings": {
-        "section_bg_color": "#FFFFFF",
+        "section_bg_color": "#ffffff",
         "padding_top_desktop": 0,
         "padding_bottom_desktop": 0,
         "padding_left_desktop": 80,
@@ -52,37 +52,107 @@
         "padding_right_mobile": 20,
         "banner_image": "shopify://shop_images/2ae30c6a20c9d2c188e9e6e3b49f98b3139e19fa.png",
         "show_rating": true,
-        "rating_value": "4.8/5",
-        "review_count": "8,450+",
-        "star_color": "#FF8C00",
+        "rating_text": "<p>Rated <strong>4.8/5</strong> based on <strong>8,450+</strong> reviews.</p>",
+        "star_color": "#ff8c00",
         "rating_font_size_desktop": 14,
         "rating_font_size_mobile": 12,
-        "rating_text_color": "#2F3936",
+        "rating_text_color": "#2f3936",
         "heading": "You've done it all. Now try what's right for your hair.",
         "heading_font_size_desktop": 56,
         "heading_font_size_mobile": 24,
         "heading_line_height_desktop": 1.2,
         "heading_line_height_mobile": 1.4,
-        "heading_color": "#2C2926",
+        "heading_color": "#2c2926",
         "body_text": "Generic products weren't designed for your unique hair and scalp. Our certified Trichologist creates a custom formula based on your specific needs — so you can finally see the results you've been waiting for.",
         "body_font_size_desktop": 16,
         "body_font_size_mobile": 14,
-        "body_color": "rgba(47,57,54,0.75)",
-        "feature_text_color": "#15130E",
+        "body_color": "#2f3936bf",
+        "feature_text_color": "#15130e",
         "primary_button_text": "Take Your Free Hair Quiz",
         "primary_button_url": "#",
-        "primary_button_bg_color": "#FBF7BD",
+        "primary_button_bg_color": "#fbf7bd",
         "primary_button_font_size_desktop": 16,
         "primary_button_font_size_mobile": 14,
         "secondary_button_text": "See How It Works",
         "secondary_button_url": "#",
-        "secondary_button_bg_color": "#EBEBF6",
+        "secondary_button_bg_color": "#ebebf6",
         "secondary_button_font_size_desktop": 16,
-        "button_text_color": "#1A365D"
+        "button_text_color": "#1a365d"
+      }
+    },
+    "maison_scroll_img_j4337h": {
+      "type": "maison-scroll-img",
+      "blocks": {
+        "logo_bUc7AW": {
+          "type": "logo",
+          "settings": {
+            "logo_image": "shopify://shop_images/the_sun_logo_black_icon_ab8f9f3e-ca9b-4640-9f30-3c63df825ff2_png.png",
+            "logo_alt": "",
+            "logo_link": ""
+          }
+        },
+        "logo_xwbRep": {
+          "type": "logo",
+          "settings": {
+            "logo_image": "shopify://shop_images/Elle_Icon_48cf211d-21e3-409e-ab65-5248dc24ab48_png.png",
+            "logo_alt": "",
+            "logo_link": ""
+          }
+        },
+        "logo_BjxUkc": {
+          "type": "logo",
+          "settings": {
+            "logo_image": "shopify://shop_images/WWD_icon_14b15f50-a934-42f2-b20a-06df43861f41_png.png",
+            "logo_alt": "",
+            "logo_link": ""
+          }
+        },
+        "logo_BKRUkf": {
+          "type": "logo",
+          "settings": {
+            "logo_image": "shopify://shop_images/2_ba6d4558-b4d3-4553-ba03-fa117f8617ad_png.png",
+            "logo_alt": "",
+            "logo_link": ""
+          }
+        },
+        "logo_mB4c4c": {
+          "type": "logo",
+          "settings": {
+            "logo_image": "shopify://shop_images/stop_hair_loss_icon_ec0e5326-bc30-4645-b86b-084580a9539e_png.png",
+            "logo_alt": "",
+            "logo_link": ""
+          }
+        }
+      },
+      "block_order": [
+        "logo_bUc7AW",
+        "logo_xwbRep",
+        "logo_BjxUkc",
+        "logo_BKRUkf",
+        "logo_mB4c4c"
+      ],
+      "name": "Maison Scroll Images",
+      "settings": {
+        "section_bg_color": "#FFFFFF",
+        "padding_top_desktop": 0,
+        "padding_bottom_desktop": 0,
+        "padding_left_desktop": 0,
+        "padding_right_desktop": 0,
+        "padding_top_mobile": 22,
+        "padding_bottom_mobile": 22,
+        "padding_left_mobile": 20,
+        "padding_right_mobile": 20,
+        "scroll_duration": 30,
+        "pause_on_hover": false,
+        "logo_height_desktop": 60,
+        "logo_height_mobile": 45,
+        "logo_gap_desktop": 50,
+        "logo_gap_mobile": 38
       }
     }
   },
   "order": [
-    "maison_banner_wt47rY"
+    "maison_banner_wt47rY",
+    "maison_scroll_img_j4337h"
   ]
 }
