@@ -133,9 +133,9 @@
       ],
       "name": "Maison Scroll Images",
       "settings": {
-        "section_bg_color": "#FFFFFF",
-        "padding_top_desktop": 20,
-        "padding_bottom_desktop": 20,
+        "section_bg_color": "#ffffff",
+        "padding_top_desktop": 22,
+        "padding_bottom_desktop": 22,
         "padding_left_desktop": 0,
         "padding_right_desktop": 0,
         "padding_top_mobile": 22,
