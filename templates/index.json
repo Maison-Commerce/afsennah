@@ -1191,7 +1191,7 @@
       "name": "Maison Features Bar",
       "settings": {
         "bg_color": "#FFFFFF",
-        "max_width": 1280,
+        "max_width": 1320,
         "padding_top_desktop": 32,
         "padding_bottom_desktop": 44,
         "padding_left_desktop": 60,
