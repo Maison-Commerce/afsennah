@@ -74,9 +74,9 @@
           {% for block in section.blocks %}
             {% if block.type == 'badge' %}
               <div class="maison_commerce_maison_cta_hero__badge" {{ block.shopify_attributes }}>
-                <svg class="maison_commerce_maison_cta_hero__badge-icon" width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <circle cx="9" cy="9" r="9" fill="#CCCCE8"/>
-                  <path d="M5.5 9L7.5 11L12.5 6" stroke="#1A365D" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <svg xmlns="http://www.w3.org/2000/svg" class="maison_commerce_maison_cta_hero__badge-icon" width="18" height="18" viewBox="0 0 18 18" fill="none">
+                    <path d="M8.8125 0C3.94549 0 0 3.94549 0 8.8125C0 13.6795 3.94549 17.625 8.8125 17.625C13.6795 17.625 17.625 13.6795 17.625 8.8125C17.625 3.94549 13.6795 0 8.8125 0Z" fill="#CCCCE8"/>
+                    <path d="M12.1454 6.49463L7.2289 11.4111L4.99414 9.17634" stroke="#1A365D" stroke-width="1.45455" stroke-linecap="square" stroke-linejoin="round"/>
                 </svg>
                 <span class="maison_commerce_maison_cta_hero__badge-text">{{ block.settings.badge_text }}</span>
               </div>
