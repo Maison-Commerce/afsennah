@@ -1,0 +1,797 @@
+<section class="maison_commerce_maison_banner">
+  <div class="maison_commerce_maison_banner__container">
+    <div class="maison_commerce_maison_banner__content-wrapper">
+      <!-- Left Column: Content -->
+      <div class="maison_commerce_maison_banner__content">
+        <div class="maison_commerce_maison_banner__text-content">
+          <!-- Rating Badge -->
+          {% if section.settings.show_rating %}
+            <div class="maison_commerce_maison_banner__rating">
+              <div class="maison_commerce_maison_banner__stars">
+                {% for i in (1..5) %}
+                  <svg class="maison_commerce_maison_banner__star" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M8 0L9.79611 5.52786L15.6085 5.52786L10.9062 8.94427L12.7023 14.4721L8 11.0557L3.29772 14.4721L5.09383 8.94427L0.391548 5.52786L6.20389 5.52786L8 0Z" fill="{{ section.settings.star_color }}"/>
+                  </svg>
+                {% endfor %}
+              </div>
+              <p class="maison_commerce_maison_banner__rating-text">
+                Rated <strong>{{ section.settings.rating_value }}</strong> based on <strong>{{ section.settings.review_count }}</strong> reviews.
+              </p>
+            </div>
+          {% endif %}
+
+          <!-- Heading -->
+          {% if section.settings.heading != blank %}
+            <h1 class="maison_commerce_maison_banner__heading">
+              {{ section.settings.heading }}
+            </h1>
+          {% endif %}
+
+          <!-- Body Text -->
+          {% if section.settings.body_text != blank %}
+            <p class="maison_commerce_maison_banner__body-text">
+              {{ section.settings.body_text }}
+            </p>
+          {% endif %}
+        </div>
+
+        <!-- Feature Badges -->
+        {% if section.blocks.size > 0 %}
+          <div class="maison_commerce_maison_banner__features">
+            {% for block in section.blocks %}
+              {% case block.type %}
+                {% when 'feature_badge' %}
+                  <div class="maison_commerce_maison_banner__feature-badge" {{ block.shopify_attributes }}>
+                    <svg class="maison_commerce_maison_banner__check-icon" width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M9 0C4.0374 0 0 4.0374 0 9C0 13.9626 4.0374 18 9 18C13.9626 18 18 13.9626 18 9C18 4.0374 13.9626 0 9 0ZM13.5 6.75L8.25 12L4.5 8.25L5.625 7.125L8.25 9.75L12.375 5.625L13.5 6.75Z" fill="{{ block.settings.checkmark_color }}"/>
+                    </svg>
+                    <span class="maison_commerce_maison_banner__feature-text">{{ block.settings.feature_text }}</span>
+                  </div>
+              {% endcase %}
+            {% endfor %}
+          </div>
+        {% endif %}
+
+        <!-- CTA Buttons -->
+        <div class="maison_commerce_maison_banner__buttons">
+          {% if section.settings.primary_button_url != blank %}
+            <a href="{{ section.settings.primary_button_url }}" class="maison_commerce_maison_banner__button maison_commerce_maison_banner__button--primary">
+              <span>{{ section.settings.primary_button_text }}</span>
+              <svg class="maison_commerce_maison_banner__arrow-icon" width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M6.75 3.75L12 9L6.75 14.25" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </a>
+          {% endif %}
+
+          {% if section.settings.secondary_button_url != blank %}
+            <a href="{{ section.settings.secondary_button_url }}" class="maison_commerce_maison_banner__button maison_commerce_maison_banner__button--secondary">
+              <span>{{ section.settings.secondary_button_text }}</span>
+            </a>
+          {% endif %}
+        </div>
+      </div>
+
+      <!-- Right Column: Image -->
+      {% if section.settings.banner_image != blank %}
+        <div class="maison_commerce_maison_banner__image-wrapper">
+          <img 
+            src="{{ section.settings.banner_image | image_url: width: 1322 }}" 
+            alt="{{ section.settings.banner_image.alt | escape }}"
+            class="maison_commerce_maison_banner__image"
+            width="{{ section.settings.banner_image.width }}"
+            height="{{ section.settings.banner_image.height }}"
+            loading="lazy"
+          />
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+<style>
+  /* Section Container */
+  .maison_commerce_maison_banner {
+    background-color: {{ section.settings.section_bg_color }};
+    padding-top: {{ section.settings.padding_top_desktop }}px;
+    padding-bottom: {{ section.settings.padding_bottom_desktop }}px;
+    padding-left: {{ section.settings.padding_left_desktop }}px;
+    padding-right: {{ section.settings.padding_right_desktop }}px;
+  }
+
+  @media (max-width: 768px) {
+    .maison_commerce_maison_banner {
+      padding-top: {{ section.settings.padding_top_mobile }}px;
+      padding-bottom: {{ section.settings.padding_bottom_mobile }}px;
+      padding-left: {{ section.settings.padding_left_mobile }}px;
+      padding-right: {{ section.settings.padding_right_mobile }}px;
+    }
+  }
+
+  /* Container */
+  .maison_commerce_maison_banner__container {
+    max-width: 100%;
+    margin: 0 auto;
+  }
+
+  /* Content Wrapper - Two Column Layout */
+  .maison_commerce_maison_banner__content-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 80px;
+  }
+
+  @media (max-width: 768px) {
+    .maison_commerce_maison_banner__content-wrapper {
+      flex-direction: column;
+      gap: 0;
+    }
+  }
+
+  /* Left Column: Content */
+  .maison_commerce_maison_banner__content {
+    flex: 0 0 619px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  @media (max-width: 768px) {
+    .maison_commerce_maison_banner__content {
+      flex: 1;
+      width: 100%;
+      padding: 20px;
+      gap: 18px;
+    }
+  }
+
+  /* Text Content */
+  .maison_commerce_maison_banner__text-content {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  @media (max-width: 768px) {
+    .maison_commerce_maison_banner__text-content {
+      gap: 8px;
+      align-items: center;
+    }
+  }
+
+  /* Rating Badge */
+  .maison_commerce_maison_banner__rating {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    justify-content: flex-start;
+  }
+
+  @media (max-width: 768px) {
+    .maison_commerce_maison_banner__rating {
+      justify-content: center;
+    }
+  }
+
+  .maison_commerce_maison_banner__stars {
+    display: flex;
+    gap: 0;
+    align-items: center;
+  }
+
+  .maison_commerce_maison_banner__star {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+  }
+
+  .maison_commerce_maison_banner__rating-text {
+    font-family: 'Neue Haas Grotesk Display Pro', sans-serif;
+    font-weight: 300;
+    font-size: {{ section.settings.rating_font_size_desktop }}px;
+    line-height: 1.5;
+    color: {{ section.settings.rating_text_color }};
+    margin: 0;
+  }
+
+  @media (max-width: 768px) {
+    .maison_commerce_maison_banner__rating-text {
+      font-size: {{ section.settings.rating_font_size_mobile }}px;
+    }
+  }
+
+  .maison_commerce_maison_banner__rating-text strong {
+    font-weight: 500;
+  }
+
+  /* Heading */
+  .maison_commerce_maison_banner__heading {
+    font-family: 'Vanilla Ravioli', serif;
+    font-size: {{ section.settings.heading_font_size_desktop }}px;
+    font-weight: 400;
+    line-height: {{ section.settings.heading_line_height_desktop }};
+    color: {{ section.settings.heading_color }};
+    margin: 0;
+    text-align: left;
+  }
+
+  @media (max-width: 768px) {
+    .maison_commerce_maison_banner__heading {
+      font-size: {{ section.settings.heading_font_size_mobile }}px;
+      line-height: {{ section.settings.heading_line_height_mobile }};
+      text-align: center;
+    }
+  }
+
+  /* Body Text */
+  .maison_commerce_maison_banner__body-text {
+    font-family: 'Neue Haas Grotesk Display Pro', sans-serif;
+    font-size: {{ section.settings.body_font_size_desktop }}px;
+    font-weight: 500;
+    line-height: 1.5;
+    color: {{ section.settings.body_color }};
+    margin: 0;
+    text-align: left;
+  }
+
+  @media (max-width: 768px) {
+    .maison_commerce_maison_banner__body-text {
+      font-family: 'Gotham', sans-serif;
+      font-weight: 400;
+      font-size: {{ section.settings.body_font_size_mobile }}px;
+      text-align: center;
+    }
+  }
+
+  /* Features Container */
+  .maison_commerce_maison_banner__features {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  @media (max-width: 768px) {
+    .maison_commerce_maison_banner__features {
+      justify-content: space-between;
+      gap: 8px;
+    }
+  }
+
+  /* Feature Badge */
+  .maison_commerce_maison_banner__feature-badge {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    justify-content: center;
+    padding: 4px 15px;
+    border-radius: 8px;
+  }
+
+  @media (max-width: 768px) {
+    .maison_commerce_maison_banner__feature-badge {
+      padding: 4px 0;
+    }
+  }
+
+  .maison_commerce_maison_banner__check-icon {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+  }
+
+  @media (max-width: 768px) {
+    .maison_commerce_maison_banner__check-icon {
+      width: 16px;
+      height: 16px;
+    }
+  }
+
+  .maison_commerce_maison_banner__feature-text {
+    font-family: 'Gotham', sans-serif;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 1.5;
+    color: {{ section.settings.feature_text_color }};
+    white-space: nowrap;
+  }
+
+  /* Buttons Container */
+  .maison_commerce_maison_banner__buttons {
+    display: flex;
+    gap: 24px;
+    align-items: flex-start;
+  }
+
+  @media (max-width: 768px) {
+    .maison_commerce_maison_banner__buttons {
+      flex-direction: column;
+      gap: 18px;
+      width: 100%;
+    }
+  }
+
+  /* Button Base Styles */
+  .maison_commerce_maison_banner__button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 16px 32px;
+    border-radius: 12px;
+    text-decoration: none;
+    transition: opacity 0.3s ease;
+    height: 56px;
+    box-sizing: border-box;
+  }
+
+  .maison_commerce_maison_banner__button:hover {
+    opacity: 0.9;
+  }
+
+  @media (max-width: 768px) {
+    .maison_commerce_maison_banner__button {
+      width: 100%;
+      padding: 16px 32px;
+    }
+  }
+
+  /* Primary Button */
+  .maison_commerce_maison_banner__button--primary {
+    background-color: {{ section.settings.primary_button_bg_color }};
+    color: {{ section.settings.button_text_color }};
+    flex: 1;
+  }
+
+  @media (max-width: 768px) {
+    .maison_commerce_maison_banner__button--primary {
+      flex: none;
+    }
+  }
+
+  .maison_commerce_maison_banner__button--primary span {
+    font-family: 'Neue Haas Grotesk Display Pro', sans-serif;
+    font-size: {{ section.settings.primary_button_font_size_desktop }}px;
+    font-weight: 500;
+    line-height: 1.5;
+  }
+
+  @media (max-width: 768px) {
+    .maison_commerce_maison_banner__button--primary span {
+      font-family: 'Gotham', sans-serif;
+      font-size: {{ section.settings.primary_button_font_size_mobile }}px;
+      font-weight: 500;
+    }
+  }
+
+  .maison_commerce_maison_banner__arrow-icon {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+  }
+
+  /* Secondary Button */
+  .maison_commerce_maison_banner__button--secondary {
+    background-color: {{ section.settings.secondary_button_bg_color }};
+    color: {{ section.settings.button_text_color }};
+    flex: 1;
+  }
+
+  @media (max-width: 768px) {
+    .maison_commerce_maison_banner__button--secondary {
+      flex: none;
+    }
+  }
+
+  .maison_commerce_maison_banner__button--secondary span {
+    font-family: 'Neue Haas Grotesk Display Pro', sans-serif;
+    font-size: {{ section.settings.secondary_button_font_size_desktop }}px;
+    font-weight: 500;
+    line-height: 1.5;
+  }
+
+  /* Image Wrapper */
+  .maison_commerce_maison_banner__image-wrapper {
+    flex: 0 0 661px;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+    border-radius: 0 32px 0 32px;
+  }
+
+  @media (max-width: 768px) {
+    .maison_commerce_maison_banner__image-wrapper {
+      flex: none;
+      width: 100%;
+      height: 247px;
+      border-radius: 0;
+    }
+  }
+
+  .maison_commerce_maison_banner__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Maison Banner",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section Settings"
+    },
+    {
+      "type": "color",
+      "id": "section_bg_color",
+      "label": "Section Background Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "range",
+      "id": "padding_top_desktop",
+      "min": 0,
+      "max": 200,
+      "step": 5,
+      "unit": "px",
+      "label": "Padding Top (Desktop)",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_desktop",
+      "min": 0,
+      "max": 200,
+      "step": 5,
+      "unit": "px",
+      "label": "Padding Bottom (Desktop)",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_left_desktop",
+      "min": 0,
+      "max": 200,
+      "step": 5,
+      "unit": "px",
+      "label": "Padding Left (Desktop)",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_right_desktop",
+      "min": 0,
+      "max": 200,
+      "step": 5,
+      "unit": "px",
+      "label": "Padding Right (Desktop)",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Padding Top (Mobile)",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Padding Bottom (Mobile)",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_left_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Padding Left (Mobile)",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "padding_right_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Padding Right (Mobile)",
+      "default": 20
+    },
+    {
+      "type": "header",
+      "content": "Banner Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "banner_image",
+      "label": "Banner Image"
+    },
+    {
+      "type": "header",
+      "content": "Rating Badge"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_rating",
+      "label": "Show Rating Badge",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "rating_value",
+      "label": "Rating Value",
+      "default": "4.8/5"
+    },
+    {
+      "type": "text",
+      "id": "review_count",
+      "label": "Review Count",
+      "default": "8,450+"
+    },
+    {
+      "type": "color",
+      "id": "star_color",
+      "label": "Star Color",
+      "default": "#FF8C00"
+    },
+    {
+      "type": "range",
+      "id": "rating_font_size_desktop",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Rating Font Size (Desktop)",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "rating_font_size_mobile",
+      "min": 10,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "label": "Rating Font Size (Mobile)",
+      "default": 12
+    },
+    {
+      "type": "color",
+      "id": "rating_text_color",
+      "label": "Rating Text Color",
+      "default": "#2F3936"
+    },
+    {
+      "type": "header",
+      "content": "Heading"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "You've done it all. Now try what's right for your hair."
+    },
+    {
+      "type": "range",
+      "id": "heading_font_size_desktop",
+      "min": 24,
+      "max": 72,
+      "step": 2,
+      "unit": "px",
+      "label": "Heading Font Size (Desktop)",
+      "default": 56
+    },
+    {
+      "type": "range",
+      "id": "heading_font_size_mobile",
+      "min": 18,
+      "max": 48,
+      "step": 2,
+      "unit": "px",
+      "label": "Heading Font Size (Mobile)",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "heading_line_height_desktop",
+      "min": 1.0,
+      "max": 2.0,
+      "step": 0.1,
+      "label": "Heading Line Height (Desktop)",
+      "default": 1.2
+    },
+    {
+      "type": "range",
+      "id": "heading_line_height_mobile",
+      "min": 1.0,
+      "max": 2.0,
+      "step": 0.1,
+      "label": "Heading Line Height (Mobile)",
+      "default": 1.4
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading Color",
+      "default": "#2C2926"
+    },
+    {
+      "type": "header",
+      "content": "Body Text"
+    },
+    {
+      "type": "textarea",
+      "id": "body_text",
+      "label": "Body Text",
+      "default": "Generic products weren't designed for your unique hair and scalp. Our certified Trichologist creates a custom formula based on your specific needs — so you can finally see the results you've been waiting for."
+    },
+    {
+      "type": "range",
+      "id": "body_font_size_desktop",
+      "min": 12,
+      "max": 32,
+      "step": 1,
+      "unit": "px",
+      "label": "Body Font Size (Desktop)",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "body_font_size_mobile",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Body Font Size (Mobile)",
+      "default": 14
+    },
+    {
+      "type": "color",
+      "id": "body_color",
+      "label": "Body Text Color",
+      "default": "rgba(47,57,54,0.75)"
+    },
+    {
+      "type": "header",
+      "content": "Feature Badges"
+    },
+    {
+      "type": "color",
+      "id": "feature_text_color",
+      "label": "Feature Text Color",
+      "default": "#15130E"
+    },
+    {
+      "type": "header",
+      "content": "Call-to-Action Buttons"
+    },
+    {
+      "type": "text",
+      "id": "primary_button_text",
+      "label": "Primary Button Text",
+      "default": "Take Your Free Hair Quiz"
+    },
+    {
+      "type": "url",
+      "id": "primary_button_url",
+      "label": "Primary Button URL"
+    },
+    {
+      "type": "color",
+      "id": "primary_button_bg_color",
+      "label": "Primary Button Background Color",
+      "default": "#FBF7BD"
+    },
+    {
+      "type": "range",
+      "id": "primary_button_font_size_desktop",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Primary Button Font Size (Desktop)",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "primary_button_font_size_mobile",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Primary Button Font Size (Mobile)",
+      "default": 14
+    },
+    {
+      "type": "text",
+      "id": "secondary_button_text",
+      "label": "Secondary Button Text",
+      "default": "See How It Works"
+    },
+    {
+      "type": "url",
+      "id": "secondary_button_url",
+      "label": "Secondary Button URL"
+    },
+    {
+      "type": "color",
+      "id": "secondary_button_bg_color",
+      "label": "Secondary Button Background Color",
+      "default": "#EBEBF6"
+    },
+    {
+      "type": "range",
+      "id": "secondary_button_font_size_desktop",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Secondary Button Font Size (Desktop)",
+      "default": 16
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button Text Color",
+      "default": "#1A365D"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "feature_badge",
+      "name": "Feature Badge",
+      "settings": [
+        {
+          "type": "text",
+          "id": "feature_text",
+          "label": "Feature Text",
+          "default": "Clean Ingredients"
+        },
+        {
+          "type": "color",
+          "id": "checkmark_color",
+          "label": "Checkmark Color",
+          "default": "#1A365D"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Maison Banner",
+      "blocks": [
+        {
+          "type": "feature_badge",
+          "settings": {
+            "feature_text": "150,000+ women growing with us"
+          }
+        },
+        {
+          "type": "feature_badge",
+          "settings": {
+            "feature_text": "Clean Ingredients"
+          }
+        },
+        {
+          "type": "feature_badge",
+          "settings": {
+            "feature_text": "Results in 2-3 weeks"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
+
