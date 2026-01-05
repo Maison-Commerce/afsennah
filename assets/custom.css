@@ -483,3 +483,11 @@ video-section-play-button {
     vertical-align: middle;
 
 }
+
+.title-dot {
+    width: 4px;
+    height: 4px;
+    display: block !important;
+    border-radius: 100%;
+    background: #D9D8CD;
+}
