@@ -54,8 +54,10 @@
         <header class="cart-drawer__header cart-drawer__content-item">
           <div id="CartDrawerModal-Title" class="cart-drawer__title h4 heading-font" data-merge="header-title">
             {{ 'cart.general.title' | t }}
+
             {% if cart.items != empty %}
-              <span class="cart-drawer__title-count">({{ cart.item_count }})</span>
+              <span class="title-dot"></span>
+              <span class="cart-drawer__title-count">{{ cart.item_count }}</span>
             {% endif %}
           </div>
 
