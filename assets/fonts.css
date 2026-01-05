@@ -13,7 +13,7 @@
 /* Gotham - Body and UI Font */
 @font-face {
   font-family: 'Gotham';
-  src: url("{{ 'fonts/GothamBook.otf' | asset_url }}") format('opentype');
+  src: url("{{ 'GothamBook.otf' | asset_url }}") format('opentype');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -21,7 +21,7 @@
 
 @font-face {
   font-family: 'Gotham';
-  src: url("{{ 'fonts/GothamRegular.otf' | asset_url }}") format('opentype');
+  src: url("{{ 'GothamRegular.otf' | asset_url }}") format('opentype');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -29,7 +29,7 @@
 
 @font-face {
   font-family: 'Gotham';
-  src: url("{{ 'fonts/GothamMedium.otf' | asset_url }}") format('opentype');
+  src: url("{{ 'GothamMedium.otf' | asset_url }}") format('opentype');
   font-weight: 500;
   font-style: normal;
   font-display: swap;
@@ -37,7 +37,7 @@
 
 @font-face {
   font-family: 'Gotham';
-  src: url("{{ 'fonts/GothamBold.otf' | asset_url }}") format('opentype');
+  src: url("{{ 'GothamBold.otf' | asset_url }}") format('opentype');
   font-weight: 700;
   font-style: normal;
   font-display: swap;
@@ -46,7 +46,7 @@
 /* Avenir Next - Secondary Text Font */
 @font-face {
   font-family: 'Avenir Next';
-  src: url("{{ 'fonts/AvenirNextLTPro-Regular.otf' | asset_url }}") format('opentype');
+  src: url("{{ 'AvenirNextLTPro-Regular.otf' | asset_url }}") format('opentype');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -54,7 +54,7 @@
 
 @font-face {
   font-family: 'Avenir Next';
-  src: url("{{ 'fonts/AvenirNextLTPro-Medium.otf' | asset_url }}") format('opentype');
+  src: url("{{ 'AvenirNextLTPro-Medium.otf' | asset_url }}") format('opentype');
   font-weight: 500;
   font-style: normal;
   font-display: swap;
@@ -62,7 +62,7 @@
 
 @font-face {
   font-family: 'Avenir Next';
-  src: url("{{ 'fonts/AvenirNextLTPro-Demi.otf' | asset_url }}") format('opentype');
+  src: url("{{ 'AvenirNextLTPro-Demi.otf' | asset_url }}") format('opentype');
   font-weight: 600;
   font-style: normal;
   font-display: swap;
@@ -70,7 +70,7 @@
 
 @font-face {
   font-family: 'Avenir Next';
-  src: url("{{ 'fonts/AvenirNextLTPro-Bold.otf' | asset_url }}") format('opentype');
+  src: url("{{ 'AvenirNextLTPro-Bold.otf' | asset_url }}") format('opentype');
   font-weight: 700;
   font-style: normal;
   font-display: swap;
@@ -79,7 +79,7 @@
 /* Neue Haas Grotesk Display Pro - Display Font */
 @font-face {
   font-family: 'Neue Haas Grotesk Display Pro';
-  src: url("{{ 'fonts/NeueHaasDisplayRoman.ttf' | asset_url }}") format('truetype');
+  src: url("{{ 'NeueHaasDisplayRoman.ttf' | asset_url }}") format('truetype');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -87,7 +87,7 @@
 
 @font-face {
   font-family: 'Neue Haas Grotesk Display Pro';
-  src: url("{{ 'fonts/NeueHaasDisplayMediu.ttf' | asset_url }}") format('truetype');
+  src: url("{{ 'NeueHaasDisplayMediu.ttf' | asset_url }}") format('truetype');
   font-weight: 500;
   font-style: normal;
   font-display: swap;
@@ -95,7 +95,7 @@
 
 @font-face {
   font-family: 'Neue Haas Grotesk Display Pro';
-  src: url("{{ 'fonts/NeueHaasDisplayBold.ttf' | asset_url }}") format('truetype');
+  src: url("{{ 'NeueHaasDisplayBold.ttf' | asset_url }}") format('truetype');
   font-weight: 700;
   font-style: normal;
   font-display: swap;
