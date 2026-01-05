@@ -460,4 +460,5 @@ video-section-play-button {
 .js-cart-drawer {
     margin: 10px;
     height: calc(100% - 20px);
+    border-radius: 24px;
 }
