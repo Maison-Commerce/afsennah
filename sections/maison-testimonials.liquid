@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
 
 <section class="maison_commerce_maison_testimonials">
   <div class="maison_commerce_maison_testimonials__container">
@@ -705,42 +705,88 @@
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 
 <script>
-  document.addEventListener('DOMContentLoaded', function() {
-    const swiperContainer = document.querySelector('#shopify-section-{{ section.id }} .maison_commerce_maison_testimonials__swiper');
-    
-    if (swiperContainer) {
-      const swiper = new Swiper('#shopify-section-{{ section.id }} .maison_commerce_maison_testimonials__swiper', {
-        slidesPerView: 'auto',
-        spaceBetween: {{ section.settings.card_gap_desktop }},
-        loop: {{ section.settings.enable_loop }},
-        autoplay: {{ section.settings.enable_autoplay }} ? {
-          delay: {{ section.settings.autoplay_delay }},
-          disableOnInteraction: false,
-        } : false,
-        navigation: {
-          nextEl: '#shopify-section-{{ section.id }} .maison_commerce_maison_testimonials__nav-button--next',
-          prevEl: '#shopify-section-{{ section.id }} .maison_commerce_maison_testimonials__nav-button--prev',
-        },
-        pagination: {
-          el: '#shopify-section-{{ section.id }} .maison_commerce_maison_testimonials__pagination',
-          clickable: true,
-          renderBullet: function (index, className) {
-            return '<span class="' + className + '"></span>';
+  (function() {
+    function initSwiper() {
+      const sectionId = '{{ section.id }}';
+      const sectionElement = document.querySelector('[id="shopify-section-' + sectionId + '"]');
+      
+      if (!sectionElement) {
+        return false;
+      }
+
+      const swiperContainer = sectionElement.querySelector('.maison_commerce_maison_testimonials__swiper');
+      const nextButton = sectionElement.querySelector('.maison_commerce_maison_testimonials__nav-button--next');
+      const prevButton = sectionElement.querySelector('.maison_commerce_maison_testimonials__nav-button--prev');
+      const pagination = sectionElement.querySelector('.maison_commerce_maison_testimonials__pagination');
+      
+      if (!swiperContainer || typeof Swiper === 'undefined') {
+        return false;
+      }
+
+      try {
+        const swiperConfig = {
+          slidesPerView: 'auto',
+          spaceBetween: {{ section.settings.card_gap_desktop }},
+          loop: {{ section.settings.enable_loop }},
+          autoplay: {{ section.settings.enable_autoplay }} ? {
+            delay: {{ section.settings.autoplay_delay }},
+            disableOnInteraction: false,
+          } : false,
+          breakpoints: {
+            0: {
+              slidesPerView: 1,
+              spaceBetween: {{ section.settings.card_gap_mobile }},
+            },
+            769: {
+              slidesPerView: {{ section.settings.slides_per_view_desktop }},
+              spaceBetween: {{ section.settings.card_gap_desktop }},
+            },
           },
-        },
-        breakpoints: {
-          0: {
-            slidesPerView: 1,
-            spaceBetween: {{ section.settings.card_gap_mobile }},
-          },
-          769: {
-            slidesPerView: 'auto',
-            spaceBetween: {{ section.settings.card_gap_desktop }},
-          },
-        },
-      });
+        };
+
+        if (nextButton && prevButton) {
+          swiperConfig.navigation = {
+            nextEl: nextButton,
+            prevEl: prevButton,
+          };
+        }
+
+        if (pagination) {
+          swiperConfig.pagination = {
+            el: pagination,
+            clickable: true,
+            renderBullet: function (index, className) {
+              return '<span class="' + className + '"></span>';
+            },
+          };
+        }
+
+        const swiper = new Swiper(swiperContainer, swiperConfig);
+        return true;
+      } catch (error) {
+        console.error('Swiper initialization error:', error);
+        return false;
+      }
     }
-  });
+
+    // Initialize when DOM is ready and Swiper is loaded
+    function tryInit() {
+      if (typeof Swiper !== 'undefined') {
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(initSwiper, 100);
+          });
+        } else {
+          setTimeout(initSwiper, 100);
+        }
+      } else {
+        // Wait for Swiper to load
+        setTimeout(tryInit, 50);
+      }
+    }
+
+    tryInit();
+  })();
 </script>
 
 {% schema %}
