@@ -1,0 +1,1338 @@
+<section class="maison_commerce_maison_content_blocks">
+  <div class="maison_commerce_maison_content_blocks__container">
+    <div class="maison_commerce_maison_content_blocks__wrapper">
+      {% comment %} Render image or visual block first {% endcomment %}
+      {% for block in section.blocks %}
+        {% if block.type == 'image' or block.type == 'visual' %}
+          {% if block.type == 'image' %}
+            <div class="maison_commerce_maison_content_blocks__image-block" {{ block.shopify_attributes }}>
+              {% if block.settings.image != blank %}
+                <div class="maison_commerce_maison_content_blocks__image-wrapper">
+                  <img 
+                    src="{{ block.settings.image | image_url: width: 1240 }}" 
+                    alt="{{ block.settings.image.alt | default: block.settings.image_alt | escape }}"
+                    class="maison_commerce_maison_content_blocks__image"
+                    width="{{ block.settings.image.width }}"
+                    height="{{ block.settings.image.height }}"
+                    loading="lazy"
+                  />
+                </div>
+              {% endif %}
+            </div>
+          {% elsif block.type == 'visual' %}
+            <div class="maison_commerce_maison_content_blocks__visual-block" {{ block.shopify_attributes }}>
+              {% if block.settings.visual_image != blank %}
+                <div class="maison_commerce_maison_content_blocks__visual-wrapper">
+                  <img 
+                    src="{{ block.settings.visual_image | image_url: width: 1240 }}" 
+                    alt="{{ block.settings.visual_image.alt | default: 'Visual illustration' | escape }}"
+                    class="maison_commerce_maison_content_blocks__visual-image"
+                    width="{{ block.settings.visual_image.width }}"
+                    height="{{ block.settings.visual_image.height }}"
+                    loading="lazy"
+                  />
+                </div>
+              {% endif %}
+
+              {% if block.settings.show_features %}
+                <div class="maison_commerce_maison_content_blocks__features">
+                  {% for feature_block in section.blocks %}
+                    {% if feature_block.type == 'feature' %}
+                      {% assign visual_id = block.id | split: '-' | last %}
+                      {% assign feature_visual_id = feature_block.settings.visual_block_id | split: '-' | last %}
+                      {% if feature_block.settings.visual_block_id == block.id or visual_id == feature_visual_id %}
+                        <div class="maison_commerce_maison_content_blocks__feature" style="top: {{ feature_block.settings.position_top }}%; left: {{ feature_block.settings.position_left }}%;" {{ feature_block.shopify_attributes }}>
+                          <div class="maison_commerce_maison_content_blocks__feature-badge">
+                            <svg class="maison_commerce_maison_content_blocks__feature-icon" width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+                              <path d="M10.5 0C4.70101 0 0 4.70101 0 10.5C0 16.299 4.70101 21 10.5 21C16.299 21 21 16.299 21 10.5C21 4.70101 16.299 0 10.5 0ZM15.7071 8.29289L9.70711 14.2929C9.31658 14.6834 8.68342 14.6834 8.29289 14.2929L5.29289 11.2929C4.90237 10.9024 4.90237 10.2692 5.29289 9.87868C5.68342 9.48815 6.31658 9.48815 6.70711 9.87868L9 12.1716L14.2929 6.87868C14.6834 6.48815 15.3166 6.48815 15.7071 6.87868C16.0976 7.2692 16.0976 7.90237 15.7071 8.29289Z" fill="#1A365D"/>
+                            </svg>
+                            <span class="maison_commerce_maison_content_blocks__feature-text">{{ feature_block.settings.feature_text }}</span>
+                          </div>
+                        </div>
+                      {% endif %}
+                    {% endif %}
+                  {% endfor %}
+                </div>
+              {% endif %}
+            </div>
+          {% endif %}
+        {% endif %}
+      {% endfor %}
+
+      {% comment %} Render content blocks (title, text, button, quote) {% endcomment %}
+      {% assign has_content = false %}
+      {% for block in section.blocks %}
+        {% if block.type == 'title' or block.type == 'text' or block.type == 'button' or block.type == 'quote' %}
+          {% unless has_content %}
+            {% assign has_content = true %}
+            <div class="maison_commerce_maison_content_blocks__content-block">
+          {% endunless %}
+          
+          {% case block.type %}
+            {% when 'title' %}
+              {% if block.settings.title_text != blank %}
+                <h2 class="maison_commerce_maison_content_blocks__title" {{ block.shopify_attributes }}>
+                  {{ block.settings.title_text }}
+                </h2>
+              {% endif %}
+
+            {% when 'text' %}
+              {% if block.settings.text_content != blank %}
+                <div class="maison_commerce_maison_content_blocks__text" {{ block.shopify_attributes }}>
+                  {{ block.settings.text_content }}
+                </div>
+              {% endif %}
+
+            {% when 'button' %}
+              {% if block.settings.button_url != blank %}
+                <a href="{{ block.settings.button_url }}" class="maison_commerce_maison_content_blocks__button" {{ block.shopify_attributes }}>
+                  <span>{{ block.settings.button_text }}</span>
+                  <svg class="maison_commerce_maison_content_blocks__button-arrow" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </a>
+              {% endif %}
+
+            {% when 'quote' %}
+              {% if block.settings.quote_text != blank %}
+                <div class="maison_commerce_maison_content_blocks__quote" {{ block.shopify_attributes }}>
+                  <p class="maison_commerce_maison_content_blocks__quote-text">
+                    {{ block.settings.quote_text }}
+                  </p>
+                  {% if block.settings.quote_author != blank %}
+                    <div class="maison_commerce_maison_content_blocks__quote-author">
+                      {{ block.settings.quote_author }}
+                    </div>
+                  {% endif %}
+                </div>
+              {% endif %}
+          {% endcase %}
+        {% endif %}
+      {% endfor %}
+      
+      {% if has_content %}
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+<style>
+  #shopify-section-{{ section.id }} {
+    padding: 0;
+  }
+
+  /* Section Container */
+  .maison_commerce_maison_content_blocks {
+    background: linear-gradient(to bottom, {{ section.settings.bg_gradient_start }}, {{ section.settings.bg_gradient_end }});
+    padding-top: {{ section.settings.padding_top_desktop }}px;
+    padding-bottom: {{ section.settings.padding_bottom_desktop }}px;
+    padding-left: {{ section.settings.padding_left_desktop }}px;
+    padding-right: {{ section.settings.padding_right_desktop }}px;
+  }
+
+  @media (max-width: 768px) {
+    .maison_commerce_maison_content_blocks {
+      padding-top: {{ section.settings.padding_top_mobile }}px;
+      padding-bottom: {{ section.settings.padding_bottom_mobile }}px;
+      padding-left: {{ section.settings.padding_left_mobile }}px;
+      padding-right: {{ section.settings.padding_right_mobile }}px;
+    }
+  }
+
+  /* Container */
+  .maison_commerce_maison_content_blocks__container {
+    max-width: 100%;
+    margin: 0 auto;
+  }
+
+  /* Wrapper */
+  .maison_commerce_maison_content_blocks__wrapper {
+    display: flex;
+    gap: {{ section.settings.content_gap_desktop }}px;
+    align-items: {{ section.settings.content_align_desktop }};
+  }
+
+  @media (max-width: 768px) {
+    .maison_commerce_maison_content_blocks__wrapper {
+      flex-direction: column;
+      gap: {{ section.settings.content_gap_mobile }}px;
+    }
+  }
+
+  /* Image Block */
+  .maison_commerce_maison_content_blocks__image-block {
+    flex: {{ section.settings.image_width_desktop }}%;
+    min-width: 0;
+  }
+
+  @media (max-width: 768px) {
+    .maison_commerce_maison_content_blocks__image-block {
+      flex: 1;
+      width: 100%;
+      order: {{ section.settings.image_order_mobile }};
+    }
+  }
+
+  .maison_commerce_maison_content_blocks__image-wrapper {
+    position: relative;
+    border-radius: {{ section.settings.image_border_radius_desktop }}px;
+    overflow: hidden;
+    aspect-ratio: {{ section.settings.image_aspect_ratio }};
+  }
+
+  @media (max-width: 768px) {
+    .maison_commerce_maison_content_blocks__image-wrapper {
+      border-radius: {{ section.settings.image_border_radius_mobile }}px;
+    }
+  }
+
+  .maison_commerce_maison_content_blocks__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  /* Visual Block */
+  .maison_commerce_maison_content_blocks__visual-block {
+    flex: {{ section.settings.visual_width_desktop }}%;
+    min-width: 0;
+    position: relative;
+    border-radius: {{ section.settings.visual_border_radius_desktop }}px;
+    overflow: hidden;
+    background: {{ section.settings.visual_bg_color }};
+    min-height: {{ section.settings.visual_min_height_desktop }}px;
+  }
+
+  @media (max-width: 768px) {
+    .maison_commerce_maison_content_blocks__visual-block {
+      flex: 1;
+      width: 100%;
+      order: {{ section.settings.visual_order_mobile }};
+      min-height: {{ section.settings.visual_min_height_mobile }}px;
+      border-radius: {{ section.settings.visual_border_radius_mobile }}px;
+    }
+  }
+
+  .maison_commerce_maison_content_blocks__visual-wrapper {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+  }
+
+  .maison_commerce_maison_content_blocks__visual-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  /* Features */
+  .maison_commerce_maison_content_blocks__features {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  .maison_commerce_maison_content_blocks__feature {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    pointer-events: auto;
+  }
+
+  .maison_commerce_maison_content_blocks__feature-badge {
+    background-color: white;
+    border-radius: {{ section.settings.feature_border_radius }}px;
+    padding: {{ section.settings.feature_padding_vertical }}px {{ section.settings.feature_padding_horizontal }}px;
+    display: flex;
+    align-items: center;
+    gap: {{ section.settings.feature_gap }}px;
+    box-shadow: {{ section.settings.feature_shadow }};
+  }
+
+  .maison_commerce_maison_content_blocks__feature-icon {
+    width: {{ section.settings.feature_icon_size }}px;
+    height: {{ section.settings.feature_icon_size }}px;
+    flex-shrink: 0;
+  }
+
+  .maison_commerce_maison_content_blocks__feature-text {
+    font-family: 'Gotham', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    font-size: {{ section.settings.feature_font_size }}px;
+    font-weight: 500;
+    line-height: 1.5;
+    color: {{ section.settings.feature_text_color }};
+    white-space: nowrap;
+  }
+
+  /* Content Block */
+  .maison_commerce_maison_content_blocks__content-block {
+    flex: {{ section.settings.content_width_desktop }}%;
+    min-width: 0;
+    background-color: {{ section.settings.content_bg_color }};
+    border: 1px solid {{ section.settings.content_border_color }};
+    border-radius: {{ section.settings.content_border_radius_desktop }}px;
+    padding: {{ section.settings.content_padding_desktop }}px;
+    display: flex;
+    flex-direction: column;
+    gap: {{ section.settings.content_inner_gap }}px;
+  }
+
+  @media (max-width: 768px) {
+    .maison_commerce_maison_content_blocks__content-block {
+      flex: 1;
+      width: 100%;
+      order: {{ section.settings.content_order_mobile }};
+      border-radius: {{ section.settings.content_border_radius_mobile }}px;
+      padding: {{ section.settings.content_padding_mobile }}px;
+    }
+  }
+
+  /* Title */
+  .maison_commerce_maison_content_blocks__title {
+    font-family: 'Vanilla Ravioli', serif;
+    font-size: {{ section.settings.title_font_size_desktop }}px;
+    font-weight: 400;
+    line-height: {{ section.settings.title_line_height_desktop }};
+    color: {{ section.settings.title_color }};
+    margin: 0;
+    text-transform: capitalize;
+  }
+
+  @media (max-width: 768px) {
+    .maison_commerce_maison_content_blocks__title {
+      font-size: {{ section.settings.title_font_size_mobile }}px;
+      line-height: {{ section.settings.title_line_height_mobile }};
+    }
+  }
+
+  /* Text */
+  .maison_commerce_maison_content_blocks__text {
+    font-family: 'Gotham', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    font-size: {{ section.settings.text_font_size_desktop }}px;
+    font-weight: 400;
+    line-height: 1.5;
+    color: {{ section.settings.text_color }};
+  }
+
+  @media (max-width: 768px) {
+    .maison_commerce_maison_content_blocks__text {
+      font-size: {{ section.settings.text_font_size_mobile }}px;
+    }
+  }
+
+  .maison_commerce_maison_content_blocks__text p {
+    margin: 0 0 {{ section.settings.text_paragraph_gap }}px 0;
+  }
+
+  .maison_commerce_maison_content_blocks__text p:last-child {
+    margin-bottom: 0;
+  }
+
+  .maison_commerce_maison_content_blocks__text strong {
+    font-weight: 700;
+  }
+
+  /* Button */
+  .maison_commerce_maison_content_blocks__button {
+    background-color: {{ section.settings.button_bg_color }};
+    color: {{ section.settings.button_text_color }};
+    border-radius: {{ section.settings.button_border_radius }}px;
+    padding: {{ section.settings.button_padding_vertical }}px {{ section.settings.button_padding_horizontal }}px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: {{ section.settings.button_gap }}px;
+    text-decoration: none;
+    transition: opacity 0.3s ease;
+    height: {{ section.settings.button_height_desktop }}px;
+    width: fit-content;
+    box-sizing: border-box;
+  }
+
+  @media (max-width: 768px) {
+    .maison_commerce_maison_content_blocks__button {
+      height: {{ section.settings.button_height_mobile }}px;
+      width: 100%;
+    }
+  }
+
+  .maison_commerce_maison_content_blocks__button:hover {
+    opacity: 0.9;
+  }
+
+  .maison_commerce_maison_content_blocks__button span {
+    font-family: 'Gotham', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    font-size: {{ section.settings.button_font_size_desktop }}px;
+    font-weight: 500;
+    line-height: 1.5;
+    text-transform: capitalize;
+  }
+
+  @media (max-width: 768px) {
+    .maison_commerce_maison_content_blocks__button span {
+      font-size: {{ section.settings.button_font_size_mobile }}px;
+    }
+  }
+
+  .maison_commerce_maison_content_blocks__button-arrow {
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+  }
+
+  /* Quote */
+  .maison_commerce_maison_content_blocks__quote {
+    background-color: {{ section.settings.quote_bg_color }};
+    border-radius: {{ section.settings.quote_border_radius }}px;
+    padding: {{ section.settings.quote_padding }}px;
+    display: flex;
+    flex-direction: column;
+    gap: {{ section.settings.quote_gap }}px;
+    margin-top: auto;
+  }
+
+  .maison_commerce_maison_content_blocks__quote-text {
+    font-family: 'Gotham', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    font-size: {{ section.settings.quote_text_font_size }}px;
+    font-weight: 400;
+    line-height: 1.5;
+    color: {{ section.settings.quote_text_color }};
+    margin: 0;
+  }
+
+  .maison_commerce_maison_content_blocks__quote-author {
+    background-color: white;
+    border-radius: {{ section.settings.quote_author_border_radius }}px;
+    padding: {{ section.settings.quote_author_padding_vertical }}px {{ section.settings.quote_author_padding_horizontal }}px;
+    display: inline-block;
+    width: fit-content;
+    font-family: 'Gotham', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    font-size: {{ section.settings.quote_author_font_size }}px;
+    font-weight: 500;
+    line-height: 1.5;
+    color: {{ section.settings.quote_author_color }};
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Maison Content Blocks",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section Settings"
+    },
+    {
+      "type": "color",
+      "id": "bg_gradient_start",
+      "label": "Background Gradient Start Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "bg_gradient_end",
+      "label": "Background Gradient End Color",
+      "default": "#F8F7FB"
+    },
+    {
+      "type": "range",
+      "id": "padding_top_desktop",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Top (Desktop)",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_desktop",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Bottom (Desktop)",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "padding_left_desktop",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Left (Desktop)",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_right_desktop",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Right (Desktop)",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Top (Mobile)",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Bottom (Mobile)",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "padding_left_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Left (Mobile)",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "padding_right_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Right (Mobile)",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "content_gap_desktop",
+      "min": 20,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "label": "Content Gap (Desktop)",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "content_gap_mobile",
+      "min": 12,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Content Gap (Mobile)",
+      "default": 18
+    },
+    {
+      "type": "select",
+      "id": "content_align_desktop",
+      "label": "Content Alignment (Desktop)",
+      "options": [
+        {
+          "value": "flex-start",
+          "label": "Top"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "flex-end",
+          "label": "Bottom"
+        },
+        {
+          "value": "stretch",
+          "label": "Stretch"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "header",
+      "content": "Image Block Settings"
+    },
+    {
+      "type": "range",
+      "id": "image_width_desktop",
+      "min": 30,
+      "max": 70,
+      "step": 5,
+      "unit": "%",
+      "label": "Image Width (Desktop)",
+      "default": 50
+    },
+    {
+      "type": "range",
+      "id": "image_border_radius_desktop",
+      "min": 0,
+      "max": 50,
+      "step": 2,
+      "unit": "px",
+      "label": "Image Border Radius (Desktop)",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "image_border_radius_mobile",
+      "min": 0,
+      "max": 30,
+      "step": 2,
+      "unit": "px",
+      "label": "Image Border Radius (Mobile)",
+      "default": 18
+    },
+    {
+      "type": "text",
+      "id": "image_aspect_ratio",
+      "label": "Image Aspect Ratio",
+      "default": "1 / 1",
+      "info": "Format: width / height (e.g., 1 / 1, 16 / 9)"
+    },
+    {
+      "type": "range",
+      "id": "image_order_mobile",
+      "min": 1,
+      "max": 10,
+      "step": 1,
+      "label": "Image Order (Mobile)",
+      "default": 1,
+      "info": "Lower numbers appear first"
+    },
+    {
+      "type": "header",
+      "content": "Visual Block Settings"
+    },
+    {
+      "type": "range",
+      "id": "visual_width_desktop",
+      "min": 30,
+      "max": 70,
+      "step": 5,
+      "unit": "%",
+      "label": "Visual Width (Desktop)",
+      "default": 50
+    },
+    {
+      "type": "color",
+      "id": "visual_bg_color",
+      "label": "Visual Background Color",
+      "default": "#EBEBF6"
+    },
+    {
+      "type": "range",
+      "id": "visual_min_height_desktop",
+      "min": 500,
+      "max": 700,
+      "step": 2,
+      "unit": "px",
+      "label": "Visual Min Height (Desktop)",
+      "default": 594
+    },
+    {
+      "type": "range",
+      "id": "visual_min_height_mobile",
+      "min": 300,
+      "max": 600,
+      "step": 20,
+      "unit": "px",
+      "label": "Visual Min Height (Mobile)",
+      "default": 400
+    },
+    {
+      "type": "range",
+      "id": "visual_border_radius_desktop",
+      "min": 0,
+      "max": 50,
+      "step": 2,
+      "unit": "px",
+      "label": "Visual Border Radius (Desktop)",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "visual_border_radius_mobile",
+      "min": 0,
+      "max": 30,
+      "step": 2,
+      "unit": "px",
+      "label": "Visual Border Radius (Mobile)",
+      "default": 18
+    },
+    {
+      "type": "range",
+      "id": "visual_order_mobile",
+      "min": 1,
+      "max": 10,
+      "step": 1,
+      "label": "Visual Order (Mobile)",
+      "default": 1,
+      "info": "Lower numbers appear first"
+    },
+    {
+      "type": "header",
+      "content": "Feature Badge Settings"
+    },
+    {
+      "type": "range",
+      "id": "feature_border_radius",
+      "min": 20,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Feature Badge Border Radius",
+      "default": 93
+    },
+    {
+      "type": "range",
+      "id": "feature_padding_vertical",
+      "min": 8,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Feature Padding Vertical",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "feature_padding_horizontal",
+      "min": 8,
+      "max": 30,
+      "step": 1,
+      "unit": "px",
+      "label": "Feature Padding Horizontal",
+      "default": 19
+    },
+    {
+      "type": "range",
+      "id": "feature_gap",
+      "min": 2,
+      "max": 8,
+      "step": 1,
+      "unit": "px",
+      "label": "Feature Gap (Icon to Text)",
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "feature_icon_size",
+      "min": 16,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Feature Icon Size",
+      "default": 21
+    },
+    {
+      "type": "range",
+      "id": "feature_font_size",
+      "min": 12,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "label": "Feature Font Size",
+      "default": 15
+    },
+    {
+      "type": "color",
+      "id": "feature_text_color",
+      "label": "Feature Text Color",
+      "default": "#1A365D"
+    },
+    {
+      "type": "text",
+      "id": "feature_shadow",
+      "label": "Feature Shadow",
+      "default": "0px 2px 8px rgba(0,0,0,0.1)",
+      "info": "CSS box-shadow value"
+    },
+    {
+      "type": "header",
+      "content": "Content Block Settings"
+    },
+    {
+      "type": "range",
+      "id": "content_width_desktop",
+      "min": 30,
+      "max": 70,
+      "step": 5,
+      "unit": "%",
+      "label": "Content Width (Desktop)",
+      "default": 50
+    },
+    {
+      "type": "color",
+      "id": "content_bg_color",
+      "label": "Content Background Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "content_border_color",
+      "label": "Content Border Color",
+      "default": "#F1F1F9"
+    },
+    {
+      "type": "range",
+      "id": "content_border_radius_desktop",
+      "min": 0,
+      "max": 50,
+      "step": 2,
+      "unit": "px",
+      "label": "Content Border Radius (Desktop)",
+      "default": 18
+    },
+    {
+      "type": "range",
+      "id": "content_border_radius_mobile",
+      "min": 0,
+      "max": 30,
+      "step": 2,
+      "unit": "px",
+      "label": "Content Border Radius (Mobile)",
+      "default": 18
+    },
+    {
+      "type": "range",
+      "id": "content_padding_desktop",
+      "min": 20,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "label": "Content Padding (Desktop)",
+      "default": 44
+    },
+    {
+      "type": "range",
+      "id": "content_padding_mobile",
+      "min": 12,
+      "max": 30,
+      "step": 2,
+      "unit": "px",
+      "label": "Content Padding (Mobile)",
+      "default": 18
+    },
+    {
+      "type": "range",
+      "id": "content_inner_gap",
+      "min": 12,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Content Inner Gap",
+      "default": 18
+    },
+    {
+      "type": "range",
+      "id": "content_order_mobile",
+      "min": 1,
+      "max": 10,
+      "step": 1,
+      "label": "Content Order (Mobile)",
+      "default": 2,
+      "info": "Lower numbers appear first"
+    },
+    {
+      "type": "header",
+      "content": "Title Settings"
+    },
+    {
+      "type": "range",
+      "id": "title_font_size_desktop",
+      "min": 20,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "label": "Title Font Size (Desktop)",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "title_font_size_mobile",
+      "min": 18,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Title Font Size (Mobile)",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "title_line_height_desktop",
+      "min": 1.0,
+      "max": 2.0,
+      "step": 0.1,
+      "label": "Title Line Height (Desktop)",
+      "default": 1.3
+    },
+    {
+      "type": "range",
+      "id": "title_line_height_mobile",
+      "min": 1.0,
+      "max": 2.0,
+      "step": 0.1,
+      "label": "Title Line Height (Mobile)",
+      "default": 1.4
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Title Color",
+      "default": "#15130E"
+    },
+    {
+      "type": "header",
+      "content": "Text Settings"
+    },
+    {
+      "type": "range",
+      "id": "text_font_size_desktop",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Text Font Size (Desktop)",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "text_font_size_mobile",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Text Font Size (Mobile)",
+      "default": 14
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "rgba(21,19,14,0.75)"
+    },
+    {
+      "type": "range",
+      "id": "text_paragraph_gap",
+      "min": 0,
+      "max": 20,
+      "step": 2,
+      "unit": "px",
+      "label": "Gap Between Paragraphs",
+      "default": 8
+    },
+    {
+      "type": "header",
+      "content": "Button Settings"
+    },
+    {
+      "type": "color",
+      "id": "button_bg_color",
+      "label": "Button Background Color",
+      "default": "#FBF7BD"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button Text Color",
+      "default": "#1A365D"
+    },
+    {
+      "type": "range",
+      "id": "button_border_radius",
+      "min": 0,
+      "max": 30,
+      "step": 2,
+      "unit": "px",
+      "label": "Button Border Radius",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "button_padding_vertical",
+      "min": 8,
+      "max": 24,
+      "step": 2,
+      "unit": "px",
+      "label": "Button Padding Vertical",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "button_padding_horizontal",
+      "min": 16,
+      "max": 48,
+      "step": 4,
+      "unit": "px",
+      "label": "Button Padding Horizontal",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "button_gap",
+      "min": 8,
+      "max": 20,
+      "step": 2,
+      "unit": "px",
+      "label": "Gap Between Text and Arrow",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "button_height_desktop",
+      "min": 40,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "label": "Button Height (Desktop)",
+      "default": 56
+    },
+    {
+      "type": "range",
+      "id": "button_height_mobile",
+      "min": 36,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "label": "Button Height (Mobile)",
+      "default": 44
+    },
+    {
+      "type": "range",
+      "id": "button_font_size_desktop",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Button Font Size (Desktop)",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "button_font_size_mobile",
+      "min": 12,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "label": "Button Font Size (Mobile)",
+      "default": 14
+    },
+    {
+      "type": "header",
+      "content": "Quote Settings"
+    },
+    {
+      "type": "color",
+      "id": "quote_bg_color",
+      "label": "Quote Background Color",
+      "default": "#FFFEE9"
+    },
+    {
+      "type": "range",
+      "id": "quote_border_radius",
+      "min": 0,
+      "max": 30,
+      "step": 2,
+      "unit": "px",
+      "label": "Quote Border Radius",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "quote_padding",
+      "min": 12,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "label": "Quote Padding",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "quote_gap",
+      "min": 8,
+      "max": 20,
+      "step": 2,
+      "unit": "px",
+      "label": "Gap Between Quote Text and Author",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "quote_text_font_size",
+      "min": 12,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "label": "Quote Text Font Size",
+      "default": 14
+    },
+    {
+      "type": "color",
+      "id": "quote_text_color",
+      "label": "Quote Text Color",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "quote_author_border_radius",
+      "min": 20,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "label": "Quote Author Badge Border Radius",
+      "default": 56
+    },
+    {
+      "type": "range",
+      "id": "quote_author_padding_vertical",
+      "min": 2,
+      "max": 8,
+      "step": 1,
+      "unit": "px",
+      "label": "Quote Author Padding Vertical",
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "quote_author_padding_horizontal",
+      "min": 8,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Quote Author Padding Horizontal",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "quote_author_font_size",
+      "min": 10,
+      "max": 16,
+      "step": 1,
+      "unit": "px",
+      "label": "Quote Author Font Size",
+      "default": 12
+    },
+    {
+      "type": "color",
+      "id": "quote_author_color",
+      "label": "Quote Author Color",
+      "default": "#2C2926"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "title",
+      "name": "Title",
+      "settings": [
+        {
+          "type": "textarea",
+          "id": "title_text",
+          "label": "Title Text",
+          "default": "The Problem Isn't Your Hair. It's Your Products."
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "name": "Text",
+      "settings": [
+        {
+          "type": "richtext",
+          "id": "text_content",
+          "label": "Text Content",
+          "default": "<p>for no one. They don't know if you're dealing with postpartum shedding, hormonal thinning, or scalp sensitivity. They just guess.</p><p><strong>Afsennah is different.</strong> We start with you — your hair type, your scalp condition, your lifestyle, your goals. Then our founder, a Certified Advanced Trichologist, personally selects the exact blend of natural ingredients your hair needs.</p><p>No guessing. No wasted bottles. Just results.</p>"
+        }
+      ]
+    },
+    {
+      "type": "button",
+      "name": "Button",
+      "settings": [
+        {
+          "type": "text",
+          "id": "button_text",
+          "label": "Button Text",
+          "default": "Start Your Free Consultation"
+        },
+        {
+          "type": "url",
+          "id": "button_url",
+          "label": "Button URL"
+        }
+      ]
+    },
+    {
+      "type": "quote",
+      "name": "Quote (Human Words)",
+      "settings": [
+        {
+          "type": "textarea",
+          "id": "quote_text",
+          "label": "Quote Text",
+          "default": "\"I created Afsennah not just as a product, but as the solution I needed. Your hair journey is personal — and your treatment should be too.\""
+        },
+        {
+          "type": "text",
+          "id": "quote_author",
+          "label": "Quote Author",
+          "default": "— Afsennah, Founder & Certified Trichologist"
+        }
+      ]
+    },
+    {
+      "type": "image",
+      "name": "Image",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "image_alt",
+          "label": "Image Alt Text"
+        }
+      ]
+    },
+    {
+      "type": "visual",
+      "name": "Visual Block",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "visual_image",
+          "label": "Visual Image",
+          "info": "Background image for visual block (e.g., oil droplets illustration)"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_features",
+          "label": "Show Feature Badges",
+          "default": true,
+          "info": "Enable to show feature badges on this visual block"
+        }
+      ]
+    },
+    {
+      "type": "feature",
+      "name": "Feature Badge",
+      "settings": [
+        {
+          "type": "text",
+          "id": "visual_block_id",
+          "label": "Visual Block ID",
+          "default": "visual-1",
+          "info": "Enter the block ID of the Visual Block this feature belongs to (found in block settings)"
+        },
+        {
+          "type": "text",
+          "id": "feature_text",
+          "label": "Feature Text",
+          "default": "Custom scalp formulas"
+        },
+        {
+          "type": "range",
+          "id": "position_top",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "%",
+          "label": "Position Top",
+          "default": 20,
+          "info": "Vertical position from top"
+        },
+        {
+          "type": "range",
+          "id": "position_left",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "%",
+          "label": "Position Left",
+          "default": 20,
+          "info": "Horizontal position from left"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Maison Content Blocks",
+      "blocks": [
+        {
+          "type": "visual",
+          "settings": {
+            "show_features": true
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "visual_block_id": "",
+            "feature_text": "Custom scalp formulas",
+            "position_top": 20,
+            "position_left": 10
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "visual_block_id": "",
+            "feature_text": "Boosts hair growing",
+            "position_top": 45,
+            "position_left": 80
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "visual_block_id": "",
+            "feature_text": "Improves scalp health",
+            "position_top": 70,
+            "position_left": 60
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "visual_block_id": "",
+            "feature_text": "100% Natural",
+            "position_top": 80,
+            "position_left": 10
+          }
+        },
+        {
+          "type": "title",
+          "settings": {
+            "title_text": "The Problem Isn't Your Hair. It's Your Products."
+          }
+        },
+        {
+          "type": "text",
+          "settings": {}
+        },
+        {
+          "type": "button",
+          "settings": {
+            "button_text": "Start Your Free Consultation"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
