@@ -1,0 +1,397 @@
+<section class="maison_commerce_maison_scroll_img">
+  <div class="maison_commerce_maison_scroll_img__container">
+    <div class="maison_commerce_maison_scroll_img__marquee" role="marquee">
+      <div class="maison_commerce_maison_scroll_img__track">
+        {%- comment -%} First set of logos {%- endcomment -%}
+        {% for block in section.blocks %}
+          {% case block.type %}
+            {% when 'logo' %}
+              <div class="maison_commerce_maison_scroll_img__logo-item" {{ block.shopify_attributes }}>
+                {% if block.settings.logo_link != blank %}
+                  <a href="{{ block.settings.logo_link }}" class="maison_commerce_maison_scroll_img__logo-link">
+                {% endif %}
+                {% if block.settings.logo_image != blank %}
+                  <img 
+                    src="{{ block.settings.logo_image | image_url: width: 360 }}" 
+                    alt="{{ block.settings.logo_image.alt | default: block.settings.logo_alt | escape }}"
+                    class="maison_commerce_maison_scroll_img__logo-image"
+                    width="{{ block.settings.logo_image.width }}"
+                    height="{{ block.settings.logo_image.height }}"
+                    loading="lazy"
+                  />
+                {% else %}
+                  <div class="maison_commerce_maison_scroll_img__logo-placeholder">
+                    {{ 'logo' | placeholder_svg_tag: 'placeholder-svg' }}
+                  </div>
+                {% endif %}
+                {% if block.settings.logo_link != blank %}
+                  </a>
+                {% endif %}
+              </div>
+          {% endcase %}
+        {% endfor %}
+        {%- comment -%} Duplicate set for seamless loop {%- endcomment -%}
+        {% for block in section.blocks %}
+          {% case block.type %}
+            {% when 'logo' %}
+              <div class="maison_commerce_maison_scroll_img__logo-item" aria-hidden="true">
+                {% if block.settings.logo_link != blank %}
+                  <a href="{{ block.settings.logo_link }}" class="maison_commerce_maison_scroll_img__logo-link">
+                {% endif %}
+                {% if block.settings.logo_image != blank %}
+                  <img 
+                    src="{{ block.settings.logo_image | image_url: width: 360 }}" 
+                    alt="{{ block.settings.logo_image.alt | default: block.settings.logo_alt | escape }}"
+                    class="maison_commerce_maison_scroll_img__logo-image"
+                    width="{{ block.settings.logo_image.width }}"
+                    height="{{ block.settings.logo_image.height }}"
+                    loading="lazy"
+                  />
+                {% else %}
+                  <div class="maison_commerce_maison_scroll_img__logo-placeholder">
+                    {{ 'logo' | placeholder_svg_tag: 'placeholder-svg' }}
+                  </div>
+                {% endif %}
+                {% if block.settings.logo_link != blank %}
+                  </a>
+                {% endif %}
+              </div>
+          {% endcase %}
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  #shopify-section-{{ section.id }} {
+    padding: 0;
+  }
+
+  /* Section Container */
+  .maison_commerce_maison_scroll_img {
+    background-color: {{ section.settings.section_bg_color }};
+    padding-top: {{ section.settings.padding_top_desktop }}px;
+    padding-bottom: {{ section.settings.padding_bottom_desktop }}px;
+    padding-left: {{ section.settings.padding_left_desktop }}px;
+    padding-right: {{ section.settings.padding_right_desktop }}px;
+    overflow: hidden;
+  }
+
+  @media (max-width: 768px) {
+    .maison_commerce_maison_scroll_img {
+      padding-top: {{ section.settings.padding_top_mobile }}px;
+      padding-bottom: {{ section.settings.padding_bottom_mobile }}px;
+      padding-left: {{ section.settings.padding_left_mobile }}px;
+      padding-right: {{ section.settings.padding_right_mobile }}px;
+    }
+  }
+
+  /* Container */
+  .maison_commerce_maison_scroll_img__container {
+    max-width: 100%;
+    margin: 0 auto;
+  }
+
+  /* Marquee Wrapper */
+  .maison_commerce_maison_scroll_img__marquee {
+    overflow: hidden;
+    position: relative;
+  }
+
+  /* Track - Contains all logos */
+  .maison_commerce_maison_scroll_img__track {
+    display: flex;
+    align-items: center;
+    gap: {{ section.settings.logo_gap_desktop }}px;
+    animation: maison_scroll_img_scroll_{{ section.id }} {{ section.settings.scroll_duration }}s linear infinite;
+    will-change: transform;
+  }
+
+  @media (max-width: 768px) {
+    .maison_commerce_maison_scroll_img__track {
+      gap: {{ section.settings.logo_gap_mobile }}px;
+    }
+  }
+
+  /* Logo Item */
+  .maison_commerce_maison_scroll_img__logo-item {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .maison_commerce_maison_scroll_img__logo-link {
+    display: block;
+    text-decoration: none;
+    transition: opacity 0.3s ease;
+  }
+
+  .maison_commerce_maison_scroll_img__logo-link:hover {
+    opacity: 0.7;
+  }
+
+  /* Logo Image */
+  .maison_commerce_maison_scroll_img__logo-image {
+    height: {{ section.settings.logo_height_desktop }}px;
+    width: auto;
+    max-width: none;
+    object-fit: contain;
+    display: block;
+  }
+
+  @media (max-width: 768px) {
+    .maison_commerce_maison_scroll_img__logo-image {
+      height: {{ section.settings.logo_height_mobile }}px;
+    }
+  }
+
+  /* Placeholder */
+  .maison_commerce_maison_scroll_img__logo-placeholder {
+    height: {{ section.settings.logo_height_desktop }}px;
+    width: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  @media (max-width: 768px) {
+    .maison_commerce_maison_scroll_img__logo-placeholder {
+      height: {{ section.settings.logo_height_mobile }}px;
+    }
+  }
+
+  .maison_commerce_maison_scroll_img__logo-placeholder svg {
+    height: 100%;
+    width: auto;
+  }
+
+  /* Animation */
+  @keyframes maison_scroll_img_scroll_{{ section.id }} {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-50%);
+    }
+  }
+
+  /* Pause animation on hover if enabled */
+  {% if section.settings.pause_on_hover %}
+    .maison_commerce_maison_scroll_img__marquee:hover .maison_commerce_maison_scroll_img__track {
+      animation-play-state: paused;
+    }
+  {% endif %}
+</style>
+
+{% schema %}
+{
+  "name": "Maison Scroll Images",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section Settings"
+    },
+    {
+      "type": "color",
+      "id": "section_bg_color",
+      "label": "Section Background Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "range",
+      "id": "padding_top_desktop",
+      "min": 0,
+      "max": 200,
+      "step": 5,
+      "unit": "px",
+      "label": "Padding Top (Desktop)",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_desktop",
+      "min": 0,
+      "max": 200,
+      "step": 5,
+      "unit": "px",
+      "label": "Padding Bottom (Desktop)",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_left_desktop",
+      "min": 0,
+      "max": 200,
+      "step": 5,
+      "unit": "px",
+      "label": "Padding Left (Desktop)",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_right_desktop",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Right (Desktop)",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Top (Mobile)",
+      "default": 22
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Bottom (Mobile)",
+      "default": 22
+    },
+    {
+      "type": "range",
+      "id": "padding_left_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Padding Left (Mobile)",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "padding_right_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Padding Right (Mobile)",
+      "default": 20
+    },
+    {
+      "type": "header",
+      "content": "Scroll Settings"
+    },
+    {
+      "type": "range",
+      "id": "scroll_duration",
+      "min": 10,
+      "max": 120,
+      "step": 5,
+      "unit": "s",
+      "label": "Scroll Duration (seconds)",
+      "default": 30,
+      "info": "Lower values = faster scroll"
+    },
+    {
+      "type": "checkbox",
+      "id": "pause_on_hover",
+      "label": "Pause on Hover",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Logo Settings"
+    },
+    {
+      "type": "range",
+      "id": "logo_height_desktop",
+      "min": 20,
+      "max": 120,
+      "step": 5,
+      "unit": "px",
+      "label": "Logo Height (Desktop)",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "logo_height_mobile",
+      "min": 20,
+      "max": 80,
+      "step": 5,
+      "unit": "px",
+      "label": "Logo Height (Mobile)",
+      "default": 45
+    },
+    {
+      "type": "range",
+      "id": "logo_gap_desktop",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Gap Between Logos (Desktop)",
+      "default": 50
+    },
+    {
+      "type": "range",
+      "id": "logo_gap_mobile",
+      "min": 0,
+      "max": 60,
+      "step": 1,
+      "unit": "px",
+      "label": "Gap Between Logos (Mobile)",
+      "default": 38
+    }
+  ],
+  "blocks": [
+    {
+      "type": "logo",
+      "name": "Logo",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "logo_image",
+          "label": "Logo Image"
+        },
+        {
+          "type": "text",
+          "id": "logo_alt",
+          "label": "Logo Alt Text",
+          "info": "Optional: Override default alt text from image"
+        },
+        {
+          "type": "url",
+          "id": "logo_link",
+          "label": "Logo Link URL",
+          "info": "Optional: Make logo clickable"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Maison Scroll Images",
+      "blocks": [
+        {
+          "type": "logo"
+        },
+        {
+          "type": "logo"
+        },
+        {
+          "type": "logo"
+        },
+        {
+          "type": "logo"
+        },
+        {
+          "type": "logo"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
+
