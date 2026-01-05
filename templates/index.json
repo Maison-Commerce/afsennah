@@ -1015,7 +1015,7 @@
       ],
       "name": "Maison Instagram Scroll",
       "settings": {
-        "bg_color": "#FFFEF3",
+        "bg_color": "#fffef3",
         "padding_top_desktop": 60,
         "padding_bottom_desktop": 60,
         "padding_left_desktop": 60,
@@ -1031,7 +1031,7 @@
         "heading_font_size_mobile": 24,
         "heading_line_height_desktop": 1.3,
         "heading_line_height_mobile": 1.4,
-        "heading_color": "#201C19",
+        "heading_color": "#201c19",
         "image_width_desktop": 242,
         "image_width_mobile": 188,
         "image_aspect_ratio": "1 / 1.44",
@@ -1039,10 +1039,115 @@
         "image_gap_mobile": 14,
         "image_border_radius_desktop": 24,
         "image_border_radius_mobile": 24,
-        "image_bg_color": "transparent",
+        "image_bg_color": "rgba(0,0,0,0)",
         "scroll_duration_desktop": 30,
         "scroll_duration_mobile": 30,
         "pause_on_hover": "paused"
+      }
+    },
+    "maison_cta_hero_AMEcbz": {
+      "type": "maison-cta-hero",
+      "blocks": {
+        "badge_gWqDqU": {
+          "type": "badge",
+          "settings": {
+            "badge_text": "Clean Ingredients"
+          }
+        },
+        "badge_nmr3KV": {
+          "type": "badge",
+          "settings": {
+            "badge_text": "Trichologist-Developed"
+          }
+        },
+        "badge_V8C8jJ": {
+          "type": "badge",
+          "settings": {
+            "badge_text": "Cruelty-Free"
+          }
+        }
+      },
+      "block_order": [
+        "badge_gWqDqU",
+        "badge_nmr3KV",
+        "badge_V8C8jJ"
+      ],
+      "name": "Maison CTA Hero",
+      "settings": {
+        "bg_gradient_start": "#FFFEF3",
+        "bg_gradient_end": "#F1F1F9",
+        "max_width": 1280,
+        "padding_top_desktop": 80,
+        "padding_bottom_desktop": 80,
+        "padding_left_desktop": 40,
+        "padding_right_desktop": 40,
+        "padding_top_mobile": 32,
+        "padding_bottom_mobile": 32,
+        "padding_left_mobile": 20,
+        "padding_right_mobile": 20,
+        "content_gap_desktop": 40,
+        "content_gap_mobile": 12,
+        "show_rating": true,
+        "rating_value": 5,
+        "rating_text": "<p>Rated <strong>4.8/5</strong> based on <strong>8,450+</strong> reviews.</p>",
+        "star_size": 16,
+        "star_gap": 0,
+        "rating_gap": 8,
+        "rating_text_font_size_desktop": 14,
+        "rating_text_font_size_mobile": 12,
+        "rating_text_color": "#2F3936",
+        "heading": "Ready to Finally Love Your Hair Again?",
+        "heading_font_size_desktop": 48,
+        "heading_font_size_mobile": 24,
+        "heading_line_height_desktop": 1.2,
+        "heading_line_height_mobile": 1.4,
+        "heading_color": "#15130E",
+        "heading_max_width": 480,
+        "body_text": "<p>Take our <strong>free 2-minute quiz</strong> and get your personalized formula — made just for you, by a real expert.</p>",
+        "body_text_font_size_desktop": 18,
+        "body_text_font_size_mobile": 14,
+        "body_text_color": "rgba(21,19,14,0.75)",
+        "body_text_max_width": 506,
+        "badge_gap": 18,
+        "badge_bg_color": "#FDFDFE",
+        "badge_border_radius": 8,
+        "badge_padding_vertical": 6,
+        "badge_padding_horizontal": 15,
+        "badge_icon_size": 18,
+        "badge_icon_text_gap": 4,
+        "badge_font_size": 12,
+        "badge_text_color": "#15130E",
+        "button_text": "Get Your Custom Formula",
+        "button_url": "",
+        "button_bg_color": "#FBF7BD",
+        "button_text_color": "#1A365D",
+        "button_border_radius": 12,
+        "button_padding_vertical": 16,
+        "button_padding_horizontal": 32,
+        "button_gap": 12,
+        "button_height_desktop": 56,
+        "button_height_mobile": 44,
+        "button_font_size_desktop": 16,
+        "button_font_size_mobile": 14,
+        "cta_gap": 12,
+        "social_proof_text": "<p>Join <strong>150,000+ women</strong> who stopped guessing and started growing.</p>",
+        "social_proof_font_size_desktop": 12,
+        "social_proof_font_size_mobile": 12,
+        "social_proof_color": "rgba(21,19,14,0.75)",
+        "social_proof_max_width": 500,
+        "show_decorative_drops": true,
+        "drop_left_top": 10,
+        "drop_left_left": -5,
+        "drop_left_rotation": 320,
+        "drop_right_top": 10,
+        "drop_right_right": -5,
+        "drop_right_rotation": 42,
+        "drop_opacity": 0.8,
+        "drop_blur": 2,
+        "drop_left_width": 400,
+        "drop_left_height": 403,
+        "drop_right_width": 319,
+        "drop_right_height": 326
       }
     }
   },
@@ -1056,6 +1161,7 @@
     "maison_content_blocks_rcgVU9",
     "maison_badges_bar_HcM3QC",
     "maison_products_grid_YtGCRk",
-    "maison_instagram_scroll_REyGMj"
+    "maison_instagram_scroll_REyGMj",
+    "maison_cta_hero_AMEcbz"
   ]
 }
