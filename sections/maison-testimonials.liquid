@@ -1,0 +1,1617 @@
+<section class="maison_commerce_maison_testimonials">
+  <div class="maison_commerce_maison_testimonials__container">
+    <!-- Header Section -->
+    <div class="maison_commerce_maison_testimonials__header">
+      <div class="maison_commerce_maison_testimonials__header-content">
+        {% if section.settings.heading != blank %}
+          <h2 class="maison_commerce_maison_testimonials__heading">
+            {{ section.settings.heading }}
+          </h2>
+        {% endif %}
+
+        {% if section.settings.show_trustpilot %}
+          <div class="maison_commerce_maison_testimonials__trustpilot">
+            <div class="maison_commerce_maison_testimonials__trustpilot-brand">
+              <svg class="maison_commerce_maison_testimonials__trustpilot-icon" width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M7 0L8.57143 4.85714L14 5.71429L10.2857 9.14286L11.4286 14L7 11.4286L2.57143 14L3.71429 9.14286L0 5.71429L5.42857 4.85714L7 0Z" fill="#00B67A"/>
+              </svg>
+              <span class="maison_commerce_maison_testimonials__trustpilot-text">Trustpilot</span>
+            </div>
+            <div class="maison_commerce_maison_testimonials__stars">
+              {% for i in (1..5) %}
+                <svg class="maison_commerce_maison_testimonials__star" width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M9 0L11.08 7.35L18 8.55L12.5 13.65L13.16 21L9 17.7L4.84 21L5.5 13.65L0 8.55L6.92 7.35L9 0Z" fill="#00B67A"/>
+                </svg>
+              {% endfor %}
+            </div>
+            <p class="maison_commerce_maison_testimonials__rating-text">
+              Rated <strong>{{ section.settings.rating_value }}</strong> based on <strong>{{ section.settings.review_count }}</strong> reviews.
+            </p>
+          </div>
+        {% endif %}
+      </div>
+
+      <!-- Desktop Navigation -->
+      <div class="maison_commerce_maison_testimonials__nav-desktop">
+        <button class="maison_commerce_maison_testimonials__nav-button maison_commerce_maison_testimonials__nav-button--prev" aria-label="Previous testimonials">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M15 18L9 12L15 6" stroke="#70829A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        <button class="maison_commerce_maison_testimonials__nav-button maison_commerce_maison_testimonials__nav-button--next" aria-label="Next testimonials">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M9 18L15 12L9 6" stroke="#1A365D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Swiper Container -->
+    <div class="swiper maison_commerce_maison_testimonials__swiper">
+      <div class="swiper-wrapper">
+        {% for block in section.blocks %}
+          {% case block.type %}
+            {% when 'testimonial' %}
+              <div class="swiper-slide maison_commerce_maison_testimonials__slide">
+                <div class="maison_commerce_maison_testimonials__card" {{ block.shopify_attributes }}>
+                  <!-- Before/After Images -->
+                  <div class="maison_commerce_maison_testimonials__images-wrapper">
+                    {% if block.settings.before_image != blank %}
+                      <div class="maison_commerce_maison_testimonials__image-container maison_commerce_maison_testimonials__image-container--before">
+                        <img 
+                          src="{{ block.settings.before_image | image_url: width: 820 }}" 
+                          alt="Before"
+                          class="maison_commerce_maison_testimonials__image"
+                          width="{{ block.settings.before_image.width }}"
+                          height="{{ block.settings.before_image.height }}"
+                          loading="lazy"
+                        />
+                        <div class="maison_commerce_maison_testimonials__image-label maison_commerce_maison_testimonials__image-label--before">
+                          {{ block.settings.before_label | default: 'Before' }}
+                        </div>
+                      </div>
+                    {% endif %}
+
+                    {% if block.settings.after_image != blank %}
+                      <div class="maison_commerce_maison_testimonials__image-container maison_commerce_maison_testimonials__image-container--after">
+                        <img 
+                          src="{{ block.settings.after_image | image_url: width: 820 }}" 
+                          alt="After"
+                          class="maison_commerce_maison_testimonials__image"
+                          width="{{ block.settings.after_image.width }}"
+                          height="{{ block.settings.after_image.height }}"
+                          loading="lazy"
+                        />
+                        <div class="maison_commerce_maison_testimonials__image-label maison_commerce_maison_testimonials__image-label--after">
+                          {{ block.settings.after_label | default: 'After 1 Months' }}
+                        </div>
+                      </div>
+                    {% endif %}
+                  </div>
+
+                  <!-- Card Content -->
+                  <div class="maison_commerce_maison_testimonials__card-content">
+                    <!-- Star Rating -->
+                    {% if block.settings.show_rating %}
+                      <div class="maison_commerce_maison_testimonials__card-rating">
+                        {% assign rating = block.settings.rating | default: 5 %}
+                        {% for i in (1..5) %}
+                          <svg class="maison_commerce_maison_testimonials__card-star" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M8 0L9.79611 5.52786L15.6085 5.52786L10.9062 8.94427L12.7023 14.4721L8 11.0557L3.29772 14.4721L5.09383 8.94427L0.391548 5.52786L6.20389 5.52786L8 0Z" fill="{{ section.settings.star_color }}"/>
+                          </svg>
+                        {% endfor %}
+                      </div>
+                    {% endif %}
+
+                    <!-- Review Text -->
+                    {% if block.settings.review_text != blank %}
+                      <p class="maison_commerce_maison_testimonials__review-text">
+                        {{ block.settings.review_text }}
+                      </p>
+                    {% endif %}
+
+                    <!-- Customer Info -->
+                    <div class="maison_commerce_maison_testimonials__customer-info">
+                      {% if block.settings.customer_name != blank %}
+                        <span class="maison_commerce_maison_testimonials__customer-name">{{ block.settings.customer_name }}</span>
+                      {% endif %}
+                      {% if block.settings.show_verified_badge %}
+                        <span class="maison_commerce_maison_testimonials__customer-separator">•</span>
+                        <div class="maison_commerce_maison_testimonials__verified-badge">
+                          <svg class="maison_commerce_maison_testimonials__verified-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M8 0C3.58172 0 0 3.58172 0 8C0 12.4183 3.58172 16 8 16C12.4183 16 16 12.4183 16 8C16 3.58172 12.4183 0 8 0ZM11.7071 6.29289L7.70711 10.2929C7.31658 10.6834 6.68342 10.6834 6.29289 10.2929L4.29289 8.29289C3.90237 7.90237 3.90237 7.2692 4.29289 6.87868C4.68342 6.48815 5.31658 6.48815 5.70711 6.87868L7 8.17157L10.2929 4.87868C10.6834 4.48815 11.3166 4.48815 11.7071 4.87868C12.0976 5.2692 12.0976 5.90237 11.7071 6.29289Z" fill="#1A365D"/>
+                          </svg>
+                          <span>Verified Buyer</span>
+                        </div>
+                      {% endif %}
+                    </div>
+                  </div>
+                </div>
+              </div>
+          {% endcase %}
+        {% endfor %}
+      </div>
+
+      <!-- Mobile Navigation -->
+      <div class="maison_commerce_maison_testimonials__nav-mobile">
+        <button class="maison_commerce_maison_testimonials__nav-button maison_commerce_maison_testimonials__nav-button--prev" aria-label="Previous testimonials">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M15 18L9 12L15 6" stroke="#70829A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        <div class="swiper-pagination maison_commerce_maison_testimonials__pagination"></div>
+        <button class="maison_commerce_maison_testimonials__nav-button maison_commerce_maison_testimonials__nav-button--next" aria-label="Next testimonials">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M9 18L15 12L9 6" stroke="#1A365D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Divider with Progress -->
+    {% if section.settings.show_divider %}
+      <div class="maison_commerce_maison_testimonials__divider">
+        <div class="maison_commerce_maison_testimonials__divider-line"></div>
+        <div class="maison_commerce_maison_testimonials__divider-progress"></div>
+      </div>
+    {% endif %}
+
+    <!-- CTA Button -->
+    {% if section.settings.cta_url != blank %}
+      <a href="{{ section.settings.cta_url }}" class="maison_commerce_maison_testimonials__cta-button">
+        <span>{{ section.settings.cta_text }}</span>
+        <svg class="maison_commerce_maison_testimonials__cta-arrow" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </a>
+    {% endif %}
+  </div>
+</section>
+
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+<style>
+  #shopify-section-{{ section.id }} {
+    padding: 0;
+  }
+
+  /* Section Container */
+  .maison_commerce_maison_testimonials {
+    background: linear-gradient(to bottom, {{ section.settings.bg_gradient_start }}, {{ section.settings.bg_gradient_end }});
+    padding-top: {{ section.settings.padding_top_desktop }}px;
+    padding-bottom: {{ section.settings.padding_bottom_desktop }}px;
+    padding-left: {{ section.settings.padding_left_desktop }}px;
+    padding-right: {{ section.settings.padding_right_desktop }}px;
+  }
+
+  @media (max-width: 768px) {
+    .maison_commerce_maison_testimonials {
+      padding-top: {{ section.settings.padding_top_mobile }}px;
+      padding-bottom: {{ section.settings.padding_bottom_mobile }}px;
+      padding-left: {{ section.settings.padding_left_mobile }}px;
+      padding-right: {{ section.settings.padding_right_mobile }}px;
+    }
+  }
+
+  /* Container */
+  .maison_commerce_maison_testimonials__container {
+    max-width: 100%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: {{ section.settings.content_gap_desktop }}px;
+    align-items: center;
+  }
+
+  @media (max-width: 768px) {
+    .maison_commerce_maison_testimonials__container {
+      gap: {{ section.settings.content_gap_mobile }}px;
+    }
+  }
+
+  /* Header */
+  .maison_commerce_maison_testimonials__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    width: 100%;
+  }
+
+  @media (max-width: 768px) {
+    .maison_commerce_maison_testimonials__header {
+      flex-direction: column;
+      align-items: center;
+      gap: {{ section.settings.header_gap_mobile }}px;
+    }
+  }
+
+  .maison_commerce_maison_testimonials__header-content {
+    display: flex;
+    flex-direction: column;
+    gap: {{ section.settings.heading_rating_gap }}px;
+    max-width: {{ section.settings.heading_max_width }}px;
+  }
+
+  @media (max-width: 768px) {
+    .maison_commerce_maison_testimonials__header-content {
+      align-items: center;
+      text-align: center;
+      max-width: 100%;
+    }
+  }
+
+  /* Heading */
+  .maison_commerce_maison_testimonials__heading {
+    font-family: 'Vanilla Ravioli', serif;
+    font-size: {{ section.settings.heading_font_size_desktop }}px;
+    font-weight: 400;
+    line-height: {{ section.settings.heading_line_height_desktop }};
+    color: {{ section.settings.heading_color }};
+    margin: 0;
+    text-transform: capitalize;
+  }
+
+  @media (max-width: 768px) {
+    .maison_commerce_maison_testimonials__heading {
+      font-size: {{ section.settings.heading_font_size_mobile }}px;
+      line-height: {{ section.settings.heading_line_height_mobile }};
+      text-align: center;
+    }
+  }
+
+  /* Trustpilot */
+  .maison_commerce_maison_testimonials__trustpilot {
+    display: flex;
+    flex-direction: column;
+    gap: {{ section.settings.trustpilot_gap }}px;
+  }
+
+  @media (max-width: 768px) {
+    .maison_commerce_maison_testimonials__trustpilot {
+      align-items: center;
+    }
+  }
+
+  .maison_commerce_maison_testimonials__trustpilot-brand {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .maison_commerce_maison_testimonials__trustpilot-icon {
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
+  }
+
+  .maison_commerce_maison_testimonials__trustpilot-text {
+    font-family: 'Avenir Next', sans-serif;
+    font-size: {{ section.settings.trustpilot_font_size }}px;
+    font-weight: 500;
+    line-height: 1.5;
+    color: {{ section.settings.trustpilot_text_color }};
+  }
+
+  .maison_commerce_maison_testimonials__stars {
+    display: flex;
+    gap: 2px;
+    align-items: center;
+  }
+
+  .maison_commerce_maison_testimonials__star {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+  }
+
+  .maison_commerce_maison_testimonials__rating-text {
+    font-family: 'Avenir Next', sans-serif;
+    font-size: {{ section.settings.rating_font_size }}px;
+    font-weight: 400;
+    line-height: 1.5;
+    color: {{ section.settings.rating_text_color }};
+    margin: 0;
+  }
+
+  .maison_commerce_maison_testimonials__rating-text strong {
+    font-weight: 700;
+  }
+
+  /* Navigation Desktop */
+  .maison_commerce_maison_testimonials__nav-desktop {
+    display: flex;
+    gap: {{ section.settings.nav_gap }}px;
+    align-items: center;
+  }
+
+  @media (max-width: 768px) {
+    .maison_commerce_maison_testimonials__nav-desktop {
+      display: none;
+    }
+  }
+
+  /* Navigation Mobile */
+  .maison_commerce_maison_testimonials__nav-mobile {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    gap: {{ section.settings.nav_gap }}px;
+    margin-top: {{ section.settings.nav_margin_top }}px;
+  }
+
+  @media (max-width: 768px) {
+    .maison_commerce_maison_testimonials__nav-mobile {
+      display: flex;
+    }
+  }
+
+  .maison_commerce_maison_testimonials__nav-button {
+    width: 56px;
+    height: 56px;
+    border: 1px solid {{ section.settings.nav_border_color }};
+    border-radius: 48px;
+    background: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+    padding: 0;
+  }
+
+  .maison_commerce_maison_testimonials__nav-button:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+  }
+
+  @media (max-width: 768px) {
+    .maison_commerce_maison_testimonials__nav-button {
+      width: 56px;
+      height: 56px;
+    }
+  }
+
+  /* Swiper Container */
+  .maison_commerce_maison_testimonials__swiper {
+    width: 100%;
+    overflow: visible;
+  }
+
+  /* Slide */
+  .maison_commerce_maison_testimonials__slide {
+    height: auto;
+  }
+
+  /* Card */
+  .maison_commerce_maison_testimonials__card {
+    background-color: {{ section.settings.card_bg_color }};
+    border-radius: {{ section.settings.card_border_radius_desktop }}px;
+    box-shadow: {{ section.settings.card_shadow }};
+    overflow: hidden;
+    width: {{ section.settings.card_width_desktop }}px;
+    margin: 0 auto;
+  }
+
+  @media (max-width: 768px) {
+    .maison_commerce_maison_testimonials__card {
+      width: {{ section.settings.card_width_mobile }}px;
+      border-radius: {{ section.settings.card_border_radius_mobile }}px;
+    }
+  }
+
+  /* Images Wrapper */
+  .maison_commerce_maison_testimonials__images-wrapper {
+    position: relative;
+    height: {{ section.settings.image_height_desktop }}px;
+    display: flex;
+    overflow: hidden;
+  }
+
+  @media (max-width: 768px) {
+    .maison_commerce_maison_testimonials__images-wrapper {
+      height: {{ section.settings.image_height_mobile }}px;
+    }
+  }
+
+  /* Image Container */
+  .maison_commerce_maison_testimonials__image-container {
+    position: relative;
+    flex: 1;
+    overflow: hidden;
+  }
+
+  .maison_commerce_maison_testimonials__image-container--before {
+    border-radius: {{ section.settings.card_border_radius_desktop }}px 0 0 0;
+  }
+
+  .maison_commerce_maison_testimonials__image-container--after {
+    border-radius: 0 {{ section.settings.card_border_radius_desktop }}px 0 0;
+  }
+
+  @media (max-width: 768px) {
+    .maison_commerce_maison_testimonials__image-container--before {
+      border-radius: {{ section.settings.card_border_radius_mobile }}px 0 0 0;
+    }
+
+    .maison_commerce_maison_testimonials__image-container--after {
+      border-radius: 0 {{ section.settings.card_border_radius_mobile }}px 0 0;
+    }
+  }
+
+  /* Divider Line Between Images */
+  .maison_commerce_maison_testimonials__image-container--before::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 5px;
+    height: 100%;
+    background-color: white;
+    z-index: 1;
+  }
+
+  .maison_commerce_maison_testimonials__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  /* Image Labels */
+  .maison_commerce_maison_testimonials__image-label {
+    position: absolute;
+    bottom: {{ section.settings.label_bottom }}px;
+    padding: 4px 16px;
+    border-radius: 999px;
+    font-family: 'Gotham', sans-serif;
+    font-size: {{ section.settings.label_font_size_desktop }}px;
+    font-weight: 400;
+    line-height: 1.5;
+    white-space: nowrap;
+    z-index: 2;
+  }
+
+  @media (max-width: 768px) {
+    .maison_commerce_maison_testimonials__image-label {
+      font-size: {{ section.settings.label_font_size_mobile }}px;
+      padding: 2.8px 11.2px;
+    }
+  }
+
+  .maison_commerce_maison_testimonials__image-label--before {
+    left: 0;
+    background-color: white;
+    color: {{ section.settings.before_label_color }};
+    border-radius: 0 999px 999px 0;
+  }
+
+  .maison_commerce_maison_testimonials__image-label--after {
+    right: 0;
+    background-color: {{ section.settings.after_label_bg_color }};
+    color: white;
+    border-radius: 999px 0 0 999px;
+    font-weight: 500;
+  }
+
+  /* Card Content */
+  .maison_commerce_maison_testimonials__card-content {
+    background-color: white;
+    padding: {{ section.settings.card_content_padding_desktop }}px;
+    display: flex;
+    flex-direction: column;
+    gap: {{ section.settings.card_content_gap }}px;
+    align-items: center;
+  }
+
+  @media (max-width: 768px) {
+    .maison_commerce_maison_testimonials__card-content {
+      padding: {{ section.settings.card_content_padding_mobile }}px;
+    }
+  }
+
+  /* Card Rating */
+  .maison_commerce_maison_testimonials__card-rating {
+    display: flex;
+    gap: 0;
+    align-items: center;
+  }
+
+  .maison_commerce_maison_testimonials__card-star {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+  }
+
+  @media (max-width: 768px) {
+    .maison_commerce_maison_testimonials__card-star {
+      width: 11px;
+      height: 11px;
+    }
+  }
+
+  /* Review Text */
+  .maison_commerce_maison_testimonials__review-text {
+    font-family: 'Gotham', sans-serif;
+    font-size: {{ section.settings.review_font_size_desktop }}px;
+    font-weight: 400;
+    line-height: 1.5;
+    color: {{ section.settings.review_text_color }};
+    text-align: center;
+    margin: 0;
+  }
+
+  @media (max-width: 768px) {
+    .maison_commerce_maison_testimonials__review-text {
+      font-size: {{ section.settings.review_font_size_mobile }}px;
+    }
+  }
+
+  /* Customer Info */
+  .maison_commerce_maison_testimonials__customer-info {
+    display: flex;
+    align-items: center;
+    gap: {{ section.settings.customer_info_gap }}px;
+    background-color: {{ section.settings.customer_bg_color }};
+    padding: {{ section.settings.customer_padding }}px;
+    border-radius: {{ section.settings.customer_border_radius }}px;
+  }
+
+  .maison_commerce_maison_testimonials__customer-name {
+    font-family: 'Neue Haas Grotesk Display Pro', sans-serif;
+    font-size: {{ section.settings.customer_name_font_size }}px;
+    font-weight: 500;
+    line-height: 1.5;
+    color: {{ section.settings.customer_name_color }};
+  }
+
+  .maison_commerce_maison_testimonials__customer-separator {
+    width: {{ section.settings.customer_separator_size }}px;
+    height: {{ section.settings.customer_separator_size }}px;
+    background-color: {{ section.settings.customer_name_color }};
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .maison_commerce_maison_testimonials__verified-badge {
+    display: flex;
+    align-items: center;
+    gap: {{ section.settings.verified_badge_gap }}px;
+  }
+
+  .maison_commerce_maison_testimonials__verified-icon {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+  }
+
+  @media (max-width: 768px) {
+    .maison_commerce_maison_testimonials__verified-icon {
+      width: 11px;
+      height: 11px;
+    }
+  }
+
+  .maison_commerce_maison_testimonials__verified-badge span {
+    font-family: 'Gotham', sans-serif;
+    font-size: {{ section.settings.verified_text_font_size }}px;
+    font-weight: 500;
+    line-height: 1.5;
+    color: {{ section.settings.customer_name_color }};
+  }
+
+  /* Divider */
+  .maison_commerce_maison_testimonials__divider {
+    position: relative;
+    width: 100%;
+    height: 2px;
+    margin: {{ section.settings.divider_margin }}px 0;
+  }
+
+  .maison_commerce_maison_testimonials__divider-line {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background-color: {{ section.settings.divider_color }};
+    opacity: 0.1;
+    border-radius: 999px;
+    transform: translateY(-50%);
+  }
+
+  .maison_commerce_maison_testimonials__divider-progress {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: {{ section.settings.divider_progress_width }}px;
+    height: 2px;
+    background-color: {{ section.settings.divider_color }};
+    border-radius: 999px;
+    transform: translate(-50%, -50%);
+  }
+
+  /* CTA Button */
+  .maison_commerce_maison_testimonials__cta-button {
+    background-color: {{ section.settings.cta_bg_color }};
+    color: {{ section.settings.cta_text_color }};
+    border-radius: {{ section.settings.cta_border_radius }}px;
+    padding: {{ section.settings.cta_padding_vertical }}px {{ section.settings.cta_padding_horizontal }}px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: {{ section.settings.cta_gap }}px;
+    text-decoration: none;
+    transition: opacity 0.3s ease;
+    height: {{ section.settings.cta_height_desktop }}px;
+    width: 100%;
+    max-width: fit-content;
+    box-sizing: border-box;
+  }
+
+  @media (max-width: 768px) {
+    .maison_commerce_maison_testimonials__cta-button {
+      height: {{ section.settings.cta_height_mobile }}px;
+      width: 100%;
+    }
+  }
+
+  .maison_commerce_maison_testimonials__cta-button:hover {
+    opacity: 0.9;
+  }
+
+  .maison_commerce_maison_testimonials__cta-button span {
+    font-family: 'Gotham', sans-serif;
+    font-size: {{ section.settings.cta_font_size_desktop }}px;
+    font-weight: 500;
+    line-height: 1.5;
+    text-transform: capitalize;
+  }
+
+  @media (max-width: 768px) {
+    .maison_commerce_maison_testimonials__cta-button span {
+      font-size: {{ section.settings.cta_font_size_mobile }}px;
+    }
+  }
+
+  .maison_commerce_maison_testimonials__cta-arrow {
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+  }
+
+  /* Pagination */
+  .maison_commerce_maison_testimonials__pagination {
+    position: relative;
+    display: flex;
+    gap: 4px;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .maison_commerce_maison_testimonials__pagination .swiper-pagination-bullet {
+    width: 16px;
+    height: 4px;
+    background-color: {{ section.settings.pagination_color }};
+    opacity: 0.1;
+    border-radius: 42px;
+    transition: opacity 0.3s ease, background-color 0.3s ease;
+  }
+
+  .maison_commerce_maison_testimonials__pagination .swiper-pagination-bullet-active {
+    opacity: 1;
+    background-color: {{ section.settings.pagination_active_color }};
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const swiperContainer = document.querySelector('#shopify-section-{{ section.id }} .maison_commerce_maison_testimonials__swiper');
+    
+    if (swiperContainer) {
+      const swiper = new Swiper('#shopify-section-{{ section.id }} .maison_commerce_maison_testimonials__swiper', {
+        slidesPerView: 'auto',
+        spaceBetween: {{ section.settings.card_gap_desktop }},
+        loop: {{ section.settings.enable_loop }},
+        autoplay: {{ section.settings.enable_autoplay }} ? {
+          delay: {{ section.settings.autoplay_delay }},
+          disableOnInteraction: false,
+        } : false,
+        navigation: {
+          nextEl: '#shopify-section-{{ section.id }} .maison_commerce_maison_testimonials__nav-button--next',
+          prevEl: '#shopify-section-{{ section.id }} .maison_commerce_maison_testimonials__nav-button--prev',
+        },
+        pagination: {
+          el: '#shopify-section-{{ section.id }} .maison_commerce_maison_testimonials__pagination',
+          clickable: true,
+          renderBullet: function (index, className) {
+            return '<span class="' + className + '"></span>';
+          },
+        },
+        breakpoints: {
+          0: {
+            slidesPerView: 1,
+            spaceBetween: {{ section.settings.card_gap_mobile }},
+          },
+          769: {
+            slidesPerView: {{ section.settings.slides_per_view_desktop }},
+            spaceBetween: {{ section.settings.card_gap_desktop }},
+          },
+        },
+      });
+    }
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Maison Testimonials",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section Settings"
+    },
+    {
+      "type": "color",
+      "id": "bg_gradient_start",
+      "label": "Background Gradient Start Color",
+      "default": "#FFFEF3"
+    },
+    {
+      "type": "color",
+      "id": "bg_gradient_end",
+      "label": "Background Gradient End Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "range",
+      "id": "padding_top_desktop",
+      "min": 0,
+      "max": 200,
+      "step": 5,
+      "unit": "px",
+      "label": "Padding Top (Desktop)",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_desktop",
+      "min": 0,
+      "max": 200,
+      "step": 5,
+      "unit": "px",
+      "label": "Padding Bottom (Desktop)",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "padding_left_desktop",
+      "min": 0,
+      "max": 200,
+      "step": 5,
+      "unit": "px",
+      "label": "Padding Left (Desktop)",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_right_desktop",
+      "min": 0,
+      "max": 200,
+      "step": 5,
+      "unit": "px",
+      "label": "Padding Right (Desktop)",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Top (Mobile)",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Bottom (Mobile)",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "padding_left_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Left (Mobile)",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "padding_right_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Right (Mobile)",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "content_gap_desktop",
+      "min": 20,
+      "max": 80,
+      "step": 1,
+      "unit": "px",
+      "label": "Content Gap (Desktop)",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "content_gap_mobile",
+      "min": 10,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "label": "Content Gap (Mobile)",
+      "default": 20
+    },
+    {
+      "type": "header",
+      "content": "Heading Settings"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "They Did It. So Can You."
+    },
+    {
+      "type": "range",
+      "id": "heading_font_size_desktop",
+      "min": 20,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "label": "Heading Font Size (Desktop)",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "heading_font_size_mobile",
+      "min": 18,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Heading Font Size (Mobile)",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "heading_line_height_desktop",
+      "min": 1.0,
+      "max": 2.0,
+      "step": 0.1,
+      "label": "Heading Line Height (Desktop)",
+      "default": 1.3
+    },
+    {
+      "type": "range",
+      "id": "heading_line_height_mobile",
+      "min": 1.0,
+      "max": 2.0,
+      "step": 0.1,
+      "label": "Heading Line Height (Mobile)",
+      "default": 1.4
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading Color",
+      "default": "#15130E"
+    },
+    {
+      "type": "range",
+      "id": "heading_max_width",
+      "min": 400,
+      "max": 800,
+      "step": 20,
+      "unit": "px",
+      "label": "Heading Max Width",
+      "default": 600
+    },
+    {
+      "type": "range",
+      "id": "heading_rating_gap",
+      "min": 4,
+      "max": 20,
+      "step": 2,
+      "unit": "px",
+      "label": "Gap Between Heading and Rating",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "header_gap_mobile",
+      "min": 10,
+      "max": 30,
+      "step": 2,
+      "unit": "px",
+      "label": "Header Gap (Mobile)",
+      "default": 10
+    },
+    {
+      "type": "header",
+      "content": "Trustpilot Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_trustpilot",
+      "label": "Show Trustpilot Rating",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "rating_value",
+      "label": "Rating Value",
+      "default": "4.2/5"
+    },
+    {
+      "type": "text",
+      "id": "review_count",
+      "label": "Review Count",
+      "default": "1.500+"
+    },
+    {
+      "type": "range",
+      "id": "trustpilot_font_size",
+      "min": 10,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "label": "Trustpilot Font Size",
+      "default": 14
+    },
+    {
+      "type": "color",
+      "id": "trustpilot_text_color",
+      "label": "Trustpilot Text Color",
+      "default": "#2F3936"
+    },
+    {
+      "type": "range",
+      "id": "rating_font_size",
+      "min": 10,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "label": "Rating Text Font Size",
+      "default": 14
+    },
+    {
+      "type": "color",
+      "id": "rating_text_color",
+      "label": "Rating Text Color",
+      "default": "#2F3936"
+    },
+    {
+      "type": "range",
+      "id": "trustpilot_gap",
+      "min": 4,
+      "max": 12,
+      "step": 1,
+      "unit": "px",
+      "label": "Gap Between Trustpilot Elements",
+      "default": 4
+    },
+    {
+      "type": "header",
+      "content": "Carousel Settings"
+    },
+    {
+      "type": "range",
+      "id": "slides_per_view_desktop",
+      "min": 1,
+      "max": 5,
+      "step": 1,
+      "label": "Slides Per View (Desktop)",
+      "default": 3
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_loop",
+      "label": "Enable Loop",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_autoplay",
+      "label": "Enable Autoplay",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "autoplay_delay",
+      "min": 2000,
+      "max": 9500,
+      "step": 500,
+      "unit": "ms",
+      "label": "Autoplay Delay",
+      "default": 5000
+    },
+    {
+      "type": "range",
+      "id": "nav_gap",
+      "min": 8,
+      "max": 24,
+      "step": 2,
+      "unit": "px",
+      "label": "Navigation Button Gap",
+      "default": 16
+    },
+    {
+      "type": "color",
+      "id": "nav_border_color",
+      "label": "Navigation Button Border Color",
+      "default": "#EAECF0"
+    },
+    {
+      "type": "range",
+      "id": "nav_margin_top",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Navigation Margin Top (Mobile)",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Card Settings"
+    },
+    {
+      "type": "color",
+      "id": "card_bg_color",
+      "label": "Card Background Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "range",
+      "id": "card_border_radius_desktop",
+      "min": 0,
+      "max": 50,
+      "step": 2,
+      "unit": "px",
+      "label": "Card Border Radius (Desktop)",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "card_border_radius_mobile",
+      "min": 0,
+      "max": 30,
+      "step": 2,
+      "unit": "px",
+      "label": "Card Border Radius (Mobile)",
+      "default": 18
+    },
+    {
+      "type": "text",
+      "id": "card_shadow",
+      "label": "Card Shadow",
+      "default": "0px 2px 8px 0px rgba(0,0,0,0.06)",
+      "info": "CSS box-shadow value"
+    },
+    {
+      "type": "range",
+      "id": "card_width_desktop",
+      "min": 300,
+      "max": 500,
+      "step": 5,
+      "unit": "px",
+      "label": "Card Width (Desktop)",
+      "default": 410
+    },
+    {
+      "type": "range",
+      "id": "card_width_mobile",
+      "min": 250,
+      "max": 350,
+      "step": 1,
+      "unit": "px",
+      "label": "Card Width (Mobile)",
+      "default": 287
+    },
+    {
+      "type": "range",
+      "id": "card_gap_desktop",
+      "min": 12,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Gap Between Cards (Desktop)",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "card_gap_mobile",
+      "min": 12,
+      "max": 30,
+      "step": 2,
+      "unit": "px",
+      "label": "Gap Between Cards (Mobile)",
+      "default": 18
+    },
+    {
+      "type": "range",
+      "id": "image_height_desktop",
+      "min": 200,
+      "max": 400,
+      "step": 10,
+      "unit": "px",
+      "label": "Image Height (Desktop)",
+      "default": 280
+    },
+    {
+      "type": "range",
+      "id": "image_height_mobile",
+      "min": 150,
+      "max": 250,
+      "step": 1,
+      "unit": "px",
+      "label": "Image Height (Mobile)",
+      "default": 196
+    },
+    {
+      "type": "range",
+      "id": "label_bottom",
+      "min": 0,
+      "max": 30,
+      "step": 2,
+      "unit": "px",
+      "label": "Label Bottom Position",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "label_font_size_desktop",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Label Font Size (Desktop)",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "label_font_size_mobile",
+      "min": 10,
+      "max": 16,
+      "step": 1,
+      "unit": "px",
+      "label": "Label Font Size (Mobile)",
+      "default": 12
+    },
+    {
+      "type": "color",
+      "id": "before_label_color",
+      "label": "Before Label Color",
+      "default": "#1D211E"
+    },
+    {
+      "type": "color",
+      "id": "after_label_bg_color",
+      "label": "After Label Background Color",
+      "default": "#E98C36"
+    },
+    {
+      "type": "range",
+      "id": "card_content_padding_desktop",
+      "min": 12,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "label": "Card Content Padding (Desktop)",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "card_content_padding_mobile",
+      "min": 8,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Card Content Padding (Mobile)",
+      "default": 11
+    },
+    {
+      "type": "range",
+      "id": "card_content_gap",
+      "min": 8,
+      "max": 20,
+      "step": 2,
+      "unit": "px",
+      "label": "Card Content Gap",
+      "default": 12
+    },
+    {
+      "type": "header",
+      "content": "Review Settings"
+    },
+    {
+      "type": "color",
+      "id": "star_color",
+      "label": "Star Color",
+      "default": "#E98C36"
+    },
+    {
+      "type": "range",
+      "id": "review_font_size_desktop",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Review Font Size (Desktop)",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "review_font_size_mobile",
+      "min": 10,
+      "max": 16,
+      "step": 1,
+      "unit": "px",
+      "label": "Review Font Size (Mobile)",
+      "default": 12
+    },
+    {
+      "type": "color",
+      "id": "review_text_color",
+      "label": "Review Text Color",
+      "default": "rgba(29,33,30,0.75)"
+    },
+    {
+      "type": "header",
+      "content": "Customer Info Settings"
+    },
+    {
+      "type": "color",
+      "id": "customer_bg_color",
+      "label": "Customer Info Background Color",
+      "default": "#F1F1F9"
+    },
+    {
+      "type": "range",
+      "id": "customer_padding",
+      "min": 4,
+      "max": 16,
+      "step": 1,
+      "unit": "px",
+      "label": "Customer Info Padding",
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "customer_border_radius",
+      "min": 20,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "label": "Customer Info Border Radius",
+      "default": 56
+    },
+    {
+      "type": "range",
+      "id": "customer_info_gap",
+      "min": 2,
+      "max": 8,
+      "step": 1,
+      "unit": "px",
+      "label": "Gap Between Customer Info Elements",
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "customer_name_font_size",
+      "min": 10,
+      "max": 16,
+      "step": 1,
+      "unit": "px",
+      "label": "Customer Name Font Size",
+      "default": 12
+    },
+    {
+      "type": "color",
+      "id": "customer_name_color",
+      "label": "Customer Name Color",
+      "default": "#2C2926"
+    },
+    {
+      "type": "range",
+      "id": "customer_separator_size",
+      "min": 2,
+      "max": 6,
+      "step": 1,
+      "unit": "px",
+      "label": "Customer Separator Size",
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "verified_badge_gap",
+      "min": 2,
+      "max": 8,
+      "step": 1,
+      "unit": "px",
+      "label": "Verified Badge Gap",
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "verified_text_font_size",
+      "min": 10,
+      "max": 16,
+      "step": 1,
+      "unit": "px",
+      "label": "Verified Text Font Size",
+      "default": 12
+    },
+    {
+      "type": "header",
+      "content": "Divider Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_divider",
+      "label": "Show Divider",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "divider_margin",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Divider Margin",
+      "default": 0
+    },
+    {
+      "type": "color",
+      "id": "divider_color",
+      "label": "Divider Color",
+      "default": "#1C1C1C"
+    },
+    {
+      "type": "range",
+      "id": "divider_progress_width",
+      "min": 100,
+      "max": 300,
+      "step": 20,
+      "unit": "px",
+      "label": "Divider Progress Width",
+      "default": 200
+    },
+    {
+      "type": "header",
+      "content": "Call-to-Action Button"
+    },
+    {
+      "type": "text",
+      "id": "cta_text",
+      "label": "CTA Button Text",
+      "default": "Join 150,000+ Women"
+    },
+    {
+      "type": "url",
+      "id": "cta_url",
+      "label": "CTA Button URL"
+    },
+    {
+      "type": "color",
+      "id": "cta_bg_color",
+      "label": "CTA Background Color",
+      "default": "#FBF7BD"
+    },
+    {
+      "type": "color",
+      "id": "cta_text_color",
+      "label": "CTA Text Color",
+      "default": "#1A365D"
+    },
+    {
+      "type": "range",
+      "id": "cta_border_radius",
+      "min": 0,
+      "max": 30,
+      "step": 2,
+      "unit": "px",
+      "label": "CTA Border Radius",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "cta_padding_vertical",
+      "min": 8,
+      "max": 24,
+      "step": 2,
+      "unit": "px",
+      "label": "CTA Padding Vertical",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "cta_padding_horizontal",
+      "min": 16,
+      "max": 48,
+      "step": 4,
+      "unit": "px",
+      "label": "CTA Padding Horizontal",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "cta_gap",
+      "min": 8,
+      "max": 20,
+      "step": 2,
+      "unit": "px",
+      "label": "Gap Between Text and Arrow",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "cta_height_desktop",
+      "min": 40,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "label": "CTA Height (Desktop)",
+      "default": 56
+    },
+    {
+      "type": "range",
+      "id": "cta_height_mobile",
+      "min": 36,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "label": "CTA Height (Mobile)",
+      "default": 44
+    },
+    {
+      "type": "range",
+      "id": "cta_font_size_desktop",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "CTA Font Size (Desktop)",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "cta_font_size_mobile",
+      "min": 12,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "label": "CTA Font Size (Mobile)",
+      "default": 14
+    },
+    {
+      "type": "header",
+      "content": "Pagination Settings"
+    },
+    {
+      "type": "color",
+      "id": "pagination_color",
+      "label": "Pagination Color",
+      "default": "#2F3936"
+    },
+    {
+      "type": "color",
+      "id": "pagination_active_color",
+      "label": "Pagination Active Color",
+      "default": "#15130E"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "testimonial",
+      "name": "Testimonial",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "before_image",
+          "label": "Before Image"
+        },
+        {
+          "type": "text",
+          "id": "before_label",
+          "label": "Before Label",
+          "default": "Before"
+        },
+        {
+          "type": "image_picker",
+          "id": "after_image",
+          "label": "After Image"
+        },
+        {
+          "type": "text",
+          "id": "after_label",
+          "label": "After Label",
+          "default": "After 1 Months"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_rating",
+          "label": "Show Star Rating",
+          "default": true
+        },
+        {
+          "type": "range",
+          "id": "rating",
+          "min": 1,
+          "max": 5,
+          "step": 1,
+          "label": "Rating",
+          "default": 5
+        },
+        {
+          "type": "textarea",
+          "id": "review_text",
+          "label": "Review Text",
+          "default": "Using 1,5 year the hair oil and for 1 month the liquid vitamine. These are the results"
+        },
+        {
+          "type": "text",
+          "id": "customer_name",
+          "label": "Customer Name",
+          "default": "Lauren P."
+        },
+        {
+          "type": "checkbox",
+          "id": "show_verified_badge",
+          "label": "Show Verified Buyer Badge",
+          "default": true
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Maison Testimonials",
+      "blocks": [
+        {
+          "type": "testimonial",
+          "settings": {
+            "customer_name": "Lauren P.",
+            "review_text": "Using 1,5 year the hair oil and for 1 month the liquid vitamine. These are the results"
+          }
+        },
+        {
+          "type": "testimonial",
+          "settings": {
+            "customer_name": "Andreea B.",
+            "review_text": "I was always struggle with growing my hair, probably last 10 years. I could not find any routine and treatment for my fine hair."
+          }
+        },
+        {
+          "type": "testimonial",
+          "settings": {
+            "customer_name": "Alenka Čakš Č.",
+            "review_text": "Significant reduction of shedding. But I'm still on my way to fuller hair."
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
+
