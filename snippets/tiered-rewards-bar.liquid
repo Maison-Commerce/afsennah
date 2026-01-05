@@ -1,0 +1,247 @@
+{%- liquid
+  assign cart_total = cart.total_price
+  assign free_shipping_threshold = section.settings.free_shipping_threshold | times: 100
+  
+  assign tier_1_threshold = section.settings.gift_tier_1_amount | times: 100
+  assign tier_2_threshold = section.settings.gift_tier_2_amount | times: 100
+  assign tier_3_threshold = section.settings.gift_tier_3_amount | times: 100
+  
+  assign free_shipping_progress = 1.0 | times: cart_total | divided_by: free_shipping_threshold | at_least: 0 | at_most: 1
+  assign tier_1_progress = 1.0 | times: cart_total | divided_by: tier_1_threshold | at_least: 0 | at_most: 1
+  assign tier_2_progress = 1.0 | times: cart_total | divided_by: tier_2_threshold | at_least: 0 | at_most: 1
+  assign tier_3_progress = 1.0 | times: cart_total | divided_by: tier_3_threshold | at_least: 0 | at_most: 1
+  
+  assign free_shipping_achieved = free_shipping_progress >= 1
+  assign tier_1_achieved = tier_1_progress >= 1
+  assign tier_2_achieved = tier_2_progress >= 1
+  assign tier_3_achieved = tier_3_progress >= 1
+  
+  assign next_tier_amount = false
+  assign next_tier_label = false
+  if free_shipping_progress < 1
+    assign next_tier_amount = free_shipping_threshold | minus: cart_total | at_least: 0
+    assign next_tier_label = 'Free shipping'
+  elsif tier_1_progress < 1
+    assign next_tier_amount = tier_1_threshold | minus: cart_total | at_least: 0
+    assign next_tier_label = section.settings.gift_tier_1_label
+  elsif tier_2_progress < 1
+    assign next_tier_amount = tier_2_threshold | minus: cart_total | at_least: 0
+    assign next_tier_label = section.settings.gift_tier_2_label
+  elsif tier_3_progress < 1
+    assign next_tier_amount = tier_3_threshold | minus: cart_total | at_least: 0
+    assign next_tier_label = section.settings.gift_tier_3_label
+  endif
+-%}
+
+{%- if section.settings.enable_tiered_rewards -%}
+  <div class="tiered-rewards-bar{% if cart.items == empty %} tiered-rewards-bar--no-cart{% endif %}" 
+       data-cart-total="{{ cart_total }}"
+       data-merge-attributes="tiered-rewards">
+    
+    {%- if next_tier_amount and next_tier_amount > 0 -%}
+      <div class="tiered-rewards-bar__banner">
+        {%- if section.settings.banner_icon != blank -%}
+          <span class="tiered-rewards-bar__banner-icon">
+            {% render 'icon', icon: section.settings.banner_icon, size: 'small' %}
+          </span>
+        {%- elsif section.settings.banner_custom_icon != blank -%}
+          <span class="tiered-rewards-bar__banner-icon tiered-rewards-bar__banner-icon--image">
+            {%- liquid
+              assign icon_sizes = '16px'
+              assign icon_widths = '16, 32'
+              render 'image', image: section.settings.banner_custom_icon, sizes: icon_sizes, widths: icon_widths
+            -%}
+          </span>
+        {%- endif -%}
+        <span class="tiered-rewards-bar__banner-text">
+          {%- if free_shipping_achieved -%}
+            {{ section.settings.banner_text_achieved | default: 'Free shipping added! Spend' | replace: '[AMOUNT]', next_tier_amount | money | replace: '[LABEL]', next_tier_label }}
+          {%- else -%}
+            {{ section.settings.banner_text | default: 'Spend' | replace: '[AMOUNT]', next_tier_amount | money | replace: '[LABEL]', next_tier_label }}
+          {%- endif -%}
+        </span>
+      </div>
+    {%- elsif tier_3_achieved -%}
+      <div class="tiered-rewards-bar__banner tiered-rewards-bar__banner--all-achieved">
+        {%- if section.settings.banner_icon != blank -%}
+          <span class="tiered-rewards-bar__banner-icon">
+            {% render 'icon', icon: section.settings.banner_icon, size: 'small' %}
+          </span>
+        {%- elsif section.settings.banner_custom_icon != blank -%}
+          <span class="tiered-rewards-bar__banner-icon tiered-rewards-bar__banner-icon--image">
+            {%- liquid
+              assign icon_sizes = '16px'
+              assign icon_widths = '16, 32'
+              render 'image', image: section.settings.banner_custom_icon, sizes: icon_sizes, widths: icon_widths
+            -%}
+          </span>
+        {%- endif -%}
+        <span class="tiered-rewards-bar__banner-text">
+          {{ section.settings.banner_text_all_achieved | default: 'All rewards unlocked!' }}
+        </span>
+      </div>
+    {%- endif -%}
+    
+    <div class="tiered-rewards-bar__progress-container">
+      <div class="tiered-rewards-bar__progress-track">
+        {%- comment -%} Free Shipping Tier {%- endcomment -%}
+        <div class="tiered-rewards-bar__tier{% if free_shipping_achieved %} tiered-rewards-bar__tier--achieved{% endif %}" 
+             style="--free-shipping-progress: {{ free_shipping_progress }}">
+          <div class="tiered-rewards-bar__tier-icon">
+            {%- if free_shipping_achieved -%}
+              <span class="tiered-rewards-bar__tier-checkmark">{% render 'icon', icon: 'check_mark_in_circle', size: 'small' %}</span>
+            {%- else -%}
+              <span class="tiered-rewards-bar__tier-icon-image">
+                {% render 'icon', icon: 'truck', size: 'small' %}
+              </span>
+            {%- endif -%}
+          </div>
+          <div class="tiered-rewards-bar__tier-progress-bar">
+            <div class="tiered-rewards-bar__tier-progress-fill" 
+                 style="--tier-progress: {{ free_shipping_progress }}"></div>
+          </div>
+          <div class="tiered-rewards-bar__tier-label">Free shipping</div>
+        </div>
+        
+        {%- comment -%} Gift Tier 1 {%- endcomment -%}
+        {%- if section.settings.gift_tier_1_label != blank -%}
+          {%- liquid
+            assign segment_start = free_shipping_threshold
+            assign segment_end = tier_1_threshold
+            assign segment_range = segment_end | minus: segment_start
+            assign segment_progress = 0
+            if segment_range > 0
+              if cart_total > segment_start
+                if cart_total >= segment_end
+                  assign segment_progress = 1
+                else
+                  assign segment_progress = cart_total | minus: segment_start | times: 1.0 | divided_by: segment_range | at_least: 0 | at_most: 1
+                endif
+              endif
+            endif
+          -%}
+          <div class="tiered-rewards-bar__tier{% if tier_1_achieved %} tiered-rewards-bar__tier--achieved{% endif %}" 
+               style="--tier-1-progress: {{ segment_progress }}">
+            <div class="tiered-rewards-bar__tier-icon">
+              {%- if tier_1_achieved -%}
+                <span class="tiered-rewards-bar__tier-checkmark">{% render 'icon', icon: 'check_mark_in_circle', size: 'small' %}</span>
+              {%- elsif section.settings.gift_tier_1_image != blank -%}
+                <span class="tiered-rewards-bar__tier-icon-image">
+                  {%- liquid
+                    assign icon_sizes = '48px'
+                    assign icon_widths = '48, 96'
+                    render 'image', image: section.settings.gift_tier_1_image, sizes: icon_sizes, widths: icon_widths
+                  -%}
+                </span>
+              {%- else -%}
+                <span class="tiered-rewards-bar__tier-icon-image">
+                  {% render 'icon', icon: 'gift', size: 'small' %}
+                </span>
+              {%- endif -%}
+            </div>
+            <div class="tiered-rewards-bar__tier-progress-bar">
+              <div class="tiered-rewards-bar__tier-progress-fill" 
+                   style="--tier-progress: {{ tier_1_progress }}"></div>
+            </div>
+            <div class="tiered-rewards-bar__tier-label">{{ section.settings.gift_tier_1_label }}</div>
+          </div>
+        {%- endif -%}
+        
+        {%- comment -%} Gift Tier 2 {%- endcomment -%}
+        {%- if section.settings.gift_tier_2_label != blank -%}
+          {%- liquid
+            assign segment_start = tier_1_threshold
+            assign segment_end = tier_2_threshold
+            assign segment_range = segment_end | minus: segment_start
+            assign segment_progress = 0
+            if segment_range > 0
+              if cart_total > segment_start
+                if cart_total >= segment_end
+                  assign segment_progress = 1
+                else
+                  assign segment_progress = cart_total | minus: segment_start | times: 1.0 | divided_by: segment_range | at_least: 0 | at_most: 1
+                endif
+              endif
+            endif
+          -%}
+          <div class="tiered-rewards-bar__tier{% if tier_2_achieved %} tiered-rewards-bar__tier--achieved{% endif %}" 
+               style="--tier-2-progress: {{ segment_progress }}">
+            <div class="tiered-rewards-bar__tier-icon">
+              {%- if tier_2_achieved -%}
+                <span class="tiered-rewards-bar__tier-checkmark">{% render 'icon', icon: 'check_mark_in_circle', size: 'small' %}</span>
+              {%- elsif section.settings.gift_tier_2_image != blank -%}
+                <span class="tiered-rewards-bar__tier-icon-image">
+                  {%- liquid
+                    assign icon_sizes = '48px'
+                    assign icon_widths = '48, 96'
+                    render 'image', image: section.settings.gift_tier_2_image, sizes: icon_sizes, widths: icon_widths
+                  -%}
+                </span>
+              {%- else -%}
+                <span class="tiered-rewards-bar__tier-icon-image">
+                  {% render 'icon', icon: 'gift', size: 'small' %}
+                </span>
+              {%- endif -%}
+            </div>
+            <div class="tiered-rewards-bar__tier-progress-bar">
+              <div class="tiered-rewards-bar__tier-progress-fill" 
+                   style="--tier-progress: {{ tier_2_progress }}"></div>
+            </div>
+            <div class="tiered-rewards-bar__tier-label">{{ section.settings.gift_tier_2_label }}</div>
+          </div>
+        {%- endif -%}
+        
+        {%- comment -%} Gift Tier 3 {%- endcomment -%}
+        {%- if section.settings.gift_tier_3_label != blank -%}
+          {%- liquid
+            assign segment_start = tier_2_threshold
+            assign segment_end = tier_3_threshold
+            assign segment_range = segment_end | minus: segment_start
+            assign segment_progress = 0
+            if segment_range > 0
+              if cart_total > segment_start
+                if cart_total >= segment_end
+                  assign segment_progress = 1
+                else
+                  assign segment_progress = cart_total | minus: segment_start | times: 1.0 | divided_by: segment_range | at_least: 0 | at_most: 1
+                endif
+              endif
+            endif
+          -%}
+          <div class="tiered-rewards-bar__tier{% if tier_3_achieved %} tiered-rewards-bar__tier--achieved{% endif %}" 
+               style="--tier-3-progress: {{ segment_progress }}">
+            <div class="tiered-rewards-bar__tier-icon">
+              {%- if tier_3_achieved -%}
+                <span class="tiered-rewards-bar__tier-checkmark">{% render 'icon', icon: 'check_mark_in_circle', size: 'small' %}</span>
+              {%- elsif section.settings.gift_tier_3_image != blank -%}
+                <span class="tiered-rewards-bar__tier-icon-image">
+                  {%- liquid
+                    assign icon_sizes = '48px'
+                    assign icon_widths = '48, 96'
+                    render 'image', image: section.settings.gift_tier_3_image, sizes: icon_sizes, widths: icon_widths
+                  -%}
+                </span>
+              {%- else -%}
+                <span class="tiered-rewards-bar__tier-icon-image">
+                  {% render 'icon', icon: 'gift', size: 'small' %}
+                </span>
+              {%- endif -%}
+            </div>
+            <div class="tiered-rewards-bar__tier-progress-bar">
+              <div class="tiered-rewards-bar__tier-progress-fill" 
+                   style="--tier-progress: {{ tier_3_progress }}"></div>
+            </div>
+            <div class="tiered-rewards-bar__tier-label">{{ section.settings.gift_tier_3_label }}</div>
+          </div>
+        {%- endif -%}
+      </div>
+      
+      {%- comment -%} Main progress bar connecting all tiers {%- endcomment -%}
+      <div class="tiered-rewards-bar__main-progress">
+        <div class="tiered-rewards-bar__main-progress-fill" 
+             style="--main-progress: {{ tier_3_progress }}"></div>
+      </div>
+    </div>
+  </div>
+{%- endif -%}
+
