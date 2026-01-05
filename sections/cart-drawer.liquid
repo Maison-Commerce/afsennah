@@ -48,6 +48,7 @@
 {%- endif -%}
 
 <cart-drawer class="drawer fixed top-0 right-0 flex flex-col w-full has-motion js-cart-drawer" role="dialog" tabindex="-1" aria-labelledby="CartDrawerModal-Title" aria-modal="true" aria-hidden="true" data-name="cart-drawer" data-section-id="{{ section.id }}">
+  test
   <cart-form data-section-id="{{ section.id }}" class="cart-drawer" data-ajax-update="true">
     <div class="cart-drawer__content{% if cart.items == empty %} cart-drawer__content--hidden{% endif %}" data-merge-attributes="content-container">
       <div class="cart-drawer__content-upper">
