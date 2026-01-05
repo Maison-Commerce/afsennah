@@ -509,6 +509,118 @@
         "pagination_active_color": "#15130e"
       }
     },
+    "maison_content_blocks_cAcXrb": {
+      "type": "maison-content-blocks",
+      "blocks": {
+        "visual_nWB3MY": {
+          "type": "visual",
+          "settings": {
+            "visual_image": "shopify://shop_images/Frame_1484581021.png",
+            "show_features": true
+          }
+        },
+        "title_9znben": {
+          "type": "title",
+          "settings": {
+            "title_text": "Born from Personal Struggle"
+          }
+        },
+        "text_GzMYgf": {
+          "type": "text",
+          "settings": {
+            "text_content": "<p>Afsennah was born from personal hair loss experience. After many failed products, it was clear that one-size-fits-all solutions don’t work for individual hair and scalp health.</p><p>I became a <strong>certified trichologist</strong> and studied scalp science. I created my first custom oil for my sensitive scalp and stress-related shedding.</p><p>The results were tangible: shedding slowed within weeks, new growth followed, and my confidence returned.</p><p>Over <strong>150,000 </strong>women trust Afsennah. Each formula is crafted with expertise and care, as hair care should be personal.</p>"
+          }
+        },
+        "quote_WFeQwL": {
+          "type": "quote",
+          "settings": {
+            "quote_text": "“I created Afsennah not just as a product, but as the solution I needed. Your hair journey is personal — and your treatment should be too.”",
+            "quote_author": "— Afsennah, Founder & Certified Trichologist"
+          }
+        }
+      },
+      "block_order": [
+        "visual_nWB3MY",
+        "title_9znben",
+        "text_GzMYgf",
+        "quote_WFeQwL"
+      ],
+      "name": "Maison Content Blocks",
+      "settings": {
+        "bg_gradient_start": "#ffffff",
+        "bg_gradient_end": "#f8f7fb",
+        "padding_top_desktop": 48,
+        "padding_bottom_desktop": 32,
+        "padding_left_desktop": 80,
+        "padding_right_desktop": 80,
+        "padding_top_mobile": 32,
+        "padding_bottom_mobile": 32,
+        "padding_left_mobile": 20,
+        "padding_right_mobile": 20,
+        "content_gap_desktop": 40,
+        "content_gap_mobile": 18,
+        "content_align_desktop": "center",
+        "image_width_desktop": 50,
+        "image_border_radius_desktop": 32,
+        "image_border_radius_mobile": 18,
+        "image_aspect_ratio": "1 / 1",
+        "image_order_mobile": 1,
+        "visual_width_desktop": 50,
+        "visual_bg_color": "#ebebf6",
+        "visual_min_height_desktop": 594,
+        "visual_min_height_mobile": 400,
+        "visual_border_radius_desktop": 32,
+        "visual_border_radius_mobile": 18,
+        "visual_order_mobile": 1,
+        "feature_border_radius": 93,
+        "feature_padding_vertical": 12,
+        "feature_padding_horizontal": 19,
+        "feature_gap": 4,
+        "feature_icon_size": 21,
+        "feature_font_size": 15,
+        "feature_text_color": "#1a365d",
+        "feature_shadow": "0px 2px 8px rgba(0,0,0,0.1)",
+        "content_width_desktop": 50,
+        "content_bg_color": "#ffffff",
+        "content_border_color": "#f1f1f9",
+        "content_border_radius_desktop": 18,
+        "content_border_radius_mobile": 18,
+        "content_padding_desktop": 44,
+        "content_padding_mobile": 18,
+        "content_inner_gap": 18,
+        "content_order_mobile": 2,
+        "title_font_size_desktop": 32,
+        "title_font_size_mobile": 24,
+        "title_line_height_desktop": 1.3,
+        "title_line_height_mobile": 1.4,
+        "title_color": "#15130e",
+        "text_font_size_desktop": 16,
+        "text_font_size_mobile": 14,
+        "text_color": "#15130ebf",
+        "text_paragraph_gap": 8,
+        "button_bg_color": "#fbf7bd",
+        "button_text_color": "#1a365d",
+        "button_border_radius": 12,
+        "button_padding_vertical": 16,
+        "button_padding_horizontal": 32,
+        "button_gap": 12,
+        "button_height_desktop": 56,
+        "button_height_mobile": 44,
+        "button_font_size_desktop": 16,
+        "button_font_size_mobile": 14,
+        "quote_bg_color": "#fffee9",
+        "quote_border_radius": 20,
+        "quote_padding": 16,
+        "quote_gap": 12,
+        "quote_text_font_size": 14,
+        "quote_text_color": "#000000",
+        "quote_author_border_radius": 56,
+        "quote_author_padding_vertical": 4,
+        "quote_author_padding_horizontal": 12,
+        "quote_author_font_size": 12,
+        "quote_author_color": "#2c2926"
+      }
+    },
     "maison_content_blocks_rcgVU9": {
       "type": "maison-content-blocks",
       "blocks": {
@@ -547,8 +659,8 @@
       ],
       "name": "Maison Content Blocks",
       "settings": {
-        "bg_gradient_start": "#FFFFFF",
-        "bg_gradient_end": "#F8F7FB",
+        "bg_gradient_start": "#ffffff",
+        "bg_gradient_end": "#f8f7fb",
         "padding_top_desktop": 48,
         "padding_bottom_desktop": 32,
         "padding_left_desktop": 80,
@@ -566,7 +678,7 @@
         "image_aspect_ratio": "1 / 1",
         "image_order_mobile": 1,
         "visual_width_desktop": 50,
-        "visual_bg_color": "#EBEBF6",
+        "visual_bg_color": "#ebebf6",
         "visual_min_height_desktop": 594,
         "visual_min_height_mobile": 400,
         "visual_border_radius_desktop": 32,
@@ -578,11 +690,11 @@
         "feature_gap": 4,
         "feature_icon_size": 21,
         "feature_font_size": 15,
-        "feature_text_color": "#1A365D",
+        "feature_text_color": "#1a365d",
         "feature_shadow": "0px 2px 8px rgba(0,0,0,0.1)",
         "content_width_desktop": 50,
-        "content_bg_color": "#FFFFFF",
-        "content_border_color": "#F1F1F9",
+        "content_bg_color": "#ffffff",
+        "content_border_color": "#f1f1f9",
         "content_border_radius_desktop": 18,
         "content_border_radius_mobile": 18,
         "content_padding_desktop": 44,
@@ -593,13 +705,13 @@
         "title_font_size_mobile": 24,
         "title_line_height_desktop": 1.3,
         "title_line_height_mobile": 1.4,
-        "title_color": "#15130E",
+        "title_color": "#15130e",
         "text_font_size_desktop": 16,
         "text_font_size_mobile": 14,
-        "text_color": "rgba(21,19,14,0.75)",
+        "text_color": "#15130ebf",
         "text_paragraph_gap": 8,
-        "button_bg_color": "#FBF7BD",
-        "button_text_color": "#1A365D",
+        "button_bg_color": "#fbf7bd",
+        "button_text_color": "#1a365d",
         "button_border_radius": 12,
         "button_padding_vertical": 16,
         "button_padding_horizontal": 32,
@@ -608,7 +720,7 @@
         "button_height_mobile": 44,
         "button_font_size_desktop": 16,
         "button_font_size_mobile": 14,
-        "quote_bg_color": "#FFFEE9",
+        "quote_bg_color": "#fffee9",
         "quote_border_radius": 20,
         "quote_padding": 16,
         "quote_gap": 12,
@@ -618,7 +730,7 @@
         "quote_author_padding_vertical": 4,
         "quote_author_padding_horizontal": 12,
         "quote_author_font_size": 12,
-        "quote_author_color": "#2C2926"
+        "quote_author_color": "#2c2926"
       }
     }
   },
@@ -628,6 +740,7 @@
     "maison_sound_familiar_fAp9WJ",
     "maison_ingredients_BaKB6L",
     "maison_testimonials_7wmgNc",
+    "maison_content_blocks_cAcXrb",
     "maison_content_blocks_rcgVU9"
   ]
 }
