@@ -50,20 +50,36 @@
                 </h3>
 
                 {% if block.settings.show_rating %}
-                  <div class="maison_commerce_maison_products_grid__rating">
-                    <div class="maison_commerce_maison_products_grid__stars">
-                      {% for i in (1..5) %}
-                        <svg class="maison_commerce_maison_products_grid__star" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                          <path d="M8 0L10.1631 5.52786L16 6.11146L12 10.0557L12.9443 16L8 13.5279L3.05573 16L4 10.0557L0 6.11146L5.83686 5.52786L8 0Z" fill="#E98C36"/>
-                        </svg>
-                      {% endfor %}
+                  {% assign rating_metafield = product.metafields[section.settings.rating_metafield_namespace][section.settings.rating_metafield_key] %}
+                  {% assign review_count_metafield = product.metafields[section.settings.review_count_metafield_namespace][section.settings.review_count_metafield_key] %}
+                  {% assign product_rating = rating_metafield.value | default: rating_metafield | times: 1.0 %}
+                  {% assign product_review_count = review_count_metafield.value | default: review_count_metafield %}
+                  
+                  {% if product_rating > 0 or product_review_count != blank %}
+                    <div class="maison_commerce_maison_products_grid__rating">
+                      {% if product_rating > 0 %}
+                        <div class="maison_commerce_maison_products_grid__stars">
+                          {% assign rating_rounded = product_rating | round %}
+                          {% for i in (1..5) %}
+                            {% if i <= rating_rounded %}
+                              <svg class="maison_commerce_maison_products_grid__star maison_commerce_maison_products_grid__star--filled" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M8 0L10.1631 5.52786L16 6.11146L12 10.0557L12.9443 16L8 13.5279L3.05573 16L4 10.0557L0 6.11146L5.83686 5.52786L8 0Z" fill="#E98C36"/>
+                              </svg>
+                            {% else %}
+                              <svg class="maison_commerce_maison_products_grid__star maison_commerce_maison_products_grid__star--empty" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M8 0L10.1631 5.52786L16 6.11146L12 10.0557L12.9443 16L8 13.5279L3.05573 16L4 10.0557L0 6.11146L5.83686 5.52786L8 0Z" fill="#E0E0E0"/>
+                              </svg>
+                            {% endif %}
+                          {% endfor %}
+                        </div>
+                      {% endif %}
+                      {% if product_review_count != blank %}
+                        <span class="maison_commerce_maison_products_grid__review-count">
+                          ({{ product_review_count }} Reviews)
+                        </span>
+                      {% endif %}
                     </div>
-                    {% if block.settings.review_count != blank %}
-                      <span class="maison_commerce_maison_products_grid__review-count">
-                        ({{ block.settings.review_count }} Reviews)
-                      </span>
-                    {% endif %}
-                  </div>
+                  {% endif %}
                 {% endif %}
 
                 <div class="maison_commerce_maison_products_grid__price">
@@ -318,6 +334,14 @@
     width: {{ section.settings.star_size }}px;
     height: {{ section.settings.star_size }}px;
     flex-shrink: 0;
+  }
+
+  .maison_commerce_maison_products_grid__star--filled {
+    fill: #E98C36;
+  }
+
+  .maison_commerce_maison_products_grid__star--empty {
+    fill: #E0E0E0;
   }
 
   .maison_commerce_maison_products_grid__review-count {
@@ -948,6 +972,38 @@
     },
     {
       "type": "header",
+      "content": "Metafield Settings"
+    },
+    {
+      "type": "text",
+      "id": "rating_metafield_namespace",
+      "label": "Rating Metafield Namespace",
+      "default": "custom",
+      "info": "Namespace for the rating metafield (e.g., 'custom', 'reviews')"
+    },
+    {
+      "type": "text",
+      "id": "rating_metafield_key",
+      "label": "Rating Metafield Key",
+      "default": "rating",
+      "info": "Key for the rating metafield (should be a number 0-5)"
+    },
+    {
+      "type": "text",
+      "id": "review_count_metafield_namespace",
+      "label": "Review Count Metafield Namespace",
+      "default": "custom",
+      "info": "Namespace for the review count metafield"
+    },
+    {
+      "type": "text",
+      "id": "review_count_metafield_key",
+      "label": "Review Count Metafield Key",
+      "default": "review_count",
+      "info": "Key for the review count metafield"
+    },
+    {
+      "type": "header",
       "content": "Rating Settings"
     },
     {
@@ -1405,13 +1461,6 @@
         },
         {
           "type": "text",
-          "id": "review_count",
-          "label": "Review Count",
-          "default": "1,299",
-          "info": "Enter the review count to display"
-        },
-        {
-          "type": "text",
           "id": "button_text",
           "label": "Button Text",
           "default": "Shop now"
@@ -1427,32 +1476,28 @@
           "type": "product",
           "settings": {
             "show_bestseller_badge": true,
-            "show_rating": true,
-            "review_count": "1,299"
+            "show_rating": true
           }
         },
         {
           "type": "product",
           "settings": {
             "show_bestseller_badge": false,
-            "show_rating": true,
-            "review_count": "1,299"
+            "show_rating": true
           }
         },
         {
           "type": "product",
           "settings": {
             "show_bestseller_badge": true,
-            "show_rating": true,
-            "review_count": "1,299"
+            "show_rating": true
           }
         },
         {
           "type": "product",
           "settings": {
             "show_bestseller_badge": false,
-            "show_rating": true,
-            "review_count": "1,299"
+            "show_rating": true
           }
         }
       ]
