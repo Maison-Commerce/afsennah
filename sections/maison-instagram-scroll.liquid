@@ -170,14 +170,14 @@
   .maison_commerce_maison_instagram_scroll__image-wrapper {
     position: relative;
     aspect-ratio: {{ section.settings.image_aspect_ratio }};
-    border-radius: {{ section.settings.image_border_radius_desktop }}px;
+    border-radius: {{ section.settings.image_border_radius_desktop }}px {{ section.settings.image_border_radius_desktop }}px 0 0;
     overflow: hidden;
     background-color: {{ section.settings.image_bg_color }};
   }
 
   @media (max-width: 768px) {
     .maison_commerce_maison_instagram_scroll__image-wrapper {
-      border-radius: {{ section.settings.image_border_radius_mobile }}px;
+      border-radius: {{ section.settings.image_border_radius_mobile }}px {{ section.settings.image_border_radius_mobile }}px 0 0;
     }
   }
 
