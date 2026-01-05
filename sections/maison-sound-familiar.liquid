@@ -233,15 +233,23 @@
     z-index: 10;
     transition: background-color 0.3s ease, opacity 0.3s ease;
     padding: 0;
+    opacity: 1;
   }
 
   .maison_commerce_maison_sound_familiar__play-button:hover {
     background-color: rgba(0, 0, 0, 0.8);
   }
 
-  .maison_commerce_maison_sound_familiar__play-button.hidden {
+  /* Hide button when video is playing (unless hovering) */
+  .maison_commerce_maison_sound_familiar__video-wrapper.playing .maison_commerce_maison_sound_familiar__play-button {
     opacity: 0;
     pointer-events: none;
+  }
+
+  /* Show button on hover when playing */
+  .maison_commerce_maison_sound_familiar__video-wrapper.playing:hover .maison_commerce_maison_sound_familiar__play-button {
+    opacity: 1;
+    pointer-events: auto;
   }
 
   .maison_commerce_maison_sound_familiar__play-icon {
@@ -479,24 +487,29 @@
       if (video.paused) {
         video.play();
         playButton.classList.add('playing');
+        videoWrapper.classList.add('playing');
       } else {
         video.pause();
         playButton.classList.remove('playing');
+        videoWrapper.classList.remove('playing');
       }
     }
 
     // Update button visibility based on video state
     video.addEventListener('play', function() {
       playButton.classList.add('playing');
+      videoWrapper.classList.add('playing');
     });
 
     video.addEventListener('pause', function() {
       playButton.classList.remove('playing');
+      videoWrapper.classList.remove('playing');
     });
 
     // Hide button when video ends
     video.addEventListener('ended', function() {
       playButton.classList.remove('playing');
+      videoWrapper.classList.remove('playing');
     });
   })();
 </script>
