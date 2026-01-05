@@ -10,8 +10,12 @@
   assign tier_1_progress = 1.0 | times: cart_total | divided_by: tier_1_threshold | at_least: 0 | at_most: 1
   assign tier_2_progress = 1.0 | times: cart_total | divided_by: tier_2_threshold | at_least: 0 | at_most: 1
   assign tier_3_progress = 1.0 | times: cart_total | divided_by: tier_3_threshold | at_least: 0 | at_most: 1
+  assign free_shipping_achieved = false
   
-  assign free_shipping_achieved = free_shipping_progress >= 1
+  if free_shipping_progress >= 1
+    assign free_shipping_achieved = true
+  endif
+  
   assign tier_1_achieved = tier_1_progress >= 1
   assign tier_2_achieved = tier_2_progress >= 1
   assign tier_3_achieved = tier_3_progress >= 1
