@@ -183,7 +183,7 @@
         "brand_description_color": "#ebebf6",
         "brand_section_gap": 24,
         "cta_button_text": "Explore Our Products",
-        "cta_button_url": "",
+        "cta_button_url": "#",
         "cta_button_bg_color": "#b4b4de",
         "cta_button_text_color": "#1a365d",
         "cta_button_border_radius": 8,
