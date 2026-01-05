@@ -831,6 +831,7 @@
           
           const navDesktop = sectionElement.querySelector('.maison_commerce_maison_testimonials__nav-desktop');
           const navMobile = sectionElement.querySelector('.maison_commerce_maison_testimonials__nav-mobile');
+          const divider = sectionElement.querySelector('.maison_commerce_maison_testimonials__divider');
           
           if (navDesktop) {
             navDesktop.style.display = needsNavigation ? 'flex' : 'none';
@@ -847,6 +848,10 @@
           
           if (pagination) {
             pagination.style.display = needsNavigation ? 'flex' : 'none';
+          }
+          
+          if (divider) {
+            divider.style.display = needsNavigation ? 'block' : 'none';
           }
         }
         
