@@ -246,7 +246,7 @@
         "cta_text_color": "#1a365d",
         "cta_border_radius": 12,
         "cta_padding_vertical": 16,
-        "cta_padding_horizontal": 32,
+        "cta_padding_horizontal": 20,
         "cta_gap": 12,
         "cta_height_desktop": 56,
         "cta_height_mobile": 44,
