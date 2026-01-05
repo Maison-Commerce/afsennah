@@ -49,7 +49,7 @@
     {%- render 'doc-head-styles' -%}
   </style>
 
-  {{ 'fonts.css.liquid' | asset_url | stylesheet_tag: preload: true }}
+  {{ 'fonts.css' | asset_url | stylesheet_tag: preload: true }}
   {{ 'main.css' | asset_url | stylesheet_tag: preload: true }}
   {{ 'custom.css' | asset_url | stylesheet_tag: preload: true }}
 
