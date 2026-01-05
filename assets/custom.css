@@ -474,3 +474,12 @@ video-section-play-button {
     margin: 0;
     padding: 13px 24px;
 }
+.cart-drawer__header .cart-drawer__title {
+    font-family: "Vanilla Ravioli";
+    font-weight: 400;
+    font-size: 24px;
+    line-height: 140%;
+    letter-spacing: 0%;
+    vertical-align: middle;
+
+}
