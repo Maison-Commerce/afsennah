@@ -18,7 +18,7 @@
     {% if section.blocks.size > 0 %}
       <div class="maison_commerce_maison_products_grid__products">
         {% for block in section.blocks %}
-          {% if block.type == 'product' and block.settings.product != blank %}
+          {% if block.settings.product != blank %}
             {% assign product = block.settings.product %}
             <div class="maison_commerce_maison_products_grid__product" {{ block.shopify_attributes }}>
               {% if block.settings.show_bestseller_badge %}
