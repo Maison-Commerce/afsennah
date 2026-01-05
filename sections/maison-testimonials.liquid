@@ -851,7 +851,8 @@
           }
           
           if (divider) {
-            divider.style.display = needsNavigation ? 'block' : 'none';
+            // Hide divider on mobile, show on desktop only when navigation is needed
+            divider.style.display = (!isMobile && needsNavigation) ? 'block' : 'none';
           }
         }
         
