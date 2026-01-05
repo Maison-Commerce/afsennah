@@ -734,6 +734,76 @@
         "quote_author_font_size": 12,
         "quote_author_color": "#2c2926"
       }
+    },
+    "maison_badges_bar_HcM3QC": {
+      "type": "maison-badges-bar",
+      "blocks": {
+        "badge_ct4dtX": {
+          "type": "badge",
+          "settings": {
+            "badge_text": "Carbon neutral"
+          }
+        },
+        "badge_8Qznje": {
+          "type": "badge",
+          "settings": {
+            "badge_text": "Mineral oils cruelty-free"
+          }
+        },
+        "badge_qYGyNF": {
+          "type": "badge",
+          "settings": {
+            "badge_text": "Phthalate free"
+          }
+        },
+        "badge_tx3qy4": {
+          "type": "badge",
+          "settings": {
+            "badge_text": "Sulfate free"
+          }
+        },
+        "badge_r4j6bW": {
+          "type": "badge",
+          "settings": {
+            "badge_text": "Carbon neutral"
+          }
+        }
+      },
+      "block_order": [
+        "badge_ct4dtX",
+        "badge_8Qznje",
+        "badge_qYGyNF",
+        "badge_tx3qy4",
+        "badge_r4j6bW"
+      ],
+      "name": "Maison Badges Bar",
+      "settings": {
+        "bg_color": "#E5E5F4",
+        "padding_top_desktop": 4,
+        "padding_bottom_desktop": 4,
+        "padding_left_desktop": 80,
+        "padding_right_desktop": 80,
+        "padding_top_mobile": 4,
+        "padding_bottom_mobile": 4,
+        "padding_left_mobile": 20,
+        "padding_right_mobile": 20,
+        "badge_alignment": "center",
+        "badge_alignment_mobile": "flex-start",
+        "icon_size": 22,
+        "icon_bg_color": "#1A365D",
+        "icon_checkmark_color": "#FFFFFF",
+        "icon_text_gap": 8,
+        "text_font_size_desktop": 14,
+        "text_font_size_mobile": 14,
+        "text_color": "#1A365D",
+        "divider_width": 1,
+        "divider_height": 13,
+        "divider_margin": 0,
+        "divider_color": "#CCCCE8",
+        "divider_width_mobile": 1,
+        "divider_height_mobile": 13,
+        "divider_margin_mobile": 0
+      }
     }
   },
   "order": [
@@ -743,6 +813,7 @@
     "maison_ingredients_BaKB6L",
     "maison_testimonials_7wmgNc",
     "maison_content_blocks_cAcXrb",
-    "maison_content_blocks_rcgVU9"
+    "maison_content_blocks_rcgVU9",
+    "maison_badges_bar_HcM3QC"
   ]
 }
