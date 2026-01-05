@@ -455,6 +455,6 @@ video-section-play-button {
     width: fit-content;
 }
 
-.instastory-title {
+.instastory-title, #instafeed, #stories {
   display: none !important;
 }
