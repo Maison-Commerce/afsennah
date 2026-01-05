@@ -14,35 +14,17 @@
               loading="lazy"
             />
           </div>
-        {% elsif section.settings.media_type == 'video' and section.settings.video_url != blank %}
+        {% elsif section.settings.media_type == 'video' and section.settings.video != blank %}
           <div class="maison_commerce_maison_sound_familiar__media-wrapper">
             <div class="maison_commerce_maison_sound_familiar__video-wrapper">
-              {% if section.settings.video_url.type == 'youtube' %}
-                <iframe 
-                  src="https://www.youtube.com/embed/{{ section.settings.video_url.id }}?autoplay=0&controls=1&rel=0"
-                  class="maison_commerce_maison_sound_familiar__video"
-                  frameborder="0"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowfullscreen
-                ></iframe>
-              {% elsif section.settings.video_url.type == 'vimeo' %}
-                <iframe 
-                  src="https://player.vimeo.com/video/{{ section.settings.video_url.id }}?autoplay=0&controls=1"
-                  class="maison_commerce_maison_sound_familiar__video"
-                  frameborder="0"
-                  allow="autoplay; fullscreen; picture-in-picture"
-                  allowfullscreen
-                ></iframe>
-              {% else %}
-                <video 
-                  class="maison_commerce_maison_sound_familiar__video"
-                  controls
-                  {% if section.settings.video_poster != blank %}poster="{{ section.settings.video_poster | image_url: width: 890 }}"{% endif %}
-                >
-                  <source src="{{ section.settings.video_url }}" type="video/mp4">
-                  Your browser does not support the video tag.
-                </video>
-              {% endif %}
+              {{ section.settings.video | video_tag: 
+                class: 'maison_commerce_maison_sound_familiar__video',
+                controls: true,
+                autoplay: false,
+                loop: false,
+                muted: false,
+                image_size: '890x'
+              }}
             </div>
           </div>
         {% endif %}
@@ -601,17 +583,10 @@
       "info": "Used when Media Type is set to Image"
     },
     {
-      "type": "video_url",
-      "id": "video_url",
-      "label": "Video URL",
-      "accept": ["youtube", "vimeo"],
+      "type": "video",
+      "id": "video",
+      "label": "Video",
       "info": "Used when Media Type is set to Video"
-    },
-    {
-      "type": "image_picker",
-      "id": "video_poster",
-      "label": "Video Poster Image",
-      "info": "Optional: Thumbnail image for video"
     },
     {
       "type": "range",
