@@ -67,7 +67,11 @@
           </button>
         </header>
 
-        {%- if settings.show_free_shipping_bar -%}
+        {%- if section.settings.enable_tiered_rewards -%}
+          <div class="cart-drawer__content-item">
+            {%- render 'tiered-rewards-bar' -%}
+          </div>
+        {%- elsif settings.show_free_shipping_bar -%}
           <div class="cart-drawer__content-item">
             {%- render 'free-shipping-bar' -%}
           </div>
@@ -386,6 +390,161 @@
       "step": 1,
       "label": "Low inventory threshold",
       "default": 10
+    },
+    {
+      "type": "header",
+      "content": "Tiered Rewards Bar"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_tiered_rewards",
+      "label": "Enable tiered rewards bar",
+      "default": true
+    },
+    {
+      "visible_if": "{{ section.settings.enable_tiered_rewards }}",
+      "type": "number",
+      "id": "free_shipping_threshold",
+      "label": "Free shipping threshold ($)",
+      "default": 100,
+      "info": "Amount in dollars (e.g., 100 for $100)"
+    },
+    {
+      "visible_if": "{{ section.settings.enable_tiered_rewards }}",
+      "type": "header",
+      "content": "Banner Settings"
+    },
+    {
+      "visible_if": "{{ section.settings.enable_tiered_rewards }}",
+      "type": "select",
+      "id": "banner_icon",
+      "label": "Banner icon",
+      "default": "gift",
+      "options": [
+        {
+          "value": "",
+          "label": "No icon"
+        },
+        {
+          "value": "gift",
+          "label": "Gift"
+        },
+        {
+          "value": "award",
+          "label": "Award"
+        },
+        {
+          "value": "star",
+          "label": "Star"
+        }
+      ]
+    },
+    {
+      "visible_if": "{{ section.settings.enable_tiered_rewards }}",
+      "type": "image_picker",
+      "id": "banner_custom_icon",
+      "label": "Banner custom icon"
+    },
+    {
+      "visible_if": "{{ section.settings.enable_tiered_rewards }}",
+      "type": "text",
+      "id": "banner_text",
+      "label": "Banner text (before achievement)",
+      "default": "Spend [AMOUNT] more to get Free [LABEL]!",
+      "info": "Use [AMOUNT] for amount and [LABEL] for next tier label"
+    },
+    {
+      "visible_if": "{{ section.settings.enable_tiered_rewards }}",
+      "type": "text",
+      "id": "banner_text_achieved",
+      "label": "Banner text (after free shipping)",
+      "default": "Free shipping added! Spend [AMOUNT] more to get Free [LABEL]!",
+      "info": "Use [AMOUNT] for amount and [LABEL] for next tier label"
+    },
+    {
+      "visible_if": "{{ section.settings.enable_tiered_rewards }}",
+      "type": "text",
+      "id": "banner_text_all_achieved",
+      "label": "Banner text (all achieved)",
+      "default": "All rewards unlocked!"
+    },
+    {
+      "visible_if": "{{ section.settings.enable_tiered_rewards }}",
+      "type": "header",
+      "content": "Gift Tier 1"
+    },
+    {
+      "visible_if": "{{ section.settings.enable_tiered_rewards }}",
+      "type": "number",
+      "id": "gift_tier_1_amount",
+      "label": "Gift tier 1 threshold ($)",
+      "default": 150,
+      "info": "Amount in dollars"
+    },
+    {
+      "visible_if": "{{ section.settings.enable_tiered_rewards }}",
+      "type": "text",
+      "id": "gift_tier_1_label",
+      "label": "Gift tier 1 label",
+      "default": "Mulberry Silk"
+    },
+    {
+      "visible_if": "{{ section.settings.enable_tiered_rewards }}",
+      "type": "image_picker",
+      "id": "gift_tier_1_image",
+      "label": "Gift tier 1 image"
+    },
+    {
+      "visible_if": "{{ section.settings.enable_tiered_rewards }}",
+      "type": "header",
+      "content": "Gift Tier 2"
+    },
+    {
+      "visible_if": "{{ section.settings.enable_tiered_rewards }}",
+      "type": "number",
+      "id": "gift_tier_2_amount",
+      "label": "Gift tier 2 threshold ($)",
+      "default": 200,
+      "info": "Amount in dollars"
+    },
+    {
+      "visible_if": "{{ section.settings.enable_tiered_rewards }}",
+      "type": "text",
+      "id": "gift_tier_2_label",
+      "label": "Gift tier 2 label",
+      "default": "Hair Growth oil (50ml)"
+    },
+    {
+      "visible_if": "{{ section.settings.enable_tiered_rewards }}",
+      "type": "image_picker",
+      "id": "gift_tier_2_image",
+      "label": "Gift tier 2 image"
+    },
+    {
+      "visible_if": "{{ section.settings.enable_tiered_rewards }}",
+      "type": "header",
+      "content": "Gift Tier 3"
+    },
+    {
+      "visible_if": "{{ section.settings.enable_tiered_rewards }}",
+      "type": "number",
+      "id": "gift_tier_3_amount",
+      "label": "Gift tier 3 threshold ($)",
+      "default": 250,
+      "info": "Amount in dollars"
+    },
+    {
+      "visible_if": "{{ section.settings.enable_tiered_rewards }}",
+      "type": "text",
+      "id": "gift_tier_3_label",
+      "label": "Gift tier 3 label",
+      "default": "Microneedle Scalp Roller"
+    },
+    {
+      "visible_if": "{{ section.settings.enable_tiered_rewards }}",
+      "type": "image_picker",
+      "id": "gift_tier_3_image",
+      "label": "Gift tier 3 image"
     },
     {
       "type": "header",
