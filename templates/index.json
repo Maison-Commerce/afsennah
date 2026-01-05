@@ -157,28 +157,32 @@
         "pain_point_9Kcfxm": {
           "type": "pain_point",
           "settings": {
-            "icon_type": "shampoo",
+            "icon_type": "custom",
+            "custom_icon": "shopify://shop_images/hugeicons_shampoo.svg",
             "text": "<p>You've tried every shampoo and oil, but <strong>nothing worked</strong></p>"
           }
         },
         "pain_point_LzyxLq": {
           "type": "pain_point",
           "settings": {
-            "icon_type": "scissors",
+            "icon_type": "custom",
+            "custom_icon": "shopify://shop_images/lucide_scissors.svg",
             "text": "<p>Tired of generic products that <strong>don't suit</strong> your hair?</p>"
           }
         },
         "pain_point_KbtPhr": {
           "type": "pain_point",
           "settings": {
-            "icon_type": "brush",
+            "icon_type": "custom",
+            "custom_icon": "shopify://shop_images/Pets-Hair-Brush--Streamline-Ultimate.svg",
             "text": "<p>You see more <strong>hair in brush</strong> daily, affecting your confidence.</p>"
           }
         },
         "pain_point_QVYdez": {
           "type": "pain_point",
           "settings": {
-            "icon_type": "solutions",
+            "icon_type": "custom",
+            "custom_icon": "shopify://shop_images/tabler_curly-loop.svg",
             "text": "<p>you are <strong>looking for solutions</strong> that can solve this once and for all</p>"
           }
         }
