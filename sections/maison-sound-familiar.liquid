@@ -16,15 +16,20 @@
           </div>
         {% elsif section.settings.media_type == 'video' and section.settings.video != blank %}
           <div class="maison_commerce_maison_sound_familiar__media-wrapper">
-            <div class="maison_commerce_maison_sound_familiar__video-wrapper">
+            <div class="maison_commerce_maison_sound_familiar__video-wrapper" data-video-wrapper="{{ section.id }}">
               {{ section.settings.video | video_tag: 
                 class: 'maison_commerce_maison_sound_familiar__video',
-                controls: true,
+                controls: false,
                 autoplay: false,
                 loop: false,
                 muted: false,
                 image_size: '890x'
               }}
+              <button class="maison_commerce_maison_sound_familiar__play-button" aria-label="Play video" data-play-button="{{ section.id }}">
+                <svg class="maison_commerce_maison_sound_familiar__play-icon" width="45" height="45" viewBox="0 0 45 45" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M18 15L30 22.5L18 30V15Z" fill="white"/>
+                </svg>
+              </button>
             </div>
           </div>
         {% endif %}
@@ -207,6 +212,55 @@
     height: 100%;
     object-fit: cover;
     border-radius: {{ section.settings.media_border_radius }}px;
+    cursor: pointer;
+  }
+
+  /* Play Button */
+  .maison_commerce_maison_sound_familiar__play-button {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 75px;
+    height: 75px;
+    background-color: rgba(0, 0, 0, 0.6);
+    border: none;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 10;
+    transition: background-color 0.3s ease, opacity 0.3s ease;
+    padding: 0;
+  }
+
+  .maison_commerce_maison_sound_familiar__play-button:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+  }
+
+  .maison_commerce_maison_sound_familiar__play-button.hidden {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .maison_commerce_maison_sound_familiar__play-icon {
+    width: 45px;
+    height: 45px;
+    flex-shrink: 0;
+  }
+
+  /* Pause icon (shown when video is playing) */
+  .maison_commerce_maison_sound_familiar__play-button.playing .maison_commerce_maison_sound_familiar__play-icon {
+    display: none;
+  }
+
+  .maison_commerce_maison_sound_familiar__play-button.playing::after {
+    content: '';
+    width: 30px;
+    height: 30px;
+    background-color: white;
+    clip-path: polygon(0% 0%, 0% 100%, 35% 100%, 35% 0%, 65% 0%, 65% 100%, 100% 100%, 100% 0%);
   }
 
   /* Content Column */
@@ -398,6 +452,54 @@
     }
   }
 </style>
+
+<script>
+  (function() {
+    const videoWrapper = document.querySelector('[data-video-wrapper="{{ section.id }}"]');
+    if (!videoWrapper) return;
+
+    const video = videoWrapper.querySelector('.maison_commerce_maison_sound_familiar__video');
+    const playButton = videoWrapper.querySelector('[data-play-button="{{ section.id }}"]');
+    
+    if (!video || !playButton) return;
+
+    // Handle play button click
+    playButton.addEventListener('click', function(e) {
+      e.stopPropagation();
+      toggleVideo();
+    });
+
+    // Handle video click (for pause)
+    video.addEventListener('click', function(e) {
+      e.stopPropagation();
+      toggleVideo();
+    });
+
+    function toggleVideo() {
+      if (video.paused) {
+        video.play();
+        playButton.classList.add('playing');
+      } else {
+        video.pause();
+        playButton.classList.remove('playing');
+      }
+    }
+
+    // Update button visibility based on video state
+    video.addEventListener('play', function() {
+      playButton.classList.add('playing');
+    });
+
+    video.addEventListener('pause', function() {
+      playButton.classList.remove('playing');
+    });
+
+    // Hide button when video ends
+    video.addEventListener('ended', function() {
+      playButton.classList.remove('playing');
+    });
+  })();
+</script>
 
 {% schema %}
 {
