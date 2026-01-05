@@ -246,18 +246,114 @@
         "cta_text_color": "#1a365d",
         "cta_border_radius": 12,
         "cta_padding_vertical": 16,
-        "cta_padding_horizontal": 20,
+        "cta_padding_horizontal": 16,
         "cta_gap": 12,
         "cta_height_desktop": 56,
         "cta_height_mobile": 44,
         "cta_font_size_desktop": 16,
         "cta_font_size_mobile": 14
       }
+    },
+    "maison_ingredients_BaKB6L": {
+      "type": "maison-ingredients",
+      "blocks": {
+        "ingredient_cGnKyx": {
+          "type": "ingredient",
+          "settings": {
+            "ingredient_name": "Rosemary Oil",
+            "ingredient_description": "Clinically shown to rival minoxidil for hair regrowth"
+          }
+        },
+        "ingredient_FA3wai": {
+          "type": "ingredient",
+          "settings": {
+            "ingredient_name": "Rahua Oil",
+            "ingredient_description": "Restores elasticity and repairs damage"
+          }
+        },
+        "ingredient_LKzji9": {
+          "type": "ingredient",
+          "settings": {
+            "ingredient_name": "Hibiscus Extract",
+            "ingredient_description": "Strengthens roots and boosts natural shine"
+          }
+        },
+        "ingredient_q4w7FL": {
+          "type": "ingredient",
+          "settings": {
+            "ingredient_name": "Saffron Oil",
+            "ingredient_description": "Stimulates follicles and soothes scalp inflammation"
+          }
+        },
+        "ingredient_pDfDF4": {
+          "type": "ingredient",
+          "settings": {
+            "ingredient_name": "Prickly Pear Seed Oil",
+            "ingredient_description": "Rich in vitamin E & fatty acids for deep nourishment"
+          }
+        }
+      },
+      "block_order": [
+        "ingredient_cGnKyx",
+        "ingredient_FA3wai",
+        "ingredient_LKzji9",
+        "ingredient_q4w7FL",
+        "ingredient_pDfDF4"
+      ],
+      "name": "Maison Ingredients",
+      "settings": {
+        "section_bg_color": "#FFFFFF",
+        "padding_top_desktop": 70,
+        "padding_bottom_desktop": 70,
+        "padding_left_desktop": 70,
+        "padding_right_desktop": 70,
+        "padding_top_mobile": 32,
+        "padding_bottom_mobile": 32,
+        "padding_left_mobile": 20,
+        "padding_right_mobile": 20,
+        "heading": "Ingredients by Nature. Formulas by Science.",
+        "heading_font_size_desktop": 32,
+        "heading_font_size_mobile": 24,
+        "heading_line_height_desktop": 1.3,
+        "heading_line_height_mobile": 1.4,
+        "heading_color": "#15130E",
+        "subheading": "Every ingredient is carefully selected for its proven benefits to hair and scalp health",
+        "subheading_font_size_desktop": 18,
+        "subheading_font_size_mobile": 18,
+        "subheading_color": "rgba(47,57,54,0.75)",
+        "heading_subheading_gap": 12,
+        "heading_max_width": 600,
+        "heading_gap_desktop": 44,
+        "heading_gap_mobile": 32,
+        "card_bg_color": "#F7F7FC",
+        "card_border_color": "rgba(0,0,0,0.05)",
+        "card_border_radius_desktop": 24,
+        "card_border_radius_mobile": 18,
+        "card_padding_desktop": 24,
+        "card_padding_mobile": 18,
+        "card_width_desktop": 413,
+        "card_gap_desktop": 18,
+        "card_gap_mobile": 16,
+        "card_content_gap_desktop": 19,
+        "card_content_gap_mobile": 18,
+        "image_width_desktop": 151,
+        "image_height_desktop": 121,
+        "image_width_mobile": 100,
+        "image_height_mobile": 80,
+        "text_gap": 4,
+        "name_font_size_desktop": 18,
+        "name_font_size_mobile": 16,
+        "name_color": "#2F3936",
+        "description_font_size_desktop": 16,
+        "description_font_size_mobile": 14,
+        "description_color": "rgba(47,57,54,0.75)"
+      }
     }
   },
   "order": [
     "maison_banner_wt47rY",
     "maison_scroll_img_j4337h",
-    "maison_sound_familiar_fAp9WJ"
+    "maison_sound_familiar_fAp9WJ",
+    "maison_ingredients_BaKB6L"
   ]
 }
