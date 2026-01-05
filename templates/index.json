@@ -1151,6 +1151,77 @@
         "drop_right_width": 319,
         "drop_right_height": 326
       }
+    },
+    "maison_features_bar_EdfM3g": {
+      "type": "maison-features-bar",
+      "blocks": {
+        "feature_kJetHa": {
+          "type": "feature",
+          "settings": {
+            "icon_type": "shipping",
+            "custom_icon": "shopify://shop_images/proicons_box.svg",
+            "title": "Fast Shipping",
+            "subtitle": "Delivery in 1-2 business days"
+          }
+        },
+        "feature_MktBar": {
+          "type": "feature",
+          "settings": {
+            "icon_type": "subscribe",
+            "custom_icon": "shopify://shop_images/waf21fwf.svg",
+            "title": "Subscribe & Save",
+            "subtitle": "Save 15% with auto-delivery"
+          }
+        },
+        "feature_W7p3wR": {
+          "type": "feature",
+          "settings": {
+            "icon_type": "support",
+            "custom_icon": "shopify://shop_images/wafawf2fegfe.svg",
+            "title": "Exceptional Support",
+            "subtitle": "Real humans, real help, 7 days a week"
+          }
+        }
+      },
+      "block_order": [
+        "feature_kJetHa",
+        "feature_MktBar",
+        "feature_W7p3wR"
+      ],
+      "name": "Maison Features Bar",
+      "settings": {
+        "bg_color": "#FFFFFF",
+        "max_width": 1280,
+        "padding_top_desktop": 32,
+        "padding_bottom_desktop": 44,
+        "padding_left_desktop": 60,
+        "padding_right_desktop": 60,
+        "padding_top_mobile": 32,
+        "padding_bottom_mobile": 32,
+        "padding_left_mobile": 20,
+        "padding_right_mobile": 20,
+        "feature_gap_desktop": 32,
+        "feature_gap_mobile": 18,
+        "feature_padding_desktop": 18,
+        "feature_padding_mobile": 8,
+        "icon_content_gap_desktop": 24,
+        "icon_content_gap_mobile": 24,
+        "icon_bg_color": "#FBEBDD",
+        "icon_border_radius": 90,
+        "icon_size_desktop": 60,
+        "icon_size_mobile": 44,
+        "icon_inner_size_desktop": 24,
+        "icon_inner_size_mobile": 18,
+        "title_font_size_desktop": 24,
+        "title_font_size_mobile": 20,
+        "title_line_height_desktop": 1.4,
+        "title_line_height_mobile": 1.4,
+        "title_color": "#2C2926",
+        "title_subtitle_gap": 4,
+        "subtitle_font_size_desktop": 16,
+        "subtitle_font_size_mobile": 16,
+        "subtitle_color": "rgba(47,57,54,0.75)"
+      }
     }
   },
   "order": [
@@ -1164,6 +1235,7 @@
     "maison_badges_bar_HcM3QC",
     "maison_products_grid_YtGCRk",
     "maison_instagram_scroll_REyGMj",
-    "maison_cta_hero_AMEcbz"
+    "maison_cta_hero_AMEcbz",
+    "maison_features_bar_EdfM3g"
   ]
 }
