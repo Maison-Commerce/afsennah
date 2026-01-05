@@ -454,3 +454,10 @@ video-section-play-button {
     margin-top: 8px;
     width: fit-content;
 }
+
+
+/* CART DRAWER */
+.js-cart-drawer {
+    margin: 10px;
+    height: calc(100% - 20px);
+}
