@@ -33,36 +33,38 @@
   <div class="maison_commerce_maison_cta_hero__container">
     <div class="maison_commerce_maison_cta_hero__content">
       <div class="maison_commerce_maison_cta_hero__content-top">
-        {% if section.settings.show_rating %}
-            <div class="maison_commerce_maison_cta_hero__rating">
-            <div class="maison_commerce_maison_cta_hero__stars">
-                {% assign rating_value = section.settings.rating_value | default: 5 | times: 1.0 %}
-                {% assign rating_rounded = rating_value | round %}
-                {% for i in (1..5) %}
-                {% if i <= rating_rounded %}
-                    <svg class="maison_commerce_maison_cta_hero__star" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M8 0L10.1631 5.52786L16 6.11146L12 10.0557L12.9443 16L8 13.5279L3.05573 16L4 10.0557L0 6.11146L5.83686 5.52786L8 0Z" fill="#FF8C00"/>
-                    </svg>
-                {% else %}
-                    <svg class="maison_commerce_maison_cta_hero__star" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M8 0L10.1631 5.52786L16 6.11146L12 10.0557L12.9443 16L8 13.5279L3.05573 16L4 10.0557L0 6.11146L5.83686 5.52786L8 0Z" fill="#E0E0E0"/>
-                    </svg>
+        <div class="maison_commerce_maison_cta_hero__content-top-head">
+            {% if section.settings.show_rating %}
+                <div class="maison_commerce_maison_cta_hero__rating">
+                <div class="maison_commerce_maison_cta_hero__stars">
+                    {% assign rating_value = section.settings.rating_value | default: 5 | times: 1.0 %}
+                    {% assign rating_rounded = rating_value | round %}
+                    {% for i in (1..5) %}
+                    {% if i <= rating_rounded %}
+                        <svg class="maison_commerce_maison_cta_hero__star" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M8 0L10.1631 5.52786L16 6.11146L12 10.0557L12.9443 16L8 13.5279L3.05573 16L4 10.0557L0 6.11146L5.83686 5.52786L8 0Z" fill="#FF8C00"/>
+                        </svg>
+                    {% else %}
+                        <svg class="maison_commerce_maison_cta_hero__star" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M8 0L10.1631 5.52786L16 6.11146L12 10.0557L12.9443 16L8 13.5279L3.05573 16L4 10.0557L0 6.11146L5.83686 5.52786L8 0Z" fill="#E0E0E0"/>
+                        </svg>
+                    {% endif %}
+                    {% endfor %}
+                </div>
+                {% if section.settings.rating_text != blank %}
+                    <div class="maison_commerce_maison_cta_hero__rating-text">
+                    {{ section.settings.rating_text }}
+                    </div>
                 {% endif %}
-                {% endfor %}
-            </div>
-            {% if section.settings.rating_text != blank %}
-                <div class="maison_commerce_maison_cta_hero__rating-text">
-                {{ section.settings.rating_text }}
                 </div>
             {% endif %}
-            </div>
-        {% endif %}
 
-        {% if section.settings.heading != blank %}
-            <h1 class="maison_commerce_maison_cta_hero__heading">
-            {{ section.settings.heading }}
-            </h1>
-        {% endif %}
+            {% if section.settings.heading != blank %}
+                <h1 class="maison_commerce_maison_cta_hero__heading">
+                {{ section.settings.heading }}
+                </h1>
+            {% endif %}
+        </div>
 
         {% if section.settings.body_text != blank %}
             <div class="maison_commerce_maison_cta_hero__body-text">
@@ -275,6 +277,10 @@
     line-height: 1.5;
     color: {{ section.settings.body_text_color }};
     max-width: {{ section.settings.body_text_max_width }}px;
+  }
+
+  .maison_commerce_maison_cta_hero__body-text p{
+    margin: 0;
   }
 
   @media (max-width: 768px) {
