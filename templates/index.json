@@ -398,12 +398,27 @@
             "customer_name": "Andreea B.",
             "show_verified_badge": true
           }
+        },
+        "testimonial_UgV9eM": {
+          "type": "testimonial",
+          "settings": {
+            "before_image": "shopify://shop_images/96b06679f1a4b5e39ab6219c681bcb21d694b5bb.png",
+            "before_label": "Before",
+            "after_image": "shopify://shop_images/772defb52073d081faa34f16c48213b17e5d844d.png",
+            "after_label": "After 1 Months",
+            "show_rating": true,
+            "rating": 5,
+            "review_text": "Using 1,5 year the hair oil and for 1 month the liquid vitamine. These are the results",
+            "customer_name": "Lauren P.",
+            "show_verified_badge": true
+          }
         }
       },
       "block_order": [
         "testimonial_wzdhLp",
         "testimonial_GWqx6c",
-        "testimonial_nDJNNf"
+        "testimonial_nDJNNf",
+        "testimonial_UgV9eM"
       ],
       "name": "Maison Testimonials",
       "settings": {
