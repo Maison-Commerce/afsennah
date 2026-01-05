@@ -143,6 +143,7 @@
         "padding_left_mobile": 0,
         "padding_right_mobile": 0,
         "scroll_duration": 30,
+        "scroll_duration_mobile": 10,
         "pause_on_hover": true,
         "logo_height_desktop": 60,
         "logo_height_mobile": 45,
