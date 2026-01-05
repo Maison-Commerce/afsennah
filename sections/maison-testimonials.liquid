@@ -711,7 +711,7 @@
     const swiperContainer = document.querySelector('.maison_commerce_maison_testimonials__swiper');
     
     if (swiperContainer) {
-      const swiper = new Swiper('#shopify-section-{{ section.id }} .maison_commerce_maison_testimonials__swiper', {
+      const swiper = new Swiper('.maison_commerce_maison_testimonials__swiper', {
         slidesPerView: 'auto',
         spaceBetween: {{ section.settings.card_gap_desktop }},
         loop: {{ section.settings.enable_loop }},
