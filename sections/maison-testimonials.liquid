@@ -829,21 +829,21 @@
           const containerWidth = swiper.width;
           const needsNavigation = wrapperWidth > containerWidth && !swiper.isLocked;
           
+          // Check if we're on mobile (768px breakpoint matches CSS)
+          const isMobile = window.innerWidth <= 768;
+          
           const navDesktop = sectionElement.querySelector('.maison_commerce_maison_testimonials__nav-desktop');
           const navMobile = sectionElement.querySelector('.maison_commerce_maison_testimonials__nav-mobile');
           const divider = sectionElement.querySelector('.maison_commerce_maison_testimonials__divider');
           
           if (navDesktop) {
-            navDesktop.style.display = needsNavigation ? 'flex' : 'none';
+            // Desktop navigation: show on desktop only when navigation is needed
+            navDesktop.style.display = (!isMobile && needsNavigation) ? 'flex' : 'none';
           }
           
           if (navMobile) {
-            // Only show on mobile if navigation is needed
-            if (needsNavigation) {
-              navMobile.style.display = 'flex';
-            } else {
-              navMobile.style.display = 'none';
-            }
+            // Mobile navigation: show on mobile only when navigation is needed
+            navMobile.style.display = (isMobile && needsNavigation) ? 'flex' : 'none';
           }
           
           if (pagination) {
