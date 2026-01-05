@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "type": "footer",
   "name": "Footer Group",
@@ -6,13 +15,14 @@
       "type": "apps",
       "blocks": {
         "instafeed_story_app_block_feeds_JcXh98": {
-          "type": "shopify:\/\/apps\/instafeed-story\/blocks\/app-block-feeds\/4169bff3-1d6b-44ad-9377-2ebc3d31f01c",
+          "type": "shopify://apps/instafeed/blocks/app-block-feeds/4169bff3-1d6b-44ad-9377-2ebc3d31f01c",
           "settings": {}
         }
       },
       "block_order": [
         "instafeed_story_app_block_feeds_JcXh98"
       ],
+      "disabled": true,
       "custom_css": [
         "{margin-top: 0; padding-bottom: 0;}"
       ],
@@ -100,8 +110,8 @@
           "type": "video",
           "settings": {
             "width": "third",
-            "video_shopify": "shopify:\/\/files\/videos\/bb8d445b7e7e48388fdb39c1ad89e8f4.mov",
-            "video_external": "https:\/\/www.youtube.com\/watch?v=_9VUPq3SxOc",
+            "video_shopify": "shopify://files/videos/bb8d445b7e7e48388fdb39c1ad89e8f4.mov",
+            "video_external": "https://www.youtube.com/watch?v=_9VUPq3SxOc",
             "video_description": "",
             "autoplay": false
           }
@@ -111,6 +121,7 @@
         "text_NzKGGw",
         "video_VjcGJf"
       ],
+      "disabled": true,
       "custom_css": [
         "{position: relative; top: 32px;}"
       ],
@@ -128,8 +139,8 @@
           "type": "text",
           "settings": {
             "title": "",
-            "text": "<p>Custom Haircare powered by science-backed ingredients, 100% clean formulas, and expert guidance made to target your hair goals and transform your routine from the root up!<\/p>",
-            "image": "shopify:\/\/shop_images\/Afsennah_Logo.png",
+            "text": "<p>Custom Haircare powered by science-backed ingredients, 100% clean formulas, and expert guidance made to target your hair goals and transform your routine from the root up!</p>",
+            "image": "shopify://shop_images/Afsennah_Logo.png",
             "image_width": 160,
             "show_social_icons": true,
             "soc_icons_large": true,
@@ -154,7 +165,7 @@
           "type": "newsletter",
           "settings": {
             "title": "Newsletter",
-            "text": "<p>Get Deals & Hair Tips<\/p>",
+            "text": "<p>Get Deals & Hair Tips</p>",
             "button_style": "inherit",
             "show_social_icons": false,
             "soc_icons_large": false
