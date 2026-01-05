@@ -260,6 +260,7 @@
         "ingredient_cGnKyx": {
           "type": "ingredient",
           "settings": {
+            "ingredient_image": "shopify://shop_images/Rectangle_4925.png",
             "ingredient_name": "Rosemary Oil",
             "ingredient_description": "Clinically shown to rival minoxidil for hair regrowth"
           }
@@ -267,6 +268,7 @@
         "ingredient_FA3wai": {
           "type": "ingredient",
           "settings": {
+            "ingredient_image": "shopify://shop_images/awdawfawf.png",
             "ingredient_name": "Rahua Oil",
             "ingredient_description": "Restores elasticity and repairs damage"
           }
@@ -274,6 +276,7 @@
         "ingredient_LKzji9": {
           "type": "ingredient",
           "settings": {
+            "ingredient_image": "shopify://shop_images/wafawfw.png",
             "ingredient_name": "Hibiscus Extract",
             "ingredient_description": "Strengthens roots and boosts natural shine"
           }
@@ -281,6 +284,7 @@
         "ingredient_q4w7FL": {
           "type": "ingredient",
           "settings": {
+            "ingredient_image": "shopify://shop_images/agawgawg.png",
             "ingredient_name": "Saffron Oil",
             "ingredient_description": "Stimulates follicles and soothes scalp inflammation"
           }
@@ -288,6 +292,7 @@
         "ingredient_pDfDF4": {
           "type": "ingredient",
           "settings": {
+            "ingredient_image": "shopify://shop_images/gawg23ge.png",
             "ingredient_name": "Prickly Pear Seed Oil",
             "ingredient_description": "Rich in vitamin E & fatty acids for deep nourishment"
           }
