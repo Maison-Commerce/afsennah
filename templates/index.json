@@ -508,6 +508,158 @@
         "pagination_color": "#2f3936",
         "pagination_active_color": "#15130e"
       }
+    },
+    "maison_content_blocks_rcgVU9": {
+      "type": "maison-content-blocks",
+      "blocks": {
+        "visual_DJNNLN": {
+          "type": "visual",
+          "settings": {
+            "visual_image": "shopify://shop_images/dcd7ab602ee67f9afe3d182307e58a34b77fe6c4.png",
+            "show_features": true
+          }
+        },
+        "feature_NjxwaU": {
+          "type": "feature",
+          "settings": {
+            "visual_block_id": "visual-1",
+            "feature_text": "Custom scalp formulas",
+            "position_top": 20,
+            "position_left": 10
+          }
+        },
+        "feature_iYymyH": {
+          "type": "feature",
+          "settings": {
+            "visual_block_id": "visual-1",
+            "feature_text": "Boosts hair growing",
+            "position_top": 45,
+            "position_left": 80
+          }
+        },
+        "feature_hphnMx": {
+          "type": "feature",
+          "settings": {
+            "visual_block_id": "visual-1",
+            "feature_text": "Improves scalp health",
+            "position_top": 70,
+            "position_left": 60
+          }
+        },
+        "feature_8qhVPc": {
+          "type": "feature",
+          "settings": {
+            "visual_block_id": "visual-1",
+            "feature_text": "100% Natural",
+            "position_top": 80,
+            "position_left": 10
+          }
+        },
+        "title_DWJpGY": {
+          "type": "title",
+          "settings": {
+            "title_text": "Born from Personal Struggle"
+          }
+        },
+        "text_P7nydg": {
+          "type": "text",
+          "settings": {
+            "text_content": "<p>Afsennah was born from personal hair loss experience. After many failed products, it was clear that one-size-fits-all solutions don’t work for individual hair and scalp health.</p><p>I became a <strong>certified trichologist</strong> and studied scalp science. I created my first custom oil for my sensitive scalp and stress-related shedding.</p><p>The results were tangible: shedding slowed within weeks, new growth followed, and my confidence returned.</p><p>Over <strong>150,000 </strong>women trust Afsennah. Each formula is crafted with expertise and care, as hair care should be personal.</p>"
+          }
+        },
+        "button_bYXUUh": {
+          "type": "button",
+          "settings": {
+            "button_text": "Start Your Free Consultation",
+            "button_url": ""
+          }
+        }
+      },
+      "block_order": [
+        "visual_DJNNLN",
+        "feature_NjxwaU",
+        "feature_iYymyH",
+        "feature_hphnMx",
+        "feature_8qhVPc",
+        "title_DWJpGY",
+        "text_P7nydg",
+        "button_bYXUUh"
+      ],
+      "name": "Maison Content Blocks",
+      "settings": {
+        "bg_gradient_start": "#FFFFFF",
+        "bg_gradient_end": "#F8F7FB",
+        "padding_top_desktop": 48,
+        "padding_bottom_desktop": 32,
+        "padding_left_desktop": 80,
+        "padding_right_desktop": 80,
+        "padding_top_mobile": 32,
+        "padding_bottom_mobile": 32,
+        "padding_left_mobile": 20,
+        "padding_right_mobile": 20,
+        "content_gap_desktop": 40,
+        "content_gap_mobile": 18,
+        "content_align_desktop": "center",
+        "image_width_desktop": 50,
+        "image_border_radius_desktop": 32,
+        "image_border_radius_mobile": 18,
+        "image_aspect_ratio": "1 / 1",
+        "image_order_mobile": 1,
+        "visual_width_desktop": 50,
+        "visual_bg_color": "#EBEBF6",
+        "visual_min_height_desktop": 594,
+        "visual_min_height_mobile": 400,
+        "visual_border_radius_desktop": 32,
+        "visual_border_radius_mobile": 18,
+        "visual_order_mobile": 1,
+        "feature_border_radius": 93,
+        "feature_padding_vertical": 12,
+        "feature_padding_horizontal": 19,
+        "feature_gap": 4,
+        "feature_icon_size": 21,
+        "feature_font_size": 15,
+        "feature_text_color": "#1A365D",
+        "feature_shadow": "0px 2px 8px rgba(0,0,0,0.1)",
+        "content_width_desktop": 50,
+        "content_bg_color": "#FFFFFF",
+        "content_border_color": "#F1F1F9",
+        "content_border_radius_desktop": 18,
+        "content_border_radius_mobile": 18,
+        "content_padding_desktop": 44,
+        "content_padding_mobile": 18,
+        "content_inner_gap": 18,
+        "content_order_mobile": 2,
+        "title_font_size_desktop": 32,
+        "title_font_size_mobile": 24,
+        "title_line_height_desktop": 1.3,
+        "title_line_height_mobile": 1.4,
+        "title_color": "#15130E",
+        "text_font_size_desktop": 16,
+        "text_font_size_mobile": 14,
+        "text_color": "rgba(21,19,14,0.75)",
+        "text_paragraph_gap": 8,
+        "button_bg_color": "#FBF7BD",
+        "button_text_color": "#1A365D",
+        "button_border_radius": 12,
+        "button_padding_vertical": 16,
+        "button_padding_horizontal": 32,
+        "button_gap": 12,
+        "button_height_desktop": 56,
+        "button_height_mobile": 44,
+        "button_font_size_desktop": 16,
+        "button_font_size_mobile": 14,
+        "quote_bg_color": "#FFFEE9",
+        "quote_border_radius": 20,
+        "quote_padding": 16,
+        "quote_gap": 12,
+        "quote_text_font_size": 14,
+        "quote_text_color": "#000000",
+        "quote_author_border_radius": 56,
+        "quote_author_padding_vertical": 4,
+        "quote_author_padding_horizontal": 12,
+        "quote_author_font_size": 12,
+        "quote_author_color": "#2C2926"
+      }
     }
   },
   "order": [
@@ -515,6 +667,7 @@
     "maison_scroll_img_j4337h",
     "maison_sound_familiar_fAp9WJ",
     "maison_ingredients_BaKB6L",
-    "maison_testimonials_7wmgNc"
+    "maison_testimonials_7wmgNc",
+    "maison_content_blocks_rcgVU9"
   ]
 }
