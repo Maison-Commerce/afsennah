@@ -14,7 +14,7 @@
             {% if block.type == 'image' %}
               <div class="maison_commerce_maison_instagram_scroll__item" {{ block.shopify_attributes }}>
                 {% if block.settings.image != blank %}
-                  <a href="{{ block.settings.image_url | default: '#' }}" class="maison_commerce_maison_instagram_scroll__link">
+                  <div class="maison_commerce_maison_instagram_scroll__link">
                     <div class="maison_commerce_maison_instagram_scroll__image-wrapper">
                       <img 
                         src="{{ block.settings.image | image_url: width: 500 }}" 
@@ -25,7 +25,7 @@
                         loading="lazy"
                       />
                     </div>
-                  </a>
+                </div>
                 {% endif %}
               </div>
             {% endif %}
