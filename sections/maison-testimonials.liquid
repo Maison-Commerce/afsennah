@@ -751,8 +751,9 @@
       }
 
       const swiperContainer = sectionElement.querySelector('.maison_commerce_maison_testimonials__swiper');
-      const nextButton = sectionElement.querySelector('.maison_commerce_maison_testimonials__nav-button--next');
-      const prevButton = sectionElement.querySelector('.maison_commerce_maison_testimonials__nav-button--prev');
+      // Find all navigation buttons (both desktop and mobile)
+      const nextButtons = sectionElement.querySelectorAll('.maison_commerce_maison_testimonials__nav-button--next');
+      const prevButtons = sectionElement.querySelectorAll('.maison_commerce_maison_testimonials__nav-button--prev');
       const pagination = sectionElement.querySelector('.maison_commerce_maison_testimonials__pagination');
       
       if (!swiperContainer || typeof Swiper === 'undefined') {
@@ -780,10 +781,11 @@
           },
         };
 
-        if (nextButton && prevButton) {
+        // Connect first set of navigation buttons to Swiper (desktop)
+        if (nextButtons.length > 0 && prevButtons.length > 0) {
           swiperConfig.navigation = {
-            nextEl: nextButton,
-            prevEl: prevButton,
+            nextEl: nextButtons[0],
+            prevEl: prevButtons[0],
           };
         }
 
@@ -798,6 +800,27 @@
         }
 
         const swiper = new Swiper(swiperContainer, swiperConfig);
+        
+        // Manually connect additional navigation buttons (mobile) to Swiper
+        if (nextButtons.length > 1) {
+          nextButtons.forEach(function(button, index) {
+            if (index > 0) {
+              button.addEventListener('click', function() {
+                swiper.slideNext();
+              });
+            }
+          });
+        }
+        
+        if (prevButtons.length > 1) {
+          prevButtons.forEach(function(button, index) {
+            if (index > 0) {
+              button.addEventListener('click', function() {
+                swiper.slidePrev();
+              });
+            }
+          });
+        }
         
         // Update progress bar
         const dividerProgress = sectionElement.querySelector('.maison_commerce_maison_testimonials__divider-progress');
