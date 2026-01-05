@@ -196,13 +196,14 @@
 
   /* Visual Block */
   .maison_commerce_maison_content_blocks__visual-block {
-    flex: {{ section.settings.visual_width_desktop }}%;
+    width: 100%;
+    max-width: 620px;
+    height: auto;
     min-width: 0;
     position: relative;
     border-radius: {{ section.settings.visual_border_radius_desktop }}px;
     overflow: hidden;
     background: {{ section.settings.visual_bg_color }};
-    min-height: {{ section.settings.visual_min_height_desktop }}px;
   }
 
   @media (max-width: 768px) {
