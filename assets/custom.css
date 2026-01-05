@@ -482,6 +482,9 @@ video-section-play-button {
     letter-spacing: 0%;
     vertical-align: middle;
 
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
 .title-dot {
