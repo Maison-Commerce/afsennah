@@ -39,7 +39,7 @@
     {%- render 'doc-head-styles' -%}
   </style>
 
-  <style>
+  {% comment %} <style>
     /* Maison Commerce Custom Fonts */
 
     /* Vanilla Ravioli - Heading Font */
@@ -142,7 +142,7 @@
       font-style: normal;
       font-display: swap;
     }
-  </style>
+  </style> {% endcomment %}
   {{ 'main.css' | asset_url | stylesheet_tag: preload: true }}
   {{ 'custom.css' | asset_url | stylesheet_tag: preload: true }}
 
