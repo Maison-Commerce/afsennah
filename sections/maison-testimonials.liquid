@@ -822,6 +822,52 @@
           });
         }
         
+        // Function to show/hide navigation based on whether scrolling is needed
+        function updateNavigationVisibility() {
+          // Check if swiper can scroll by comparing wrapper width to container width
+          const wrapperWidth = swiper.wrapperEl.scrollWidth;
+          const containerWidth = swiper.width;
+          const needsNavigation = wrapperWidth > containerWidth && !swiper.isLocked;
+          
+          const navDesktop = sectionElement.querySelector('.maison_commerce_maison_testimonials__nav-desktop');
+          const navMobile = sectionElement.querySelector('.maison_commerce_maison_testimonials__nav-mobile');
+          
+          if (navDesktop) {
+            navDesktop.style.display = needsNavigation ? 'flex' : 'none';
+          }
+          
+          if (navMobile) {
+            // Only show on mobile if navigation is needed
+            if (needsNavigation) {
+              navMobile.style.display = 'flex';
+            } else {
+              navMobile.style.display = 'none';
+            }
+          }
+          
+          if (pagination) {
+            pagination.style.display = needsNavigation ? 'flex' : 'none';
+          }
+        }
+        
+        // Update navigation visibility on init, resize, and after slides are rendered
+        swiper.on('init', function() {
+          setTimeout(updateNavigationVisibility, 100);
+        });
+        
+        swiper.on('resize', function() {
+          setTimeout(updateNavigationVisibility, 100);
+        });
+        
+        swiper.on('slideChange', function() {
+          updateNavigationVisibility();
+        });
+        
+        // Initial check after a short delay to ensure Swiper is fully initialized
+        setTimeout(function() {
+          updateNavigationVisibility();
+        }, 200);
+        
         // Update progress bar
         const dividerProgress = sectionElement.querySelector('.maison_commerce_maison_testimonials__divider-progress');
         if (dividerProgress) {
