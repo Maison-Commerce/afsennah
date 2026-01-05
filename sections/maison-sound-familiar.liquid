@@ -1,0 +1,1043 @@
+<section class="maison_commerce_maison_sound_familiar">
+  <div class="maison_commerce_maison_sound_familiar__container">
+    <div class="maison_commerce_maison_sound_familiar__card">
+      <div class="maison_commerce_maison_sound_familiar__content-wrapper">
+        <!-- Left Column: Video/Image -->
+        {% if section.settings.media_type == 'image' and section.settings.media_image != blank %}
+          <div class="maison_commerce_maison_sound_familiar__media-wrapper">
+            <img 
+              src="{{ section.settings.media_image | image_url: width: 890 }}" 
+              alt="{{ section.settings.media_image.alt | escape }}"
+              class="maison_commerce_maison_sound_familiar__media-image"
+              width="{{ section.settings.media_image.width }}"
+              height="{{ section.settings.media_image.height }}"
+              loading="lazy"
+            />
+          </div>
+        {% elsif section.settings.media_type == 'video' and section.settings.video_url != blank %}
+          <div class="maison_commerce_maison_sound_familiar__media-wrapper">
+            <div class="maison_commerce_maison_sound_familiar__video-wrapper">
+              {% if section.settings.video_url.type == 'youtube' %}
+                <iframe 
+                  src="https://www.youtube.com/embed/{{ section.settings.video_url.id }}?autoplay=0&controls=1&rel=0"
+                  class="maison_commerce_maison_sound_familiar__video"
+                  frameborder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowfullscreen
+                ></iframe>
+              {% elsif section.settings.video_url.type == 'vimeo' %}
+                <iframe 
+                  src="https://player.vimeo.com/video/{{ section.settings.video_url.id }}?autoplay=0&controls=1"
+                  class="maison_commerce_maison_sound_familiar__video"
+                  frameborder="0"
+                  allow="autoplay; fullscreen; picture-in-picture"
+                  allowfullscreen
+                ></iframe>
+              {% else %}
+                <video 
+                  class="maison_commerce_maison_sound_familiar__video"
+                  controls
+                  {% if section.settings.video_poster != blank %}poster="{{ section.settings.video_poster | image_url: width: 890 }}"{% endif %}
+                >
+                  <source src="{{ section.settings.video_url }}" type="video/mp4">
+                  Your browser does not support the video tag.
+                </video>
+              {% endif %}
+            </div>
+          </div>
+        {% endif %}
+
+        <!-- Right Column: Content -->
+        <div class="maison_commerce_maison_sound_familiar__content">
+          <!-- Heading -->
+          {% if section.settings.heading != blank %}
+            <h2 class="maison_commerce_maison_sound_familiar__heading">
+              {{ section.settings.heading }}
+            </h2>
+          {% endif %}
+
+          <!-- Pain Points List -->
+          {% if section.blocks.size > 0 %}
+            <div class="maison_commerce_maison_sound_familiar__pain-points">
+              {% for block in section.blocks %}
+                {% case block.type %}
+                  {% when 'pain_point' %}
+                    <div class="maison_commerce_maison_sound_familiar__pain-point" {{ block.shopify_attributes }}>
+                      <div class="maison_commerce_maison_sound_familiar__icon-wrapper">
+                        {% if block.settings.icon_type == 'custom' and block.settings.custom_icon != blank %}
+                          <img 
+                            src="{{ block.settings.custom_icon | image_url: width: 72 }}" 
+                            alt=""
+                            class="maison_commerce_maison_sound_familiar__icon"
+                            width="18"
+                            height="18"
+                          />
+                        {% else %}
+                          <div class="maison_commerce_maison_sound_familiar__icon maison_commerce_maison_sound_familiar__icon--{{ block.settings.icon_type }}">
+                            {% case block.settings.icon_type %}
+                              {% when 'shampoo' %}
+                                <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                  <path d="M9 2L10.5 6H15L11.25 8.5L12.75 13L9 10.5L5.25 13L6.75 8.5L3 6H7.5L9 2Z" fill="currentColor"/>
+                                </svg>
+                              {% when 'scissors' %}
+                                <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                  <path d="M5 2L3 4L8 9L3 14L5 16L10 11L11 12L16 7L14 5L9 10L8 9L5 2Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                              {% when 'brush' %}
+                                <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                  <path d="M3 15L6 12M9 9L12 6M15 3L12 6M12 6L9 9M6 12L3 15M6 12L9 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                              {% when 'solutions' %}
+                                <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                  <path d="M9 2C5.13 2 2 5.13 2 9C2 12.87 5.13 16 9 16C12.87 16 16 12.87 16 9C16 5.13 12.87 2 9 2ZM9 14C6.24 14 4 11.76 4 9C4 6.24 6.24 4 9 4C11.76 4 14 6.24 14 9C14 11.76 11.76 14 9 14Z" fill="currentColor"/>
+                                </svg>
+                            {% endcase %}
+                          </div>
+                        {% endif %}
+                      </div>
+                      <div class="maison_commerce_maison_sound_familiar__pain-point-text">
+                        {{ block.settings.text }}
+                      </div>
+                    </div>
+                {% endcase %}
+              {% endfor %}
+            </div>
+          {% endif %}
+
+          <!-- Reassurance Banner -->
+          <div class="maison_commerce_maison_sound_familiar__banner">
+            {% if section.settings.reassurance_text != blank %}
+              <p class="maison_commerce_maison_sound_familiar__reassurance-text">
+                {{ section.settings.reassurance_text }}
+              </p>
+            {% endif %}
+
+            {% if section.settings.cta_url != blank %}
+              <a href="{{ section.settings.cta_url }}" class="maison_commerce_maison_sound_familiar__cta-button">
+                <span>{{ section.settings.cta_text }}</span>
+                <svg class="maison_commerce_maison_sound_familiar__arrow-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </a>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  #shopify-section-{{ section.id }} {
+    padding: 0;
+  }
+
+  /* Section Container */
+  .maison_commerce_maison_sound_familiar {
+    background: linear-gradient(to bottom, {{ section.settings.bg_gradient_start }}, {{ section.settings.bg_gradient_end }});
+    padding-top: {{ section.settings.padding_top_desktop }}px;
+    padding-bottom: {{ section.settings.padding_bottom_desktop }}px;
+    padding-left: {{ section.settings.padding_left_desktop }}px;
+    padding-right: {{ section.settings.padding_right_desktop }}px;
+  }
+
+  @media (max-width: 768px) {
+    .maison_commerce_maison_sound_familiar {
+      padding-top: {{ section.settings.padding_top_mobile }}px;
+      padding-bottom: {{ section.settings.padding_bottom_mobile }}px;
+      padding-left: {{ section.settings.padding_left_mobile }}px;
+      padding-right: {{ section.settings.padding_right_mobile }}px;
+    }
+  }
+
+  /* Container */
+  .maison_commerce_maison_sound_familiar__container {
+    max-width: 100%;
+    margin: 0 auto;
+  }
+
+  /* Card */
+  .maison_commerce_maison_sound_familiar__card {
+    background-color: {{ section.settings.card_bg_color }};
+    border: 1px solid {{ section.settings.card_border_color }};
+    border-radius: {{ section.settings.card_border_radius }}px;
+    padding: {{ section.settings.card_padding_desktop }}px;
+  }
+
+  @media (max-width: 768px) {
+    .maison_commerce_maison_sound_familiar__card {
+      padding: {{ section.settings.card_padding_mobile }}px;
+    }
+  }
+
+  /* Content Wrapper - Two Column Layout */
+  .maison_commerce_maison_sound_familiar__content-wrapper {
+    display: flex;
+    gap: {{ section.settings.content_gap_desktop }}px;
+    align-items: center;
+  }
+
+  @media (max-width: 768px) {
+    .maison_commerce_maison_sound_familiar__content-wrapper {
+      flex-direction: column;
+      gap: {{ section.settings.content_gap_mobile }}px;
+    }
+  }
+
+  /* Media Wrapper */
+  .maison_commerce_maison_sound_familiar__media-wrapper {
+    flex: 0 0 auto;
+    width: {{ section.settings.media_width_desktop }}px;
+    position: relative;
+    border-radius: {{ section.settings.media_border_radius }}px;
+    overflow: hidden;
+  }
+
+  @media (max-width: 768px) {
+    .maison_commerce_maison_sound_familiar__media-wrapper {
+      width: 100%;
+      order: 2;
+    }
+  }
+
+  .maison_commerce_maison_sound_familiar__media-image {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: {{ section.settings.media_border_radius }}px;
+  }
+
+  .maison_commerce_maison_sound_familiar__video-wrapper {
+    position: relative;
+    width: 100%;
+    padding-bottom: 56.25%; /* 16:9 aspect ratio */
+    height: 0;
+    overflow: hidden;
+    border-radius: {{ section.settings.media_border_radius }}px;
+  }
+
+  .maison_commerce_maison_sound_familiar__video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: {{ section.settings.media_border_radius }}px;
+  }
+
+  /* Content Column */
+  .maison_commerce_maison_sound_familiar__content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: {{ section.settings.content_gap_desktop }}px;
+  }
+
+  @media (max-width: 768px) {
+    .maison_commerce_maison_sound_familiar__content {
+      order: 1;
+      gap: {{ section.settings.content_gap_mobile }}px;
+    }
+  }
+
+  /* Heading */
+  .maison_commerce_maison_sound_familiar__heading {
+    font-family: 'Vanilla Ravioli', serif;
+    font-size: {{ section.settings.heading_font_size_desktop }}px;
+    font-weight: 400;
+    line-height: {{ section.settings.heading_line_height_desktop }};
+    color: {{ section.settings.heading_color }};
+    margin: 0;
+    text-align: left;
+    text-transform: capitalize;
+  }
+
+  @media (max-width: 768px) {
+    .maison_commerce_maison_sound_familiar__heading {
+      font-size: {{ section.settings.heading_font_size_mobile }}px;
+      line-height: {{ section.settings.heading_line_height_mobile }};
+      text-align: center;
+    }
+  }
+
+  /* Pain Points Container */
+  .maison_commerce_maison_sound_familiar__pain-points {
+    display: flex;
+    flex-direction: column;
+    gap: {{ section.settings.pain_points_gap }}px;
+  }
+
+  /* Pain Point Item */
+  .maison_commerce_maison_sound_familiar__pain-point {
+    background-color: {{ section.settings.pain_point_bg_color }};
+    border-radius: {{ section.settings.pain_point_border_radius }}px;
+    padding: {{ section.settings.pain_point_padding }}px;
+    display: flex;
+    gap: {{ section.settings.pain_point_gap }}px;
+    align-items: flex-start;
+  }
+
+  /* Icon Wrapper */
+  .maison_commerce_maison_sound_familiar__icon-wrapper {
+    flex-shrink: 0;
+    width: 44px;
+    height: 44px;
+    background-color: {{ section.settings.icon_bg_color }};
+    border-radius: 66px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .maison_commerce_maison_sound_familiar__icon {
+    width: 18px;
+    height: 18px;
+    color: {{ section.settings.icon_color }};
+  }
+
+  .maison_commerce_maison_sound_familiar__icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  /* Pain Point Text */
+  .maison_commerce_maison_sound_familiar__pain-point-text {
+    flex: 1;
+    font-family: 'Gotham', sans-serif;
+    font-size: {{ section.settings.pain_point_font_size }}px;
+    font-weight: 400;
+    line-height: 1.5;
+    color: {{ section.settings.pain_point_text_color }};
+  }
+
+  .maison_commerce_maison_sound_familiar__pain-point-text p {
+    margin: 0;
+  }
+
+  .maison_commerce_maison_sound_familiar__pain-point-text strong {
+    font-weight: 700;
+  }
+
+  /* Banner */
+  .maison_commerce_maison_sound_familiar__banner {
+    background-color: {{ section.settings.banner_bg_color }};
+    border-radius: {{ section.settings.banner_border_radius }}px;
+    padding: {{ section.settings.banner_padding_desktop }}px;
+    display: flex;
+    flex-direction: column;
+    gap: {{ section.settings.banner_gap }}px;
+    align-items: center;
+  }
+
+  @media (max-width: 768px) {
+    .maison_commerce_maison_sound_familiar__banner {
+      padding: {{ section.settings.banner_padding_mobile }}px;
+    }
+  }
+
+  /* Reassurance Text */
+  .maison_commerce_maison_sound_familiar__reassurance-text {
+    font-family: 'Gotham', sans-serif;
+    font-size: {{ section.settings.reassurance_font_size_desktop }}px;
+    font-weight: 400;
+    line-height: 1.5;
+    color: {{ section.settings.reassurance_text_color }};
+    text-align: center;
+    margin: 0;
+  }
+
+  @media (max-width: 768px) {
+    .maison_commerce_maison_sound_familiar__reassurance-text {
+      font-size: {{ section.settings.reassurance_font_size_mobile }}px;
+    }
+  }
+
+  /* CTA Button */
+  .maison_commerce_maison_sound_familiar__cta-button {
+    background-color: {{ section.settings.cta_bg_color }};
+    color: {{ section.settings.cta_text_color }};
+    border-radius: {{ section.settings.cta_border_radius }}px;
+    padding: {{ section.settings.cta_padding_vertical }}px {{ section.settings.cta_padding_horizontal }}px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: {{ section.settings.cta_gap }}px;
+    text-decoration: none;
+    transition: opacity 0.3s ease;
+    height: {{ section.settings.cta_height_desktop }}px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  @media (max-width: 768px) {
+    .maison_commerce_maison_sound_familiar__cta-button {
+      height: {{ section.settings.cta_height_mobile }}px;
+    }
+  }
+
+  .maison_commerce_maison_sound_familiar__cta-button:hover {
+    opacity: 0.9;
+  }
+
+  .maison_commerce_maison_sound_familiar__cta-button span {
+    font-family: 'Gotham', sans-serif;
+    font-size: {{ section.settings.cta_font_size_desktop }}px;
+    font-weight: 500;
+    line-height: 1.5;
+    text-transform: capitalize;
+  }
+
+  @media (max-width: 768px) {
+    .maison_commerce_maison_sound_familiar__cta-button span {
+      font-size: {{ section.settings.cta_font_size_mobile }}px;
+    }
+  }
+
+  .maison_commerce_maison_sound_familiar__arrow-icon {
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+  }
+
+  @media (max-width: 768px) {
+    .maison_commerce_maison_sound_familiar__arrow-icon {
+      width: 20px;
+      height: 20px;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Maison Sound Familiar",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section Settings"
+    },
+    {
+      "type": "color",
+      "id": "bg_gradient_start",
+      "label": "Background Gradient Start Color",
+      "default": "#FFFEF3"
+    },
+    {
+      "type": "color",
+      "id": "bg_gradient_end",
+      "label": "Background Gradient End Color",
+      "default": "#F1F1F9"
+    },
+    {
+      "type": "range",
+      "id": "padding_top_desktop",
+      "min": 0,
+      "max": 200,
+      "step": 5,
+      "unit": "px",
+      "label": "Padding Top (Desktop)",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_desktop",
+      "min": 0,
+      "max": 200,
+      "step": 5,
+      "unit": "px",
+      "label": "Padding Bottom (Desktop)",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_left_desktop",
+      "min": 0,
+      "max": 200,
+      "step": 5,
+      "unit": "px",
+      "label": "Padding Left (Desktop)",
+      "default": 70
+    },
+    {
+      "type": "range",
+      "id": "padding_right_desktop",
+      "min": 0,
+      "max": 200,
+      "step": 5,
+      "unit": "px",
+      "label": "Padding Right (Desktop)",
+      "default": 70
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Top (Mobile)",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Bottom (Mobile)",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "padding_left_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Left (Mobile)",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "padding_right_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Right (Mobile)",
+      "default": 20
+    },
+    {
+      "type": "header",
+      "content": "Card Settings"
+    },
+    {
+      "type": "color",
+      "id": "card_bg_color",
+      "label": "Card Background Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "card_border_color",
+      "label": "Card Border Color",
+      "default": "#F1F1F9"
+    },
+    {
+      "type": "range",
+      "id": "card_border_radius",
+      "min": 0,
+      "max": 50,
+      "step": 2,
+      "unit": "px",
+      "label": "Card Border Radius",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "card_padding_desktop",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "label": "Card Padding (Desktop)",
+      "default": 44
+    },
+    {
+      "type": "range",
+      "id": "card_padding_mobile",
+      "min": 0,
+      "max": 50,
+      "step": 2,
+      "unit": "px",
+      "label": "Card Padding (Mobile)",
+      "default": 18
+    },
+    {
+      "type": "range",
+      "id": "content_gap_desktop",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Content Gap (Desktop)",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "content_gap_mobile",
+      "min": 0,
+      "max": 50,
+      "step": 2,
+      "unit": "px",
+      "label": "Content Gap (Mobile)",
+      "default": 18
+    },
+    {
+      "type": "header",
+      "content": "Media Settings"
+    },
+    {
+      "type": "select",
+      "id": "media_type",
+      "label": "Media Type",
+      "options": [
+        {
+          "value": "image",
+          "label": "Image"
+        },
+        {
+          "value": "video",
+          "label": "Video"
+        }
+      ],
+      "default": "image"
+    },
+    {
+      "type": "image_picker",
+      "id": "media_image",
+      "label": "Media Image",
+      "info": "Used when Media Type is set to Image"
+    },
+    {
+      "type": "video_url",
+      "id": "video_url",
+      "label": "Video URL",
+      "accept": ["youtube", "vimeo"],
+      "info": "Used when Media Type is set to Video"
+    },
+    {
+      "type": "image_picker",
+      "id": "video_poster",
+      "label": "Video Poster Image",
+      "info": "Optional: Thumbnail image for video"
+    },
+    {
+      "type": "range",
+      "id": "media_width_desktop",
+      "min": 200,
+      "max": 600,
+      "step": 5,
+      "unit": "px",
+      "label": "Media Width (Desktop)",
+      "default": 445
+    },
+    {
+      "type": "range",
+      "id": "media_border_radius",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "unit": "px",
+      "label": "Media Border Radius",
+      "default": 31
+    },
+    {
+      "type": "header",
+      "content": "Heading"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Sound familiar?"
+    },
+    {
+      "type": "range",
+      "id": "heading_font_size_desktop",
+      "min": 20,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "label": "Heading Font Size (Desktop)",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "heading_font_size_mobile",
+      "min": 18,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Heading Font Size (Mobile)",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "heading_line_height_desktop",
+      "min": 1.0,
+      "max": 2.0,
+      "step": 0.1,
+      "label": "Heading Line Height (Desktop)",
+      "default": 1.3
+    },
+    {
+      "type": "range",
+      "id": "heading_line_height_mobile",
+      "min": 1.0,
+      "max": 2.0,
+      "step": 0.1,
+      "label": "Heading Line Height (Mobile)",
+      "default": 1.4
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading Color",
+      "default": "#15130E"
+    },
+    {
+      "type": "header",
+      "content": "Pain Points Settings"
+    },
+    {
+      "type": "range",
+      "id": "pain_points_gap",
+      "min": 0,
+      "max": 30,
+      "step": 2,
+      "unit": "px",
+      "label": "Gap Between Pain Points",
+      "default": 8
+    },
+    {
+      "type": "color",
+      "id": "pain_point_bg_color",
+      "label": "Pain Point Background Color",
+      "default": "#FDFDFE"
+    },
+    {
+      "type": "range",
+      "id": "pain_point_border_radius",
+      "min": 0,
+      "max": 30,
+      "step": 2,
+      "unit": "px",
+      "label": "Pain Point Border Radius",
+      "default": 18
+    },
+    {
+      "type": "range",
+      "id": "pain_point_padding",
+      "min": 4,
+      "max": 20,
+      "step": 2,
+      "unit": "px",
+      "label": "Pain Point Padding",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "pain_point_gap",
+      "min": 8,
+      "max": 30,
+      "step": 2,
+      "unit": "px",
+      "label": "Gap Between Icon and Text",
+      "default": 16
+    },
+    {
+      "type": "color",
+      "id": "icon_bg_color",
+      "label": "Icon Background Color",
+      "default": "#FBEBDD"
+    },
+    {
+      "type": "color",
+      "id": "icon_color",
+      "label": "Icon Color",
+      "default": "#E98C36"
+    },
+    {
+      "type": "range",
+      "id": "pain_point_font_size",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Pain Point Font Size",
+      "default": 14
+    },
+    {
+      "type": "color",
+      "id": "pain_point_text_color",
+      "label": "Pain Point Text Color",
+      "default": "rgba(21,19,14,0.75)"
+    },
+    {
+      "type": "header",
+      "content": "Reassurance Banner"
+    },
+    {
+      "type": "richtext",
+      "id": "reassurance_text",
+      "label": "Reassurance Text",
+      "default": "<p>You're not alone. And you're not out of options.</p>"
+    },
+    {
+      "type": "range",
+      "id": "reassurance_font_size_desktop",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Reassurance Font Size (Desktop)",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "reassurance_font_size_mobile",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Reassurance Font Size (Mobile)",
+      "default": 14
+    },
+    {
+      "type": "color",
+      "id": "reassurance_text_color",
+      "label": "Reassurance Text Color",
+      "default": "#15130E"
+    },
+    {
+      "type": "color",
+      "id": "banner_bg_color",
+      "label": "Banner Background Color",
+      "default": "#FBF7BD"
+    },
+    {
+      "type": "range",
+      "id": "banner_border_radius",
+      "min": 0,
+      "max": 50,
+      "step": 2,
+      "unit": "px",
+      "label": "Banner Border Radius",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "banner_padding_desktop",
+      "min": 0,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "label": "Banner Padding (Desktop)",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "banner_padding_mobile",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Banner Padding (Mobile)",
+      "default": 18
+    },
+    {
+      "type": "range",
+      "id": "banner_gap",
+      "min": 0,
+      "max": 30,
+      "step": 2,
+      "unit": "px",
+      "label": "Gap Between Text and Button",
+      "default": 18
+    },
+    {
+      "type": "header",
+      "content": "Call-to-Action Button"
+    },
+    {
+      "type": "text",
+      "id": "cta_text",
+      "label": "CTA Button Text",
+      "default": "Get Your Custom Formula"
+    },
+    {
+      "type": "url",
+      "id": "cta_url",
+      "label": "CTA Button URL"
+    },
+    {
+      "type": "color",
+      "id": "cta_bg_color",
+      "label": "CTA Background Color",
+      "default": "#FAFBFC"
+    },
+    {
+      "type": "color",
+      "id": "cta_text_color",
+      "label": "CTA Text Color",
+      "default": "#1A365D"
+    },
+    {
+      "type": "range",
+      "id": "cta_border_radius",
+      "min": 0,
+      "max": 30,
+      "step": 2,
+      "unit": "px",
+      "label": "CTA Border Radius",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "cta_padding_vertical",
+      "min": 8,
+      "max": 24,
+      "step": 2,
+      "unit": "px",
+      "label": "CTA Padding Vertical",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "cta_padding_horizontal",
+      "min": 16,
+      "max": 48,
+      "step": 4,
+      "unit": "px",
+      "label": "CTA Padding Horizontal",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "cta_gap",
+      "min": 8,
+      "max": 20,
+      "step": 2,
+      "unit": "px",
+      "label": "Gap Between Text and Arrow",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "cta_height_desktop",
+      "min": 40,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "label": "CTA Height (Desktop)",
+      "default": 56
+    },
+    {
+      "type": "range",
+      "id": "cta_height_mobile",
+      "min": 36,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "label": "CTA Height (Mobile)",
+      "default": 44
+    },
+    {
+      "type": "range",
+      "id": "cta_font_size_desktop",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "CTA Font Size (Desktop)",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "cta_font_size_mobile",
+      "min": 12,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "label": "CTA Font Size (Mobile)",
+      "default": 14
+    }
+  ],
+  "blocks": [
+    {
+      "type": "pain_point",
+      "name": "Pain Point",
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon_type",
+          "label": "Icon Type",
+          "options": [
+            {
+              "value": "shampoo",
+              "label": "Shampoo"
+            },
+            {
+              "value": "scissors",
+              "label": "Scissors"
+            },
+            {
+              "value": "brush",
+              "label": "Brush"
+            },
+            {
+              "value": "solutions",
+              "label": "Solutions"
+            },
+            {
+              "value": "custom",
+              "label": "Custom Image"
+            }
+          ],
+          "default": "shampoo"
+        },
+        {
+          "type": "image_picker",
+          "id": "custom_icon",
+          "label": "Custom Icon Image",
+          "info": "Used when Icon Type is set to Custom Image"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Pain Point Text",
+          "default": "<p>You've tried every shampoo and oil, but <strong>nothing worked</strong></p>"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Maison Sound Familiar",
+      "blocks": [
+        {
+          "type": "pain_point",
+          "settings": {
+            "icon_type": "shampoo",
+            "text": "<p>You've tried every shampoo and oil, but <strong>nothing worked</strong></p>"
+          }
+        },
+        {
+          "type": "pain_point",
+          "settings": {
+            "icon_type": "scissors",
+            "text": "<p>Tired of generic products that <strong>don't suit</strong> your hair?</p>"
+          }
+        },
+        {
+          "type": "pain_point",
+          "settings": {
+            "icon_type": "brush",
+            "text": "<p>You see more <strong>hair in brush</strong> daily, affecting your confidence.</p>"
+          }
+        },
+        {
+          "type": "pain_point",
+          "settings": {
+            "icon_type": "solutions",
+            "text": "<p>you are <strong>looking for solutions</strong> that can solve this once and for all</p>"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
+
