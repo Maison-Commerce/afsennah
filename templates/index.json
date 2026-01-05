@@ -519,42 +519,6 @@
             "show_features": true
           }
         },
-        "feature_NjxwaU": {
-          "type": "feature",
-          "settings": {
-            "visual_block_id": "visual-1",
-            "feature_text": "Custom scalp formulas",
-            "position_top": 20,
-            "position_left": 10
-          }
-        },
-        "feature_iYymyH": {
-          "type": "feature",
-          "settings": {
-            "visual_block_id": "visual-1",
-            "feature_text": "Boosts hair growing",
-            "position_top": 45,
-            "position_left": 80
-          }
-        },
-        "feature_hphnMx": {
-          "type": "feature",
-          "settings": {
-            "visual_block_id": "visual-1",
-            "feature_text": "Improves scalp health",
-            "position_top": 70,
-            "position_left": 60
-          }
-        },
-        "feature_8qhVPc": {
-          "type": "feature",
-          "settings": {
-            "visual_block_id": "visual-1",
-            "feature_text": "100% Natural",
-            "position_top": 80,
-            "position_left": 10
-          }
-        },
         "title_DWJpGY": {
           "type": "title",
           "settings": {
@@ -567,23 +531,19 @@
             "text_content": "<p>Afsennah was born from personal hair loss experience. After many failed products, it was clear that one-size-fits-all solutions don’t work for individual hair and scalp health.</p><p>I became a <strong>certified trichologist</strong> and studied scalp science. I created my first custom oil for my sensitive scalp and stress-related shedding.</p><p>The results were tangible: shedding slowed within weeks, new growth followed, and my confidence returned.</p><p>Over <strong>150,000 </strong>women trust Afsennah. Each formula is crafted with expertise and care, as hair care should be personal.</p>"
           }
         },
-        "button_bYXUUh": {
-          "type": "button",
+        "quote_36fKBb": {
+          "type": "quote",
           "settings": {
-            "button_text": "Start Your Free Consultation",
-            "button_url": ""
+            "quote_text": "“I created Afsennah not just as a product, but as the solution I needed. Your hair journey is personal — and your treatment should be too.”",
+            "quote_author": "— Afsennah, Founder & Certified Trichologist"
           }
         }
       },
       "block_order": [
         "visual_DJNNLN",
-        "feature_NjxwaU",
-        "feature_iYymyH",
-        "feature_hphnMx",
-        "feature_8qhVPc",
         "title_DWJpGY",
         "text_P7nydg",
-        "button_bYXUUh"
+        "quote_36fKBb"
       ],
       "name": "Maison Content Blocks",
       "settings": {
