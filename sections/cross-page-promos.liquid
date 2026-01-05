@@ -1,0 +1,348 @@
+{%- liquid
+  assign show_promos = false
+
+  if section.blocks.size > 0
+    if section.settings.show_on_home_page
+      assign show_promos = true
+    elsif section.settings.show_on_home_page == false and template != 'index'
+      assign show_promos = true
+    endif
+  endif
+-%}
+
+{%- if show_promos -%}
+  {%- liquid
+    if section.blocks.size == 4
+      assign column_width = 'quarter'
+    elsif section.blocks.size == 3
+      assign column_width = 'third'
+    elsif section.blocks.size == 2
+      assign column_width = 'half'
+    else
+      assign column_width = 'full'
+    endif
+  %}
+  <div id="section-id-{{ section.id }}" class="cross-page-promos">
+    <div class="container">
+      <div class="flexible-layout {% if column_width == 'quarter' %}layout-all-quarters{% endif %}">
+        {%- for block in section.blocks -%}
+          <div class="column column--{{ column_width }} align-center block-id-{{ block.id }}" {{ block.shopify_attributes }}>
+            <div class="relative">
+              {% if block.settings.link_url != blank %}
+              <a class="block" href="{{ block.settings.link_url }}">
+                {% endif %}
+
+                {% if block.type == 'image' %}
+
+                  {% if block.settings.image == blank %}
+                    <div class="placeholder-image placeholder-image--shape-landscape {% if block.settings.text != blank %}dark{% endif %}">{{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}</div>
+                  {% else %}
+                    {%- render 'image' with block.settings.image, size_cols_mobile: 2, size_cols_desktop: section.blocks.size, loading: 'lazy' -%}
+                  {% endif %}
+
+                  {% if block.settings.text != blank %}
+                  <div class="text-overlay overlay-centre">
+                    <div class="text-overlay__inner">
+                      <div class="text-overlay__text">
+                        <div class="h6 heading-font">{{ block.settings.text | escape }}</div>
+                        {% if block.settings.subtext != blank %}<div class="second-line">{{ block.settings.subtext | escape }}</div>{% endif %}
+                      </div>
+                    </div>
+                  </div>
+                  {% endif %}
+
+                {% elsif block.type contains 'icon' %}
+
+                  <div class="icon-with-caption">
+                    <div class="icon-with-caption__icon">
+                      {%- if block.settings.image == blank -%}
+                        {%- render 'icon', icon: block.settings.icon, size: 'medium' -%}
+                      {%- else -%}
+                        <div class="icon-with-caption__image-icon">
+                          {%- render 'image' with block.settings.image, sizes: '34px', widths: '34, 68', loading: 'lazy' -%}
+                        </div>
+                      {%- endif -%}
+                    </div>
+
+                    {% if block.settings.text != blank %}
+                      <div class="icon-with-caption__text">
+                        <div class="heading-font h6 align-center">{{ block.settings.text }}</div>
+                      </div>
+                    {% endif %}
+                  </div>
+
+                {% endif %}
+
+                {% if block.settings.link_url != blank %}
+              </a>
+              {% endif %}
+            </div>
+          </div>
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+{%- endif -%}
+
+{% style %}
+  #section-id-{{ section.id }} {
+    --bg-color: {{ section.settings.cross_page_promo_bg }};
+    --text-color: {{ section.settings.cross_page_promo_color }};
+  }
+
+  {%- for block in section.blocks -%}
+    {%- if block.type == 'image' and block.settings.text != blank -%}
+      .cross-page-promos .block-id-{{ block.id }} .text-overlay .text-overlay__text {
+        color: {{ block.settings.overlay_color }};
+      }
+    {%- endif -%}
+  {%- endfor -%}
+{% endstyle %}
+
+
+{% schema %}
+{
+  "name": "Cross-page promos",
+  "max_blocks": 4,
+  "settings": [
+    {
+      "type": "color",
+      "id": "cross_page_promo_bg",
+      "label": "Background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "cross_page_promo_color",
+      "label": "Text and icon color",
+      "default": "#454564"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_on_home_page",
+      "label": "Show on home page",
+      "default": true
+    }
+  ],
+  "blocks": [
+    {
+      "type": "image",
+      "name": "Image",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Caption"
+        },
+        {
+          "type": "text",
+          "id": "subtext",
+          "label": "Caption line 2"
+        },
+        {
+          "type": "color",
+          "id": "overlay_color",
+          "label": "Caption color",
+          "default": "#ffffff"
+        },
+        {
+          "type": "url",
+          "id": "link_url",
+          "label": "Image link"
+        }
+      ]
+    },
+    {
+      "type": "icon",
+      "name": "Icon",
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "default": "star",
+          "options": [
+            {
+              "value": "accessible",
+              "label": "Accessible"
+            },
+            {
+              "value": "award",
+              "label": "Award"
+            },
+            {
+              "value": "beach",
+              "label": "Beach"
+            },
+            {
+              "value": "box",
+              "label": "Box"
+            },
+            {
+              "value": "briefcase",
+              "label": "Briefcase"
+            },
+            {
+              "value": "calendar",
+              "label": "Calendar"
+            },
+            {
+              "value": "chat_bubble",
+              "label": "Chat bubble"
+            },
+            {
+              "value": "check_mark",
+              "label": "Check mark"
+            },
+            {
+              "value": "check_mark_in_circle",
+              "label": "Check mark in circle"
+            },
+            {
+              "value": "clock",
+              "label": "Clock"
+            },
+            {
+              "value": "credit_card",
+              "label": "Credit card"
+            },
+            {
+              "value": "dollar_sign",
+              "label": "Dollar sign"
+            },
+            {
+              "value": "dryer",
+              "label": "Dryer"
+            },
+            {
+              "value": "eye",
+              "label": "Eye"
+            },
+            {
+              "value": "feather",
+              "label": "Feather"
+            },
+            {
+              "value": "gift",
+              "label": "Gift"
+            },
+            {
+              "value": "heart",
+              "label": "Heart"
+            },
+            {
+              "value": "iron",
+              "label": "Iron"
+            },
+            {
+              "value": "leaf",
+              "label": "Leaf"
+            },
+            {
+              "value": "leather",
+              "label": "Leather"
+            },
+            {
+              "value": "lock",
+              "label": "Lock"
+            },
+            {
+              "value": "map_pin",
+              "label": "Map pin"
+            },
+            {
+              "value": "pants",
+              "label": "Pants"
+            },
+            {
+              "value": "percent",
+              "label": "Percent"
+            },
+            {
+              "value": "plane",
+              "label": "Plane"
+            },
+            {
+              "value": "price_tag",
+              "label": "Price tag"
+            },
+            {
+              "value": "question_mark",
+              "label": "Question mark"
+            },
+            {
+              "value": "recycle",
+              "label": "Recycle"
+            },
+            {
+              "value": "return",
+              "label": "Return"
+            },
+            {
+              "value": "ruler",
+              "label": "Ruler"
+            },
+            {
+              "value": "scissors",
+              "label": "Scissors"
+            },
+            {
+              "value": "shirt",
+              "label": "Shirt"
+            },
+            {
+              "value": "shoe",
+              "label": "Shoe"
+            },
+            {
+              "value": "silhouette",
+              "label": "Silhouette"
+            },
+            {
+              "value": "star",
+              "label": "Star"
+            },
+            {
+              "value": "sun-high",
+              "label": "Sun"
+            },
+            {
+              "value": "truck",
+              "label": "Truck"
+            },
+            {
+              "value": "washing",
+              "label": "Washing"
+            },
+            {
+              "value": "world",
+              "label": "World"
+            }
+          ]
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Custom icon",
+          "info": "Replaces icon above"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Caption"
+        },
+        {
+          "type": "url",
+          "id": "link_url",
+          "label": "Icon link"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,47 @@
+{%- comment -%}
+  Usage:
+  {%- render 'gift-card-recipient' -%}
+{%- endcomment -%}
+
+{%- liquid
+  assign max_chars_for_name = 255
+  assign max_chars_for_message = 200
+-%}
+
+<link rel="stylesheet" href="{{ 'gift-card-recipient.css' | asset_url }}">
+<script src="{{ 'gift-card-recipient.js' | asset_url }}" defer="defer"></script>
+
+<gift-card-recipient class="gift-card-recipient">
+  <input class="checkbox gift-card-recipient__checkbox" aria-label="{{ 'gift_cards.recipient.checkbox' | t }}" type="checkbox" id="{{ section.id }}-gift-card-recipient-checkbox" name="properties[__shopify_send_gift_card_to_recipient]"/>
+  <label class="gift-card-recipient__checkbox-label" for="{{ section.id }}-gift-card-recipient-checkbox">{{ 'gift_cards.recipient.checkbox' | t }}</label>
+
+  <div class="gift-card-recipient__fields">
+    <div class="input-row form-row input-wrapper">
+      <label class="label" for="{{ section.id }}-gift-card-recipient-email" data-js-label="{{ 'gift_cards.recipient.email_label_required' | t }}">{{ 'gift_cards.recipient.email_label_optional' | t }}</label>
+      <input aria-label="{{ 'gift_cards.recipient.email_label_optional' | t }}" type="email" id="{{ section.id }}-gift-card-recipient-email" name="properties[Recipient email]" class="input w-full">
+    </div>
+
+    <div class="input-row form-row input-wrapper">
+      <label class="label" for="{{ section.id }}-gift-card-recipient-name">{{ 'gift_cards.recipient.name_label' | t }}</label>
+      <input maxlength="{{ max_chars_for_name }}" aria-label="{{ 'gift_cards.recipient.name_label' | t }}" type="text" id="{{ section.id }}-gift-card-recipient-name" name="properties[Recipient name]" class="input w-full">
+    </div>
+
+    <div class="input-row form-row input-wrapper input-row__message">
+      <label class="label" for="{{ section.id }}-gift-card-recipient-message">{{ 'gift_cards.recipient.message_label' | t }}</label>
+      <textarea maxlength="{{ max_chars_for_message }}" rows="4" aria-label="{{ 'gift_cards.recipient.message_label' | t }}" id="{{ section.id }}-gift-card-recipient-message" name="properties[Message]" class="input w-full"></textarea>
+      <small>{{ 'gift_cards.recipient.max_characters' | t: max_chars: max_chars_for_message }}</small>
+    </div>
+
+    <div class="input-row form-row input-wrapper">
+      <label class="label" for="{{ section.id }}-gift-card-recipient-send-on">{{ 'gift_cards.recipient.send_on_label' | t }}</label>
+      <input aria-label="{{ 'gift_cards.recipient.send_on_label' | t }}" type="date" id="{{ section.id }}-gift-card-recipient-send-on" name="properties[Send on]" pattern="\d{4}-\d{2}-\d{2}" class="input w-full">
+    </div>
+
+    <input
+      type="hidden"
+      name="properties[__shopify_offset]"
+      value=""
+      disabled
+    >
+  </div>
+</gift-card-recipient>

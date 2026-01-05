@@ -1,0 +1,116 @@
+/* used for: transparent header, dropdown nav, docked utility bar */
+.cc-price-range {
+  position: relative;
+}
+
+.cc-price-range__input-row {
+  display: flex;
+  justify-content: space-between;
+  margin: 12px 0;
+}
+
+.cc-price-range__input-container {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: baseline;
+  width: calc(50% - 6px);
+}
+
+.cc-price-range__input-currency-symbol {
+  margin-right: 2px;
+  font-size: 1em;
+  white-space: nowrap;
+}
+
+.cc-price-range .cc-price-range__input { /* extra specificity to override inputs-of-type */
+  width: 100%;
+  padding-right: 15px;
+  padding-left: 15px;
+}
+
+.cc-price-range__bar {
+  position: relative;
+  margin: 40px 15px 10px;
+}
+
+.cc-price-range__bar-inactive {
+  height: 4px;
+  border-radius: 4px;
+  background: #e6e6e6;
+}
+
+.cc-price-range__bar-active {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 100%;
+  border-radius: 4px;
+  background: #222;
+}
+
+.cc-price-range__control {
+  position: absolute;
+  top: -9px;
+  left: 0;
+  width: 22px;
+  height: 22px;
+  margin-inline-start: -11px;
+}
+.cc-price-range__control::after {
+  content: "";
+  display: block;
+  width: 22px;
+  height: 22px;
+  transition: 150ms transform ease-out;
+  border: 2px solid #222;
+  border-radius: 22px;
+  background: #fff;
+  cursor: pointer;
+}
+.cc-price-range__control:hover::after, .cc-price-range__control:focus::after {
+  transform: scale(1.1);
+}
+.cc-price-range__control::before {
+  content: "";
+  display: block;
+  position: absolute;
+  top: calc(50% - 22px);
+  width: 44px;
+  height: 44px;
+  cursor: pointer;
+}
+
+.cc-price-range__control--min::before {
+  right: 0;
+}
+
+.cc-price-range__control--max::before {
+  left: 0;
+}
+
+.cc-price-range__input-container {
+  padding-inline-start: 15px;
+  border: 1px solid var(--input-border-color);
+  border-radius: var(--btn-border-radius);
+  background: var(--input-background-color);
+  color: rgb(var(--input-text-color));
+  font-size: var(--input-text-size);
+}
+.cc-price-range__input-container:hover {
+  border-color: var(--input-border-color-hover);
+}
+.cc-price-range__input-container:focus-within {
+  border-color: var(--input-border-color-active);
+}
+
+.cc-price-range .cc-price-range__input {
+  padding-left: 0;
+  border: 0;
+}
+
+.cc-price-range .cc-price-range__input:hover, .cc-price-range .cc-price-range__input:focus {
+  border: 0 !important;
+  outline: none !important;
+  box-shadow: none !important;
+}

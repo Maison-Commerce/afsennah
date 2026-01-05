@@ -1,0 +1,172 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-product",
+      "blocks": {
+        "title": {
+          "type": "title",
+          "settings": {}
+        },
+        "price": {
+          "type": "price",
+          "settings": {
+            "show_tax_and_shipping": false,
+            "enable_product_reviews_by_price": true
+          }
+        },
+        "vendor": {
+          "type": "vendor",
+          "settings": {}
+        },
+        "richtext": {
+          "type": "richtext",
+          "settings": {
+            "richtext": "<p><strong>Highlight<\/strong> a feature of your product.<\/p>",
+            "icon": "leaf",
+            "icon_size": "small",
+            "enable_box": true,
+            "box_color": "#faf2e6",
+            "show_in_quickbuy": false
+          }
+        },
+        "variant_picker": {
+          "type": "variant-picker",
+          "settings": {
+            "show_single": false,
+            "selector_style": "dropdown"
+          }
+        },
+        "buy_buttons": {
+          "type": "buy-buttons",
+          "settings": {
+            "show_quantity_selector": true,
+            "enable_payment_button": true,
+            "show_backorder_text": true,
+            "show_pickup_availability": true,
+            "show_gift_card_recipient": false
+          }
+        },
+        "description": {
+          "type": "description",
+          "settings": {
+            "show_in_tab": true,
+            "open_tab": false,
+            "icon": "",
+            "show_in_quickbuy": false
+          }
+        },
+        "accordion": {
+          "type": "accordion",
+          "settings": {
+            "icon": "",
+            "page": "",
+            "open": false,
+            "show_in_quickbuy": false
+          }
+        },
+        "complementary": {
+          "type": "complementary",
+          "settings": {
+            "enable_carousel": true
+          }
+        }
+      },
+      "block_order": [
+        "title",
+        "price",
+        "vendor",
+        "richtext",
+        "variant_picker",
+        "buy_buttons",
+        "description",
+        "accordion",
+        "complementary"
+      ],
+      "settings": {
+        "show_breadcrumbs": false,
+        "show_location_underneath": false,
+        "inventory_transfers_enable": true,
+        "enable_sticky_columns": true,
+        "gallery_size": "medium",
+        "gallery_layout": "columns-1",
+        "enable_zoom": true,
+        "show_alt_text": false,
+        "alt_text_icon": "",
+        "enable_video_autoplay": true,
+        "enable_video_looping": true,
+        "enable_media_grouping": true,
+        "media_grouping_option": "Color,Colour,Couleur,Farbe"
+      }
+    },
+    "background_video": {
+      "type": "background-video",
+      "blocks": {
+        "heading_PcfUDp": {
+          "type": "heading",
+          "settings": {
+            "heading_max_width": 15,
+            "title_size": 58,
+            "title_size_mobile": 32,
+            "use_h1": false
+          }
+        },
+        "text_Cew49C": {
+          "type": "text",
+          "settings": {
+            "enlarge_text": true
+          }
+        },
+        "button_F8XBGK": {
+          "type": "button",
+          "settings": {
+            "button_style": "secondary"
+          }
+        }
+      },
+      "block_order": [
+        "heading_PcfUDp",
+        "text_Cew49C",
+        "button_F8XBGK"
+      ],
+      "settings": {
+        "video_description": "",
+        "text_alignment": "center center",
+        "height_desktop": 600,
+        "height_mobile": 500,
+        "full_width": true,
+        "overlay_style": "shadow"
+      }
+    },
+    "recommendations": {
+      "type": "related-products",
+      "settings": {
+        "show_vendor": true,
+        "grid": 4
+      }
+    },
+    "newsletter": {
+      "type": "newsletter",
+      "settings": {
+        "color_scheme": "2"
+      }
+    },
+    "featured_blog": {
+      "type": "featured-blog",
+      "settings": {
+        "post_limit": 3,
+        "show_author": false,
+        "show_date": false,
+        "show_excerpts": true,
+        "crop_ratio": "1.78",
+        "color_scheme": "default"
+      }
+    }
+  },
+  "order": [
+    "main",
+    "background_video",
+    "recommendations",
+    "newsletter",
+    "featured_blog"
+  ]
+}

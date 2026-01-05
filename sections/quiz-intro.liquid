@@ -1,0 +1,635 @@
+{% comment %}
+  Quiz Intro Section for Shopify
+  Place this section BEFORE all quiz step sections
+{% endcomment %}
+
+{{ 'quiz-section.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+  .quiz-intro-{{ section.id }} {
+  --primary-color: {{ section.settings.primary_color }};
+  --text-color: {{ section.settings.text_color }};
+  --button-text-color: {{ section.settings.button_text_color }};
+  --btn-border-radius: {{ section.settings.button_border_radius }};
+  }
+
+  #shopify-section-{{ section.id }}.quiz-section {
+  background: {{ section.settings.background_color }};
+  }
+{%- endstyle -%}
+
+<div class="quiz-intro quiz-intro-{{ section.id }}" data-quiz-intro>
+  <div class="container">
+    <div class="quiz-container">
+      <!-- Resume Quiz Banner -->
+      <div class="quiz-resume-banner" data-resume-banner style="display: none;">
+        <div class="resume-banner-content">
+          <div class="resume-banner-text">
+            <strong>{{ section.settings.resume_title }}</strong>
+            <span>{{ section.settings.resume_message }}</span>
+          </div>
+          <div class="resume-banner-actions">
+            <button type="button" class="quiz-btn-resume" data-resume-btn>
+              {{ section.settings.resume_button_text }}
+            </button>
+            <button type="button" class="quiz-btn-restart-banner" data-restart-banner-btn>
+              {{ section.settings.restart_button_text }}
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="quiz-intro-content">
+        {% if section.settings.title != blank %}
+          <h1 class="quiz-intro-title">{{ section.settings.title }}</h1>
+        {% endif %}
+
+        {% if section.settings.subtitle != blank %}
+          <div class="quiz-intro-subtitle">{{ section.settings.subtitle }}</div>
+        {% endif %}
+
+        {% if section.settings.description != blank %}
+          <div class="quiz-intro-description">
+            {{ section.settings.description }}
+          </div>
+        {% endif %}
+
+        {% if section.blocks.size > 0 %}
+          <div class="quiz-intro-fields" data-intro-fields>
+            {% for block in section.blocks %}
+              {% if block.type == 'free_text_field' %}
+                <div class="quiz-intro-field" data-intro-field data-field-id="{{ block.settings.field_id }}" data-block-id="{{ block.id }}" {{ block.shopify_attributes }}>
+                  <label class="intro-field-label">{{ block.settings.field_label }}</label>
+                  <input
+                      type="{% if block.settings.field_id == 'email' %}email{% else %}text{% endif %}"
+                      class="intro-field-input"
+                      data-field-id="{{ block.settings.field_id }}"
+                      data-block-id="{{ block.id }}"
+                      data-error-message="{{ block.settings.error_message }}"
+                      placeholder="{{ block.settings.field_placeholder }}"
+                      {% if block.settings.field_id == 'email' %}required{% endif %}
+                  >
+                  <span class="intro-field-error-message" data-error-message-for="{{ block.id }}" style="display: none;">{{ block.settings.error_message }}</span>
+                </div>
+              {% endif %}
+            {% endfor %}
+          </div>
+        {% endif %}
+
+        <button type="button" class="quiz-btn quiz-btn-start" data-start-btn>
+          {{ section.settings.button_text }}
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <path d="M7.5 15L12.5 10L7.5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+    .quiz-intro-fields {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        margin: 32px 0;
+        width: 100%;
+    }
+
+    .quiz-intro-field {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        text-align: left;
+        width: 100%;
+    }
+
+    .intro-field-label {
+        font-size: 15px;
+        font-weight: 500;
+        color: var(--text-color, #111827);
+    }
+
+    .intro-field-input {
+        width: 100%;
+        padding: 12px 14px;
+        border: 2px solid #e5e7eb;
+        border-radius: 8px;
+        font-size: 15px;
+        font-family: inherit;
+        color: #111827;
+        background: #fff;
+        transition: border-color 0.2s;
+    }
+
+    .intro-field-input:focus {
+        outline: none;
+        border-color: var(--primary-color, #000);
+    }
+
+    .intro-field-input::placeholder {
+        color: #9ca3af;
+    }
+
+    .intro-field-input.error {
+        border-color: #ef4444 !important;
+        animation: shake 0.3s;
+    }
+
+    @keyframes shake {
+        0%, 100% { transform: translateX(0); }
+        25% { transform: translateX(-5px); }
+        75% { transform: translateX(5px); }
+    }
+
+    .intro-field-error-message {
+        color: #ef4444;
+        font-size: 13px;
+        margin-top: -4px;
+    }
+
+    .quiz-resume-banner {
+        background: color-mix(in srgb, var(--primary-color, #000) 5%, white);
+        border: 1px solid color-mix(in srgb, var(--primary-color, #000) 20%, white);
+        border-radius: 6px;
+        padding: 12px 16px;
+        margin-bottom: 24px;
+    }
+
+    .resume-banner-content {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+    }
+
+    .resume-banner-text {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 14px;
+        color: var(--text-color, #111827);
+        flex-wrap: wrap;
+    }
+
+    .resume-banner-text strong {
+        font-weight: 600;
+    }
+
+    .resume-banner-text span {
+        font-weight: 400;
+    }
+
+    .resume-banner-actions {
+        display: flex;
+        gap: 8px;
+        flex-shrink: 0;
+    }
+
+    .quiz-btn-resume,
+    .quiz-btn-restart-banner {
+        padding: 6px 16px;
+        font-size: 13px;
+        font-weight: 500;
+        border-radius: var(--btn-border-radius);
+        border: none;
+        cursor: pointer;
+        transition: all 0.2s;
+        white-space: nowrap;
+    }
+
+    .quiz-btn-resume {
+        background: var(--primary-color, #000);
+        color: var(--button-text-color, #fff);
+    }
+
+    .quiz-btn-resume:hover {
+        opacity: 0.9;
+    }
+
+    .quiz-btn-restart-banner {
+        background: transparent;
+        color: var(--text-color, #111827);
+        border: 1px solid var(--text-color, #111827);
+    }
+
+    .quiz-btn-restart-banner:hover {
+        background: color-mix(in srgb, var(--primary-color, #000) 10%, white);
+    }
+
+    @media (max-width: 640px) {
+        .resume-banner-content {
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .resume-banner-text {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 4px;
+        }
+
+        .resume-banner-actions {
+            width: 100%;
+        }
+
+        .quiz-btn-resume,
+        .quiz-btn-restart-banner {
+            flex: 1;
+        }
+    }
+</style>
+
+<script>
+    (function() {
+        const startBtn = document.querySelector('[data-start-btn]');
+        const introFields = document.querySelector('[data-intro-fields]');
+
+        // Get URL parameters
+        function getUrlParams() {
+            const params = {};
+            const searchParams = new URLSearchParams(window.location.search);
+            for (const [key, value] of searchParams) {
+                params[key] = value;
+            }
+            return params;
+        }
+
+        // Initialize fields with URL params
+        function initializeFields() {
+            if (!introFields) return;
+
+            const urlParams = getUrlParams();
+            const fieldContainers = introFields.querySelectorAll('[data-intro-field]');
+
+            fieldContainers.forEach(container => {
+                const fieldId = container.dataset.fieldId;
+                const input = container.querySelector('[data-field-id]');
+
+                // Check if URL param exists for this field
+                if (urlParams[fieldId]) {
+                    // Hide the field and pre-fill the value
+                    container.style.display = 'none';
+                    input.value = urlParams[fieldId];
+
+                    // Store in QuizManager if it exists
+                    if (window.QuizManager) {
+                        if (!window.QuizManager.introData) {
+                            window.QuizManager.introData = {};
+                        }
+                        window.QuizManager.introData[fieldId] = urlParams[fieldId];
+                    }
+                }
+            });
+
+            // Check if all visible fields are filled
+            validateFields();
+        }
+
+        // Validate a single field
+        function validateField(input, showErrors = false) {
+            const blockId = input.dataset.blockId;
+            const container = input.closest('[data-intro-field]');
+
+            // Find the specific error message for this block using block ID
+            const errorMessage = document.querySelector(`[data-error-message-for="${blockId}"]`);
+
+            // Get error message from input's data attribute
+            const errorText = input.dataset.errorMessage || 'Please fill out this field';
+
+            // Only check visible fields
+            if (container && container.style.display === 'none') {
+                return true;
+            }
+
+            const value = input.value.trim();
+            let isValid = true;
+
+            // Check if empty
+            if (!value) {
+                isValid = false;
+            }
+            // Check email validity
+            else if (input.type === 'email' && !isValidEmail(value)) {
+                isValid = false;
+            }
+
+            // Show or hide error based on validity
+            if (!isValid) {
+                if (showErrors) {
+                    input.classList.add('error');
+                    if (errorMessage) {
+                        errorMessage.textContent = errorText;
+                        errorMessage.style.display = 'block';
+                    }
+                }
+            } else {
+                input.classList.remove('error');
+                if (errorMessage) {
+                    errorMessage.style.display = 'none';
+                }
+            }
+
+            return isValid;
+        }
+
+        // Validate all fields
+        function validateFields(showErrors = false) {
+            if (!introFields) {
+                // No fields, validation passes
+                return true;
+            }
+
+            const inputs = introFields.querySelectorAll('.intro-field-input');
+            let allValid = true;
+
+            inputs.forEach(input => {
+                const isFieldValid = validateField(input, showErrors);
+                if (!isFieldValid) {
+                    allValid = false;
+                }
+            });
+
+            return allValid;
+        }
+
+        // Simple email validation
+        function isValidEmail(email) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email);
+        }
+
+        // Listen to field changes - validate on input to hide errors when field becomes valid
+        if (introFields) {
+            const inputs = introFields.querySelectorAll('.intro-field-input');
+            inputs.forEach(input => {
+                // Validate on input - errors disappear when field becomes valid
+                input.addEventListener('input', () => {
+                    // Only validate (and potentially hide error) if error is currently showing
+                    const blockId = input.dataset.blockId;
+                    const errorMessage = document.querySelector(`[data-error-message-for="${blockId}"]`);
+
+                    if (errorMessage && errorMessage.style.display === 'block') {
+                        validateField(input, true);
+                    }
+                });
+
+                // Also validate on blur to show errors immediately
+                input.addEventListener('blur', () => {
+                    const blockId = input.dataset.blockId;
+                    const errorMessage = document.querySelector(`[data-error-message-for="${blockId}"]`);
+
+                    // Only show error on blur if user has tried to submit before
+                    if (errorMessage && errorMessage.style.display === 'block') {
+                        validateField(input, true);
+                    }
+                });
+            });
+        }
+
+        // Initialize on load
+        initializeFields();
+
+        // Check for saved progress on load
+        checkSavedProgress();
+
+        // Check for saved progress
+        function checkSavedProgress() {
+            try {
+                const localProgress = localStorage.getItem('quiz_progress');
+
+                if (localProgress) {
+                    const resumeBanner = document.querySelector('[data-resume-banner]');
+                    if (resumeBanner) {
+                        resumeBanner.style.display = 'block';
+                    }
+                }
+            } catch (e) {
+                console.log('No saved progress found');
+            }
+        }
+
+        // Resume button handler
+        const resumeBtn = document.querySelector('[data-resume-btn]');
+        if (resumeBtn) {
+            resumeBtn.addEventListener('click', function() {
+                const intro = document.querySelector('[data-quiz-intro]');
+                if (intro) {
+                    intro.style.display = 'none';
+                }
+
+                // Let QuizManager handle the resume
+                if (window.QuizManager) {
+                    window.QuizManager.resumeQuiz();
+                }
+            });
+        }
+
+        // Restart from banner handler
+        const restartBannerBtn = document.querySelector('[data-restart-banner-btn]');
+        if (restartBannerBtn) {
+            restartBannerBtn.addEventListener('click', function() {
+                // Clear saved progress from localStorage
+                localStorage.removeItem('quiz_progress');
+
+                // Hide banner
+                const resumeBanner = document.querySelector('[data-resume-banner]');
+                if (resumeBanner) {
+                    resumeBanner.style.display = 'none';
+                }
+
+                // Reset QuizManager if it exists
+                if (window.QuizManager) {
+                    window.QuizManager.clearProgress();
+                }
+            });
+        }
+
+        if (startBtn) {
+            startBtn.addEventListener('click', function() {
+                // Validate with error display
+                if (!validateFields(true)) {
+                    // Scroll to first error
+                    const firstError = document.querySelector('.intro-field-input.error');
+                    if (firstError) {
+                        firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        firstError.focus();
+                    }
+                    return;
+                }
+
+                const intro = document.querySelector('[data-quiz-intro]');
+
+                // Collect intro field data
+                if (introFields) {
+                    const inputs = introFields.querySelectorAll('.intro-field-input');
+                    const introData = {};
+
+                    inputs.forEach(input => {
+                        const fieldId = input.dataset.fieldId;
+                        const value = input.value.trim();
+                        if (value) {
+                            introData[fieldId] = value;
+                        }
+                    });
+
+                    // Store in QuizManager
+                    if (window.QuizManager) {
+                        window.QuizManager.introData = introData;
+                        console.log('Intro data saved:', introData);
+                    }
+                }
+
+                if (intro) {
+                    intro.style.display = 'none';
+
+                    // Initialize and show first quiz step
+                    if (window.QuizManager) {
+                        window.QuizManager.showCurrentStep();
+                    }
+
+                    window.scrollTo({
+                        top: 0,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        }
+    })();
+</script>
+
+{% schema %}
+{
+  "name": "Quiz Intro",
+  "class": "quiz-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Let's start personalizing your haircare"
+    },
+    {
+      "type": "richtext",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "<p>Answer a few quick questions to find your perfect products</p>"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description (optional)",
+      "info": "Additional text that appears below the subtitle"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button Text",
+      "default": "Get Started"
+    },
+    {
+      "type": "header",
+      "content": "Resume Quiz Settings"
+    },
+    {
+      "type": "text",
+      "id": "resume_title",
+      "label": "Resume Banner Title",
+      "default": "Welcome back!"
+    },
+    {
+      "type": "textarea",
+      "id": "resume_message",
+      "label": "Resume Banner Message",
+      "default": "You have a quiz in progress. Would you like to continue where you left off?"
+    },
+    {
+      "type": "text",
+      "id": "resume_button_text",
+      "label": "Resume Button Text",
+      "default": "Continue Quiz"
+    },
+    {
+      "type": "text",
+      "id": "restart_button_text",
+      "label": "Restart Button Text",
+      "default": "Start Over"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "primary_color",
+      "label": "Button Background Color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button Text Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "text",
+      "id": "button_border_radius",
+      "label": "Button Border Radius",
+      "default": "5rem",
+      "info": "CSS value for button border radius (e.g., 5rem, 8px, 50%)"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#111827"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "#f0f0ff"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "free_text_field",
+      "name": "Free Text Field",
+      "settings": [
+        {
+          "type": "text",
+          "id": "field_id",
+          "label": "Field ID",
+          "info": "Unique identifier for this field (e.g., 'name', 'email', 'country'). Must match URL parameter name.",
+          "default": "field_1"
+        },
+        {
+          "type": "text",
+          "id": "field_label",
+          "label": "Field Label",
+          "default": "Your Name"
+        },
+        {
+          "type": "text",
+          "id": "field_placeholder",
+          "label": "Placeholder Text",
+          "default": "Enter your answer here..."
+        },
+        {
+          "type": "text",
+          "id": "error_message",
+          "label": "Error Message",
+          "default": "Please fill out this field",
+          "info": "Error message shown when field validation fails (empty or invalid format)"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Quiz Intro"
+    }
+  ]
+}
+{% endschema %}

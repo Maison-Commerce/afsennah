@@ -1,0 +1,318 @@
+{% if section.settings.show_featured_image and article.image != blank %}
+  <div class="article-image article-image--large align-center {% unless section.settings.full_width_image %}container{% endunless %}">
+    {% if section.settings.featured_image_height == 'natural' %}
+      <div class="page-header page-header--with-background height--adapt {% if section.settings.enable_title_overlay %}image-overlay image-overlay--bg-{{ section.settings.overlay_style }}{% endif %}" style="--aspect-ratio: {{ article.image.aspect_ratio | default: 2.0 }}">
+        {% if section.settings.enable_title_overlay %}
+          <div class="image-overlay__image">
+            {%- render 'image' with article.image, loading: 'eager', class: 'height__image' -%}
+          </div>
+          <div class="text-overlay text-overlay--v-center text-overlay--h-center image-overlay__over" {%- render 'animation-attrs', attrs: 'data-cc-animate data-cc-animate-delay="0.2s"' -%}>
+            <div class="text-overlay__inner">
+              <div class="text-overlay__text">
+                <h1 class="text-overlay__title super-large-text">{{ article.title | escape }}</h1>
+              </div>
+            </div>
+          </div>
+        {% else %}
+          {%- render 'image' with article.image, loading: 'eager', class: 'height__image' -%}
+        {% endif %}
+      </div>
+
+    {% else %}
+      <div class="page-header page-header--with-background img-fill {% if section.settings.enable_title_overlay %}image-overlay image-overlay--bg-{{ section.settings.overlay_style }}{% endif %} page-header--padded-{{ section.settings.featured_image_height }}">
+        {% if section.settings.enable_title_overlay %}
+          <div class="image-overlay__image">
+            {%- render 'image' with article.image, loading: 'eager' -%}
+          </div>
+          <div class="text-overlay text-overlay--inline text-overlay--v-center text-overlay--h-center image-overlay__over" {%- render 'animation-attrs', attrs: 'data-cc-animate data-cc-animate-delay="0.2s"' -%}>
+            <div class="text-overlay__inner">
+              <div class="text-overlay__text">
+                <h1 class="text-overlay__title super-large-text">{{ article.title | escape }}</h1>
+              </div>
+            </div>
+          </div>
+        {% else %}
+          {%- render 'image' with article.image, loading: 'eager' -%}
+          <div class="text-overlay text-overlay--inline">{% comment %}For padding{% endcomment %}</div>
+        {% endif %}
+      </div>
+    {% endif %}
+  </div>
+{% endif %}
+
+{% if section.settings.enable_title_overlay == false or section.settings.show_featured_image == false or article.image == blank %}
+  <div class="container" {%- render 'animation-attrs', attrs: 'data-cc-animate' -%}>
+      <div class="page-header cf">
+        <h1 class="majortitle">{{ article.title | escape }}</h1>
+      </div>
+  </div>
+{% endif %}
+
+<div class="article article--main">
+  <div class="container container--reading-width">
+
+    <div class="rte cf spaced-row" {%- render 'animation-attrs', attrs: 'data-cc-animate' -%}>
+      {{ article.content }}
+    </div>
+
+    {% if section.settings.show_sharing_icons %}
+    <div class="lightly-spaced-row" {%- render 'animation-attrs', attrs: 'data-cc-animate', always: true -%}>
+      <div class="social-share flex items-center">
+        <p class="social-share__heading">{{ 'general.social.share_heading' | t }}</p>
+        {% render 'social-share',
+            share_twitter: section.settings.show_twitter,
+            share_facebook: section.settings.show_facebook,
+            share_pinterest: section.settings.show_pinterest,
+            share_title: article.title,
+            share_url: article.url,
+            share_image: article.image %}
+      </div>
+    </div>
+    {% endif %}
+
+    {%- if section.settings.show_article_tags -%}
+      {% capture tag_markup %}
+        <div class="iconmeta tags">
+          <span class="label">{{ 'blogs.tags.label' | t }}:</span>
+          {% for tag in article.tags %}
+            {{ tag | link_to_tag: tag }}
+          {% endfor %}
+        </div>
+      {% endcapture %}
+    {%- endif -%}
+
+    <div class="meta small-text" {%- render 'animation-attrs', attrs: 'data-cc-animate', always: true -%}>
+      {% if section.settings.show_date or section.settings.show_author %}
+        <div class="iconmeta time">
+          {% if section.settings.show_date %}
+            {{ article.published_at | time_tag: format: 'date' }}
+          {% endif %}
+          {% if section.settings.show_author %}
+            {% if section.settings.show_date %}&mdash;{% endif %}
+            <span class="author">{{ article.author }}</span>
+          {% endif %}
+        </div>
+      {% endif %}
+
+      {% if tag_markup contains '</a>' %}{{ tag_markup }}{% endif %}
+    </div>
+
+    <div class="pagination-row pagination-row-tabular" {%- render 'animation-attrs', attrs: 'data-cc-animate', always: true -%}>
+      <span class="prev">
+        {% if blog.previous_article %}
+        <a href="{{ blog.previous_article }}"><span class="icon--small icon-natcol has-ltr-icon">{% render 'icon-chevron-left' %}</span> <span>{{ 'blogs.pagination.older_articles' | t }}</span></a>
+        {% endif %}
+      </span>
+
+      <span class="back">{{ 'blogs.article.back_to_blog' | t: title: blog.title | link_to: blog.url }}</span>
+
+      <span class="next">
+        {% if blog.next_article %}
+        <a href="{{ blog.next_article }}"><span>{{ 'blogs.pagination.newer_articles' | t }}</span> <span class="icon--small icon-natcol has-ltr-icon">{% render 'icon-chevron-right' %}</span></a>
+        {% endif %}
+      </span>
+    </div>
+
+  </div>
+</div>
+
+{% if blog.comments_enabled? %}
+  <div class="container container--reading-width">
+    {% paginate article.comments by 50 %}
+      {% if article.comments != blank %}
+        <div id="comments" class="fully-spaced-row" {%- render 'animation-attrs', attrs: 'data-cc-animate', always: true -%}>
+          <h4 class="align-centre">{{ 'blogs.comments.title' | t }}</h4>
+
+          {% comment %} Show a comment that was *just* submitted {% endcomment %}
+          {% if comment and comment.status != 'published' %}
+            <div class="comment">
+              <div class="text">{{ comment.content }}</div>
+              <div class="author small-text">&mdash; {{ comment.author }}</div>
+            </div>
+          {% endif %}
+
+          {% comment %} Loop through approved comments: {% endcomment %}
+          {% for comment in article.comments %}
+            <div class="comment {% if forloop.first %}first{% endif %}">
+              <div class="text">{{ comment.content }}</div>
+              <div class="author small-text">&mdash; {{ comment.author }}</div>
+            </div>
+          {% endfor %}
+        </div>
+
+        <div class="pagination-row" {%- render 'animation-attrs', attrs: 'data-cc-animate', always: true -%}>{% render 'pagination-control', paginate: paginate %}</div>
+      {% endif %}
+    {% endpaginate %}
+
+    <div class="account-form fully-spaced-row" {%- render 'animation-attrs', attrs: 'data-cc-animate', always: true -%}>
+      {% form article %}
+        <h4 id="add-comment-title">{{ 'blogs.comments.form_title' | t }}</h4>
+
+        {% if form.posted_successfully? %}
+          <p>{{ 'blogs.comments.success' | t }}</p>
+        {% endif %}
+
+        {% if blog.moderated? %}
+          <p>{{ 'blogs.comments.moderated' | t }}</p>
+        {% endif %}
+
+
+        {%- assign error_heading = 'blogs.comments.error_heading' | t -%}
+        {%- render 'form-errors', form: form, error_heading: error_heading -%}
+
+        <div class="input-row {% if form.errors contains 'author' %}has-error{% endif %}">
+          <label for="comment_author">{{ 'blogs.comments.name' | t }}</label>
+          <input type="text" id="comment_author" name="comment[author]" size="40" value="{{ form.author }}" />
+        </div>
+        <div class="input-row {% if form.errors contains 'email' %}has-error{% endif %}">
+          <label for="comment_email">{{ 'blogs.comments.email' | t }}</label>
+          <input type="email" id="comment_email" name="comment[email]" size="40" value="{{ form.email }}" />
+        </div>
+        <div class="input-row {% if form.errors contains 'body' %}has-error{% endif %}">
+          <label for="comment_body">{{ 'blogs.comments.message' | t }}</label>
+          <textarea id="comment_body" name="comment[body]" cols="40" rows="5">{{ form.body }}</textarea>
+        </div>
+
+        <div class="lightly-spaced-row-above">
+          <button type="submit" id="comment-submit" class="btn">{{ 'blogs.comments.post' | t }}</button>
+        </div>
+
+      {% endform %}
+    </div>
+  </div>
+{% endif %}
+
+{% render 'structured-data-article', article: article %}
+
+{% schema %}
+{
+  "name": "Blog post",
+  "class": "page-section-spacing",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_date",
+      "label": "Show date",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_author",
+      "label": "Show author",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_article_tags",
+      "label": "Show tags",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Sharing"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_sharing_icons",
+      "label": "Show social sharing icons",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_twitter",
+      "label": "Show X (formerly Twitter)",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_facebook",
+      "label": "Show Facebook",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_pinterest",
+      "label": "Show Pinterest",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Featured image"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_featured_image",
+      "label": "Show featured image",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "full_width_image",
+      "label": "Full width",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "featured_image_height",
+      "label": "Height",
+      "options": [
+        {
+          "value": "small",
+          "label": "Compact"
+        },
+        {
+          "value": "medium",
+          "label": "Small"
+        },
+        {
+          "value": "large",
+          "label": "Medium"
+        },
+        {
+          "value": "huge",
+          "label": "Large"
+        },
+        {
+          "value": "natural",
+          "label": "Natural"
+        }
+      ],
+      "default": "huge"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_title_overlay",
+      "label": "Show title over featured image",
+      "default": false
+    },
+    {
+      "id": "overlay_style",
+      "type": "select",
+      "label": "Overlay style",
+      "default": "shadow",
+      "options": [
+        {
+          "value": "full",
+          "label": "Tint"
+        },
+        {
+          "value": "box",
+          "label": "Box"
+        },
+        {
+          "value": "shadow",
+          "label": "Text shadow"
+        },
+        {
+          "value": "full image-overlay--bg-shadow",
+          "label": "Text shadow and tint"
+        },
+        {
+          "value": "no_background",
+          "label": "No background"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,672 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "disabled": true,
+      "settings": {
+        "show_page_title": true,
+        "full_width": false
+      }
+    },
+    "rich_text_Mhi7qr": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_DLBN3A": {
+          "type": "heading",
+          "settings": {
+            "title": "Discover Our Ingredients",
+            "use_h1": false
+          }
+        },
+        "text_44raw3": {
+          "type": "text",
+          "settings": {
+            "text": "<p>We are committed to creating custom formulas that are 100% natural and safe to use for everyone. All our ingredients are carefully curated and sourced from our trusted partners across the world to bring you the best that our nature has to offer. Because your hair deserves nothing but the best.<\/p>",
+            "enlarge_text": true
+          }
+        }
+      },
+      "block_order": [
+        "heading_DLBN3A",
+        "text_44raw3"
+      ],
+      "settings": {
+        "height": "medium",
+        "text_alignment": "center",
+        "full_width": false,
+        "color_scheme": "default"
+      }
+    },
+    "ss_product_ingredients_5_jcUVrG": {
+      "type": "ss-product-ingredients-5",
+      "blocks": {
+        "card_ixrBAH": {
+          "type": "card",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/07_2.webp",
+            "image_url": "",
+            "title": "Crocus Sativus (Saffron)",
+            "text": "<p>Saffron is a luxurious antioxidant that calms inflammation, stimulates circulation, and helps reduce scalp sensitivity and potential follicle damage<\/p>",
+            "ingredients": "SOOTHE, ANTIOXIDANT, SCALP STIMULATION, BRIGHTEN, STRENGTH"
+          }
+        },
+        "card_TncHqt": {
+          "type": "card",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/09_1.webp",
+            "image_url": "",
+            "title": "Curcuma Longa Root",
+            "text": "<p>Turmeric is naturally anti-inflammatory and antimicrobial. It soothes itchy, flaky scalp and helps clear blocked follicles for healthier hair growth.<\/p>",
+            "ingredients": "DETOX, SOOTHE, CLARIFY, SCALP HEALTH, ANTI-INFLAMMATORY"
+          }
+        },
+        "card_g8pk37": {
+          "type": "card",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/13_2.webp",
+            "image_url": "",
+            "title": "Lavandula Angustifolia (Lavender)",
+            "text": "<p>Lavender oil helps improve scalp circulation, soothes irritation, reduces dandruff, and supports calm, balanced hair growth.<\/p>",
+            "ingredients": "CALM, GROWTH, DE-STRESS, SCALP HEALTH, CIRCULATION"
+          }
+        },
+        "card_4NzCTW": {
+          "type": "card",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/01.webp",
+            "image_url": "",
+            "title": "Adansonia Digitata (Baobab) Seed",
+            "text": "<p>Baobab seed oil is rich in omega fatty acids and vitamins A, D, E, and F. It deeply hydrates dry hair, restores elasticity, and protects the scalp’s moisture barrier.<\/p>",
+            "ingredients": "HYDRATION, STRENGTH, SCALP HEALTH, ELASTICITY, REPAIR"
+          }
+        },
+        "card_h87Hjg": {
+          "type": "card",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/03_6.webp",
+            "image_url": "",
+            "title": "Argania Spinosa (Argan) Kernel",
+            "text": "<p>Argan oil is known as “liquid gold” for hair. It deeply nourishes, tames frizz, prevents split ends, and restores natural shine to dull strands.<\/p>",
+            "ingredients": "SHINE, REPAIR, FRIZZ CONTROL, SOFTNESS, MOISTURE"
+          }
+        },
+        "card_jU6Jpi": {
+          "type": "card",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/04_12.webp",
+            "image_url": "",
+            "title": "Camellia Oleifera Seed",
+            "text": "<p>This lightweight oil is packed with antioxidants and vitamin E. It softens hair, smooths the cuticle, and improves manageability without weighing it down.<\/p>",
+            "ingredients": "SMOOTHING, ANTIOXIDANT, LIGHTWEIGHT, SHINE, SOFTNESS"
+          }
+        },
+        "card_cD7qGY": {
+          "type": "card",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/05_6.webp",
+            "image_url": "",
+            "title": "Carthamus Tinctorious (Safflower)",
+            "text": "<p>Safflower oil improves blood circulation to the scalp, promotes hair growth, and supports a healthy environment for follicles to thrive naturally.<\/p>",
+            "ingredients": "GROWTH, SCALP HEALTH, NOURISH, VOLUME, STIMULATION"
+          }
+        },
+        "card_xLqVcb": {
+          "type": "card",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/06_2_03771c2d-5eb8-4b4f-8395-6def0d3ee37e.webp",
+            "image_url": "",
+            "title": "Cocos Nucifera (Coconut)",
+            "text": "<p>Coconut oil penetrates the hair shaft to reduce protein loss, prevent breakage, and protect hair from damage caused by environmental stress.<\/p>",
+            "ingredients": "STRENGTH, DAMAGE REPAIR, SHINE, MOISTURE RETENTION, PROTECTION"
+          }
+        },
+        "card_aGXzbX": {
+          "type": "card",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/08_1.webp",
+            "image_url": "",
+            "title": "Cucurbita Pepo (Pumpkin) Seed",
+            "text": "<p>Pumpkin seed oil is rich in zinc and fatty acids that support follicle strength, balance oil production, and reduce hair shedding.<\/p>",
+            "ingredients": "FOLLICLE HEALTH, BALANCE, STRENGTH, ANTI-SHEDDING, GROWTH"
+          }
+        },
+        "card_jDVTTT": {
+          "type": "card",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/10_1.webp",
+            "image_url": "",
+            "title": "Camellia Oleifera Seed",
+            "text": "<p>This lightweight oil is packed with antioxidants and vitamin E. It softens hair, smooths the cuticle, and improves manageability without weighing it down.<\/p>",
+            "ingredients": "SMOOTHING, ANTIOXIDANT, LIGHTWEIGHT, SHINE, SOFTNESS"
+          }
+        },
+        "card_gJxY4A": {
+          "type": "card",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/11_1.webp",
+            "image_url": "",
+            "title": "Emblica Officinalis (Amla) Fruit",
+            "text": "<p>Amla strengthens roots, enhances shine, and supports hair growth while helping delay premature greying with its high vitamin C content.<\/p>",
+            "ingredients": "ROOT STRENGTH, ANTI-AGE, SHINE, GROWTH, NOURISHMENT"
+          }
+        },
+        "card_HP68HU": {
+          "type": "card",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/12_2.webp",
+            "image_url": "",
+            "title": "Hibiscus Sabdariffa Flower",
+            "text": "<p>Hibiscus naturally boosts hair thickness, reduces shedding, and leaves hair soft, shiny, and nourished from root to tip.<\/p>",
+            "ingredients": "THICKEN, SHINE, GROWTH, NOURISH, ANTI-HAIR LOSS"
+          }
+        },
+        "card_nWXzHL": {
+          "type": "card",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/14_2.webp",
+            "image_url": "",
+            "title": "Linum Usitatissimum (Linseed)",
+            "text": "<p>Linseed oil is loaded with omega-3s and lignans that soothe the scalp, add elasticity, and protect against dryness and breakage.<\/p>",
+            "ingredients": "ELASTICITY, SCALP HEALTH, SHINE, STRENGTH, HYDRATION"
+          }
+        },
+        "card_t3yUNW": {
+          "type": "card",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/15_2.webp",
+            "image_url": "",
+            "title": "Mentha Piperita (Peppermint)",
+            "text": "<p>Peppermint oil boosts scalp circulation, awakens dormant follicles, and leaves a cooling, refreshing sensation that stimulates natural hair growth.<\/p>",
+            "ingredients": "STIMULATION, GROWTH, REFRESH, SOOTHE, CLARITY"
+          }
+        },
+        "card_fDypQz": {
+          "type": "card",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/16.webp",
+            "image_url": "",
+            "title": "Murraya Koenigii (Curry Leaf)",
+            "text": "<p>Curry leaf oil is rich in beta-carotene and proteins, which strengthen hair roots, reduce hair fall, and encourage regrowth.<\/p>",
+            "ingredients": "ROOT STRENGTH, GROWTH, ANTI-HAIR LOSS, REGENERATION, THICKENING"
+          }
+        },
+        "card_4NmMM4": {
+          "type": "card",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/17.webp",
+            "image_url": "",
+            "title": "Nigella Sativa (Black Seed)",
+            "text": "<p>Black seed oil nourishes the scalp, reduces inflammation, strengthens follicles, and stimulates fresh, healthy hair regrowth over time.<\/p>",
+            "ingredients": "STRENGTH, SCALP BALANCE, REGROWTH, CALMING, ANTI-INFLAMMATORY"
+          }
+        },
+        "card_yLJHBj": {
+          "type": "card",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/18.webp",
+            "image_url": "",
+            "title": "Oenocarpus Bataua (Rahua)",
+            "text": "<p>Rahua oil deeply restores elasticity, improves strand strength, and adds softness without greasiness—ideal for damaged or dry hair.<\/p>",
+            "ingredients": "RESTORE, ELASTICITY, SOFTNESS, CONTROL, SHINE"
+          }
+        },
+        "card_YfG9bq": {
+          "type": "card",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/19.webp",
+            "image_url": "",
+            "title": "Oenothera Biennis (Evening Primrose)",
+            "text": "<p>Evening primrose oil is high in gamma-linolenic acid, calming itchy scalp, supporting moisture retention, and improving strand flexibility.<\/p>",
+            "ingredients": "SCALP RELIEF, MOISTURE, FLEXIBILITY, CALM, STRENGTHENING"
+          }
+        },
+        "card_Dz4BpQ": {
+          "type": "card",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/20.webp",
+            "image_url": "",
+            "title": "Olea Europaea (Olive) Fruit",
+            "text": "<p>Olive oil strengthens strands, seals in hydration, smooths frizz, and adds richness and shine to dry, textured hair.<\/p>",
+            "ingredients": "STRENGTH, MOISTURE, SHINE, SMOOTHING, NOURISHING"
+          }
+        },
+        "card_yCNPkH": {
+          "type": "card",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/21.webp",
+            "image_url": "",
+            "title": "Panax Ginseng Root",
+            "text": "<p>Ginseng improves scalp circulation and energizes follicles, helping to reduce shedding and boost hair volume and density.<\/p>",
+            "ingredients": "DENSITY, GROWTH, SCALP STIMULATION, ENERGY, ROOT ACTIVATION"
+          }
+        },
+        "card_cBUtAF": {
+          "type": "card",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/22_971195cd-f9f7-40ff-bff5-f6f5bbb5af41.webp",
+            "image_url": "",
+            "title": "Persian Rosa Centifolia (Persian Rose Petals)",
+            "text": "<p>Rose petals provide hydration, anti-inflammatory benefits, and a soft floral scent leaving the scalp calm and hair soft.<\/p>",
+            "ingredients": "HYDRATE, CALM, SOFTNESS, SCENT, ANTI-INFLAMMATORY"
+          }
+        },
+        "card_i6YWHD": {
+          "type": "card",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/23.webp",
+            "image_url": "",
+            "title": "Prickly Pear",
+            "text": "<p>Prickly pear oil is high in vitamin E and antioxidants, deeply hydrates, softens hair, and enhances natural shine.<\/p>",
+            "ingredients": "HYDRATION, SHINE, ANTIOXIDANT, SOFTNESS, REPAIR"
+          }
+        },
+        "card_kAtKAg": {
+          "type": "card",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/24_1.webp",
+            "image_url": "",
+            "title": "Rosa Canina Fruit (Rosehip)",
+            "text": "<p>Rosehip oil stimulates collagen production, helps repair scalp tissue, and strengthens weak or damaged strands.<\/p>",
+            "ingredients": "COLLAGEN BOOST, STRENGTH, REPAIR, REVIVE, NOURISHMENT"
+          }
+        },
+        "card_tVNDmc": {
+          "type": "card",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/25.webp",
+            "image_url": "",
+            "title": "Rosmarinus Officinalis (Rosemary) Flower",
+            "text": "<p>Rosemary oil activates circulation, promotes fuller growth, and helps reduce excessive hair fall with consistent use.<\/p>",
+            "ingredients": "GROWTH, STIMULATE, ANTI-HAIR LOSS, DENSITY, VITALITY"
+          }
+        },
+        "card_MMK7Xg": {
+          "type": "card",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/26.webp",
+            "image_url": "",
+            "title": "Senna Auriculata (Avarmpoo Petals)",
+            "text": "<p>Avarampoo is cooling, antimicrobial, and purifying supporting a clean, fresh scalp and smoother, shinier hair.<\/p>",
+            "ingredients": "CLEANSE, SHINE, COOLING, PURIFY, SCALP REFRESH"
+          }
+        },
+        "card_RNR9ry": {
+          "type": "card",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/27.webp",
+            "image_url": "",
+            "title": "Serenoa Serrulata Fruit (Saw Palmetto)",
+            "text": "<p>Saw palmetto helps block DHT, a hormone linked to hair loss, making it effective for hormonal thinning support.<\/p>",
+            "ingredients": "DHT BLOCK, HORMONE BALANCE, REGROWTH, THICKNESS, ANTI-HAIR LOSS"
+          }
+        },
+        "card_dLjJtR": {
+          "type": "card",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/28.webp",
+            "image_url": "",
+            "title": "Trigonella Foenum Graecum (Fenugreek) Seed",
+            "text": "<p>Fenugreek coats strands, reduces breakage, thickens hair, and strengthens follicles to support new growth.<\/p>",
+            "ingredients": "THICKNESS, STRENGTH, ANTI-BREAKAGE, GROWTH, FOLLICLE SUPPORT"
+          }
+        },
+        "card_Lwh4fA": {
+          "type": "card",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/29.webp",
+            "image_url": "",
+            "title": "Vitis Vinifera (Grape) Seed",
+            "text": "<p>This lightweight oil protects against dryness, locks in moisture, and strengthens fine, fragile strands.<br\/><\/p>",
+            "ingredients": "MOISTURE LOCK, PROTECT, STRENGTH, SOFTNESS, LIGHTWEIGHT"
+          }
+        },
+        "card_k9cbBL": {
+          "type": "card",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/30.webp",
+            "image_url": "",
+            "title": "Zingiber Officinale Root",
+            "text": "<p>Ginger root stimulates blood flow, encourages regrowth, and helps break through stagnation in slow-growing hair.<\/p>",
+            "ingredients": "STIMULATE, GROWTH, REVITALIZE, CIRCULATION, REGENERATION"
+          }
+        }
+      },
+      "block_order": [
+        "card_ixrBAH",
+        "card_TncHqt",
+        "card_g8pk37",
+        "card_4NzCTW",
+        "card_h87Hjg",
+        "card_jU6Jpi",
+        "card_cD7qGY",
+        "card_xLqVcb",
+        "card_aGXzbX",
+        "card_jDVTTT",
+        "card_gJxY4A",
+        "card_HP68HU",
+        "card_nWXzHL",
+        "card_t3yUNW",
+        "card_fDypQz",
+        "card_4NmMM4",
+        "card_yLJHBj",
+        "card_YfG9bq",
+        "card_Dz4BpQ",
+        "card_yCNPkH",
+        "card_cBUtAF",
+        "card_i6YWHD",
+        "card_kAtKAg",
+        "card_tVNDmc",
+        "card_MMK7Xg",
+        "card_RNR9ry",
+        "card_dLjJtR",
+        "card_Lwh4fA",
+        "card_k9cbBL"
+      ],
+      "settings": {
+        "layout_type": "grid",
+        "layout_type_mobile": "slider",
+        "heading": "",
+        "heading_custom": false,
+        "heading_font": "josefin_sans_n4",
+        "heading_size": 44,
+        "heading_size_mobile": 24,
+        "heading_height": 130,
+        "heading_align": "center",
+        "heading_align_mobile": "left",
+        "cards_gap": 30,
+        "cards_gap_mobile": 20,
+        "cards_view": 3,
+        "cards_view_mobile": 1.1,
+        "cards_mt": 36,
+        "cards_mt_mobile": 24,
+        "card_padding_horizontal": 20,
+        "card_padding_horizontal_mobile": 20,
+        "card_padding_vertical": 20,
+        "card_padding_vertical_mobile": 20,
+        "card_radius": 12,
+        "card_border_thickness": 0,
+        "image_ratio": "landscape",
+        "image_ratio_mobile": "landscape",
+        "card_content_align": "left",
+        "card_content_align_mobile": "left",
+        "title_custom": false,
+        "title_font": "josefin_sans_n4",
+        "title_size": 20,
+        "title_size_mobile": 18,
+        "title_height": 130,
+        "text_custom": false,
+        "text_font": "josefin_sans_n4",
+        "text_size": 13,
+        "text_size_mobile": 13,
+        "text_height": 150,
+        "text_mt": 12,
+        "text_mt_mobile": 10,
+        "use_read_more": true,
+        "read_more": "read more",
+        "read_less": "read less",
+        "small_text_size": 100,
+        "ingredients_gap": 8,
+        "ingredients_gap_mobile": 8,
+        "ingredients_mt": 16,
+        "ingredients_mt_mobile": 16,
+        "ingredient_padding_horizontal": 10,
+        "ingredient_padding_horizontal_mobile": 10,
+        "ingredient_padding_vertical": 6,
+        "ingredient_padding_vertical_mobile": 6,
+        "ingredient_radius": 100,
+        "ingredient_border_thickness": 1,
+        "ingredient_custom": false,
+        "ingredient_font": "josefin_sans_n4",
+        "ingredient_size": 11,
+        "ingredient_size_mobile": 11,
+        "ingredient_height": 100,
+        "arrow_size": 48,
+        "arrow_size_mobile": 38,
+        "arrow_icon_size": 10,
+        "arrow_icon_size_mobile": 8,
+        "arrow_border_thickness": 0,
+        "arrow_radius": 100,
+        "arrow_hover_effect": "color",
+        "arrow_show_desktop": false,
+        "arrow_show_mobile": false,
+        "title_color": "#121212",
+        "text_color": "#121212",
+        "card_bg_color": "#ffffff",
+        "card_border_color": "#121212",
+        "ingredient_color": "#121212",
+        "ingredient_bg_color": "rgba(0,0,0,0)",
+        "ingredient_border_color": "#121212",
+        "arrow_color": "#ffffff",
+        "arrow_hover_color": "#121212",
+        "arrow_bg_color": "#121212",
+        "arrow_bg_hover_color": "#ffffff",
+        "arrow_border_color": "#c7c7c7",
+        "arrow_border_hover_color": "#c7c7c7",
+        "heading_color": "#121212",
+        "background_color": "#f3f3f3",
+        "background_gradient": "",
+        "border_color": "#121212",
+        "margin_top": 0,
+        "margin_bottom": 0,
+        "margin_horizontal": 0,
+        "margin_horizontal_mobile": 0,
+        "padding_top": 36,
+        "padding_bottom": 36,
+        "padding_horizontal": 5,
+        "padding_horizontal_mobile": 1.5,
+        "full_width": true,
+        "content_width": 1200,
+        "border_thickness": 0,
+        "section_radius": 0,
+        "lazy": true
+      }
+    },
+    "custom_liquid_aiL77B": {
+      "type": "custom-liquid",
+      "settings": {
+        "full_width": true,
+        "show_space": true,
+        "code": ""
+      }
+    },
+    "ss_product_ingredients_2_VhkP6H": {
+      "type": "ss-product-ingredients-2",
+      "blocks": {
+        "ingredient_7mRq9D": {
+          "type": "ingredient",
+          "settings": {
+            "title": "Prickly Pear Seed Oil",
+            "text": "<p>Each fruit contains very few seeds, and cold pressing is slow and laborious. It is super rich in vitamin E, deeply hydrating, protects and softens dry, brittle hair.<\/p>",
+            "image": "shopify:\/\/shop_images\/prickly_pear_by_afsennah.png"
+          }
+        },
+        "ingredient_M6WL6J": {
+          "type": "ingredient",
+          "settings": {
+            "title": "Saffron Oil",
+            "text": "<p>Harvested from the delicate threads of the Crocus sativus flower, saffron oil is a luxurious elixir known for its antioxidant power. Rich in carotenoids and minerals, it helps soothe the scalp, boosts circulation, and adds radiant shine to dull, tired hair. Especially loved for its calming effect on sensitive skin.<\/p>",
+            "image": "shopify:\/\/shop_images\/saffron_oil_by_afsennah.png"
+          }
+        },
+        "ingredient_A9NRpA": {
+          "type": "ingredient",
+          "settings": {
+            "title": "Rosehip Oil",
+            "text": "<p>Extracted from the seeds of wild rose bushes, rosehip oil is a powerhouse of essential fatty acids, vitamins A and C, and antioxidants. It deeply nourishes both scalp and hair, helping to repair damage, soothe inflammation, and improve elasticity. Its lightweight, fast-absorbing nature makes it ideal for revitalizing dry or brittle strands without leaving a greasy residue.<\/p>",
+            "image": "shopify:\/\/shop_images\/Rosehip_ingredient_afsennah.png"
+          }
+        },
+        "ingredient_BqQPd9": {
+          "type": "ingredient",
+          "settings": {
+            "title": "Hibiscus Oil",
+            "text": "<p>Pressed from the vibrant petals of the hibiscus flower, this botanical treasure is celebrated for its ability to stimulate hair growth and restore vitality to thinning strands. Rich in amino acids, vitamin C, and natural AHAs, hibiscus oil helps strengthen the roots, support a healthy scalp, and improve shine and manageability. <\/p>",
+            "image": "shopify:\/\/shop_images\/Hibiscus_oil_afsennah_ingredient_page.png"
+          }
+        }
+      },
+      "block_order": [
+        "ingredient_7mRq9D",
+        "ingredient_M6WL6J",
+        "ingredient_A9NRpA",
+        "ingredient_BqQPd9"
+      ],
+      "disabled": true,
+      "settings": {
+        "body_gap": 60,
+        "body_gap_mobile": 40,
+        "heading": "<h2>High quality  ingredients<\/h2>",
+        "heading_custom": false,
+        "heading_font": "josefin_sans_n4",
+        "heading_size": 38,
+        "heading_size_mobile": 28,
+        "heading_height": 130,
+        "heading_align": "left",
+        "heading_align_mobile": "center",
+        "heading_mt": 0,
+        "heading_mt_mobile": 0,
+        "text": "<p>We thoughtfully selected the most powerful plant-based oils to craft Afsennah’s hair elixirs rich in nutrients, free from harsh additives, and designed to nourish your scalp and transform your hair with every drop.<\/p>",
+        "text_custom": false,
+        "text_font": "josefin_sans_n4",
+        "text_size": 16,
+        "text_size_mobile": 18,
+        "text_height": 150,
+        "text_mt": 24,
+        "text_mt_mobile": 24,
+        "text_align": "left",
+        "text_align_mobile": "center",
+        "text_bottom_mobile": true,
+        "items_gap": 16,
+        "items_gap_mobile": 10,
+        "items_mt": 16,
+        "items_mt_mobile": 16,
+        "items_align": "start",
+        "items_align_mobile": "center",
+        "item_custom": false,
+        "item_font": "josefin_sans_n4",
+        "item_size": 16,
+        "item_size_mobile": 16,
+        "item_height": 100,
+        "item_padding_vertical": 8,
+        "item_padding_vertical_mobile": 8,
+        "item_padding_horizontal": 14,
+        "item_padding_horizontal_mobile": 14,
+        "item_radius": 40,
+        "item_border_thickness": 1,
+        "button": "Get your Formula here!",
+        "button_url": "shopify:\/\/products\/custom-hair-growth-oil",
+        "button_custom": false,
+        "button_font": "josefin_sans_n4",
+        "button_size": 16,
+        "button_size_mobile": 16,
+        "button_height": 100,
+        "button_align": "left",
+        "button_align_mobile": "center",
+        "button_mt": 32,
+        "button_mt_mobile": 0,
+        "button_padding_vertical": 20,
+        "button_padding_vertical_mobile": 20,
+        "button_padding_horizontal": 40,
+        "button_padding_horizontal_mobile": 40,
+        "button_radius": 100,
+        "button_border_thickness": 2,
+        "button_bottom_mobile": true,
+        "slider_width": 42,
+        "slider_width_mobile": 100,
+        "slider_gap": 20,
+        "card_padding_vertical": 20,
+        "card_padding_vertical_mobile": 20,
+        "card_padding_horizontal": 20,
+        "card_padding_horizontal_mobile": 20,
+        "card_radius": 40,
+        "card_border_thickness": 1,
+        "title_custom": false,
+        "title_font": "josefin_sans_n4",
+        "title_size": 40,
+        "title_size_mobile": 34,
+        "title_height": 130,
+        "title_align": "center",
+        "title_align_mobile": "center",
+        "card_text_custom": false,
+        "card_text_font": "josefin_sans_n4",
+        "card_text_size": 14,
+        "card_text_size_mobile": 14,
+        "card_text_height": 130,
+        "card_text_mt": 20,
+        "card_text_align": "center",
+        "card_text_align_mobile": "center",
+        "image_width": 80,
+        "image_width_mobile": 80,
+        "image_ratio": "square",
+        "image_ratio_mobile": "square",
+        "image_radius": 50,
+        "image_border_thickness": 6,
+        "image_mt": 20,
+        "image_align": "center",
+        "image_align_mobile": "center",
+        "hide_image": false,
+        "navigation_mt": -20,
+        "navigation_mt_mobile": 20,
+        "navigation_gap": 40,
+        "navigation_gap_mobile": 40,
+        "arrow_size": 46,
+        "arrow_size_mobile": 46,
+        "arrow_icon_size": 14,
+        "arrow_icon_size_mobile": 14,
+        "arrow_border_thickness": 0,
+        "arrow_show_desktop": true,
+        "arrow_show_mobile": false,
+        "dots_size": 12,
+        "dots_size_mobile": 12,
+        "dots_show_desktop": false,
+        "dots_show_mobile": true,
+        "item_color": "#2f222b",
+        "item_hover_color": "#ffffff",
+        "item_bg_color": "#ffffff",
+        "item_bg_hover_color": "#f59e10",
+        "item_border_color": "#2f222b",
+        "item_border_hover_color": "#2f222b",
+        "button_color": "#ffffff",
+        "button_hover_color": "#000000",
+        "button_bg_color": "#000000",
+        "button_bg_hover_color": "#f59e10",
+        "button_border_color": "#2f222b",
+        "button_border_hover_color": "#2f222b",
+        "card_bg_color": "#ffffff",
+        "card_border_color": "#2f222b",
+        "title_color": "#000000",
+        "card_text_color": "#000000",
+        "image_border_color": "#f59e10",
+        "arrow_color": "#ffffff",
+        "arrow_hover_color": "#ffffff",
+        "arrow_bg_color": "#2f222b",
+        "arrow_bg_hover_color": "#2f222b",
+        "arrow_border_color": "#2f222b",
+        "arrow_border_hover_color": "#2f222b",
+        "dots_color": "#2f222b",
+        "heading_color": "#1c161a",
+        "text_color": "#1c161a",
+        "background_color": "#fcf8f5",
+        "background_gradient": "",
+        "border_color": "#000000",
+        "margin_top": 0,
+        "margin_bottom": 0,
+        "padding_top": 36,
+        "padding_bottom": 36,
+        "padding_horizontal": 5,
+        "padding_horizontal_mobile": 1.5,
+        "full_width": false,
+        "content_width": 120,
+        "border_thickness": 0,
+        "lazy": true
+      }
+    }
+  },
+  "order": [
+    "main",
+    "rich_text_Mhi7qr",
+    "ss_product_ingredients_5_jcUVrG",
+    "custom_liquid_aiL77B",
+    "ss_product_ingredients_2_VhkP6H"
+  ]
+}

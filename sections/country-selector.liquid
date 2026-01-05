@@ -1,0 +1,56 @@
+{%- if localization.available_countries.size > 1 -%}
+  {%- liquid
+    assign id = section.id | append: '-country'
+    if localization.available_countries.size > 9
+      assign popular_countries = localization.available_countries | where: 'popular?' | sort: 'name'
+    endif
+
+    capture country_values
+      if popular_countries
+        for country in popular_countries
+          echo country.iso_code
+          echo '|'
+        endfor
+      endif
+      for country in localization.available_countries
+        if popular_countries and country.popular?
+          continue
+        endif
+        echo country.iso_code
+        echo '|'
+      endfor
+    endcapture
+  -%}
+
+  {%- capture country_names -%}
+    {% if popular_countries -%}
+      {%- for country in popular_countries -%}
+        <span class="country-option" data-popular>
+          <span class="country-option__name">{{ country.name }}</span> <span class="country-option__currency">({{ country.currency.iso_code }}&nbsp;{{ country.currency.symbol }})</span>
+        </span>|
+      {%- endfor -%}
+    {%- endif -%}
+    {%- for country in localization.available_countries -%}
+      {%- liquid
+        if popular_countries and country.popular?
+          continue
+        endif
+      -%}
+      <span class="country-option">
+        <span class="country-option__name">{{ country.name }}</span> <span class="country-option__currency">({{ country.currency.iso_code }}&nbsp;{{ country.currency.symbol }})</span>
+      </span>|
+    {%- endfor -%}
+  {%- endcapture -%}
+
+  {%- liquid
+    assign country_values = country_values | remove_last: '|' | split: '|'
+    assign country_names = country_names | remove_last: '|' | split: '|'
+  -%}
+
+  {%- render 'custom-select',
+    id: id,
+    option_values: country_values,
+    option_names: country_names,
+    selected_value: localization.country.iso_code
+  -%}
+{%- endif -%}

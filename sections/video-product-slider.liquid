@@ -1,0 +1,459 @@
+{% comment %}
+  Video Product Slider Section
+  Shows multiple cards in a slider format with video, text, and product
+{% endcomment %}
+
+<section class="video-product-slider-section" data-section-id="{{ section.id }}">
+  <div class="{% if section.settings.full_width %}video-product-slider-full{% else %}video-product-slider-container{% endif %}">
+    {% if section.settings.section_title != blank %}
+      <h2 class="video-product-slider-title">{{ section.settings.section_title }}</h2>
+    {% endif %}
+
+    <div class="video-product-scroll-wrapper">
+      {% for block in section.blocks %}
+        {% if block.settings.product != blank %}
+          {% assign card_product_tags = block.settings.product.tags | join: ',' %}
+        {% else %}
+          {% assign card_product_tags = '' %}
+        {% endif %}
+        <div class="video-product-card" {{ block.shopify_attributes }} data-product-tags="{{ card_product_tags }}">
+
+          {%- comment -%} Video Section {%- endcomment -%}
+          {% if block.settings.video != blank %}
+            <div class="video-product-card-video">
+              {{ block.settings.video | video_tag:
+              autoplay: block.settings.autoplay,
+              loop: block.settings.loop,
+              muted: block.settings.muted,
+              controls: block.settings.controls,
+              playsinline: true
+              }}
+            </div>
+          {% endif %}
+
+          {%- comment -%} Text Section {%- endcomment -%}
+          {% if block.settings.card_text != blank %}
+            <div class="video-product-card-text">
+              {{ block.settings.card_text }}
+            </div>
+          {% endif %}
+
+          {%- comment -%} Product Section {%- endcomment -%}
+          {% if block.settings.product != blank %}
+            {% assign card_product = block.settings.product %}
+            {% assign card_variant = card_product.selected_or_first_available_variant %}
+
+            <div class="video-product-card-product">
+              <div class="video-product-image">
+                {% if card_product.featured_image %}
+                  <img src="{{ card_product.featured_image | image_url: width: 80 }}"
+                       alt="{{ card_product.title }}"
+                       width="80"
+                       height="80"
+                       loading="lazy">
+                {% endif %}
+              </div>
+
+              <div class="video-product-info">
+                <h3 class="video-product-title">{{ card_product.title }}</h3>
+                <div class="video-product-price">
+                  {{ card_variant.price | money }}
+                </div>
+              </div>
+
+              <div class="video-product-actions">
+                {%- comment -%} Quiz CTA (Hidden by default, shown by JS if quiz not completed) {%- endcomment -%}
+                <div class="video-product-quiz-cta" style="display: none;">
+                  <a href="{{ section.settings.quiz_url | default: '/pages/get-your-formula' }}" class="video-product-btn video-product-quiz-btn btn">
+                    {{ section.settings.quiz_cta_text | default: 'Get Your Formula' }}
+                  </a>
+                </div>
+
+                {%- comment -%} Regular Buy Button (Hidden by JS if quiz not completed) {%- endcomment -%}
+                <div class="video-product-buy-wrapper">
+                  <form action="/cart/add" method="post" class="video-product-form">
+                    <input type="hidden" name="id" value="{{ card_variant.id }}">
+                    <button type="submit"
+                            class="video-product-btn btn video-product-add-btn"
+                            {% unless card_variant.available %}disabled{% endunless %}>
+                      {% if card_variant.available %}
+                        {{ section.settings.button_text | default: 'Buy' }}
+                      {% else %}
+                        Sold Out
+                      {% endif %}
+                    </button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          {% endif %}
+
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<script>
+    (function() {
+        const sectionId = '{{ section.id }}';
+
+        // Check quiz completion and show/hide buttons
+        function checkQuizCompletion() {
+            const quizCompleted = localStorage.getItem('quiz_completed') === 'true';
+            const section = document.querySelector('[data-section-id="' + sectionId + '"]');
+            if (!section) return;
+
+            const cards = section.querySelectorAll('.video-product-card');
+
+            cards.forEach(card => {
+                const regularButton = card.querySelector('.video-product-buy-wrapper');
+                const quizCTA = card.querySelector('.video-product-quiz-cta');
+
+                // Check if product has "no consult" tag
+                const productTagsStr = card.dataset.productTags || '';
+                const productTags = productTagsStr.toLowerCase().split(',').map(tag => tag.trim());
+                const hasNoConsultTag = productTags.includes('no consult') || productTags.includes('no-consult');
+
+                // If product has "no consult" tag, always show regular button (allow direct purchase)
+                if (hasNoConsultTag) {
+                    if (regularButton) regularButton.style.display = 'block';
+                    if (quizCTA) quizCTA.style.display = 'none';
+                } else if (!quizCompleted) {
+                    // Hide regular button, show quiz CTA
+                    if (regularButton) regularButton.style.display = 'none';
+                    if (quizCTA) quizCTA.style.display = 'block';
+                } else {
+                    // Show regular button, hide quiz CTA
+                    if (regularButton) regularButton.style.display = 'block';
+                    if (quizCTA) quizCTA.style.display = 'none';
+                }
+            });
+        }
+
+        // Run on page load
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', checkQuizCompletion);
+        } else {
+            checkQuizCompletion();
+        }
+
+        // Also check when returning to page (in case they completed quiz in another tab)
+        window.addEventListener('focus', checkQuizCompletion);
+    })();
+</script>
+
+<style>
+    .video-product-slider-section {
+        padding: 0;
+    }
+
+    .video-product-slider-container {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 0 20px;
+    }
+
+    .video-product-slider-full {
+        padding: 0 20px;
+    }
+
+    .video-product-slider-title {
+        text-align: center;
+        font-size: 32px;
+        margin-bottom: 20px;
+        font-weight: 400;
+    }
+
+    .video-product-scroll-wrapper {
+        display: flex;
+        gap: 20px;
+        overflow-x: auto;
+        scroll-behavior: smooth;
+        -webkit-overflow-scrolling: touch;
+        padding-bottom: 20px;
+        margin-bottom: 20px;
+    }
+
+    .video-product-scroll-wrapper::-webkit-scrollbar {
+        height: 8px;
+    }
+
+    .video-product-scroll-wrapper::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 10px;
+    }
+
+    .video-product-scroll-wrapper::-webkit-scrollbar-thumb {
+        background: #888;
+        border-radius: 10px;
+    }
+
+    .video-product-scroll-wrapper::-webkit-scrollbar-thumb:hover {
+        background: #555;
+    }
+
+    .video-product-card {
+        background: #fff;
+        border-radius: 8px;
+        border: 1px solid #e5e5e5;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        min-width: 340px;
+        width: 340px;
+        flex-shrink: 0;
+    }
+
+    .video-product-card-video {
+        width: 100%;
+        aspect-ratio: 9/16;
+        overflow: hidden;
+        background: #000;
+        position: relative;
+    }
+
+    .video-product-card-video video {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .video-product-card-text {
+        padding: 20px;
+        font-size: 14px;
+        line-height: 1.6;
+        color: #333;
+        & p:last-of-type {
+            margin-bottom: 0;
+        }
+    }
+
+    .video-product-card-product {
+        padding: 20px;
+        display: grid;
+        grid-template-columns: 80px 1fr;
+        gap: 16px;
+        align-items: center;
+        border-top: 1px solid #e5e5e5;
+        margin-top: auto;
+    }
+
+    .video-product-image {
+        width: 80px;
+        height: 80px;
+        border-radius: 4px;
+        overflow: hidden;
+        background: #f5f5f5;
+    }
+
+    .video-product-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .video-product-info {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .video-product-title {
+        font-size: 16px;
+        font-weight: 300;
+        margin: 0;
+    }
+
+    .video-product-price {
+        font-size: 14px;
+        color: #666;
+    }
+
+    .video-product-actions {
+        display: flex;
+        align-items: center;
+    }
+
+    .video-product-form {
+        margin: 0;
+    }
+
+    .video-product-btn {
+        padding: 12px 24px;
+        border-radius: 5rem;
+        font-size: 14px;
+        font-weight: 400;
+        text-decoration: none;
+        border: none;
+        cursor: pointer;
+        transition: all 0.2s;
+        white-space: nowrap;
+        display: inline-block;
+        text-align: center;
+    }
+
+    .video-product-add-btn:disabled {
+        background: #ccc;
+        cursor: not-allowed;
+    }
+
+    /* Mobile Responsive */
+    @media (max-width: 768px) {
+        .video-product-slider-title {
+            font-size: 24px;
+            margin-bottom: 30px;
+        }
+
+        .video-product-card {
+            min-width: 280px;
+            width: 280px;
+            .btn {
+                width: 100%;
+            }
+        }
+
+        .video-product-card-product {
+            grid-template-columns: 60px 1fr;
+            gap: 12px;
+        }
+
+        .video-product-image {
+            width: 60px;
+            height: 60px;
+        }
+
+        .video-product-actions {
+            grid-column: 1 / -1;
+            justify-content: stretch;
+        }
+
+        .video-product-actions .video-product-btn {
+            width: 100%;
+        }
+
+        .video-product-title {
+            font-size: 14px;
+        }
+
+        .video-product-price {
+            font-size: 13px;
+        }
+        .video-product-buy-wrapper {
+            width: 100%;
+        }
+    }
+</style>
+
+{% schema %}
+{
+  "name": "Video Product Slider",
+  "settings": [
+    {
+      "type": "text",
+      "id": "section_title",
+      "label": "Section Title",
+      "default": "Featured Products"
+    },
+    {
+      "type": "checkbox",
+      "id": "full_width",
+      "label": "Full Width Section",
+      "default": false,
+      "info": "Enable to make the slider full width without container"
+    },
+    {
+      "type": "header",
+      "content": "Button Settings"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Buy Button Text",
+      "default": "Buy"
+    },
+    {
+      "type": "header",
+      "content": "Quiz Settings"
+    },
+    {
+      "type": "text",
+      "id": "quiz_cta_text",
+      "label": "Quiz CTA Button Text",
+      "default": "Get Your Formula",
+      "info": "Text displayed when quiz is not completed"
+    },
+    {
+      "type": "text",
+      "id": "quiz_url",
+      "label": "Quiz Page URL",
+      "default": "/pages/get-your-formula"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "video_product_card",
+      "name": "Video Product Card",
+      "settings": [
+        {
+          "type": "video",
+          "id": "video",
+          "label": "Video"
+        },
+        {
+          "type": "checkbox",
+          "id": "autoplay",
+          "label": "Autoplay video",
+          "default": true
+        },
+        {
+          "type": "checkbox",
+          "id": "loop",
+          "label": "Loop video",
+          "default": true
+        },
+        {
+          "type": "checkbox",
+          "id": "muted",
+          "label": "Mute video",
+          "default": true,
+          "info": "Videos must be muted to autoplay"
+        },
+        {
+          "type": "checkbox",
+          "id": "controls",
+          "label": "Show video controls",
+          "default": false
+        },
+        {
+          "type": "richtext",
+          "id": "card_text",
+          "label": "Card Text",
+          "default": "<p>Add your description text here</p>"
+        },
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Product"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Video Product Slider",
+      "blocks": [
+        {
+          "type": "video_product_card"
+        },
+        {
+          "type": "video_product_card"
+        },
+        {
+          "type": "video_product_card"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

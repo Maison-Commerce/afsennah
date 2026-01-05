@@ -1,0 +1,360 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "disabled": true,
+      "settings": {
+        "show_page_title": true,
+        "full_width": false
+      }
+    },
+    "image_with_text_overlay_wF9cJP": {
+      "type": "image-with-text-overlay",
+      "blocks": {
+        "subheading_jmw47P": {
+          "type": "subheading",
+          "settings": {
+            "subheading": ""
+          }
+        },
+        "heading_HU4TJb": {
+          "type": "heading",
+          "settings": {
+            "title": "Returns Guide",
+            "heading_max_width": 15,
+            "title_size": 72,
+            "title_size_mobile": 32,
+            "use_h1": true
+          }
+        },
+        "text_8nUtzF": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Follow our step-by-step guide to making a return<\/p>",
+            "enlarge_text": true
+          }
+        }
+      },
+      "block_order": [
+        "subheading_jmw47P",
+        "heading_HU4TJb",
+        "text_8nUtzF"
+      ],
+      "settings": {
+        "image": "",
+        "height": "fixed",
+        "height_desktop": 600,
+        "height_mobile": 460,
+        "image_link": "",
+        "full_width": true,
+        "text_alignment": "center center",
+        "mobile_overlay_under": false,
+        "overlay_style": "shadow"
+      }
+    },
+    "rich_text_xYHxUX": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_GcfAjR": {
+          "type": "heading",
+          "settings": {
+            "title": "Our Returns Policy",
+            "use_h1": false
+          }
+        },
+        "text_m7xMFX": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Describe your returns policy in detail to build trust with your customers.<\/p>",
+            "enlarge_text": true
+          }
+        }
+      },
+      "block_order": [
+        "heading_GcfAjR",
+        "text_m7xMFX"
+      ],
+      "settings": {
+        "height": "medium",
+        "text_alignment": "center",
+        "full_width": false,
+        "color_scheme": "1"
+      }
+    },
+    "image_with_text_EWRmm6": {
+      "type": "image-with-text",
+      "blocks": {
+        "subheading_WRmdJj": {
+          "type": "subheading",
+          "settings": {
+            "subheading": "Step One"
+          }
+        },
+        "heading_bwNNXe": {
+          "type": "heading",
+          "settings": {
+            "title": "Create a returns label",
+            "use_h1": false
+          }
+        },
+        "text_mkPBj9": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Description of this step for processing a return.<\/p>",
+            "enlarge_text": false
+          }
+        }
+      },
+      "block_order": [
+        "subheading_WRmdJj",
+        "heading_bwNNXe",
+        "text_mkPBj9"
+      ],
+      "settings": {
+        "image": "",
+        "image_2": "",
+        "image_width": 700,
+        "image_link": "",
+        "image_position": "left",
+        "text_alignment": "left",
+        "color_scheme": "default"
+      }
+    },
+    "image_with_text_zK74RN": {
+      "type": "image-with-text",
+      "blocks": {
+        "subheading_gg7ndR": {
+          "type": "subheading",
+          "settings": {
+            "subheading": "Step Two"
+          }
+        },
+        "heading_d7Adz7": {
+          "type": "heading",
+          "settings": {
+            "title": "Print your label",
+            "use_h1": false
+          }
+        },
+        "text_DRgW3F": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Description of this step for processing a return.<\/p>",
+            "enlarge_text": false
+          }
+        }
+      },
+      "block_order": [
+        "subheading_gg7ndR",
+        "heading_d7Adz7",
+        "text_DRgW3F"
+      ],
+      "settings": {
+        "image": "",
+        "image_2": "",
+        "image_width": 700,
+        "image_link": "",
+        "image_position": "right",
+        "text_alignment": "left",
+        "color_scheme": "1"
+      }
+    },
+    "image_with_text_89N96B": {
+      "type": "image-with-text",
+      "blocks": {
+        "subheading_RGtaT7": {
+          "type": "subheading",
+          "settings": {
+            "subheading": "Step Three"
+          }
+        },
+        "heading_PtVaWc": {
+          "type": "heading",
+          "settings": {
+            "title": "Bag it up",
+            "use_h1": false
+          }
+        },
+        "text_H4MMUb": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Description of this step for processing a return.<\/p>",
+            "enlarge_text": false
+          }
+        }
+      },
+      "block_order": [
+        "subheading_RGtaT7",
+        "heading_PtVaWc",
+        "text_H4MMUb"
+      ],
+      "settings": {
+        "image": "",
+        "image_2": "",
+        "image_width": 700,
+        "image_link": "",
+        "image_position": "left",
+        "text_alignment": "left",
+        "color_scheme": "default"
+      }
+    },
+    "image_with_text_3j6bBi": {
+      "type": "image-with-text",
+      "blocks": {
+        "subheading_aP7txq": {
+          "type": "subheading",
+          "settings": {
+            "subheading": "Step Four"
+          }
+        },
+        "heading_dBcMYi": {
+          "type": "heading",
+          "settings": {
+            "title": "Drop it off",
+            "use_h1": false
+          }
+        },
+        "text_WxpaiA": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Description of this step for processing a return.<\/p>",
+            "enlarge_text": false
+          }
+        }
+      },
+      "block_order": [
+        "subheading_aP7txq",
+        "heading_dBcMYi",
+        "text_WxpaiA"
+      ],
+      "settings": {
+        "image": "",
+        "image_2": "",
+        "image_width": 700,
+        "image_link": "",
+        "image_position": "right",
+        "text_alignment": "left",
+        "color_scheme": "1"
+      }
+    },
+    "faq_header_wMhwag": {
+      "type": "faq-header",
+      "settings": {
+        "title": "Returns FAQs",
+        "use_h1": false,
+        "text": "",
+        "show_search": false,
+        "show_index": false,
+        "index_heading": "How can we help?"
+      }
+    },
+    "collapsible_tabs_T3CtBB": {
+      "type": "collapsible-tabs",
+      "blocks": {
+        "question_MaLPNf": {
+          "type": "question",
+          "settings": {}
+        },
+        "question_WrriD8": {
+          "type": "question",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "question_MaLPNf",
+        "question_WrriD8"
+      ],
+      "settings": {}
+    },
+    "collapsible_tabs_FAbMDN": {
+      "type": "collapsible-tabs",
+      "blocks": {
+        "question_7CTQQD": {
+          "type": "question",
+          "settings": {}
+        },
+        "question_4D86Qg": {
+          "type": "question",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "question_7CTQQD",
+        "question_4D86Qg"
+      ],
+      "settings": {}
+    },
+    "contact_form_akYenb": {
+      "type": "contact-form",
+      "blocks": {
+        "name_input_By4fME": {
+          "type": "name_input",
+          "settings": {
+            "half_width": true
+          }
+        },
+        "custom_input_AwfLmE": {
+          "type": "custom_input",
+          "settings": {
+            "title": "Order Number",
+            "type": "text",
+            "required": false,
+            "half_width": true
+          }
+        },
+        "phone_input_47T7NL": {
+          "type": "phone_input",
+          "settings": {
+            "required": false,
+            "half_width": true
+          }
+        },
+        "email_input_KVyGVU": {
+          "type": "email_input",
+          "settings": {
+            "half_width": true
+          }
+        },
+        "message_input_n8bqWX": {
+          "type": "message_input",
+          "settings": {
+            "half_width": false
+          }
+        }
+      },
+      "block_order": [
+        "name_input_By4fME",
+        "custom_input_AwfLmE",
+        "phone_input_47T7NL",
+        "email_input_KVyGVU",
+        "message_input_n8bqWX"
+      ],
+      "settings": {
+        "contact_title": "Need more help with your returns?",
+        "contact_text": "<p>Use the form below to contact us and we will be sure to help you as quickly as possible<\/p>",
+        "color_scheme": "default"
+      }
+    },
+    "map_mbHWUC": {
+      "type": "map",
+      "settings": {
+        "full_width": true,
+        "color_scheme": "1"
+      }
+    }
+  },
+  "order": [
+    "main",
+    "image_with_text_overlay_wF9cJP",
+    "rich_text_xYHxUX",
+    "image_with_text_EWRmm6",
+    "image_with_text_zK74RN",
+    "image_with_text_89N96B",
+    "image_with_text_3j6bBi",
+    "faq_header_wMhwag",
+    "collapsible_tabs_T3CtBB",
+    "collapsible_tabs_FAbMDN",
+    "contact_form_akYenb",
+    "map_mbHWUC"
+  ]
+}

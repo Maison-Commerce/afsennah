@@ -1,0 +1,377 @@
+{%- liquid
+  if section.settings.enable_carousel
+    assign product_limit = 20
+  else
+    assign product_limit = section.settings.grid | times: section.settings.rows
+  endif
+
+  assign collections_array = section.settings.collections
+  assign first_collection = collections_array[0]
+-%}
+
+<div class="section-id-{{ section.id }} collection-slider-row multi-collection-section {% if section.settings.color_scheme != 'default' %}use-color-scheme use-color-scheme--{{ section.settings.color_scheme }}{% endif %}">
+  <div class="container{% if section.settings.enable_carousel %} container--not-mobile{% endif %}{% if section.settings.full_width %} container--no-max{% endif %}">
+
+    <div class="hometitle align-center has-paging" {%- render 'animation-attrs', attrs: 'data-cc-animate data-cc-animate-delay="0.3s"' -%}>
+      {% if section.settings.enable_carousel %}
+        <button name="prev" class="slider-nav__btn has-ltr-icon multi-collection-prev">
+          <span class="visually-hidden">{{ 'general.slider.previous' | t }}</span>
+          {% render 'icon-chevron-left' %}
+        </button>
+      {% endif %}
+      <h2 class="has-paging__title h4 m-0">
+        {{ section.settings.title | escape }}
+      </h2>
+      {% if section.settings.enable_carousel %}
+        <button name="next" class="slider-nav__btn has-ltr-icon multi-collection-next">
+          <span class="visually-hidden">{{ 'general.slider.next' | t }}</span>
+          {% render 'icon-chevron-right' %}
+        </button>
+      {% endif %}
+    </div>
+
+    <!-- Collection Tabs -->
+    {% if collections_array %}
+      <div class="collection-tabs" {%- render 'animation-attrs', attrs: 'data-cc-animate data-cc-animate-delay="0.4s"' -%}>
+        {% for collection_item in collections_array %}
+          <button class="collection-tab{% if forloop.first %} active{% endif %}"
+                  data-collection="{{ collection_item.handle }}"
+                  data-collection-url="{{ collection_item.url }}">
+            {{ collection_item.title | escape }}
+          </button>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    {%- if section.settings.show_view_all -%}
+      <div class="view-all align-center" {%- render 'animation-attrs', attrs: 'data-cc-animate data-cc-animate-delay="0.5s"' -%}>
+        <a class="small-feature-link view-all-link" href="{{ first_collection.url }}">{{ 'sections.featured_collection.view_all' | t }}</a>
+      </div>
+    {%- endif -%}
+
+    <!-- Collection Content Container -->
+    <div class="multi-collection-container">
+      {% for collection in collections_array %}
+        <div class="collection-content{% if forloop.first %} active{% endif %}" data-collection="{{ collection.handle }}">
+        {%- if section.settings.enable_carousel -%}
+          <carousel-slider class="carousel block collection-slider">
+            {%- endif -%}
+
+            <div class="collection-listing fade-in-up{% if section.settings.enable_carousel %} slider {% if section.settings.full_width %}slider--edge-peek{% endif %} slider--mobile-container-pad slider--no-scrollbar{% endif %}" {%- render 'animation-attrs', attrs: 'data-cc-animate' -%}>
+              <div class="product-grid product-grid--per-row-{{ section.settings.grid }} product-grid--per-row-mob-{{ settings.prod_thumb_mob_per_row }}{% if section.settings.enable_carousel %} slider__grid product-grid--carousel{% endif %}">
+                {%- liquid
+                  if collection == blank
+                    for i in (1..product_limit)
+                      if section.settings.enable_carousel
+                        echo '<div class="slider__item">'
+                      endif
+                      render 'onboarding-product-block', forloop: forloop
+                      if section.settings.enable_carousel
+                        echo '</div>'
+                      endif
+                    endfor
+                  else
+                    if settings.prod_thumb_shape == 'portrait-23'
+                      assign chosen_aspect_ratio = 0.67
+                    elsif settings.prod_thumb_shape == 'portrait-45'
+                      assign chosen_aspect_ratio = 0.8
+                    elsif settings.prod_thumb_shape == 'square'
+                      assign chosen_aspect_ratio = 1.0
+                    elsif settings.prod_thumb_shape == 'landscape-54'
+                      assign chosen_aspect_ratio = 1.25
+                    elsif settings.prod_thumb_shape == 'landscape-32'
+                      assign chosen_aspect_ratio = 1.50
+                    elsif settings.prod_thumb_shape == 'tallest'
+                      assign chosen_aspect_ratio = 99
+                      for product in collection.products limit: product_limit
+                        if product.featured_media.preview_image.aspect_ratio < chosen_aspect_ratio
+                          assign chosen_aspect_ratio = product.featured_media.preview_image.aspect_ratio
+                        endif
+                      endfor
+                    else
+                      assign chosen_aspect_ratio = 0
+                      for product in collection.products limit: product_limit
+                        if product.featured_media.preview_image.aspect_ratio > chosen_aspect_ratio
+                          assign chosen_aspect_ratio = product.featured_media.preview_image.aspect_ratio
+                        endif
+                      endfor
+                    endif
+
+                    for product in collection.products limit: product_limit
+                      if section.settings.enable_carousel
+                        echo '<div class="slider__item">'
+                      endif
+                      render 'product-block', product: product, collection: collection, custom_aspect_ratio: chosen_aspect_ratio, no_swiping: section.settings.enable_carousel, no_quick_buy_markup: section.settings.enable_carousel
+                      if section.settings.enable_carousel
+                        echo '</div>'
+                      endif
+                    endfor
+                  endif
+                -%}
+              </div>
+            </div>
+
+            {%- if section.settings.enable_carousel -%}
+          </carousel-slider>
+          {%- endif -%}
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  {% if settings.quickbuy_style != 'off' and section.settings.enable_carousel %}
+    <div class="quickbuy-container use-color-scheme use-color-scheme--{{ settings.quickbuy_color_scheme }}">
+      <a href="#" class="close-detail" aria-label="{{ 'accessibility.close' | t }}" tabindex="-1" aria-hidden="true">{% render 'icon-close', stroke_width: 1 %}</a>
+      <div class="inner"></div>
+    </div>
+  {% endif %}
+</div>
+
+<style>
+    .multi-collection-section .collection-tabs {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 0.5rem 1rem;
+        margin: 0 0 2rem;
+        flex-wrap: wrap;
+    }
+
+    .multi-collection-section .collection-tab {
+        background: none;
+        border: none;
+        padding: 0rem 1rem;
+        cursor: pointer;
+        font-size: 0.9rem;
+        font-weight: 500;
+        text-transform: uppercase;
+        color: var(--text-color, #666);
+        border-bottom: 2px solid transparent;
+        transition: all 0.3s ease;
+        white-space: nowrap;
+    }
+
+    .multi-collection-section .collection-tab:hover {
+        color: var(--accent-color, #000);
+    }
+
+    .multi-collection-section .collection-tab.active {
+        color: var(--header-text-hover-col);
+    }
+
+    .multi-collection-section .collection-content {
+        display: none;
+    }
+
+    .multi-collection-section .collection-content.active {
+        display: block;
+    }
+
+    @media (max-width: 768px) {
+        .multi-collection-section .collection-tabs {
+            gap: 0 0.5rem;
+        }
+
+        .multi-collection-section .collection-tab {
+            font-size: 0.8rem;
+            padding: 0.4rem 0.8rem;
+        }
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const sectionId = '{{ section.id }}';
+        const section = document.querySelector('.section-id-' + sectionId);
+
+        if (!section) return;
+
+        const tabs = section.querySelectorAll('.collection-tab');
+        const contents = section.querySelectorAll('.collection-content');
+        const viewAllLink = section.querySelector('.view-all-link');
+        const prevButton = section.querySelector('.multi-collection-prev');
+        const nextButton = section.querySelector('.multi-collection-next');
+
+        // Handle navigation button clicks
+        if (prevButton && nextButton) {
+            prevButton.addEventListener('click', function(e) {
+                e.preventDefault();
+                const activeContent = section.querySelector('.collection-content.active');
+
+                if (activeContent) {
+                    const carousel = activeContent.querySelector('carousel-slider');
+
+                    if (carousel && carousel.hasAttribute('loaded')) {
+                        // Directly call the carousel's scroll method
+                        const slideSpan = carousel.slideSpan;
+                        const currentScrollLeft = carousel.slider.scrollLeft;
+                        const newScrollLeft = currentScrollLeft - (carousel.slidesToScroll * slideSpan);
+
+                        carousel.slider.scrollTo({
+                            left: Math.max(0, newScrollLeft),
+                            behavior: 'smooth'
+                        });
+                    }
+                }
+            });
+
+            nextButton.addEventListener('click', function(e) {
+                e.preventDefault();
+                const activeContent = section.querySelector('.collection-content.active');
+
+                if (activeContent) {
+                    const carousel = activeContent.querySelector('carousel-slider');
+
+                    if (carousel && carousel.hasAttribute('loaded')) {
+                        // Directly call the carousel's scroll method
+                        const slideSpan = carousel.slideSpan;
+                        const currentScrollLeft = carousel.slider.scrollLeft;
+                        const newScrollLeft = currentScrollLeft + (carousel.slidesToScroll * slideSpan);
+
+                        carousel.slider.scrollTo({
+                            left: newScrollLeft,
+                            behavior: 'smooth'
+                        });
+                    }
+                }
+            });
+        }
+
+        // Handle tab clicks
+        tabs.forEach(tab => {
+            tab.addEventListener('click', function() {
+                const targetCollection = this.getAttribute('data-collection');
+                const collectionUrl = this.getAttribute('data-collection-url');
+
+                // Update active tab
+                tabs.forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+
+                // Update active content
+                contents.forEach(content => {
+                    content.classList.remove('active');
+                    if (content.getAttribute('data-collection') === targetCollection) {
+                        content.classList.add('active');
+                    }
+                });
+
+                // Update view all link
+                if (viewAllLink) {
+                    viewAllLink.href = collectionUrl;
+                }
+
+                // Reinitialize carousel for new active collection
+                setTimeout(() => {
+                    const activeContent = section.querySelector('.collection-content.active');
+                    if (activeContent) {
+                        const carousel = activeContent.querySelector('carousel-slider');
+                        if (carousel && carousel.refresh) {
+                            carousel.refresh();
+                        }
+                    }
+                }, 100);
+            });
+        });
+    });
+</script>
+
+{% schema %}
+{
+  "name": "Featured collections",
+  "class": "section-featured-collection",
+  "disabled_on": {
+    "templates": [
+      "password"
+    ],
+    "groups": [
+      "aside"
+    ]
+  },
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Featured collections"
+    },
+    {
+      "type": "collection_list",
+      "id": "collections",
+      "label": "Collections",
+      "limit": 6,
+      "info": "Select up to 5 collections to display"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_vendor",
+      "label": "Show product vendor",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_carousel",
+      "label": "Enable carousel",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "grid",
+      "label": "Products per row",
+      "min": 2,
+      "max": 5,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "rows",
+      "label": "Rows",
+      "info": "Does not apply to carousel layout",
+      "min": 1,
+      "max": 5,
+      "step": 1,
+      "default": 1
+    },
+    {
+      "type": "select",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "default",
+      "options": [
+        {
+          "value": "default",
+          "label": "Default"
+        },
+        {
+          "value": "1",
+          "label": "1"
+        },
+        {
+          "value": "2",
+          "label": "2"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "show_view_all",
+      "label": "Show 'View all' link",
+      "default": true
+    },
+    {
+      "id": "full_width",
+      "type": "checkbox",
+      "label": "Full page width",
+      "default": true
+    }
+  ],
+  "presets": [
+    {
+      "name": "Featured collections",
+      "settings": {
+        "title": "Featured collections"
+      }
+    }
+  ]
+}
+{% endschema %}

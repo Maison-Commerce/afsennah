@@ -1,0 +1,1107 @@
+{%- liquid 
+  assign padding_horizontal = section.settings.padding_horizontal
+  assign padding_horizontal_mobile = section.settings.padding_horizontal_mobile
+  assign padding_top = section.settings.padding_top
+  assign padding_bottom = section.settings.padding_bottom
+  assign border_color = section.settings.border_color
+  assign border_thickness = section.settings.border_thickness
+  assign margin_top = section.settings.margin_top
+  assign margin_bottom = section.settings.margin_bottom
+  assign background_color = section.settings.background_color
+  assign background_gradient = section.settings.background_gradient
+  assign content_width = section.settings.content_width
+  assign width = section.settings.width
+  assign lazy = section.settings.lazy
+  assign background_style = section.settings.background_style
+
+  assign heading = section.settings.heading
+  assign heading_size = section.settings.heading_size
+  assign heading_custom = section.settings.heading_custom
+  assign heading_color = section.settings.heading_color
+  assign heading_font = section.settings.heading_font
+  assign heading_height = section.settings.heading_height
+  assign heading_letter = section.settings.heading_letter
+  assign heading_align = section.settings.heading_align
+
+  assign image_height_desktop = section.settings.image_height_desktop
+  assign image_height_mobile = section.settings.image_height_mobile
+  assign image_radius = section.settings.image_radius
+  assign image_width_desktop = section.settings.image_width_desktop
+  assign image_width_mobile = section.settings.image_width_mobile
+
+  assign slider_speed = section.settings.slider_speed
+  assign slider_mt = section.settings.slider_mt
+  assign slider_direction = section.settings.slider_direction
+  assign pause_hover = section.settings.pause_hover
+  assign slider_gap_mobile = section.settings.slider_gap_mobile
+  assign slider_gap = section.settings.slider_gap
+
+  assign use_content = section.settings.use_content
+  assign use_shadow = section.settings.use_shadow
+  assign content_padding_vertical = section.settings.content_padding_vertical
+  assign content_padding_horizontal = section.settings.content_padding_horizontal
+  assign content_radius = section.settings.content_radius
+  assign content_distance = section.settings.content_distance
+  assign content_bg = section.settings.content_bg
+  assign content_max_width = section.settings.content_max_width
+  assign content_max_width_mobile = section.settings.content_max_width_mobile
+  assign content_position = section.settings.content_position
+  assign content_border_thickness = section.settings.content_border_thickness
+  assign content_border_color = section.settings.content_border_color
+
+  assign text = section.settings.text
+  assign text_custom = section.settings.text_custom
+  assign text_font = section.settings.text_font
+  assign text_size = section.settings.text_size
+  assign text_height = section.settings.text_height
+  assign text_color = section.settings.text_color
+
+  assign content_liquid_glass = section.settings.content_liquid_glass
+  assign content_liquid_hover = section.settings.content_liquid_hover
+
+  assign loading_attribute = 'eager'
+  if lazy
+    assign loading_attribute = 'lazy'
+  endif
+-%}
+
+{%- style -%}
+
+  {{  heading_font | font_face: font_display: 'swap' }}
+  {{ text_font | font_face: font_display: 'swap' }}
+  
+  .section-{{ section.id }} {
+    border-top: solid {{ border_color }} {{ border_thickness }}px;
+    border-bottom: solid {{ border_color }} {{ border_thickness }}px;
+    margin-top: {{ margin_top | times: 0.75 | round: 0 }}px;
+    margin-bottom: {{ margin_bottom | times: 0.75 | round: 0 }}px;    
+  }
+  
+  .section-{{ section.id }}-settings {
+    margin: 0 auto;
+    padding-top: {{ padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ padding_bottom | times: 0.75 | round: 0 }}px;
+    padding-left: {{ padding_horizontal_mobile }}rem;
+    padding-right: {{ padding_horizontal_mobile }}rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .scrolling-image-heading-{{ section.id }} > * {
+    margin: 0;
+    font-size: {{ heading_size | times: 0.85 }}px;
+    color: {{ heading_color }};
+    line-height: {{ heading_height }}%;
+    text-transform: unset;
+    text-align: {{ heading_align }};
+  }
+
+  .scrolling-image-slider-{{ section.id }} {
+    margin-left: -{{ padding_horizontal_mobile }}rem !important;
+    margin-right: -{{ padding_horizontal_mobile }}rem !important;
+    padding-left: {{ padding_horizontal_mobile }}rem !important;
+    padding-right: {{ padding_horizontal_mobile }}rem !important;
+    margin-top: {{ slider_mt | times: 0.75 | round: 0 }}px;
+  }
+
+  .scrolling-image-slide-{{ section.id }} {
+    height: {{ image_height_mobile }}px;
+    width: 100%;
+    flex: 0 0 {{ image_width_mobile }}px;
+  }
+  
+  .scrolling-image-slide-{{ section.id }} img,
+  .scrolling-image-slide-{{ section.id }} svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+    border-radius: {{ image_radius }}px;
+  }
+
+  .scrolling-image-slide-{{ section.id }} svg {
+    background-color: #a0a0a0;
+  }
+
+  .scrolling-image-content-{{ section.id }} {
+    max-width: {{ content_max_width_mobile }}px;
+    margin-top: -{{ content_distance | times: 0.5 | round: 0 }}px;
+    padding: {{ content_padding_vertical | times: 0.75 | round: 0 }}px {{ content_padding_horizontal | times: 0.75 | round: 0 }}px;
+    border-radius: {{ content_radius }}px;
+    border: {{ content_border_thickness }}px solid {{ content_border_color }};
+    background-color: {{ content_bg }};
+    position: relative;
+    z-index: 3;
+    text-align: center;
+    {% if use_shadow and content_liquid_glass == false %}
+      box-shadow: rgba(149, 157, 165, 0.25) 0px 8px 24px;
+    {% endif %}
+  }
+
+  /* ================== LIQUID GLASS FOR CONTENT BOX ================== */
+  {% if content_liquid_glass %}
+    .scrolling-image-content-{{ section.id }} {
+      display: block;
+      background: transparent !important;
+      border: 0 !important;
+      overflow: hidden;
+    }
+
+    .scrolling-image-content-{{ section.id }} .glass-filter-{{ section.id }},
+    .scrolling-image-content-{{ section.id }} .glass-overlay-{{ section.id }},
+    .scrolling-image-content-{{ section.id }} .glass-specular-{{ section.id }} {
+      display: block;
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      pointer-events: none;
+    }
+
+    .glass-filter-{{ section.id }} {
+      display: block;
+      -webkit-backdrop-filter: blur(3px);
+      backdrop-filter: blur(3px);
+      /* Combine both filters - Safari needs this specific order */
+      -webkit-filter: url(#lensFilter-{{ section.id }});
+      filter: url(#lensFilter-{{ section.id }});
+      /* Force layer creation for Safari */
+      will-change: filter;
+      -webkit-transform: translateZ(0);
+      transform: translateZ(0);
+      z-index: 0;
+    }
+
+    .glass-overlay-{{ section.id }} {
+      display: block;
+      background: rgba(0, 0, 0, 0.2);
+      -webkit-filter: saturate(1.2) brightness(1.15);
+      filter: saturate(1.2) brightness(1.15);
+      z-index: 1;
+      transition: background .25s ease;
+    }
+
+    .glass-specular-{{ section.id }} {
+      display: block;
+      box-shadow: inset 1px 1px 0 rgba(255,255,255,.45),
+                  inset 0 0 6px rgba(255,255,255,.25);
+      z-index: 2;
+      transition: box-shadow .25s ease;
+    }
+
+    .scrolling-image-content-{{ section.id }} .liquid-button-content {
+      display: block;
+      position: relative;
+      z-index: 3;
+    }
+
+    {% if content_liquid_hover %}
+      .scrolling-image-content-{{ section.id }} {
+        transition: transform .35s cubic-bezier(0.175, 0.885, 0.32, 2.2);
+        will-change: transform;
+      }
+      .scrolling-image-content-{{ section.id }}:hover { transform: scale(1.05); }
+      .scrolling-image-content-{{ section.id }}:hover .glass-overlay-{{ section.id }} { background: rgba(0,0,0,.35); }
+      .scrolling-image-content-{{ section.id }}:hover .glass-specular-{{ section.id }} {
+        box-shadow: inset 1px 1px 0 rgba(255,255,255,.6),
+                    inset 0 0 8px rgba(255,255,255,.35);
+      }
+    {% endif %}
+  {% endif %}
+  /* ================================================================== */
+
+  .scrolling-image-content-{{ section.id }} p,
+  .scrolling-image-content-{{ section.id }} a,
+  .scrolling-image-content-{{ section.id }} li {
+    margin: 0px;
+    font-size: {{ text_size | times: 0.85 }}px;
+    line-height: {{ text_height }}%;
+    color: {{ text_color }};
+  }
+
+  .marquee-horizontal-{{ section.id }} {
+      position: relative;
+      z-index: 2;
+      display: inline-flex;
+      width: 100%;
+      -webkit-box-pack: start;
+      -webkit-justify-content: flex-start;
+      -ms-flex-pack: start;
+      justify-content: flex-start;
+      -webkit-box-align: center;
+      -webkit-align-items: center;
+      -ms-flex-align: center;
+      align-items: center;
+  }
+
+  html[dir="rtl"] .marquee-horizontal-{{ section.id }} {
+    flex-direction: row-reverse;
+  }
+
+  .track-horizontal-{{section.id}} {
+      padding-left: {{ slider_gap_mobile }}px;
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display: flex;
+      flex-shrink: 0;
+      width: calc(({{ image_width_mobile }}px * {{ section.blocks.size }}) + ({{ slider_gap_mobile }}px * {{ section.blocks.size }}));
+      gap: {{ slider_gap_mobile }}px;
+      -webkit-box-pack: start;
+      -webkit-justify-content: flex-start;
+      -ms-flex-pack: start;
+      justify-content: flex-start;
+      -webkit-box-align: center;
+      -webkit-align-items: center;
+      -ms-flex-align: center;
+      align-items: center;
+      white-space: nowrap;
+      will-change: transform;
+      animation: marquee-horizontal-{{ slider_direction }} {{ slider_speed | times: 1000 | round: 0 }}ms linear infinite;
+  }
+
+  @keyframes marquee-horizontal-left {
+    0% {
+        transform: translateZ(0);
+        visibility: visible;
+    }
+    
+    100% {
+        transform: translate3d(-100%,0,0);
+    }
+  }
+
+  @keyframes marquee-horizontal-right {
+    0% {
+        transform: translate3d(-100%,0,0);
+        visibility: visible;
+    }
+    
+    100% {
+        transform: translateZ(0);
+    }
+  }
+  
+  @media(min-width: 1024px) {
+
+    .section-{{ section.id }} {
+      margin-top: {{ margin_top }}px;
+      margin-bottom: {{ margin_bottom }}px;
+    }
+    
+    .section-{{ section.id }}-settings {
+      padding: 0 5rem;
+      padding-top: {{ padding_top }}px;
+      padding-bottom: {{ padding_bottom }}px;
+      padding-left: {{ padding_horizontal }}rem;
+      padding-right: {{ padding_horizontal }}rem;
+    }
+
+     .scrolling-image-heading-{{ section.id }} > * {
+      font-size: {{ heading_size }}px;
+    }
+
+    .scrolling-image-slider-{{ section.id }} {
+      margin-left: -{{ padding_horizontal }}rem !important;
+      margin-right: -{{ padding_horizontal }}rem !important;
+      padding-left: {{ padding_horizontal }}rem !important;
+      padding-right: {{ padding_horizontal }}rem !important;
+      margin-top: {{ slider_mt }}px;
+    }
+
+    .scrolling-image-slide-{{ section.id }} {
+      height: {{ image_height_desktop }}px;
+      flex: 0 0 {{ image_width_desktop }}px;
+    }
+
+    .scrolling-image-content-{{ section.id }} {
+      max-width: {{ content_max_width }}px;
+      margin-top: -{{ content_distance }}px;
+      padding: {{ content_padding_vertical }}px {{ content_padding_horizontal }}px;
+    }
+
+    .scrolling-image-content-{{ section.id }} p,
+    .scrolling-image-content-{{ section.id }} a,
+    .scrolling-image-content-{{ section.id }} li {
+      font-size: {{ text_size }}px;
+    }
+
+    .track-horizontal-{{section.id}} {
+      padding-left: {{ slider_gap }}px;
+      width: calc(({{ image_width_desktop }}px * {{ section.blocks.size }}) + ({{ slider_gap }}px * {{ section.blocks.size }}));
+      gap: {{ slider_gap }}px;
+    }
+
+    {% if pause_hover %}
+      .marquee-horizontal-{{ section.id }}:hover .track-horizontal-{{section.id}} {
+         animation-play-state: paused;
+      }
+    {% endif %}
+    
+  }
+  
+{%- endstyle -%}
+
+{% if heading_custom %}
+  <style>
+    .scrolling-image-heading-{{ section.id }} > * {
+      font-family: {{ heading_font.family }}, {{ heading_font.fallback_families }};
+      font-weight: {{ heading_font.weight }};
+      font-style: {{ heading_font.style }};
+    }
+  </style>
+{% endif %}
+
+{% if text_custom %}
+  <style>
+    .scrolling-image-content-{{ section.id }} p,
+    .scrolling-image-content-{{ section.id }} a,
+    .scrolling-image-content-{{ section.id }} li {
+      font-family: {{ text_font.family }}, {{ text_font.fallback_families }};
+      font-weight: {{ text_font.weight }};
+      font-style: {{ text_font.style }};
+    }
+  </style>
+{% endif %}
+
+{% if width == 'custom' %}
+  <style>
+    .section-{{ section.id }}-settings {
+      max-width: {{ content_width }}px;
+    }
+  </style>
+{% elsif width == 'page' %}
+  <style>
+    .section-{{ section.id }}-settings {
+      max-width: var(--page-width);
+    }
+  </style>
+{% endif %}
+
+{% if content_position == "center" %}
+  <style>
+    .scrolling-image-content-{{ section.id }} {
+      margin-left: auto;
+      margin-right: auto;
+    }
+  </style>
+{% elsif content_position == "right" %}
+  <style>
+    .scrolling-image-content-{{ section.id }} {
+      margin-left: auto;
+    }
+  </style>
+{% endif %}
+
+{% if content_liquid_glass %}
+  <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+    <filter id="lensFilter-{{ section.id }}" x="0%" y="0%" width="100%" height="100%" filterUnits="objectBoundingBox">
+      <feComponentTransfer in="SourceAlpha" result="alpha">
+        <feFuncA type="identity" />
+      </feComponentTransfer>
+      <feGaussianBlur in="alpha" stdDeviation="50" result="blur" />
+      <feDisplacementMap in="SourceGraphic" in2="blur" scale="50" xChannelSelector="A" yChannelSelector="A" />
+    </filter>
+  </svg>
+{% endif %}
+
+<div class="section-{{ section.id }} scrolling-image-{{ section.id }}" {% if background_style == 'solid' %}style="background-color:{{ background_color }};"{% else %} style="background-image: {{ background_gradient }};"{% endif %}>
+    <div class="section-{{ section.id }}-settings scrolling-image-body-{{ section.id }}">
+      {% if heading != blank %}
+        <div class="scrolling-image-heading-{{ section.id }}">
+          {{ heading }}
+        </div>
+      {% endif %}
+      <div class="scrolling-image-slider-{{ section.id }}">
+        <div class="marquee-horizontal-{{ section.id }}">
+          <div class="track-horizontal-{{section.id}}">
+            {% for block in section.blocks %}
+              <{% if block.settings.url != blank %}a href="{{ block.settings.url }}"{% else %}div{% endif %} class="scrolling-image-slide-{{ section.id }}">
+                {% if block.settings.image != blank %} 
+                  {%- capture sizes -%}(min-width: {{ content_width }}px) {{ content_width | minus: 100 | divided_by: 2 }}px, (min-width: 750px) calc((100vw - 130px) / 2), calc((100vw - 50px) / 2){%- endcapture -%}
+                    {{ block.settings.image | image_url: width: 1500 | image_tag:
+                      loading: loading_attribute,
+                      width: block.settings.image.width,
+                      height: block.settings.image.height,
+                      sizes: sizes,
+                      widths: '750, 1070, 1500'
+                    }}
+                {% else %}
+                  {{ 'image' | placeholder_svg_tag }}
+                {% endif %}  
+              </{% if block.settings.url != blank %}a{% else %}div{% endif %}>
+            {% endfor %}
+          </div>
+          <div class="track-horizontal-{{section.id}}">
+            {% for block in section.blocks %}
+              <{% if block.settings.url != blank %}a href="{{ block.settings.url }}"{% else %}div{% endif %} class="scrolling-image-slide-{{ section.id }}">
+                {% if block.settings.image != blank %} 
+                  {%- capture sizes -%}(min-width: {{ content_width }}px) {{ content_width | minus: 100 | divided_by: 2 }}px, (min-width: 750px) calc((100vw - 130px) / 2), calc((100vw - 50px) / 2){%- endcapture -%}
+                    {{ block.settings.image | image_url: width: 1500 | image_tag:
+                      loading: loading_attribute,
+                      width: block.settings.image.width,
+                      height: block.settings.image.height,
+                      sizes: sizes,
+                      widths: '750, 1070, 1500'
+                    }}
+                {% else %}
+                  {{ 'image' | placeholder_svg_tag }}
+                {% endif %}  
+              </{% if block.settings.url != blank %}a{% else %}div{% endif %}>
+            {% endfor %}
+          </div>
+          <div class="track-horizontal-{{section.id}}">
+            {% for block in section.blocks %}
+              <{% if block.settings.url != blank %}a href="{{ block.settings.url }}"{% else %}div{% endif %} class="scrolling-image-slide-{{ section.id }}">
+                {% if block.settings.image != blank %} 
+                  {%- capture sizes -%}(min-width: {{ content_width }}px) {{ content_width | minus: 100 | divided_by: 2 }}px, (min-width: 750px) calc((100vw - 130px) / 2), calc((100vw - 50px) / 2){%- endcapture -%}
+                    {{ block.settings.image | image_url: width: 1000 | image_tag:
+                      loading: loading_attribute,
+                      width: block.settings.image.width,
+                      height: block.settings.image.height,
+                      sizes: sizes,
+                      widths: '750, 1070, 1500'
+                    }}
+                {% else %}
+                  {{ 'image' | placeholder_svg_tag }}
+                {% endif %}  
+              </{% if block.settings.url != blank %}a{% else %}div{% endif %}>
+            {% endfor %}
+          </div>
+          <div class="track-horizontal-{{section.id}}">
+             {% for block in section.blocks %}
+              <{% if block.settings.url != blank %}a href="{{ block.settings.url }}"{% else %}div{% endif %} class="scrolling-image-slide-{{ section.id }}">
+                {% if block.settings.image != blank %} 
+                  {%- capture sizes -%}(min-width: {{ content_width }}px) {{ content_width | minus: 100 | divided_by: 2 }}px, (min-width: 750px) calc((100vw - 130px) / 2), calc((100vw - 50px) / 2){%- endcapture -%}
+                    {{ block.settings.image | image_url: width: 1000 | image_tag:
+                      loading: loading_attribute,
+                      width: block.settings.image.width,
+                      height: block.settings.image.height,
+                      sizes: sizes,
+                      widths: '750, 1070, 1500'
+                    }}
+                {% else %}
+                  {{ 'image' | placeholder_svg_tag }}
+                {% endif %}  
+              </{% if block.settings.url != blank %}a{% else %}div{% endif %}>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+      {% if use_content %}
+        <div class="scrolling-image-content-{{ section.id }}">
+          {% if content_liquid_glass %}
+            <div class="glass-filter-{{ section.id }}"></div>
+            <div class="glass-overlay-{{ section.id }}"></div>
+            <div class="glass-specular-{{ section.id }}"></div>
+            <div class="liquid-button-content">
+              {{ text }}
+            </div>
+          {% else %}
+            {{ text }}
+          {% endif %}
+        </div>
+      {% endif %}
+    </div>
+</div>
+
+{% schema %}
+  {
+    "name": "SS - Scrolling images",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Heading"
+      },
+      {
+        "type": "richtext",
+        "id": "heading",
+        "label": "Heading",
+        "default": "<h2>Heading</h2>"
+      },
+      {
+        "type": "checkbox",
+        "id": "heading_custom",
+        "label": "Use custom font",
+        "default": false
+      },
+      {
+        "type": "font_picker",
+        "id": "heading_font",
+        "label": "Font family",
+        "default": "josefin_sans_n4",
+        "visible_if": "{{ section.settings.heading_custom }}"
+      },
+      {
+        "type": "range",
+        "id": "heading_size",
+        "min": 0,
+        "max": 72,
+        "step": 2,
+        "unit": "px",
+        "label": "Font size",
+        "default": 40
+      },
+      {
+        "type": "range",
+        "id": "heading_height",
+        "min": 50,
+        "max": 200,
+        "step": 10,
+        "unit": "%",
+        "label": "Line height",
+        "default": 130
+      },
+      {
+        "type": "select",
+        "id": "heading_align",
+        "label": "Alignment",
+        "default": "center",
+        "options": [
+          {
+            "label": "Left",
+            "value": "left"
+          },
+          {
+            "label": "Center",
+            "value": "center"
+          },
+          {
+            "label": "Right",
+            "value": "right"
+          }
+        ]
+      },
+      {
+        "type": "header",
+        "content": "Slider"
+      },
+      {
+        "type": "range",
+        "id": "slider_speed",
+        "min": 1,
+        "max": 40,
+        "step": 1,
+        "label": "Speed",
+        "info": "🐇 ———●——— 🐢",
+        "default": 20
+      },
+      {
+        "type": "checkbox",
+        "id": "slider_advanced",
+        "label": "Advanced settings",
+        "default": false
+      },
+      {
+        "type": "range",
+        "id": "slider_gap",
+        "min": 0,
+        "max": 100,
+        "step": 2,
+        "unit": "px",
+        "label": "Gap",
+        "default": 10,
+        "visible_if": "{{ section.settings.slider_advanced }}"
+      },
+      {
+        "type": "range",
+        "id": "slider_gap_mobile",
+        "min": 0,
+        "max": 100,
+        "step": 2,
+        "unit": "px",
+        "label": "Gap - mobile",
+        "default": 10,
+        "visible_if": "{{ section.settings.slider_advanced }}"
+      },
+      {
+        "type": "range",
+        "id": "slider_mt",
+        "min": 0,
+        "max": 100,
+        "step": 2,
+        "unit": "px",
+        "label": "Margin top",
+        "default": 32,
+        "visible_if": "{{ section.settings.slider_advanced }}"
+      },
+      {
+        "type": "select",
+        "id": "slider_direction",
+        "label": "Direction",
+        "default": "left",
+        "options": [
+          {
+            "label": "Left",
+            "value": "left"
+          },
+          {
+            "label": "Right",
+            "value": "right"
+          }
+        ]
+      },
+      {
+        "type": "checkbox",
+        "id":"pause_hover",
+        "label": "Pause on hover",
+        "default": false
+      },
+      {
+        "type": "header",
+        "content": "Image"
+      },
+      {
+        "type": "range",
+        "id": "image_width_desktop",
+        "min": 100,
+        "max": 800,
+        "step": 10,
+        "unit": "px",
+        "label": "Width",
+        "default": 300
+      },
+      {
+        "type": "range",
+        "id": "image_width_mobile",
+        "min": 100,
+        "max": 800,
+        "step": 10,
+        "unit": "px",
+        "label": "Width - mobile",
+        "default": 120
+      },
+      {
+        "type": "range",
+        "id": "image_height_desktop",
+        "min": 100,
+        "max": 600,
+        "step": 10,
+        "unit": "px",
+        "label": "Height",
+        "default": 400
+      },
+      {
+        "type": "range",
+        "id": "image_height_mobile",
+        "min": 50,
+        "max": 600,
+        "step": 10,
+        "unit": "px",
+        "label": "Height - mobile",
+        "default": 200
+      },
+      {
+        "type": "range",
+        "id": "image_radius",
+        "min": 0,
+        "max": 100,
+        "step": 2,
+        "unit": "px",
+        "label": "Roundness",
+        "default": 10
+      },
+      {
+        "type": "header",
+        "content": "Content"
+      },
+      {
+        "type": "checkbox",
+        "id": "use_content",
+        "label": "Use content",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "content_liquid_glass",
+        "label": "Liquid glass content box",
+        "default": false,
+        "visible_if": "{{ section.settings.use_content }}"
+      },
+      {
+        "type": "checkbox",
+        "id": "content_liquid_hover",
+        "label": "Liquid glass hover effect",
+        "default": true,
+        "visible_if": "{{ section.settings.use_content and section.settings.content_liquid_glass }}"
+      },
+      {
+        "type": "select",
+        "id": "content_position",
+        "options": [
+          {
+            "value": "left",
+            "label": "Left"
+          },
+          {
+            "value": "center",
+            "label": "Center"
+          },
+          {
+            "value": "right",
+            "label": "Right"
+          }
+        ],
+        "default": "center",
+        "label": "Position",
+        "visible_if": "{{ section.settings.use_content }}"
+      },
+      {
+        "type": "range",
+        "id": "content_max_width",
+        "min": 50,
+        "max": 800,
+        "step": 10,
+        "unit": "px",
+        "label": "Max width",
+        "default": 340,
+        "visible_if": "{{ section.settings.use_content }}"
+      },
+      {
+        "type": "range",
+        "id": "content_max_width_mobile",
+        "min": 50,
+        "max": 800,
+        "step": 10,
+        "unit": "px",
+        "label": "Max width - mobile",
+        "default": 340,
+        "visible_if": "{{ section.settings.use_content }}"
+      },
+      {
+        "type": "checkbox",
+        "id": "content_advanced",
+        "label": "Advanced settings",
+        "default": false,
+        "visible_if": "{{ section.settings.use_content }}"
+      },
+      {
+        "type": "range",
+        "id": "content_padding_vertical",
+        "min": 0,
+        "max": 100,
+        "step": 2,
+        "unit": "px",
+        "label": "Padding vertical",
+        "default": 30,
+        "visible_if": "{{ section.settings.use_content and section.settings.content_advanced }}"
+      },
+      {
+        "type": "range",
+        "id": "content_padding_horizontal",
+        "min": 0,
+        "max": 100,
+        "step": 2,
+        "unit": "px",
+        "label": "Padding horizontal",
+        "default": 30,
+        "visible_if": "{{ section.settings.use_content and section.settings.content_advanced }}"
+      },
+      {
+        "type": "range",
+        "id": "content_distance",
+        "min": 0,
+        "max": 100,
+        "step": 2,
+        "unit": "px",
+        "label": "Distance from bottom",
+        "default": 60,
+        "visible_if": "{{ section.settings.use_content and section.settings.content_advanced }}"
+      },
+      {
+        "type": "range",
+        "id": "content_radius",
+        "min": 0,
+        "max": 100,
+        "step": 2,
+        "unit": "px",
+        "label": "Roundness",
+        "default": 10,
+        "visible_if": "{{ section.settings.use_content }}"
+      },
+      {
+        "type": "range",
+        "id": "content_border_thickness",
+        "min": 0,
+        "max": 10,
+        "step": 1,
+        "unit": "px",
+        "label": "Border thickness",
+        "default": 0,
+        "visible_if": "{{ section.settings.use_content }}"
+      },
+      {
+        "type": "checkbox",
+        "id": "use_shadow",
+        "label": "Use shadow",
+        "default": true,
+        "visible_if": "{{ section.settings.use_content }}"
+      },
+      {
+        "type": "header",
+        "content": "Text",
+        "visible_if": "{{ section.settings.use_content }}"
+      },
+      {
+        "type": "richtext",
+        "id": "text",
+        "label": "Text",
+        "default": "<p>+29.000 people love our product</p>",
+        "visible_if": "{{ section.settings.use_content }}"
+      },
+      {
+        "type": "checkbox",
+        "id": "text_custom",
+        "label": "Use custom font",
+        "default": false,
+        "visible_if": "{{ section.settings.use_content }}"
+      },
+      {
+        "type": "font_picker",
+        "id": "text_font",
+        "label": "Font family",
+        "default": "josefin_sans_n4",
+        "visible_if": "{{ section.settings.text_custom and section.settings.use_content }}"
+      },
+      {
+        "type": "range",
+        "id": "text_size",
+        "min": 0,
+        "max": 100,
+        "step": 2,
+        "unit": "px",
+        "label": "Font size",
+        "default": 24,
+        "visible_if": "{{ section.settings.use_content }}"
+      },
+      {
+        "type": "range",
+        "id": "text_height",
+        "min": 50,
+        "max": 200,
+        "step": 10,
+        "unit": "%",
+        "label": "Line height",
+        "default": 150,
+        "visible_if": "{{ section.settings.use_content }}"
+      },
+      {
+        "type": "header",
+        "content": "Section colors"
+      },
+      {
+        "type": "color",
+        "label": "Heading",
+        "id": "heading_color",
+        "default": "#000000"
+      },
+      {
+        "type": "color",
+        "label": "Content background",
+        "id": "content_bg",
+        "default": "#FFFFFF",
+        "visible_if": "{{ section.settings.use_content }}"
+      },
+      {
+        "type": "color",
+        "label": "Content border",
+        "id": "content_border_color",
+        "default": "#000000",
+        "visible_if": "{{ section.settings.use_content }}"
+      },
+      {
+        "type": "color",
+        "id": "text_color",
+        "label":"Text",
+        "default": "#000000",
+        "visible_if": "{{ section.settings.use_content }}"
+      },
+      {
+        "type": "select",
+        "id": "background_style",
+        "label": "Background style",
+        "default": "solid",
+        "options": [
+          {
+            "label": "Solid",
+            "value": "solid"
+          },
+          {
+            "label": "Gradient",
+            "value": "gradient"
+          }
+        ]
+      },
+      {
+        "type": "color",
+        "label": "Background",
+        "id": "background_color",
+        "default": "#FFFFFF",
+        "visible_if": "{{ section.settings.background_style == 'solid' }}"
+      },
+      {
+        "type": "color_background",
+        "id": "background_gradient",
+        "label": "Gradient",
+        "default": "linear-gradient(180deg, #FFFFFF 0%, #F2F2F2 100%)",
+        "visible_if": "{{ section.settings.background_style == 'gradient' }}"
+      },
+      {
+        "type": "color",
+        "label": "Border",
+        "id": "border_color",
+        "default": "#000000"
+      },
+      {
+        "type": "header",
+        "content": "Section margin (outside)"
+      },
+      {
+        "type": "range",
+        "id": "margin_top",
+        "min": 0,
+        "max": 100,
+        "step": 4,
+        "unit": "px",
+        "label": "Top",
+        "default": 0
+      },
+      {
+        "type": "range",
+        "id": "margin_bottom",
+        "min": 0,
+        "max": 100,
+        "step": 4,
+        "unit": "px",
+        "label": "Bottom",
+        "default": 0
+      },
+      {
+        "type": "header",
+        "content": "Section padding (inside)"
+      },
+      {
+        "type": "range",
+        "id": "padding_top",
+        "min": 0,
+        "max": 100,
+        "step": 4,
+        "unit": "px",
+        "label": "Top",
+        "default": 36
+      },
+      {
+         "type": "range",
+         "id": "padding_bottom",
+         "min": 0,
+         "max": 100,
+         "step": 4,
+         "unit": "px",
+         "label": "Bottom",
+         "default": 36
+      },
+      {
+        "type": "range",
+        "id": "padding_horizontal",
+        "min": 0,
+        "max": 30,
+        "step": 1,
+        "unit": "rem",
+        "label": "Sides",
+        "default": 5
+      },
+      {
+        "type": "range",
+        "id": "padding_horizontal_mobile",
+        "min": 0,
+        "max": 15,
+        "step": 0.5,
+        "unit": "rem",
+        "label": "Sides - mobile",
+        "default": 1.5
+      },
+      {
+        "type": "header",
+        "content": "Section"
+      },
+      {
+        "type": "select",
+        "id": "width",
+        "label": "Width",
+        "default": "full",
+        "options": [
+          {
+            "label": "Page",
+            "value": "page"
+          },
+          {
+            "label": "Full",
+            "value": "full"
+          },
+          {
+            "label": "Custom",
+            "value": "custom"
+          }
+        ]
+      },
+      {
+        "type": "range",
+        "id": "content_width",
+        "min": 800,
+        "max": 2000,
+        "step": 100,
+        "unit": "px",
+        "label": "Content width",
+        "default": 1200,
+        "visible_if": "{{ section.settings.width == 'custom' }}"
+      },
+      {
+        "type": "range",
+        "id": "border_thickness",
+        "min": 0,
+        "max": 50,
+        "step": 1,
+        "unit": "px",
+        "label": "Border thickness",
+        "default": 0
+      },
+      {
+        "type": "checkbox",
+        "id": "lazy",
+        "label": "Lazy load",
+        "info": "Lazy load images below fold for speed optimisation",
+        "default": true
+      }
+    ],
+    "blocks": [
+      {
+        "type": "image",
+        "name": "Image",
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+          },
+          {
+            "type": "url",
+            "id": "url",
+            "label": "URL for image",
+            "info": "Optional"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "SS - Scrolling images",
+        "blocks": [
+          { "type": "image" },
+          { "type": "image" },
+          { "type": "image" },
+          { "type": "image" },
+          { "type": "image" }
+        ]
+      }
+    ]
+  }
+{% endschema %}

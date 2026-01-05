@@ -1,0 +1,41 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-contact",
+      "blocks": {
+        "name": {
+          "type": "name_input",
+          "settings": {
+            "half_width": true
+          }
+        },
+        "email": {
+          "type": "email_input",
+          "settings": {
+            "half_width": true
+          }
+        },
+        "message": {
+          "type": "message_input",
+          "settings": {
+            "half_width": false
+          }
+        }
+      },
+      "block_order": [
+        "name",
+        "email",
+        "message"
+      ],
+      "settings": {
+        "show_page_title": true,
+        "use_columns": false,
+        "contact_title": "Contact us",
+        "contact_text": "<p>Whether you have a question about your order, need help choosing the right product, or want to collaborate—our team is here to help.<\/p><p><strong>Fill out the form below<\/strong> and we’ll get back to you as soon as possible, usually within 1–2 business days.<\/p>"
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

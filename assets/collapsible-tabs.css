@@ -1,0 +1,39 @@
+.collapsible-tabs {
+  max-width: var(--reading-container-width, 800px);
+  margin: var(--section-padding) auto;
+}
+.collapsible-tabs .disclosure {
+  margin: 0;
+  border: 0;
+}
+
+.collapsible-tabs__tab {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+.collapsible-tabs__tab .disclosure__title {
+  padding-top: 20px;
+  padding-bottom: 20px;
+  border: 0;
+  font-size: 1.3em;
+}
+.collapsible-tabs__tab p:first-child {
+  margin-top: 0;
+}
+.collapsible-tabs__tab p:last-child {
+  margin-bottom: 0;
+}
+
+.collapsible-tabs__heading {
+  margin-top: 40px;
+  margin-bottom: 20px;
+}
+
+.collapsible-tabs__text {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.collapsible-tabs__button {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}

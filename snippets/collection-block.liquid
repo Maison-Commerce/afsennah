@@ -1,0 +1,99 @@
+{%- comment -%}
+  Parameters:
+  - collection {Collection} - Collection object.
+  - custom_attrs {String} [optional] - Custom attributes to add to the container element.
+  - custom_image {Image} [optional] - A custom image to use in this card, replacing the collection image.
+  - custom_aspect_ratio {Number} - Aspect ratio to force on the image.
+  - animate {Boolean} [optional] - Apply page load animation to this item. (Default is false)
+  - settings_object {Object} [optional] - Which object to pull settings from - section or global. (Default is global)
+  - subheading {String} [optional] - A subheading to display.
+  - button_label {String} [optional] - A label to display on a CTA button.
+
+  Example usage:
+  {% render 'collection-block', collection: collection, custom_aspect_ratio: chosen_aspect_ratio, animate: true, settings_object: section.settings %}
+{%- endcomment -%}
+
+{%- liquid
+  unless settings_object
+    assign settings_object = settings
+  endunless
+-%}
+<div class="product-block collection-block" data-collection-id="{{ collection.id }}" {{ custom_attrs }} {% if animate %}{%- render 'animation-attrs', attrs: 'data-cc-animate', always: true -%}{% endif %}>
+  <div class="block-inner">
+    <a class="product-link" href="{{ collection.url }}">
+      <div class="image-cont
+        {%- if settings_object.coll_text_position contains 'over' %}
+          image-overlay
+          image-overlay--bg-{{ settings_object.coll_text_position | remove_first: 'over-' }}
+          {%- if settings_object.coll_text_position_under_mobile %} text-overlay-parent--mobile-stack{% endif %}
+          image-overlay--edge-boxes
+        {% endif %}">
+        {%- liquid
+          if custom_image
+            assign collection_image = custom_image
+          elsif collection.featured_image
+            assign collection_image = collection.featured_image
+            assign custom_crop = settings_object.coll_grid_image_position
+          endif
+
+          if manual_loading
+            assign loading = 'manual'
+          elsif prioritised_loading
+            assign loading = 'eager'
+          else
+            assign loading = 'lazy'
+          endif
+        -%}
+
+        {% if collection_image != blank %}
+          <div class="product-block__image image-overlay__image img-stretch product-block__image--primary product-block__image--active">
+            {%- render 'image' with collection_image, loading: loading, size_cols_mobile: 2, size_cols_desktop: section.settings.grid, custom_aspect_ratio: custom_aspect_ratio, custom_crop: custom_crop -%}
+          </div>
+        {% else %}
+          <div class="image-overlay__image placeholder-image placeholder-image--shape-{{ settings_object.coll_grid_image_shape }}">{{ 'collection-1' | placeholder_svg_tag }}</div>
+        {% endif %}
+
+        {%- if settings_object.coll_text_position contains 'over' -%}
+          <div class="text-overlay text-overlay--tight text-overlay--v-{{ settings_object.coll_thumb_text_align_y }} text-overlay--h-{{ settings_object.coll_thumb_text_align_x }} image-overlay__over{% if settings_object.coll_text_position_under_mobile %} desktop-only{% endif %}">
+            <div class="text-overlay__inner">
+              <div class="text-overlay__text">
+                {%- if subheading != blank -%}
+                  <div class="text-overlay__subheading subheading subheading--over">{{ subheading | escape }}</div>
+                {%- endif -%}
+
+                <div class="text-overlay__title">
+                  <h2 class="h4">{{ collection.title }}</h2>
+                  {%- if settings_object.coll_grid_show_count and collection.all_products_count > 0 -%}
+                    <div class="small-text">{{ 'sections.collection.product_count' | t: count: collection.all_products_count }}</div>
+                  {%- endif -%}
+                </div>
+
+                {%- if button_label != blank -%}
+                  <div class="text-overlay__button-row text-overlay__button-row--{{ settings_object.coll_button_style }}">
+                    <span class="text-overlay__button {% if settings_object.coll_button_style != 'link' %}btn btn--{{ settings_object.coll_button_style }}{% else %}small-feature-link{% endif %}">{{ button_label | escape }}</span>
+                  </div>
+                {%- endif -%}
+              </div>
+            </div>
+          </div>
+        {%- endif -%}
+      </div>
+      {%- if settings_object.coll_text_position == 'below' or settings_object.coll_text_position_under_mobile -%}
+        <div class="product-block__detail align-{{ settings_object.coll_thumb_text_align_x }}{% if settings_object.coll_text_position != 'below' %} mobile-only{% endif %}">
+          {%- if subheading != blank -%}
+            <div class="subheading lightly-spaced-row">{{ subheading | escape }}</div>
+          {%- endif -%}
+          <div class="product-block__title">{{ collection.title }}</div>
+          {%- if settings_object.coll_grid_show_count and collection.all_products_count > 0 -%}
+            <div class="small">{{ 'sections.collection.product_count' | t: count: collection.all_products_count }}</div>
+          {%- endif -%}
+          {%- if button_label != blank -%}
+            <div class="button-row">
+              <span class="button-row__btn {% if settings_object.coll_button_style != 'link' %}btn btn--{{ settings_object.coll_button_style }}{% else %}small-feature-link{% endif %}">{{ button_label | escape }}</span>
+            </div>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+    </a>
+  </div>
+</div>

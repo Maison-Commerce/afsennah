@@ -1,0 +1,1163 @@
+<div id="section-id-{{ section.id }}" class="{% if section.settings.color_scheme != 'default' %}use-color-scheme use-color-scheme--{{ section.settings.color_scheme }} fully-padded-row--{{ section.settings.spacing }}{% else %}fully-spaced-row--{{ section.settings.spacing }}{% endif %} section-id-{{ section.id }}">
+  <div class="container">
+    <div class="flexible-layout flexible-layout--align-center valign-{{ section.settings.alignment }}">
+      {% for block in section.blocks %}
+        {%- assign animation_delay = forloop.index | times: 0.15 | append: 's' -%}
+        {%- assign animation_attrs = 'data-cc-animate data-cc-animate-delay="' | append: animation_delay | append: '"' -%}
+        <div id="block-id-{{ block.id }}" class="column column--{{ block.settings.width }} block-id-{{ block.id }} fade-in-up" {{ block.shopify_attributes }} {%- render 'animation-attrs', attrs: animation_attrs -%}>
+
+          {% if block.type == 'image' %}
+            {% style %}
+              {%- if block.settings.height == 'fixed' -%}
+                #block-id-{{ block.id }} .height--fixed {
+                  --image-height: {{ block.settings.height_mobile }}px;
+                }
+                @media (min-width: 768px) {
+                  #block-id-{{ block.id }} .height--fixed {
+                    --image-height: {{ block.settings.height_desktop }}px;
+                  }
+                }
+              {%- elsif block.settings.height == 'adapt' -%}
+                #block-id-{{ block.id }} .height--adapt {
+                  {%- if block.settings.mobile_image -%}
+                    --aspect-ratio: {{ block.settings.mobile_image.aspect_ratio }};
+                  {%- else -%}
+                    --aspect-ratio: {{ block.settings.image.aspect_ratio | default: 2.0 }};
+                  {%- endif -%}
+                }
+                {%- if block.settings.mobile_image -%}
+                  @media (min-width: 768px) {
+                    #block-id-{{ block.id }} .height--adapt {
+                      --aspect-ratio: {{ block.settings.image.aspect_ratio | default: 2.0 }};
+                    }
+                  }
+                {%- endif -%}
+              {%- endif -%}
+            {% endstyle %}
+
+            {%- assign show_overlay_text = false -%}
+            {%- if block.settings.title != blank or block.settings.subheading != blank or block.settings.text != blank or block.settings.button_label != blank -%}
+              {%- assign show_overlay_text = true -%}
+            {%- endif -%}
+            <div class="height--{{ block.settings.height }} image-overlay image-overlay--bg-{{ block.settings.overlay_style }} {% if block.settings.mobile_overlay_under %}text-overlay-parent--mobile-stack{% endif %}">
+              {%- unless block.settings.image_link == blank or block.settings.text contains '</a>' -%}
+                <a class="image-overlay__image-link" href="{{ block.settings.image_link }}">
+              {%- endunless -%}
+
+              {%- if block.settings.image == blank -%}
+                <div class="height__image image-overlay__image">
+                  <div class="placeholder-image{% if show_overlay_text %} dark{% endif %}">
+                    {{- 'image' | placeholder_svg_tag: 'placeholder-svg' -}}
+                  </div>
+                </div>
+              {%- else -%}
+                {%- liquid
+                  case block.settings.width
+                    when 'quarter'
+                      assign size_cols_desktop = 4
+                    when 'third'
+                      assign size_cols_desktop = 3
+                    when 'half'
+                      assign size_cols_desktop = 2
+                    when 'two-thirds'
+                      assign size_cols_desktop = 0.67
+                    when 'three-quarters'
+                      assign size_cols_desktop = 0.25
+                    else
+                      assign size_cols_desktop = nil
+                  endcase
+                -%}
+
+                <div class="height__image image-overlay__image">
+                  {%- render 'image-desktop-and-mobile', desktop_image: block.settings.image, mobile_image: block.settings.mobile_image, size_cols_desktop: size_cols_desktop, block: block -%}
+                </div>
+              {%- endif -%}
+
+              {%- if show_overlay_text -%}
+              <div class="text-overlay text-overlay--v-{{ block.settings.text_alignment | split: ' ' | first }} text-overlay--h-{{ block.settings.text_alignment | split: ' ' | last }} image-overlay__over">
+                <div class="text-overlay__inner">
+                  <div class="text-overlay__text">
+                    {%- if block.settings.subheading != blank -%}
+                      <div class="text-overlay__subheading subheading subheading--over">{{ block.settings.subheading | escape }}</div>
+                    {%- endif -%}
+                    {%- if block.settings.title != blank -%}
+                      <h2 class="text-overlay__title h4">{% render 'multiline-text' with block.settings.title %}</h2>
+                    {%- endif -%}
+                    {%- if block.settings.text != blank -%}
+                      <div class="text-overlay__rte rte {% if block.settings.enlarge_text %}large-text{% endif %}">{{ block.settings.text }}</div>
+                    {%- endif -%}
+                    {%- if block.settings.button_label != blank -%}
+                      <div class="text-overlay__button-row text-overlay__button-row--secondary">
+                        {%- if block.settings.text contains '</a>' -%}
+                        <a class="text-overlay__button {% if block.settings.button_style != 'link' %}btn btn--{{ block.settings.button_style }}{% else %}small-feature-link{% endif %}" href="{{ block.settings.image_link }}">{{ block.settings.button_label | escape }}</a>
+                        {%- else -%}
+                        <span class="text-overlay__button {% if block.settings.button_style != 'link' %}btn btn--{{ block.settings.button_style }}{% else %}small-feature-link{% endif %}">{{ block.settings.button_label | escape }}</span>
+                        {%- endif -%}
+                      </div>
+                    {%- endif -%}
+                  </div>
+                </div>
+              </div>
+              {%- endif -%}
+
+              {%- unless block.settings.image_link == blank or block.settings.text contains '</a>' -%}
+                </a>
+              {%- endunless -%}
+            </div>
+
+          {% elsif block.type == 'text' %}
+
+            <div class="align-ltr-{{ block.settings.text_alignment }}{% if block.settings.center_on_mobile %} mobile-align-center{% endif %} content-trim-my">
+              {%- if block.settings.icon != blank -%}
+                <div class="lightly-spaced-row">
+                  <span{% if block.settings.icon_color.alpha > 0 %} style="color: {{ block.settings.icon_color }}"{% endif %}>
+                    {% render 'icon', icon: block.settings.icon, size: 'large' %}
+                  </span>
+                </div>
+              {%- endif -%}
+
+              {%- if block.settings.subheading != blank -%}
+                <div class="subheading subheading--over">{{ block.settings.subheading | escape }}</div>
+              {%- endif -%}
+
+              {%- if block.settings.title != blank -%}
+                {% style %}
+                  #block-id-{{ block.id }} .majortitle {
+                    font-size: {{ block.settings.title_size_mobile }}px;
+                    {%- if block.settings.title_size_mobile >= 90 -%}
+                    line-height: 1em;
+                    {%- endif %}
+                  }
+
+                  @media (min-width: 768px) {
+                    #block-id-{{ block.id }} .majortitle {
+                      {%- assign title_size_medium = block.settings.title_size | times: 0.7 | at_least: block.settings.title_size_mobile -%}
+                      font-size: {{ title_size_medium }}px;
+                      {%- if title_size_medium >= 90 -%}
+                      line-height: 1em;
+                      {%- endif %}
+                    }
+                  }
+                {% endstyle %}
+                <h2 class="majortitle h1 in-content">{{ block.settings.title }}</h2>
+              {%- endif -%}
+
+              {%- if block.settings.text != blank -%}
+                <div class="rte {% if block.settings.enlarge_text %}large-text{% endif %}">{{ block.settings.text }}</div>
+              {%- endif -%}
+
+              {%- if block.settings.button_label != blank -%}
+                <div class="{% if block.settings.button_style == 'link' and block.settings.text == blank %}tiny-preceding-margin{% else %}lightish-spaced-row-above{% endif %}">
+                  <a class="{% if block.settings.button_style != 'link' %}btn btn--{{ block.settings.button_style }}{% else %}small-feature-link{% endif %}" href="{{ block.settings.button_link }}">{{ block.settings.button_label | escape }}</a>
+                </div>
+              {%- endif -%}
+            </div>
+
+          {% elsif block.type == 'video' %}
+
+            {%- unless video_assets_output -%}
+              <link rel="stylesheet" href="{{ 'video.css' | asset_url }}" {%- render 'lazy-stylesheet-attrs' %}>
+              <script src="{{ 'video.js' | asset_url }}" defer></script>
+            {%- endunless -%}
+
+            {%- liquid
+              assign video_assets_output = true
+
+              assign using_video_tag = false
+              if block.settings.video_shopify != blank
+                assign using_video_tag = true
+              endif
+
+              if block.settings.placeholder_image
+                assign placeholder_image = block.settings.placeholder_image
+              elsif block.settings.video_shopify
+                assign placeholder_image = block.settings.video_shopify.preview_image
+              else
+                assign placeholder_image = nil
+              endif
+
+              assign autoplay = block.settings.autoplay
+
+              case block.settings.width
+                when 'quarter'
+                  assign size_cols_desktop = 4
+                when 'third'
+                  assign size_cols_desktop = 3
+                when 'half'
+                  assign size_cols_desktop = 2
+                when 'two-thirds'
+                  assign size_cols_desktop = 0.67
+                when 'three-quarters'
+                  assign size_cols_desktop = 0.25
+                else
+                  assign size_cols_desktop = nil
+              endcase
+            -%}
+
+            <div class="video-section">
+              <div class="height--adapt image-overlay image-overlay--bg-no_background" {% if placeholder_image %}style="--aspect-ratio: {{ placeholder_image.aspect_ratio }}"{% endif %} {%- render 'animation-attrs', attrs: 'data-cc-animate' -%}>
+                <div class="image-overlay__image height__image">
+                  <deferred-media>
+                    {%- if autoplay == false -%}<button type="button" class="js-load-media hidden" aria-hidden="true"></button>{%- endif -%}
+                    <template>
+                      <video-component class="{% if using_video_tag %}has-video{% else %}has-iframe{% endif %}"
+                        {%- unless using_video_tag %} data-video-url="{{ block.settings.video_external | escape }}"{% endunless %}
+                                      data-video-id="{{ block.id }}"
+                                      data-autoplay="{{ autoplay }}"
+                                      data-background="false"
+                                      data-description="{{ block.settings.video_description | escape }}">
+                        {%- if using_video_tag -%}
+                          {{ block.settings.video_shopify | video_tag: playsinline: true, controls: true, autoplay: autoplay, muted: autoplay, loop: autoplay, poster: '' | replace: '<img ', '<img loading="lazy" hidden ' }}
+                        {%- else -%}
+                          <div></div>
+                        {%- endif -%}
+                      </video-component>
+                    </template>
+                  </deferred-media>
+
+                  {% if placeholder_image %}
+                    {%- render 'image' with placeholder_image, class: 'video-played-hidden', size_cols_desktop: size_cols_desktop -%}
+                  {% elsif autoplay == false %}
+                    <div class="placeholder-image video-played-hidden">{{- 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' -}}</div>
+                  {% endif %}
+                </div>
+
+                {%- if autoplay == false -%}
+                  <div class="text-overlay text-overlay--for-banner text-overlay--v-center text-overlay--h-center image-overlay__over video-played-hidden">
+                    <div class="text-overlay__inner">
+                      <div class="text-overlay__text">
+                        <video-section-play-button role="button" tabindex="0" type="button" class="button-row__btn video-section__play-btn inline-block">
+                          <span class="visually-hidden">{{ 'general.icon_labels.play' | t }}</span>
+                          {%- render 'icon-play' -%}
+                        </video-section-play-button>
+                      </div>
+                    </div>
+                  </div>
+                {%- endif -%}
+              </div>
+            </div>
+
+            {%- if autoplay == false -%}
+            <script>
+              if (!customElements.get('video-section-play-button')) {
+                class VideoSectionPlayButton extends HTMLElement {
+                  connectedCallback() {
+                    this.addEventListener('click', this.handleClick);
+                  }
+
+                  handleClick(evt) {
+                    const section = evt.target.closest('.video-section');
+                    section.querySelector('.js-load-media').click();
+                    setTimeout(() => section.classList.add('video-section--played'), Shopify.designMode ? 500 : 1500);
+                  }
+                }
+
+                customElements.define('video-section-play-button', VideoSectionPlayButton);
+              }
+            </script>
+            {%- endif -%}
+
+          {% elsif block.type == 'countdown' %}
+            <script src="{{ 'countdown-timer.js' | asset_url }}" defer></script>
+            {% style %}
+              .block-id-{{ block.id }} .countdown {
+                --countdown-desktop-size: {{ block.settings.number_size }}px;
+              }
+            {% endstyle %}
+
+            <div class="block-id-{{ block.id }} align-center countdown-font-{{ block.settings.number_font }} countdown-divider-{{ block.settings.divider_type }}" {{ block.shopify_attributes }}>
+              {% render 'countdown-timer',
+                end_date: block.settings.end_date,
+                end_time: block.settings.end_time,
+                end_text: block.settings.end_text,
+                end_midnight: true,
+                hide_on_end: block.settings.hide_on_end,
+                show_labels: block.settings.show_timer_labels
+              %}
+            </div>
+
+          {% elsif block.type == 'html' %}
+
+            <div class="custom-html">
+              {{ block.settings.code }}
+            </div>
+
+          {% endif %}
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+<style>
+    #section-id-{{ section.id }} {
+        & ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        & ul li {
+            padding-left: 1.5em;
+            position: relative;
+            list-style: none;
+        }
+        & ul li::before {
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+            color: currentColor;
+            content: "✓";
+        }
+        & ul li {
+            margin-bottom: 0.5em;
+        }
+        & ul li:before {
+            color: white;
+        }
+    }
+</style>
+
+{% schema %}
+{
+  "name": "Custom content",
+  "class": "section-custom-content",
+  "disabled_on": {
+    "groups": [
+      "aside"
+    ]
+  },
+  "max_blocks": 5,
+  "settings": [
+    {
+      "type": "select",
+      "id": "spacing",
+      "label": "Above/below spacing",
+      "default": "medium",
+      "options": [
+        {
+          "value": "small",
+          "label": "Small"
+        },
+        {
+          "value": "medium",
+          "label": "Medium"
+        },
+        {
+          "value": "large",
+          "label": "Large"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "alignment",
+      "label": "Vertical alignment",
+      "default": "top",
+      "options": [
+        {
+          "value": "top",
+          "label": "Top"
+        },
+        {
+          "value": "middle",
+          "label": "Middle"
+        },
+        {
+          "value": "bottom",
+          "label": "Bottom"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "default",
+      "options": [
+        {
+          "value": "default",
+          "label": "Default"
+        },
+        {
+          "value": "1",
+          "label": "1"
+        },
+        {
+          "value": "2",
+          "label": "2"
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "image",
+      "name": "Image",
+      "settings": [
+        {
+          "type": "select",
+          "id": "width",
+          "label": "Width",
+          "default": "half",
+          "options": [
+            {
+              "value": "quarter",
+              "label": "25%"
+            },
+            {
+              "value": "third",
+              "label": "33%"
+            },
+            {
+              "value": "half",
+              "label": "50%"
+            },
+            {
+              "value": "two-thirds",
+              "label": "66%"
+            },
+            {
+              "value": "three-quarters",
+              "label": "75%"
+            },
+            {
+              "value": "full",
+              "label": "100%"
+            }
+          ]
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image",
+          "info": "2048 x 1024px recommended"
+        },
+        {
+          "type": "image_picker",
+          "id": "mobile_image",
+          "label": "Mobile Image",
+          "info": "1024 x 1024px recommended"
+        },
+        {
+          "type": "select",
+          "id": "height",
+          "label": "Image height",
+          "options": [
+            {
+              "value": "adapt",
+              "label": "Natural"
+            },
+            {
+              "value": "fixed",
+              "label": "Fixed height"
+            }
+          ],
+          "default": "adapt"
+        },
+        {
+          "type": "range",
+          "id": "height_desktop",
+          "min": 200,
+          "max": 1000,
+          "step": 20,
+          "unit": "px",
+          "label": "Desktop fixed height",
+          "default": 600
+        },
+        {
+          "type": "range",
+          "id": "height_mobile",
+          "min": 100,
+          "max": 1000,
+          "step": 20,
+          "unit": "px",
+          "label": "Mobile fixed height",
+          "default": 500
+        },
+        {
+          "type": "text",
+          "id": "subheading",
+          "label": "Subheading",
+          "default": "Subheading"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading",
+          "info": "Enter <br> for a line-break",
+          "default": "Tell your story"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text",
+          "default": "<p>Pair text with an image to tell a story</p>"
+        },
+        {
+          "type": "checkbox",
+          "id": "enlarge_text",
+          "label": "Enlarge text",
+          "default": false
+        },
+        {
+          "type": "text",
+          "id": "button_label",
+          "label": "Button"
+        },
+        {
+          "type": "select",
+          "id": "button_style",
+          "label": "Button style",
+          "default": "primary",
+          "options": [
+            {
+              "label": "Primary",
+              "value": "primary"
+            },
+            {
+              "label": "Secondary",
+              "value": "secondary"
+            },
+            {
+              "label": "Link",
+              "value": "link"
+            }
+          ]
+        },
+        {
+          "type": "url",
+          "id": "image_link",
+          "label": "Image link"
+        },
+        {
+          "type": "select",
+          "id": "text_alignment",
+          "label": "Text overlay position",
+          "options": [
+            {
+              "value": "top left",
+              "label": "Top left"
+            },
+            {
+              "value": "top center",
+              "label": "Top center"
+            },
+            {
+              "value": "top right",
+              "label": "Top right"
+            },
+            {
+              "value": "center left",
+              "label": "Middle left"
+            },
+            {
+              "value": "center center",
+              "label": "Middle center"
+            },
+            {
+              "value": "center right",
+              "label": "Middle right"
+            },
+            {
+              "value": "bottom left",
+              "label": "Bottom left"
+            },
+            {
+              "value": "bottom center",
+              "label": "Bottom center"
+            },
+            {
+              "value": "bottom right",
+              "label": "Bottom right"
+            }
+          ],
+          "default": "center center"
+        },
+        {
+          "type": "header",
+          "content": "Layout"
+        },
+        {
+          "id": "mobile_overlay_under",
+          "type": "checkbox",
+          "label": "Show text below image on mobile",
+          "default": false
+        },
+        {
+          "id": "overlay_style",
+          "type": "select",
+          "label": "Overlay style",
+          "default": "shadow",
+          "options": [
+            {
+              "value": "full",
+              "label": "Tint"
+            },
+            {
+              "value": "box",
+              "label": "Box"
+            },
+            {
+              "value": "shadow",
+              "label": "Text shadow"
+            },
+            {
+              "value": "full image-overlay--bg-shadow",
+              "label": "Text shadow and tint"
+            },
+            {
+              "value": "no_background",
+              "label": "No background"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "name": "Text",
+      "settings": [
+        {
+          "type": "select",
+          "id": "width",
+          "label": "Width",
+          "default": "half",
+          "options": [
+            {
+              "value": "quarter",
+              "label": "25%"
+            },
+            {
+              "value": "third",
+              "label": "33%"
+            },
+            {
+              "value": "half",
+              "label": "50%"
+            },
+            {
+              "value": "two-thirds",
+              "label": "66%"
+            },
+            {
+              "value": "three-quarters",
+              "label": "75%"
+            },
+            {
+              "value": "full",
+              "label": "100%"
+            }
+          ]
+        },
+        {
+          "type": "text_alignment",
+          "id": "text_alignment",
+          "label": "Text alignment",
+          "default": "center"
+        },
+        {
+          "type": "checkbox",
+          "id": "center_on_mobile",
+          "label": "Center on mobile",
+          "default": true
+        },
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "default": "",
+          "options": [
+            {
+              "value": "",
+              "label": "No icon"
+            },
+            {
+              "value": "accessible",
+              "label": "Accessible"
+            },
+            {
+              "value": "award",
+              "label": "Award"
+            },
+            {
+              "value": "beach",
+              "label": "Beach"
+            },
+            {
+              "value": "box",
+              "label": "Box"
+            },
+            {
+              "value": "briefcase",
+              "label": "Briefcase"
+            },
+            {
+              "value": "calendar",
+              "label": "Calendar"
+            },
+            {
+              "value": "chat_bubble",
+              "label": "Chat bubble"
+            },
+            {
+              "value": "check_mark",
+              "label": "Check mark"
+            },
+            {
+              "value": "check_mark_in_circle",
+              "label": "Check mark in circle"
+            },
+            {
+              "value": "clock",
+              "label": "Clock"
+            },
+            {
+              "value": "credit_card",
+              "label": "Credit card"
+            },
+            {
+              "value": "dollar_sign",
+              "label": "Dollar sign"
+            },
+            {
+              "value": "dryer",
+              "label": "Dryer"
+            },
+            {
+              "value": "eye",
+              "label": "Eye"
+            },
+            {
+              "value": "feather",
+              "label": "Feather"
+            },
+            {
+              "value": "gift",
+              "label": "Gift"
+            },
+            {
+              "value": "heart",
+              "label": "Heart"
+            },
+            {
+              "value": "iron",
+              "label": "Iron"
+            },
+            {
+              "value": "leaf",
+              "label": "Leaf"
+            },
+            {
+              "value": "leather",
+              "label": "Leather"
+            },
+            {
+              "value": "lock",
+              "label": "Lock"
+            },
+            {
+              "value": "map_pin",
+              "label": "Map pin"
+            },
+            {
+              "value": "pants",
+              "label": "Pants"
+            },
+            {
+              "value": "percent",
+              "label": "Percent"
+            },
+            {
+              "value": "plane",
+              "label": "Plane"
+            },
+            {
+              "value": "price_tag",
+              "label": "Price tag"
+            },
+            {
+              "value": "question_mark",
+              "label": "Question mark"
+            },
+            {
+              "value": "recycle",
+              "label": "Recycle"
+            },
+            {
+              "value": "return",
+              "label": "Return"
+            },
+            {
+              "value": "ruler",
+              "label": "Ruler"
+            },
+            {
+              "value": "scissors",
+              "label": "Scissors"
+            },
+            {
+              "value": "shirt",
+              "label": "Shirt"
+            },
+            {
+              "value": "shoe",
+              "label": "Shoe"
+            },
+            {
+              "value": "silhouette",
+              "label": "Silhouette"
+            },
+            {
+              "value": "star",
+              "label": "Star"
+            },
+            {
+              "value": "sun-high",
+              "label": "Sun"
+            },
+            {
+              "value": "truck",
+              "label": "Truck"
+            },
+            {
+              "value": "washing",
+              "label": "Washing"
+            },
+            {
+              "value": "world",
+              "label": "World"
+            }
+          ]
+        },
+        {
+          "type": "color",
+          "id": "icon_color",
+          "label": "Icon color",
+          "default": "rgba(0,0,0,0)"
+        },
+        {
+          "type": "text",
+          "id": "subheading",
+          "label": "Subheading"
+        },
+        {
+          "type": "inline_richtext",
+          "id": "title",
+          "label": "Heading",
+          "default": "Rich text"
+        },
+        {
+          "type": "range",
+          "id": "title_size",
+          "min": 20,
+          "max": 150,
+          "step": 2,
+          "unit": "px",
+          "label": "Desktop heading text size",
+          "default": 84
+        },
+        {
+          "type": "range",
+          "id": "title_size_mobile",
+          "min": 20,
+          "max": 150,
+          "step": 2,
+          "unit": "px",
+          "label": "Mobile heading text size",
+          "default": 46
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text",
+          "default": "<p>Use this text to share information about your store with your customers.</p>"
+        },
+        {
+          "type": "text",
+          "id": "button_label",
+          "label": "Button"
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "Button link"
+        },
+        {
+          "type": "select",
+          "id": "button_style",
+          "label": "Button style",
+          "default": "primary",
+          "options": [
+            {
+              "label": "Primary",
+              "value": "primary"
+            },
+            {
+              "label": "Secondary",
+              "value": "secondary"
+            },
+            {
+              "label": "Link",
+              "value": "link"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "video",
+      "name": "Video",
+      "settings": [
+        {
+          "type": "select",
+          "id": "width",
+          "label": "Width",
+          "default": "half",
+          "options": [
+            {
+              "value": "quarter",
+              "label": "25%"
+            },
+            {
+              "value": "third",
+              "label": "33%"
+            },
+            {
+              "value": "half",
+              "label": "50%"
+            },
+            {
+              "value": "two-thirds",
+              "label": "66%"
+            },
+            {
+              "value": "three-quarters",
+              "label": "75%"
+            },
+            {
+              "value": "full",
+              "label": "100%"
+            }
+          ]
+        },
+        {
+          "id": "video_shopify",
+          "type": "video",
+          "label": "Video upload",
+          "info": "Hosted by Shopify. Replaces External video if both are set."
+        },
+        {
+          "id": "video_external",
+          "type": "text",
+          "label": "External video",
+          "info": "Supports YouTube and Vimeo",
+          "default": "https://www.youtube.com/watch?v=_9VUPq3SxOc"
+        },
+        {
+          "type": "text",
+          "id": "video_description",
+          "label": "Video description",
+          "info": "Describe the video for customers using screen readers. [Learn more](https://help.shopify.com/manual/online-store/themes/theme-structure/theme-features#video-block)"
+        },
+        {
+          "id": "autoplay",
+          "type": "checkbox",
+          "label": "Autoplay",
+          "info": "Video will be muted",
+          "default": false
+        },
+        {
+          "id": "placeholder_image",
+          "type": "image_picker",
+          "label": "Custom placeholder image",
+          "info": "Required for External videos. Choose an image the same shape as your video."
+        }
+      ]
+    },
+    {
+      "type": "countdown",
+      "name": "Countdown timer",
+      "settings": [
+        {
+          "type": "select",
+          "id": "width",
+          "label": "Width",
+          "default": "half",
+          "options": [
+            {
+              "value": "quarter",
+              "label": "25%"
+            },
+            {
+              "value": "third",
+              "label": "33%"
+            },
+            {
+              "value": "half",
+              "label": "50%"
+            },
+            {
+              "value": "two-thirds",
+              "label": "66%"
+            },
+            {
+              "value": "three-quarters",
+              "label": "75%"
+            },
+            {
+              "value": "full",
+              "label": "100%"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "end_date",
+          "label": "End date",
+          "info": "Required. Format: YYYY-MM-DD."
+        },
+        {
+          "type": "text",
+          "id": "end_time",
+          "label": "End time (optional)",
+          "info": "Format: 17:00 (24 hour clock). Uses the store's timezone."
+        },
+        {
+          "type": "richtext",
+          "id": "end_text",
+          "label": "End text",
+          "info": "This shows when the date and time elapses."
+        },
+        {
+          "type": "checkbox",
+          "id": "hide_on_end",
+          "label": "Hide the timer when the date and time elapses",
+          "default": false
+        },
+        {
+          "type": "range",
+          "id": "number_size",
+          "min": 20,
+          "max": 60,
+          "step": 2,
+          "unit": "px",
+          "label": "Number size",
+          "default": 60
+        },
+        {
+          "type": "select",
+          "id": "number_font",
+          "label": "Number font",
+          "options": [
+            {
+              "label": "Text font",
+              "value": "base"
+            },
+            {
+              "label": "Heading font",
+              "value": "heading"
+            }
+          ],
+          "default": "base"
+        },
+        {
+          "type": "select",
+          "id": "divider_type",
+          "label": "Divider type",
+          "default": "colon",
+          "options": [
+            {
+              "value": "colon",
+              "label": "Colon"
+            },
+            {
+              "value": "dot",
+              "label": "Dot"
+            },
+            {
+              "value": "line",
+              "label": "Line"
+            },
+            {
+              "value": "none",
+              "label": "None"
+            }
+          ]
+        },
+        {
+          "type": "checkbox",
+          "id": "show_timer_labels",
+          "label": "Show labels",
+          "default": true
+        }
+      ]
+    },
+    {
+      "type": "html",
+      "name": "Custom Liquid",
+      "settings": [
+        {
+          "type": "select",
+          "id": "width",
+          "label": "Width",
+          "default": "half",
+          "options": [
+            {
+              "value": "quarter",
+              "label": "25%"
+            },
+            {
+              "value": "third",
+              "label": "33%"
+            },
+            {
+              "value": "half",
+              "label": "50%"
+            },
+            {
+              "value": "two-thirds",
+              "label": "66%"
+            },
+            {
+              "value": "three-quarters",
+              "label": "75%"
+            },
+            {
+              "value": "full",
+              "label": "100%"
+            }
+          ]
+        },
+        {
+          "type": "liquid",
+          "id": "code",
+          "label": "Liquid code"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Custom content",
+      "settings": {
+        "alignment": "middle"
+      },
+      "blocks": [
+        {
+          "type": "image",
+          "settings": {
+            "width": "half"
+          }
+        },
+        {
+          "type": "text",
+          "settings": {
+            "title": "Welcome",
+            "text": "<p>Use this text to share information about your store with your customers.</p><p>Describe products, share announcements, or welcome customers to your store.</p>",
+            "width": "half"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

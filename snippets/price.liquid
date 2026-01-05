@@ -1,0 +1,100 @@
+{% comment %}
+  Parameters:
+  - product {Object} - Product object.
+  - show_currency_code {Boolean} - Use 'money_with_currency' instead of 'money'.
+  - show_labels {Boolean} - Show Sale/Sold Out labels (optional, default is false).
+  - for_variant_picker {Boolean} - Uses variant price and markup for display of all variant states (optional, default is false).
+  - current_variant {Object} - Current variant, if for_variant_picker is true.
+
+  Usage:
+  {% render 'price', product: product %}
+{% endcomment %}
+
+{%- liquid
+  assign variant = current_variant | default: product.variants | sort: 'price' | first
+
+  if for_variant_picker
+    if current_variant == false
+      assign available = true
+    endif
+  else
+    assign for_variant_picker = false
+    assign available = variant.available | default: false
+  endif
+
+  assign compare_at_price = variant.compare_at_price
+  assign price = variant.price | default: 1999
+-%}
+
+<div class="price{%- if compare_at_price > price %} price--on-sale{% endif -%}
+                 {%- if available == false %} price--sold-out{% endif -%}">
+  <div class="price__default">
+    <span class="price__current">
+      <span class="visually-hidden js-label">
+        {%- if compare_at_price > price -%}
+          {{- 'products.product.price.sale_price' | t -}}
+        {%- else -%}
+          {{- 'products.product.price.regular_price' | t -}}
+        {%- endif -%}
+      </span>
+      {%- if product.price_varies -%}
+        {%- if for_variant_picker == false -%}
+          <span class="price__from">{{ 'products.product.from' | t }}</span>
+        {%- elsif for_variant_picker and current_variant == false -%}
+          <span class="price__from">{{ 'products.product.from' | t }}</span>
+        {%- endif -%}
+      {%- endif %}
+      <span class="js-value">
+        {%- if show_currency_code -%}
+          {{ price | money_with_currency }}
+        {%- else -%}
+          {{ price | money }}
+        {%- endif -%}
+      </span>
+    </span>
+    {% if for_variant_picker or compare_at_price > price -%}
+      <span class="price__was">
+        <span class="visually-hidden js-label">
+          {%- if compare_at_price > price -%}
+            {{- 'products.product.price.regular_price' | t -}}
+          {%- endif -%}
+        </span>
+        <span class="js-value">
+          {%- if compare_at_price > price -%}
+            {{- compare_at_price | money -}}
+          {%- endif -%}
+        </span>
+      </span>
+    {%- endif -%}
+  </div>
+
+  {% if show_labels %}
+    {% if settings.prod_sold_out_show and product.available == false %}
+      <span class="price-label price-label--sold-out">{{ 'products.product.sold_out' | t }}</span>
+    {% elsif settings.prod_pre_order_label_show and product.template_suffix contains 'preorder' %}
+      <span class="price-label price-label--preorder">{{ 'products.product.preorder' | t }}</span>
+    {% elsif settings.prod_sale_show and variant.compare_at_price > variant.price %}
+      <span class="price-label price-label--sale">{{ 'products.product.sale' | t }}</span>
+    {% endif %}
+  {% endif %}
+
+  {% if for_variant_picker or variant.unit_price_measurement %}
+    <div class="unit-price"{% if variant.unit_price_measurement == nil %} hidden{% endif %}>
+      <span class="visually-hidden">{{ 'products.product.price.unit_price' | t }}</span>
+      <span class="unit-price__price">{{ variant.unit_price | money }}</span>
+      <span class="unit-price__separator">{{ 'products.product.price.unit_price_separator' | t }}</span>
+      <span class="unit-price__unit">
+        {%- if variant.unit_price_measurement.reference_value != 1 -%}
+          {{- variant.unit_price_measurement.reference_value -}}
+        {%- endif -%}
+        {{ variant.unit_price_measurement.reference_unit }}
+      </span>
+    </div>
+  {% endif %}
+
+  {% if for_variant_picker %}
+    <div class="price__no-variant" hidden>
+      <strong class="price__current">{{ 'products.variant.non_existent' | t }}</strong>
+    </div>
+  {% endif %}
+</div>

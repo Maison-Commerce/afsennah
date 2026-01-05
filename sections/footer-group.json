@@ -1,0 +1,186 @@
+{
+  "type": "footer",
+  "name": "Footer Group",
+  "sections": {
+    "17596915809e8d87ba": {
+      "type": "apps",
+      "blocks": {
+        "instafeed_story_app_block_feeds_JcXh98": {
+          "type": "shopify:\/\/apps\/instafeed-story\/blocks\/app-block-feeds\/4169bff3-1d6b-44ad-9377-2ebc3d31f01c",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "instafeed_story_app_block_feeds_JcXh98"
+      ],
+      "custom_css": [
+        "{margin-top: 0; padding-bottom: 0;}"
+      ],
+      "settings": {
+        "full_width": true,
+        "show_space": true
+      }
+    },
+    "cross-page-promos": {
+      "type": "cross-page-promos",
+      "blocks": {
+        "1478526632862": {
+          "type": "icon",
+          "settings": {
+            "icon": "truck",
+            "text": "Free shipping",
+            "link_url": ""
+          }
+        },
+        "1478526645605": {
+          "type": "icon",
+          "settings": {
+            "icon": "price_tag",
+            "text": "New styles",
+            "link_url": ""
+          }
+        },
+        "1478526647261": {
+          "type": "icon",
+          "settings": {
+            "icon": "gift",
+            "text": "Gift cards",
+            "link_url": ""
+          }
+        },
+        "1478527611164": {
+          "type": "icon",
+          "settings": {
+            "icon": "star",
+            "text": "5.0 star rating",
+            "link_url": ""
+          }
+        }
+      },
+      "block_order": [
+        "1478526632862",
+        "1478526645605",
+        "1478526647261",
+        "1478527611164"
+      ],
+      "disabled": true,
+      "custom_css": [
+        "{position: relative; top: 20px;}",
+        ".cross-page-promos {border-radius: 8px;}",
+        "@media (max-width: 767px) {.cross-page-promos {border-radius: 0; }}"
+      ],
+      "settings": {
+        "cross_page_promo_bg": "#a6a8de",
+        "cross_page_promo_color": "#f8f6f0",
+        "show_on_home_page": true
+      }
+    },
+    "custom_content_eqfePH": {
+      "type": "custom-content",
+      "blocks": {
+        "text_NzKGGw": {
+          "type": "text",
+          "settings": {
+            "width": "half",
+            "text_alignment": "left",
+            "center_on_mobile": true,
+            "icon": "",
+            "icon_color": "rgba(0,0,0,0)",
+            "subheading": "stop hair thinning & start growing",
+            "title": "Ready, Steady, GROW",
+            "title_size": 84,
+            "title_size_mobile": 26,
+            "text": "",
+            "button_label": "",
+            "button_link": "",
+            "button_style": "primary"
+          }
+        },
+        "video_VjcGJf": {
+          "type": "video",
+          "settings": {
+            "width": "third",
+            "video_shopify": "shopify:\/\/files\/videos\/bb8d445b7e7e48388fdb39c1ad89e8f4.mov",
+            "video_external": "https:\/\/www.youtube.com\/watch?v=_9VUPq3SxOc",
+            "video_description": "",
+            "autoplay": false
+          }
+        }
+      },
+      "block_order": [
+        "text_NzKGGw",
+        "video_VjcGJf"
+      ],
+      "custom_css": [
+        "{position: relative; top: 32px;}"
+      ],
+      "name": "Custom content",
+      "settings": {
+        "spacing": "medium",
+        "alignment": "middle",
+        "color_scheme": "2"
+      }
+    },
+    "footer": {
+      "type": "footer",
+      "blocks": {
+        "1601374680247": {
+          "type": "text",
+          "settings": {
+            "title": "",
+            "text": "<p>Custom Haircare powered by science-backed ingredients, 100% clean formulas, and expert guidance made to target your hair goals and transform your routine from the root up!<\/p>",
+            "image": "shopify:\/\/shop_images\/Afsennah_Logo.png",
+            "image_width": 160,
+            "show_social_icons": true,
+            "soc_icons_large": true,
+            "enable_follow_on_shop": false
+          }
+        },
+        "1601374621546": {
+          "type": "menu",
+          "settings": {
+            "title": "Quick links",
+            "menu": "footer"
+          }
+        },
+        "menu_aNMxGJ": {
+          "type": "menu",
+          "settings": {
+            "title": "Store",
+            "menu": "customer-account-main-menu"
+          }
+        },
+        "1601374580731": {
+          "type": "newsletter",
+          "settings": {
+            "title": "Newsletter",
+            "text": "<p>Get Deals & Hair Tips<\/p>",
+            "button_style": "inherit",
+            "show_social_icons": false,
+            "soc_icons_large": false
+          }
+        }
+      },
+      "block_order": [
+        "1601374680247",
+        "1601374621546",
+        "menu_aNMxGJ",
+        "1601374580731"
+      ],
+      "custom_css": [],
+      "settings": {
+        "lower_menu": "",
+        "show_powered_by": false,
+        "show_payment_icons": true,
+        "enable_country_selector": true,
+        "enable_language_selector": true
+      }
+    }
+  },
+  "order": [
+    "17596915809e8d87ba",
+    "cross-page-promos",
+    "custom_content_eqfePH",
+    "footer"
+  ]
+}

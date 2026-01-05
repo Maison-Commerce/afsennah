@@ -1,0 +1,172 @@
+<div class="section-id-{{ section.id }} collection-slider-row {% if section.settings.color_scheme != 'default' %}use-color-scheme use-color-scheme--{{ section.settings.color_scheme }}{% endif %}">
+  <div class="container{% if section.settings.enable_carousel %} container--not-mobile{% endif %}{% if section.settings.full_width %} container--no-max{% endif %}">
+    {%- if section.settings.enable_carousel -%}
+      <carousel-slider class="carousel block collection-slider">
+    {%- endif -%}
+
+    <div class="hometitle align-center has-paging" {%- render 'animation-attrs', attrs: 'data-cc-animate data-cc-animate-delay="0.3s"' -%}>
+      {% if section.settings.enable_carousel %}
+        <button name="prev" class="slider-nav__btn has-ltr-icon">
+          <span class="visually-hidden">{{ 'general.slider.previous' | t }}</span>
+          {% render 'icon-chevron-left' %}
+        </button>
+      {% endif %}
+      <h2 class="has-paging__title h4 m-0">{{ section.settings.title | escape }}</h2>
+      {% if section.settings.enable_carousel %}
+        <button name="next" class="slider-nav__btn has-ltr-icon">
+          <span class="visually-hidden">{{ 'general.slider.next' | t }}</span>
+          {% render 'icon-chevron-right' %}
+        </button>
+      {% endif %}
+    </div>
+
+    <div class="collection-listing fade-in-up{% if section.settings.enable_carousel %} slider {% if section.settings.full_width %}slider--edge-peek{% endif %} slider--mobile-container-pad slider--no-scrollbar{% endif %}" {%- render 'animation-attrs', attrs: 'data-cc-animate' -%}>
+      <div class="product-grid product-grid--per-row-{{ section.settings.grid }} product-grid--per-row-mob-{{ settings.prod_thumb_mob_per_row }}{% if section.settings.enable_carousel %} slider__grid product-grid--carousel{% endif %}">
+        {%- liquid
+          if section.settings.product_list == blank
+            for i in (1..4)
+              if section.settings.enable_carousel
+                echo '<div class="slider__item">'
+              endif
+              render 'onboarding-product-block', forloop: forloop
+              if section.settings.enable_carousel
+                echo '</div>'
+              endif
+            endfor
+          else
+            if settings.prod_thumb_shape == 'portrait-23'
+              assign chosen_aspect_ratio = 0.67
+            elsif settings.prod_thumb_shape == 'portrait-45'
+              assign chosen_aspect_ratio = 0.8
+            elsif settings.prod_thumb_shape == 'square'
+              assign chosen_aspect_ratio = 1.0
+            elsif settings.prod_thumb_shape == 'landscape-54'
+              assign chosen_aspect_ratio = 1.25
+            elsif settings.prod_thumb_shape == 'landscape-32'
+              assign chosen_aspect_ratio = 1.50
+            elsif settings.prod_thumb_shape == 'tallest'
+              assign chosen_aspect_ratio = 99
+              for product in section.settings.product_list
+                if product.featured_media.preview_image.aspect_ratio < chosen_aspect_ratio
+                  assign chosen_aspect_ratio = product.featured_media.preview_image.aspect_ratio
+                endif
+              endfor
+            else
+              assign chosen_aspect_ratio = 0
+              for product in section.settings.product_list
+                if product.featured_media.preview_image.aspect_ratio > chosen_aspect_ratio
+                  assign chosen_aspect_ratio = product.featured_media.preview_image.aspect_ratio
+                endif
+              endfor
+            endif
+            for product in section.settings.product_list
+              if section.settings.enable_carousel
+                echo '<div class="slider__item">'
+              endif
+              render 'product-block', product: product, custom_aspect_ratio: chosen_aspect_ratio, no_swiping: section.settings.enable_carousel, no_quick_buy_markup: section.settings.enable_carousel
+              if section.settings.enable_carousel
+                echo '</div>'
+              endif
+            endfor
+          endif
+        -%}
+      </div>
+    </div>
+
+    {%- if section.settings.enable_carousel -%}
+      </carousel-slider>
+    {%- endif -%}
+  </div>
+
+  {% if settings.quickbuy_style != 'off' and section.settings.enable_carousel %}
+    <div class="quickbuy-container use-color-scheme use-color-scheme--{{ settings.quickbuy_color_scheme }}">
+      <a href="#" class="close-detail" aria-label="{{ 'accessibility.close' | t }}" tabindex="-1" aria-hidden="true">{% render 'icon-close', stroke_width: 1 %}</a>
+      <div class="inner"></div>
+    </div>
+  {% endif %}
+</div>
+
+
+{% schema %}
+{
+  "name": "Product list",
+  "class": "section-product-grid",
+  "disabled_on": {
+    "templates": [
+      "product",
+      "password"
+    ],
+    "groups": [
+      "aside"
+    ]
+  },
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Product list"
+    },
+    {
+      "type": "product_list",
+      "id": "product_list",
+      "label": "Product list"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_vendor",
+      "label": "Show product vendor",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_carousel",
+      "label": "Enable carousel",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "grid",
+      "label": "Products per row",
+      "min": 2,
+      "max": 5,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "select",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "default",
+      "options": [
+        {
+          "value": "default",
+          "label": "Default"
+        },
+        {
+          "value": "1",
+          "label": "1"
+        },
+        {
+          "value": "2",
+          "label": "2"
+        }
+      ]
+    },
+    {
+      "id": "full_width",
+      "type": "checkbox",
+      "label": "Full page width",
+      "default": true
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product list",
+      "settings": {
+        "title": "Product list"
+      }
+    }
+  ]
+}
+{% endschema %}

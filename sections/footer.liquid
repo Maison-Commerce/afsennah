@@ -1,0 +1,457 @@
+{% if section.blocks != blank %}
+  <div class="container container--no-max section-footer__row-container">
+    <div class="section-footer__row section-footer__row--blocks" data-num-blocks="{{ section.blocks.size }}">
+      {% for block in section.blocks %}
+        {% case block.type %}
+        {% when '@app' %}
+          <div class="section-footer__row__col" {{ block.shopify_attributes }}>
+            {% render block %}
+          </div>
+
+        {% when 'menu' %}
+          <div class="section-footer__row__col section-footer__menu-block" role="navigation" aria-label="{{ 'accessibility.secondary_navigation' | t }}" {{ block.shopify_attributes }}>
+            <mobile-disclosure class="block">
+              <details class="mobile-disclosure" open>
+                <summary class="mobile-disclosure__title" tabindex="-1">
+                  {% if block.settings.title != blank %}
+                    {%- assign title_word_count = block.settings.title | split: ' ' | size -%}
+                    <div class="section-footer__title heading-font h6{% if title_word_count < 4 %} no-wrap{% endif %}">
+                      {{- block.settings.title | escape -}}
+                    </div>
+                  {% endif %}
+                </summary>
+                <div class="mobile-disclosure__panel has-motion">
+                  <div class="mobile-disclosure__content">
+                    {% if block.settings.menu != blank %}
+                      <ul class="section-footer__menu-block__menu" {{ block.shopify_attributes }}>
+                        {% for link in linklists[block.settings.menu].links %}
+                          <li>
+                            <a href="{{ link.url }}" {% if link.title.size < 25 %}class="no-wrap"{% endif %}>
+                              {{- link.title -}}
+                            </a>
+                          </li>
+                        {% endfor %}
+                      </ul>
+                    {% endif %}
+                  </div>
+                </div>
+              </details>
+            </mobile-disclosure>
+          </div>
+
+        {% when 'text' %}
+          <div class="section-footer__row__col section-footer__text-block {% if block.settings.text != blank %}section-footer__text-block--with-text{% endif %}" {{ block.shopify_attributes }}>
+            {% if block.settings.title != blank %}
+              {%- assign title_word_count = block.settings.title | split: ' ' | size -%}
+              <div class="section-footer__title heading-font h6{% if title_word_count < 4 %} no-wrap{% endif %}">
+                {{- block.settings.title | escape -}}
+              </div>
+            {% endif %}
+
+            {% if block.settings.text != blank %}
+              <div class="section-footer__text rte">
+                {{- block.settings.text -}}
+              </div>
+            {% endif %}
+
+            {% if block.settings.image != blank %}
+              <span class="section-footer__text-block__image" style="max-width: {{ block.settings.image_width }}px">
+                {%- liquid
+                  assign image_sizes = block.settings.image_width | append: 'px'
+                  assign image_widths = block.settings.image_width | times: 2 | prepend: ', ' | prepend: block.settings.image_width
+                -%}
+                {%- render 'image' with block.settings.image, sizes: image_sizes, widths: image_widths, loading: 'lazy' -%}
+              </span>
+            {% endif %}
+
+            {% if block.settings.show_social_icons != blank %}
+              <div class="section-footer__text-block__social">
+                {%- liquid
+                  if block.settings.soc_icons_large
+                    assign icon_height = 23
+                  else
+                    assign icon_height = 15
+                  endif
+                  if block.settings.soc_icons_large
+                    assign container_class = 'social--large'
+                  else
+                    assign container_class = ''
+                  endif
+
+                  render 'social-media', icon: settings.social_custom_icon, icon_height: icon_height, class: container_class
+                -%}
+              </div>
+            {% endif %}
+
+            {%- if shop.features.follow_on_shop? and block.settings.enable_follow_on_shop -%}
+              <div class="section-footer__follow-on-shop">
+                {{- shop | login_button: action: 'follow' -}}
+              </div>
+            {%- endif -%}
+          </div>
+
+        {% when 'newsletter' %}
+          <div class="section-footer__row__col section-footer__newsletter-block" {{ block.shopify_attributes }}>
+            {% if block.settings.title != blank %}
+              {%- assign title_word_count = block.settings.title | split: ' ' | size -%}
+              <div class="section-footer__title heading-font h6{% if title_word_count < 4 %} no-wrap{% endif %}">
+                {{- block.settings.title | escape -}}
+              </div>
+            {% endif %}
+
+            {% if block.settings.text != blank %}
+              <div class="section-footer__text rte">
+                {{ block.settings.text }}
+              </div>
+            {% endif %}
+
+            {% render 'newsletter-signup', id: 'footer_newsletter_signup', tags: 'newsletter, footer', block: block %}
+
+            {% if block.settings.show_social_icons != blank %}
+              <div class="section-footer__newsletter-block__social">
+                {%- liquid
+                  if block.settings.soc_icons_large
+                    assign icon_height = 23
+                  else
+                    assign icon_height = 15
+                  endif
+                  if block.settings.soc_icons_large
+                    assign container_class = 'social--large'
+                  else
+                    assign container_class = ''
+                  endif
+
+                  render 'social-media', icon: settings.social_custom_icon, icon_height: icon_height, class: container_class
+                -%}
+              </div>
+            {% endif %}
+          </div>
+
+        {% when 'custom-liquid' %}
+          <div class="section-footer__row__col section-footer__custom-liquid-block" {{ block.shopify_attributes }}>
+            {% if block.settings.title != blank %}
+              {%- assign title_word_count = block.settings.title | split: ' ' | size -%}
+              <div class="section-footer__title heading-font h6{% if title_word_count < 4 %} no-wrap{% endif %}">
+                {{- block.settings.title | escape -}}
+              </div>
+            {% endif %}
+
+            <div class="section-footer__custom-liquid">
+              {{- block.settings.code -}}
+            </div>
+          </div>
+
+        {% endcase %}
+      {% endfor %}
+    </div>
+  </div>
+{% endif %}
+
+{%- liquid
+  assign showing_localization = false
+  if section.settings.enable_language_selector and localization.available_languages.size > 1
+    assign showing_localization = true
+  endif
+  if section.settings.enable_country_selector and localization.available_countries.size > 1
+    assign showing_localization = true
+  endif
+-%}
+<div class="container container--no-max section-footer__row-container {% if showing_localization %}section-footer__row-container--with-localization{% endif %}">
+  <div class="section-footer__row section-footer__row-lower">
+    <div class="section-footer__row__col">
+      {% if section.settings.show_payment_icons %}
+        <div class="section-footer__payment-icons">
+          {% for type in shop.enabled_payment_types %}
+            {{ type | payment_type_svg_tag: class: 'section-footer__payment-icon' }}
+          {% endfor %}
+        </div>
+
+      {% endif %}
+      {% if section.settings.lower_menu != blank %}
+        <div class="section-footer__lower-menu" role="navigation">
+          <ul class="section-footer__lower-menu__list" aria-label="{{ 'accessibility.secondary_navigation' | t }}">
+            {% for link in linklists[section.settings.lower_menu].links %}
+              <li>
+                <a href="{{ link.url }}">
+                  {{- link.title -}}
+                </a>
+              </li>
+            {% endfor %}
+          </ul>
+        </div>
+      {% endif %}
+    </div>
+    <div class="section-footer__row__col">
+      {% if section.settings.enable_language_selector or section.settings.enable_country_selector %}
+        <div class="section-footer__localization">
+          {% render 'localization-form', id: 'footer-localization', hide_labels: true, promote_popular: true %}
+        </div>
+      {% endif %}
+
+      <div class="copyright">
+        {%- assign copyright_year = 'now' | date: '%Y' -%}
+        <span class="copy">{{ 'sections.footer.copyright_html' | t: year: copyright_year, shop_url: routes.root_url, shop_name: shop.name }}</span>
+
+        {% if section.settings.show_powered_by %}
+          {{ powered_by_link }}
+        {% endif %}
+
+      </div>
+    </div>
+  </div>
+</div>
+
+{% javascript %}
+  customElements.whenDefined('details-disclosure').then(() => {
+    class MobileDisclosure extends DetailsDisclosure {
+      constructor() {
+        super();
+        this.reset();
+        window.addEventListener('on:breakpoint-change', this.reset.bind(this));
+      }
+
+      reset() {
+        const isLargeScreen = window.matchMedia(theme.mediaQueries.md).matches;
+        this.disclosure.open = isLargeScreen;
+
+        if (isLargeScreen) {
+          this.toggle.setAttribute('tabindex', '-1');
+          this.querySelectorAll('.disclosure, .disclosure__title, .disclosure__panel, .disclosure__content').forEach((el) => {
+            [...el.classList].filter((cl) => cl.indexOf('disclosure') === 0).forEach((cl) => {
+              el.classList.remove(cl);
+              el.classList.add(`mobile-${cl}`);
+            });
+          });
+        } else {
+          this.toggle.removeAttribute('tabindex');
+          this.querySelectorAll('.mobile-disclosure, .mobile-disclosure__title, .mobile-disclosure__panel, .mobile-disclosure__content').forEach((el) => {
+            [...el.classList].filter((cl) => cl.indexOf('mobile-disclosure') === 0).forEach((cl) => {
+              el.classList.remove(cl);
+              el.classList.add(cl.substr(7));
+            });
+          });
+        }
+      }
+    }
+
+    customElements.define('mobile-disclosure', MobileDisclosure);
+  });
+{% endjavascript %}
+
+
+{% schema %}
+{
+  "name": "Footer",
+  "class": "section-footer",
+  "max_blocks": 4,
+  "settings": [
+    {
+      "type": "link_list",
+      "id": "lower_menu",
+      "label": "Lower footer menu",
+      "info": "This menu won't show dropdown items"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_powered_by",
+      "label": "Show 'Powered by Shopify'",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Social media links",
+      "info": "These are shown inside text and newsletter blocks. Add to the footer and enable inside."
+    },
+    {
+      "type": "header",
+      "content": "Payment methods"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_payment_icons",
+      "label": "Show payment icons",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Country/Region Selector",
+      "info": "To add a country/region, go to your [payment settings.](/admin/settings/payments)"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_country_selector",
+      "label": "Enable country/region selector",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Language Selector",
+      "info": "To add a language, go to your [language settings.](/admin/settings/languages)"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_language_selector",
+      "label": "Enable language selector",
+      "default": true
+    }
+  ],
+  "blocks": [
+    {
+      "type": "@app"
+    },
+    {
+      "type": "menu",
+      "name": "Links",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading",
+          "default": "Quick links"
+        },
+        {
+          "type": "link_list",
+          "id": "menu",
+          "label": "Menu",
+          "info": "This menu won't show dropdown items",
+          "default": "footer"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "name": "Text and social media",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading",
+          "default": "Talk about your store"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text",
+          "default": "<p>Use this text area to tell your customers about your brand and vision. You can change it in the theme editor.</p>"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "range",
+          "id": "image_width",
+          "min": 30,
+          "max": 200,
+          "step": 5,
+          "unit": "px",
+          "label": "Footer image width",
+          "default": 100
+        },
+        {
+          "type": "header",
+          "content": "Social media"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_social_icons",
+          "label": "Show social media links",
+          "default": true
+        },
+        {
+          "visible_if": "{{ block.settings.show_social_icons }}",
+          "type": "checkbox",
+          "id": "soc_icons_large",
+          "label": "Use large social media icons",
+          "default": false
+        },
+        {
+          "type": "header",
+          "content": "Follow on Shop",
+          "info": "Display follow button for your storefront on the Shop app. [Learn more](https://help.shopify.com/manual/online-store/themes/customizing-themes/follow-on-shop)"
+        },
+        {
+          "type": "checkbox",
+          "id": "enable_follow_on_shop",
+          "default": false,
+          "label": "Enable Follow on Shop"
+        }
+      ]
+    },
+    {
+      "type": "newsletter",
+      "limit": 1,
+      "name": "Newsletter",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading",
+          "default": "Newsletter"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text",
+          "default": "<p>Sign up for exclusive offers, original stories, events and more.</p>"
+        },
+        {
+          "type": "paragraph",
+          "content": "Customers who subscribe will have their email address added to the “accepts marketing” [customer list](/admin/customers?query=&accepts_marketing=1)"
+        },
+        {
+          "type": "select",
+          "id": "button_style",
+          "label": "Button style",
+          "default": "primary",
+          "options": [
+            {
+              "label": "Primary",
+              "value": "primary"
+            },
+            {
+              "label": "Secondary",
+              "value": "secondary"
+            },
+            {
+              "label": "Match text",
+              "value": "inherit"
+            }
+          ]
+        },
+        {
+          "type": "checkbox",
+          "id": "show_social_icons",
+          "label": "Show social media links",
+          "default": true
+        },
+        {
+          "visible_if": "{{ block.settings.show_social_icons }}",
+          "type": "checkbox",
+          "id": "soc_icons_large",
+          "label": "Use large social media icons",
+          "default": false
+        }
+      ]
+    },
+    {
+      "type": "custom-liquid",
+      "name": "Custom Liquid",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading",
+          "default": "Custom Liquid"
+        },
+        {
+          "type": "liquid",
+          "id": "code",
+          "label": "Liquid code"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

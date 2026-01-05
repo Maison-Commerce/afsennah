@@ -1,0 +1,59 @@
+{
+  "sections": {
+    "rich_text_L8TKpV": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_7mP4VA": {
+          "type": "heading",
+          "settings": {
+            "title": "The Blog",
+            "use_h1": true
+          }
+        },
+        "text_ngjN7K": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Use this text to share information about your store with your customers. Describe products, share announcements, or welcome customers to your store.<\/p>",
+            "enlarge_text": false
+          }
+        }
+      },
+      "block_order": [
+        "heading_7mP4VA",
+        "text_ngjN7K"
+      ],
+      "custom_css": [
+        "h1 {font-size: 5rem;}"
+      ],
+      "name": "Rich text",
+      "settings": {
+        "height": "large",
+        "text_alignment": "center",
+        "full_width": false,
+        "color_scheme": "default"
+      }
+    },
+    "main": {
+      "type": "main-blog",
+      "custom_css": [
+        "img {border-radius: 8px;}"
+      ],
+      "settings": {
+        "show_page_title": false,
+        "layout": "columns",
+        "crop_ratio": "1.0",
+        "show_author": false,
+        "show_date": true,
+        "show_excerpts": true,
+        "show_article_tags": true,
+        "show_rss_icon": true,
+        "show_twitter": true,
+        "show_facebook": true
+      }
+    }
+  },
+  "order": [
+    "rich_text_L8TKpV",
+    "main"
+  ]
+}

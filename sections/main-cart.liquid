@@ -1,0 +1,432 @@
+{%- liquid
+  if section.settings.show_continue_shopping and cart.items != empty
+    if section.settings.continue_shopping_url != blank
+      assign continue_shopping_url = section.settings.continue_shopping_url
+    else
+      assign continue_shopping_url = routes.all_products_collection_url
+      for item in cart.items
+        for collection in item.product.collections
+          unless collection.handle == 'all' or collection.handle == 'frontpage'
+            assign continue_shopping_url = collection.url
+            assign csurl_found = true
+            break
+          endunless
+        endfor
+        if csurl_found
+          break
+        endif
+      endfor
+    endif
+  endif
+-%}
+
+{%- if section.settings.show_order_note -%}
+  <script src="{{ 'cart-note.js' | asset_url }}" defer="defer"></script>
+{%- endif -%}
+
+<div class="container fully-spaced-row" data-ajax-update="true" style="--page-container-width: {{ settings.max_page_width | at_most: 1200 }}px;">
+  <cart-form data-section-id="{{ section.id }}" data-ajax-update="true">
+    {% if section.settings.show_page_title %}
+      <div data-merge="page-heading" {%- render 'animation-attrs', attrs: 'data-cc-animate' -%}>
+        {%- if cart.items != empty -%}
+          <div class="page-header">
+            <h1 class="majortitle">{{ 'cart.general.title' | t }}</h1>
+          </div>
+        {%- endif -%}
+      </div>
+    {% endif %}
+
+    {%- if settings.show_free_shipping_bar -%}
+      <div class="slim-container align-center" {%- render 'animation-attrs', attrs: 'data-cc-animate' -%}>
+        {%- render 'free-shipping-bar' -%}
+      </div>
+    {%- endif -%}
+
+    <form action="{{ routes.cart_url }}" method="post" id="cartform" class="cart-form">
+      <div class="cart-item-list">
+        <div class="cart-item-list__body" data-merge-list="cart-items">
+          {% if cart.items != empty %}
+            <div data-merge-list-item="item-key:head">
+              <div class="cart-item-list__head" aria-hidden="true" {%- render 'animation-attrs', attrs: 'data-cc-animate' -%}>
+                <div class="cart-item-list-heading cart-item-list-heading--product">{{ 'cart.items.product' | t }}</div>
+                <div class="cart-item-list-heading cart-item-list-heading--price">{{ 'cart.items.price' | t }}</div>
+                <div class="cart-item-list-heading cart-item-list-heading--quantity">{{ 'cart.items.quantity' | t }}</div>
+                <div class="cart-item-list-heading cart-item-list-heading--total">{{ 'cart.items.total' | t }}</div>
+              </div>
+            </div>
+          {% else %}
+            <div data-merge-list-item="item-key:empty" >
+              <div class="fully-spaced-row--large align-centre" {%- render 'animation-attrs', attrs: 'data-cc-animate' -%}>
+                <div class="align-center">
+                  {%- if section.settings.empty_icon == 'basket' -%}
+                    <div class="lightly-spaced-row"><span class="icon--large">{%- render 'icon-basket' -%}</span></div>
+                  {%- elsif section.settings.empty_icon == 'bag' -%}
+                    <div class="lightly-spaced-row"><span class="icon--large">{%- render 'icon-bag' -%}</span></div>
+                  {%- elsif section.settings.empty_icon == 'cart' -%}
+                    <div class="lightly-spaced-row"><span class="icon--large">{%- render 'icon-cart' -%}</span></div>
+                  {%- endif -%}
+
+                  {%- if section.settings.empty_heading != blank -%}
+                    <h1 class="majortitle">{{ section.settings.empty_heading }}</h1>
+                  {%- endif -%}
+
+                  {%- if section.settings.empty_text != blank -%}
+                    <div class="rte">{{ section.settings.empty_text }}</div>
+                  {%- endif -%}
+
+                  {%- if section.settings.empty_button_text != blank -%}
+                    <div class="button-row">
+                      <a class="{% if section.settings.empty_button_style != 'link' %}btn btn--{{ section.settings.empty_button_style }}{% else %}small-feature-link{% endif %} button-row__btn" href="{{ section.settings.empty_button_link }}">{{ section.settings.empty_button_text | escape }}</a>
+                    </div>
+                  {%- endif -%}
+                </div>
+              </div>
+            </div>
+          {% endif %}
+
+          {% for item in cart.items %}
+            <div data-merge-list-item="item-key:{{ item.key }}|{{ item.final_price }}{% for discount_allocation in item.line_level_discount_allocations %}|{{ discount_allocation.discount_application.title | escape }}{% endfor %}"
+                {% comment %} Discount items are difficult to predict - BOGOFs appear as a separate item with the same key as an existing item - simpler to always refresh {% endcomment %}
+                {%- if item.line_level_discount_allocations == empty -%}
+                data-merge-cache="{{ item.key }}|{{ item.quantity }}|{{ item.final_line_price }}|{% if item.selling_plan_allocation %}{{ item.selling_plan_allocation.selling_plan.id }}{% endif %}"
+                {%- endif -%}>
+              {%- render 'cart-item', item: item, forloop: forloop, animate: true -%}
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+
+      <div {%- render 'animation-attrs', attrs: 'data-cc-animate' -%}>
+        <div class="checkout-subtotal-container spaced-row{% if cart.items == empty %} hidden{% endif %}" data-merge-attributes="subtotal-container">
+          <div class="flexible-layout">
+            <div class="checkout-subtotal-container__left column column--half">
+              {% if section.settings.show_order_note %}
+                <cart-note class="cart-note block{% if section.settings.show_shipping_calculator %} lightly-spaced-row{% endif %}">
+                  <label class="block" for="note">{{ 'cart.note.label' | t }}</label>
+                  <textarea id="note" name="note">{{ cart.note }}</textarea>
+                </cart-note>
+              {% endif %}
+
+              {% if section.settings.show_shipping_calculator %}
+                <toggle-target class="block link underline very-lightly-spaced-row" role="button" tabindex="0" data-toggle-target="#{{ section.id }}-shipping-calculator-container" data-toggle-close-label="{{ 'cart.shipping_calculator.hide' | t }}">{{ 'cart.shipping_calculator.show' | t }}</toggle-target>
+                <div id="{{ section.id }}-shipping-calculator-container" class="toggle-target toggle-target--hidden">
+                  <div class="toggle-target-container">
+                    {%- render 'shipping-calculator', id: section.id, default_country: section.settings.shipping_calculator_default_country -%}
+                  </div>
+                </div>
+              {% endif %}
+            </div>
+
+            <div class="checkout-subtotal-container__right column column--half mobile-align-center">
+              {%- capture subtotal_and_checkout -%}
+                <div data-merge="total">
+                  {%- if cart.cart_level_discount_applications != blank -%}
+                    <ul class="cart-discount-list">
+                      {%- for discount_application in cart.cart_level_discount_applications -%}
+                        <li class="cart-discount cart-discount--inline">
+                          <span class="cart-discount__label">
+                              <span class="cart-discount__icon">{% render 'icon-label' %}</span>
+                              <span class="cart-discount__title">{{ discount_application.title | escape_once }}</span>
+                          </span>
+                          <span class="cart-discount__amount theme-money">{{ discount_application.total_allocated_amount | money }}</span>
+                        </li>
+                      {%- endfor -%}
+                    </ul>
+                  {%- endif -%}
+
+                  <h2 class="subtotal h2">
+                    {{ 'cart.summary.subtotal' | t }}:
+                    <span class="theme-money">
+                      {%- if settings.cart_currency_code_enabled -%}
+                        {{- cart.total_price | money_with_currency -}}
+                      {%- else -%}
+                        {{- cart.total_price | money -}}
+                      {%- endif -%}
+                    </span>
+                  </h2>
+
+                  {%- if section.settings.show_tax_and_shipping -%}
+                    <div class="cart-policies rte">
+                      {%- if cart.taxes_included and shop.shipping_policy.body != blank -%}
+                        {{- 'cart.general.taxes_included_shipping_at_checkout_html' | t: link: shop.shipping_policy.url -}}
+                      {%- elsif cart.taxes_included -%}
+                        {{- 'cart.general.taxes_included_shipping_at_checkout' | t -}}
+                      {%- elsif shop.shipping_policy.body != blank -%}
+                        {{- 'cart.general.taxes_and_shipping_at_checkout_html' | t: link: shop.shipping_policy.url -}}
+                      {%- else -%}
+                        {{- 'cart.general.taxes_and_shipping_at_checkout' | t -}}
+                      {%- endif -%}
+                    </div>
+                  {%- endif -%}
+                </div>
+
+                {% if section.settings.cart_terms_page != blank %}
+                  <terms-agreement class="terms-agreement rte">
+                    <input type="checkbox" id="terms" />
+                    <label for="terms">{{ 'cart.terms.agreement_html' | t: terms_url: section.settings.cart_terms_page }}</label>
+                  </terms-agreement>
+                {% endif %}
+
+                <div class="checkout-col lightly-spaced-row">
+                  <div class="checkout-buttons">
+                    <span class="update-cart-container">
+                      <button type="submit" name="update">{{ 'cart.general.update' | t }}</button>
+                    </span>
+
+                    <button type="submit" class="btn btn--large" id="update-cart" name="checkout">{{ 'cart.summary.checkout' | t }}</button>
+
+                    {% if section.settings.show_additional_checkout_buttons and additional_checkout_buttons and section.settings.cart_terms_page == blank %}
+                    <div class="additional-checkout-buttons mt-2">
+                      {{ content_for_additional_checkout_buttons }}
+                    </div>
+                    {% endif %}
+                  </div>
+
+                  {%- if section.settings.show_continue_shopping -%}
+                    <a class="continue-shopping underline block lightly-spaced-row-above" href="{{ continue_shopping_url }}">{{ 'cart.summary.continue_shopping' | t }}</a>
+                  {%- endif -%}
+                </div>
+              {%- endcapture -%}
+
+              {%- for block in section.blocks -%}
+                {%- case block.type -%}
+                  {%- when '@app' -%}
+                    <div class="inline-block{% unless forloop.first %} mt-4{% endunless %}{% unless forloop.last %} mb-4{% endunless %}" {{ block.shopify_attributes }}>
+                      {%- render block -%}
+                    </div>
+
+                  {%- when 'subtotal-and-checkout' -%}
+                    <div {{ block.shopify_attributes }}>
+                      {{- subtotal_and_checkout -}}
+                    </div>
+                {%- endcase -%}
+              {%- else -%}
+                {{- subtotal_and_checkout -}}
+              {%- endfor -%}
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </cart-form>
+</div>
+
+
+{% schema %}
+{
+  "name": "Cart page",
+  "class": "page-section-spacing",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_page_title",
+      "label": "Show page title",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Cart items"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_backorder_text",
+      "label": "Show backorder text",
+      "default": false,
+      "info": "Only shows for products which use Shopify inventory tracking and are available to purchase when out of stock."
+    },
+    {
+      "type": "select",
+      "id": "show_inventory_notice",
+      "label": "Show inventory notice",
+      "options": [
+        {
+          "label": "Never",
+          "value": "never"
+        },
+        {
+          "label": "When inventory low",
+          "value": "low"
+        },
+        {
+          "label": "Always",
+          "value": "always"
+        }
+      ],
+      "default": "low"
+    },
+    {
+      "type": "select",
+      "id": "show_inventory_count",
+      "label": "Show count in inventory notice",
+      "options": [
+        {
+          "label": "Never",
+          "value": "never"
+        },
+        {
+          "label": "When inventory low",
+          "value": "low"
+        },
+        {
+          "label": "Always",
+          "value": "always"
+        }
+      ],
+      "default": "low"
+    },
+    {
+      "type": "range",
+      "id": "inventory_threshold",
+      "min": 1,
+      "max": 100,
+      "step": 1,
+      "label": "Low inventory threshold",
+      "default": 10
+    },
+    {
+      "type": "header",
+      "content": "Order summary"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_order_note",
+      "label": "Show order note",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_tax_and_shipping",
+      "label": "Show tax status and shipping policy link",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_additional_checkout_buttons",
+      "label": "Show additional checkout options",
+      "default": true,
+      "info": "Display other gateways and quick checkout buttons. [Read more](https://help.shopify.com/en/manual/payments/accelerated-checkouts)"
+    },
+    {
+      "type": "url",
+      "id": "cart_terms_page",
+      "label": "Terms and conditions link",
+      "info": "Additional checkout buttons will be hidden when cart terms are shown"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_continue_shopping",
+      "label": "Show continue shopping link",
+      "default": true
+    },
+    {
+      "type": "url",
+      "id": "continue_shopping_url",
+      "label": "Continue shopping link",
+      "info": "If not entered, link will be the first collection (alphabetically) of the first product in the cart."
+    },
+    {
+      "type": "header",
+      "content": "Empty cart"
+    },
+    {
+      "type": "select",
+      "id": "empty_icon",
+      "label": "Icon",
+      "default": "basket",
+      "options": [
+        {
+          "value": "none",
+          "label": "None"
+        },
+        {
+          "value": "bag",
+          "label": "Bag"
+        },
+        {
+          "value": "basket",
+          "label": "Basket"
+        },
+        {
+          "value": "cart",
+          "label": "Cart"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "id": "empty_heading",
+      "label": "Heading",
+      "default": "Your cart is empty"
+    },
+    {
+      "type": "richtext",
+      "id": "empty_text",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "empty_button_text",
+      "label": "Button text",
+      "default": "Start shopping"
+    },
+    {
+      "type": "url",
+      "id": "empty_button_link",
+      "label": "Button link",
+      "default": "/collections/all"
+    },
+    {
+      "type": "select",
+      "id": "empty_button_style",
+      "label": "Button style",
+      "default": "primary",
+      "options": [
+        {
+          "label": "Primary",
+          "value": "primary"
+        },
+        {
+          "label": "Secondary",
+          "value": "secondary"
+        },
+        {
+          "label": "Link",
+          "value": "link"
+        }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Shipping rates calculator"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_shipping_calculator",
+      "label": "Show",
+      "default": false
+    },
+    {
+      "visible_if": "{{ section.settings.show_shipping_calculator }}",
+      "type": "text",
+      "id": "shipping_calculator_default_country",
+      "label": "Default country selection",
+      "default": "United States"
+    },
+    {
+      "visible_if": "{{ section.settings.show_shipping_calculator }}",
+      "type": "paragraph",
+      "content": "If your customer is logged-in, the country in his default shipping address will be selected. If you are not sure about the spelling to use here, refer to your first checkout page dropdown."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "@app"
+    },
+    {
+      "type": "subtotal-and-checkout",
+      "name": "Subtotal and checkout",
+      "limit": 1
+    }
+  ]
+}
+{% endschema %}

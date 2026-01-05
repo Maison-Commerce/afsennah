@@ -1,0 +1,271 @@
+<style>
+  .url-tabs {
+    width: 100%;
+    --container-padding: 15px;
+    max-width: calc(1800px + var(--container-padding)*2);
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: var(--container-padding);
+    padding-right: var(--container-padding);
+  }
+  .collection__nav-wrapper {
+    position: relative;
+  }
+  .collection__nav-wrapper::before,
+  .collection__nav-wrapper::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    height: 100%;
+    width: 50px;
+  }
+  {% comment %} .collection__nav-wrapper::before {
+    left: 0;
+    width: var(--container-padding);
+    background-image: linear-gradient(to left, rgba(255, 255, 255, 0), rgb(255, 255, 255));
+  } {% endcomment %}
+  .collection__nav-wrapper::after {
+    right: 0;
+    width: 50px;
+    background-image: linear-gradient(to right, rgba(255, 255, 255, 0), rgb(255, 255, 255));
+  }
+  .collection__nav {
+    width: 100%;
+    overflow: auto;
+    display: flex;
+    margin-bottom: 20px;
+    scrollbar-width: none;
+    scrollbar-color: rgba(0, 0, 0, 0) rgba(0, 0, 0, 0);
+    padding-top: 15px;
+    margin-bottom: 15px;
+  }
+  @media (min-width: 768px) {
+    .collection__nav {
+      justify-content: center;
+    }
+  }
+  .collection__nav__list {
+    line-height: 2.5;
+    display: flex;
+    padding-left: 0;
+    padding-right: calc(var(--container-padding) + 50px);
+    list-style: none;
+  }
+  @media (min-width: 768px) {
+    .collection__nav__list {
+      padding-right: 0;
+    }
+  }
+  .collection__nav__item {
+    white-space: nowrap;
+    font-size: var(--font-size, 0.75rem);
+    font-weight: 600;
+    border: 1px solid var(--color-grey-border, rgb(230, 230, 230));
+    padding: 0 15px;
+    color: var(--text-color, rgb(0, 0, 0));
+    background-color: var(--bg-color, rgb(255, 255, 255));
+    border-radius: var(--border-radius, 0px);
+  }
+  .collection__nav__item.collection__nav__item--active {
+    color: var(--active-text-color, rgb(255, 255, 255));
+    background-color: var(--active-bg-color, rgb(0, 0, 0));
+    border-color: var(--active-bg-color, rgb(0, 0, 0));
+  }
+  .collection__nav__item a {
+    color: inherit;
+    text-decoration: none;
+  }
+    .collection__nav__item:not(:last-child) {
+      margin-right: 10px;
+    }
+</style>
+
+{% if section.settings.hide_on_desktop %}
+  <style>
+    @media (min-width: 768px) {
+      .url-tabs.url-tabs--{{ section.id }} {
+        display: none;
+      }
+    }
+  </style>
+{% endif %}
+
+<div
+  class="url-tabs url-tabs--{{ section.id }}"
+  style="
+    --font-size: {{ section.settings.font_size }}px;
+    --text-color: {{ section.settings.text_color }};
+    --bg-color: {{ section.settings.bg_color }};
+    --active-text-color: {{ section.settings.active_text_color }};
+    --active-bg-color: {{ section.settings.active_bg_color }};
+    --border-radius: {{ section.settings.border_radius }}px;
+  "
+>
+  <div class="collection__nav-wrapper">
+    <nav class="collection__nav">
+      <ul class="collection__nav__list">
+        {% for block in section.blocks %}
+          <li class="collection__nav__item">
+            <a href="{{ block.settings.url }}" data-href="{{ block.settings.url }}">{{ block.settings.title }}</a>
+          </li>
+        {% endfor %}
+      </ul>
+    </nav>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const navItems = document.querySelectorAll('.collection__nav__item');
+    const url = window.location.href;
+    navItems.forEach((item) => {
+      const link = item.querySelector('a');
+      if (link.href === url.split('?')[0]) {
+        item.classList.add('collection__nav__item--active');
+      } else {
+        item.classList.remove('collection__nav__item--active');
+      }
+    });
+  });
+</script>
+
+{% schema %}
+{
+  "name": "SS - Navigation Links",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "hide_on_desktop",
+      "label": "Hide on desktop",
+      "info": "Hide this section on desktop/when the browser width is greater than 768px",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "Active collection colors"
+    },
+    {
+      "type": "color",
+      "id": "active_text_color",
+      "label": "Active text color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "active_bg_color",
+      "label": "Active background color - Save to see changes",
+      "default": "#000000"
+    },
+    {
+      "type": "header",
+      "content": "Other"
+    },
+    {
+      "type": "range",
+      "id": "font_size",
+      "label": "Font size",
+      "min": 10,
+      "max": 36,
+      "step": 1,
+      "default": 16,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "border_radius",
+      "label": "Border radius",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "default": 0,
+      "unit": "px"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "text",
+      "name": "URL",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Link title"
+        },
+        {
+          "type": "url",
+          "id": "url",
+          "label": "URL",
+          "default": "/"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "SS - Navigation Links",
+      "category": "Custom",
+      "blocks": [
+        {
+          "type": "text",
+          "settings": {
+            "title": "All products",
+            "url": "shopify:\/\/collections"
+          }
+        },
+        {
+          "type": "text",
+          "settings": {
+            "title": "Pullovers",
+            "url": "shopify:\/\/collections"
+          }
+        },
+        {
+          "type": "text",
+          "settings": {
+            "title": "Cardigans",
+            "url": "shopify:\/\/collections"
+          }
+        },
+        {
+          "type": "text",
+          "settings": {
+            "title": "Mugs",
+            "url": "shopify:\/\/collections"
+          }
+        },
+        {
+          "type": "text",
+          "settings": {
+            "title": "Caps",
+            "url": "shopify:\/\/collections"
+          }
+        },
+        {
+          "type": "text",
+          "settings": {
+            "title": "Backpacks",
+            "url": "shopify:\/\/collections"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

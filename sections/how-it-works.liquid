@@ -1,0 +1,366 @@
+{{ 'https://unpkg.com/flickity@2/dist/flickity.min.css' | stylesheet_tag }}
+
+<style>
+    .how-it-works-section {
+        padding: 20px;
+        background-color: {{ section.settings.background_color }};
+    }
+    .how-it-works-section__container {
+        max-width: 1440px;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        gap: 40px;
+    }
+    .how-it-works-section__left-col {
+        text-align: center;
+    }
+    .how-it-works-section__heading {
+        font-weight: 300;
+        margin: 0 0 30px 0;
+    }
+    .how-it-works-section__card-content {
+        background-color: #fff;
+        padding: 32px 24px 120px 24px;
+        text-align: left;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        /* Make card itself a flex container to align content */
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        border-radius: 8px;
+    }
+    .how-it-works-section__card-title {
+        font-size: 1rem;
+        font-weight: 600;
+        margin: 0 0 32px 0;
+    }
+    .how-it-works-section__card-image-wrapper {
+        border-radius: 8px;
+        margin-bottom: 16px;
+        height: 150px;
+    }
+    .how-it-works-section__card-image {
+        width: 100%;
+        height: 100%;
+        display: block;
+        object-fit: cover;
+        border-radius: 8px;
+    }
+    .how-it-works-section__card-description {
+        font-size: 0.9rem;
+        color: #666;
+        line-height: 1.5;
+    }
+    .how-it-works-section__video-trigger {
+        background: none;
+        border: none;
+        border-bottom: 1px solid #333;
+        padding: 5px 0;
+        cursor: pointer;
+        font-size: 0.9rem;
+        letter-spacing: 1px;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+    }
+    .how-it-works-section__video-trigger svg {
+        width: 20px;
+        height: 20px;
+    }
+
+    /* --- Desktop Animation & Layout --- */
+    @media (min-width: 990px) {
+        .how-it-works-section {
+            padding: 0 20px;
+        }
+        .how-it-works-section__card-content {
+            border-radius: 0;
+        }
+        .how-it-works-section__container {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            align-items: center; /* Vertically center left col relative to right */
+            gap: 50px;
+        }
+        .how-it-works-section__left-col {
+            text-align: left;
+        }
+        /* This is the new animation stage */
+        .how-it-works-section__cards-wrapper {
+            position: relative;
+            height: 420px; /* Fixed height for the container */
+            width: 100%;
+            overflow: hidden; /* Hide the part of the card that is pushed down */
+        }
+        .how-it-works-section__cards {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        .how-it-works-section__card {
+            width: 100%;
+            max-width: 350px;
+            cursor: pointer;
+            align-self: flex-end; /* Align cards to the bottom of the flex container */
+            transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+            height: 410px;
+
+            /* Pushes the entire card down, hiding the description */
+            transform: translateY(180px); /* Adjust this value to hide more/less */
+        }
+        .how-it-works-section__card.is-active {
+            /* Moves the card up, revealing it and making it pop out of the top */
+            transform: translateY(0);
+            box-shadow: 0 -13px 0 #a7a8df;
+        }
+        .flickity-button, .flickity-page-dots {
+            display: none;
+        }
+    }
+
+    /* --- Mobile Slider Styles --- */
+    @media (max-width: 989px) {
+        .how-it-works-section__cards-wrapper {
+            margin: 0 -20px 0 0; /* Allow slider to touch edges */
+        }
+        .how-it-works-section__cards.flickity-enabled .flickity-viewport {
+            /* Fix for slider height */
+            height: 100%;
+        }
+        .how-it-works-section__cards.flickity-enabled .flickity-slider {
+            display: flex;
+            align-items: stretch; /* Make cells equal height */
+        }
+        .how-it-works-section__card {
+            width: 80%;
+            margin-right: 15px;
+            max-width: 350px;
+            display: flex; /* Ensure card stretches to fill cell height */
+            height: 380px;
+            border-radius: 8px;
+        }
+        .flickity-page-dots { bottom: -35px; }
+        .flickity-page-dots .dot { background: #ccc; }
+        .flickity-page-dots .dot.is-selected { background: #333; }
+    }
+
+    /* --- Video Modal Styles (unchanged) --- */
+    .how-it-works-video-modal{position:fixed;top:0;left:0;width:100%;height:100%;background-color:rgba(0,0,0,0.85);display:none;justify-content:center;align-items:center;z-index:1000}
+    .how-it-works-video-modal.is-active{display:flex}
+    .how-it-works-video-modal__content{position:relative;width:90%;max-width:960px}
+    .how-it-works-video-modal__aspect-ratio{position:relative;padding-bottom:56.25%;height:0}
+    .how-it-works-video-modal__iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:none}
+    .how-it-works-video-modal__close{position:absolute;top:-40px;right:0;background:none;border:none;color:#fff;font-size:2rem;cursor:pointer}
+</style>
+
+<div class="how-it-works-section" data-section-id="{{ section.id }}">
+  <div class="how-it-works-section__container">
+    <div class="how-it-works-section__left-col">
+      <h2 class="how-it-works-section__heading">{{ section.settings.heading | escape }}</h2>
+      {% if section.settings.video_url != blank %}
+        <button type="button" class="how-it-works-section__video-trigger js-video-trigger">
+          {{ section.settings.video_link_text | escape }}
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"></path></svg>
+        </button>
+      {% endif %}
+    </div>
+    <div class="how-it-works-section__right-col">
+      <div class="how-it-works-section__cards-wrapper">
+        <div class="how-it-works-section__cards js-how-it-works-carousel">
+          {% for block in section.blocks %}
+            <div class="how-it-works-section__card {% if forloop.index == 2 %}is-active{% endif %}" {{ block.shopify_attributes }}>
+              <div class="how-it-works-section__card-content">
+                <h3 class="how-it-works-section__card-title">{{ block.settings.title | escape }}</h3>
+                <div class="how-it-works-section__card-image-wrapper">
+                  {% if block.settings.image != blank %}
+                    <img src="{{ block.settings.image | image_url: width: 400 }}"
+                         alt="{{ block.settings.image.alt | default: block.settings.title }}"
+                         class="how-it-works-section__card-image"
+                         width="400" height="{{ 400 | divided_by: block.settings.image.aspect_ratio | round }}"
+                         loading="lazy">
+                  {% else %}
+                    {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+                  {% endif %}
+                </div>
+                <div class="how-it-works-section__card-description">
+                  {{ block.settings.description }}
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% if section.settings.video_url != blank %}
+  <div class="how-it-works-video-modal js-video-modal">
+    <div class="how-it-works-video-modal__content">
+      <button class="how-it-works-video-modal__close js-video-close" aria-label="Close video">&times;</button>
+      <div class="how-it-works-video-modal__aspect-ratio">
+        {%- assign video_id = section.settings.video_url | split: 'v=' | last | split: '&' | first | split: '/' | last -%}
+        <iframe class="how-it-works-video-modal__iframe"
+                src="https://www.youtube.com/embed/{{ video_id }}?enablejsapi=1"
+                frameborder="0"
+                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen>
+        </iframe>
+      </div>
+    </div>
+  </div>
+{% endif %}
+
+
+<script src="https://unpkg.com/flickity@2/dist/flickity.pkgd.min.js" defer="defer"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const section = document.querySelector('[data-section-id="{{ section.id }}"]');
+        if (!section) return;
+
+        const cards = section.querySelectorAll('.how-it-works-section__card');
+        const isDesktop = window.matchMedia('(min-width: 990px)');
+
+        function handleDesktopHover() {
+            if (isDesktop.matches) {
+                cards.forEach(card => {
+                    card.addEventListener('mouseenter', () => {
+                        section.querySelector('.how-it-works-section__card.is-active')?.classList.remove('is-active');
+                        card.classList.add('is-active');
+                    });
+                });
+            }
+        }
+
+        let flkty;
+        const carouselEl = section.querySelector('.js-how-it-works-carousel');
+        function initFlickity() {
+            if (!isDesktop.matches) {
+                if (!flkty) {
+                    flkty = new Flickity(carouselEl, {
+                        cellAlign: 'left',
+                        contain: true,
+                        prevNextButtons: false,
+                        wrapAround: false,
+                        pageDots: false,
+                        initialIndex: 0,
+                        cellSelector: '.how-it-works-section__card'
+                    });
+                }
+            } else {
+                if (flkty) {
+                    flkty.destroy();
+                    flkty = null;
+                }
+            }
+        }
+
+        function initializeSection() {
+            handleDesktopHover();
+            initFlickity();
+        }
+
+        initializeSection();
+        isDesktop.addEventListener('change', initializeSection);
+
+        // Video modal logic (unchanged)
+        const videoTrigger = section.querySelector('.js-video-trigger');
+        const videoModal = document.querySelector('.js-video-modal');
+        const videoClose = document.querySelector('.js-video-close');
+        const iframe = videoModal ? videoModal.querySelector('iframe') : null;
+
+        if (videoTrigger && videoModal && iframe) {
+            const openModal = () => {
+                videoModal.classList.add('is-active');
+                iframe.src += "&autoplay=1";
+            }
+
+            const closeModal = () => {
+                videoModal.classList.remove('is-active');
+                iframe.contentWindow.postMessage('{"event":"command","func":"stopVideo","args":""}', '*');
+                iframe.src = iframe.src.replace("&autoplay=1", "");
+            };
+
+            videoTrigger.addEventListener('click', openModal);
+            videoClose.addEventListener('click', closeModal);
+            videoModal.addEventListener('click', (e) => {
+                if (e.target === videoModal) { closeModal(); }
+            });
+        }
+    });
+</script>
+
+{% schema %}
+{
+  "name": "How It Works Interactive",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Personalization Works Better™"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "#f7f3ef"
+    },
+    {
+      "type": "url",
+      "id": "video_url",
+      "label": "YouTube Video URL",
+      "info": "Paste the full YouTube URL (e.g., https://www.youtube.com/watch?v=...)"
+    },
+    {
+      "type": "text",
+      "id": "video_link_text",
+      "label": "Video Link Text",
+      "default": "SEE HOW IT WORKS"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "step",
+      "name": "Step Card",
+      "limit": 3,
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "1/ Take our consultation"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "richtext",
+          "id": "description",
+          "label": "Description",
+          "default": "<p>We'll analyze 80+ factors—from what you eat to where you live—to understand the unique needs of your hair and skin.</p>"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "How It Works Interactive",
+      "blocks": [
+        { "type": "step" },
+        { "type": "step", "settings": { "title": "2/ Your formulas are made to order" }},
+        { "type": "step", "settings": { "title": "3/ As you change, so does your product" }}
+      ]
+    }
+  ]
+}
+{% endschema %}

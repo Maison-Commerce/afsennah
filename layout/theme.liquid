@@ -1,0 +1,314 @@
+{%- liquid
+  assign rtl_langs = 'ar,arc,dv,fa,ha,he,khw,ks,ku,ps,ur,yi' | split: ','
+  assign current_lang = localization.language.iso_code | split: '-' | first
+  if rtl_langs contains current_lang
+    assign lang_dir = 'rtl'
+  else
+    assign lang_dir = 'ltr'
+  endif
+-%}
+<!doctype html>
+<html class="no-js" lang="{{ request.locale.iso_code }}" dir="{{ lang_dir }}">
+<head>
+  <style>
+      @font-face {
+          font-family: 'Vanilla Ravioli';
+          src: url("{{ 'VanillaRavioli.woff2' | asset_url }}") format('woff2'),
+          url("{{ 'VanillaRavioli.woff' | asset_url }}") format('woff');
+          font-weight: normal;
+          font-style: normal;
+          font-display: swap;
+      }
+  </style>
+  {%- render 'doc-head-core' -%}
+  {%- render 'doc-head-social' -%}
+
+  {%- liquid
+    assign base_font = settings.type_base_font
+    assign base_font_bold = base_font | font_modify: 'weight', 'bolder'
+    assign base_font_medium = base_font | font_modify: 'weight', '500'
+    assign base_font_italic = base_font | font_modify: 'style', 'italic'
+    assign base_font_bold_italic = base_font_bold | font_modify: 'style', 'italic'
+    assign heading_font = settings.type_heading_font
+    assign logo_font = settings.type_logo_font
+    assign nav_font = settings.type_nav_font
+    assign nav_font_600 = nav_font | font_modify: 'weight', '600'
+  -%}
+
+  <style>
+    {{- base_font | font_face: font_display: 'fallback' -}}
+    {{- base_font_bold | font_face: font_display: 'fallback' -}}
+    {{- base_font_medium | font_face: font_display: 'fallback' -}}
+    {{- base_font_italic | font_face: font_display: 'fallback' -}}
+    {{- base_font_bold_italic | font_face: font_display: 'fallback' -}}
+    {{- heading_font | font_face: font_display: 'fallback' -}}
+    {{- logo_font | font_face: font_display: 'fallback' -}}
+    {{- nav_font | font_face: font_display: 'fallback' -}}
+    {{- nav_font_600 | font_face: font_display: 'fallback' -}}
+
+    {%- render 'doc-head-styles' -%}
+  </style>
+
+  {{ 'main.css' | asset_url | stylesheet_tag: preload: true }}
+  {{ 'custom.css' | asset_url | stylesheet_tag: preload: true }}
+
+  {%- if settings.swatch_source == 'theme' and settings.swatch_value_list != blank -%}
+    <link rel="stylesheet" href="{{ 'swatches.css' | asset_url }}" media="print" onload="this.media='all'">
+    <noscript><link rel="stylesheet" href="{{ 'swatches.css' | asset_url }}"></noscript>
+  {%- endif -%}
+
+  {%- unless base_font.system? -%}
+    <link rel="preload" as="font" href="{{ base_font | font_url }}" type="font/woff2" crossorigin>
+  {%- endunless -%}
+
+  {%- unless heading_font.system? -%}
+    <link rel="preload" as="font" href="{{ heading_font | font_url }}" type="font/woff2" crossorigin>
+  {%- endunless -%}
+
+  <script>
+    document.documentElement.className = document.documentElement.className.replace('no-js', 'js');
+
+    window.theme = {
+      info: {
+        name: 'Symmetry',
+        version: '8.0.0'
+      },
+      device: {
+        hasTouch: window.matchMedia('(any-pointer: coarse)').matches,
+        hasHover: window.matchMedia('(hover: hover)').matches
+      },
+      mediaQueries: {
+        md: '(min-width: 768px)',
+        productMediaCarouselBreak: '(min-width: 1041px)'
+      },
+      routes: {
+        base: '{{ shop.url }}',
+        cart: '{{ routes.cart_url }}',
+        cartAdd: '{{ routes.cart_add_url }}.js',
+        cartUpdate: '{{ routes.cart_update_url }}.js',
+        predictiveSearch: '{{ routes.predictive_search_url }}'
+      },
+      strings: {
+        cartTermsConfirmation: {{ 'cart.terms.confirmation' | t | json }},
+        cartItemsQuantityError: {{ 'cart.items.quantity_error' | t: quantity: '[QUANTITY]' | json }},
+        generalSearchViewAll: {{ 'general.search.view_all' | t | json }},
+        noStock: {{ 'products.variant.no_stock' | t | json }},
+        noVariant: {{ 'products.variant.non_existent' | t | json }},
+        productsProductChooseA: {{ 'products.product.choose_a' | t | json }},
+        generalSearchPages: {{ 'general.search.pages' | t | json }},
+        generalSearchNoResultsWithoutTerms: {{ 'general.search.no_results_without_terms' | t | json }},
+        shippingCalculator: {
+          singleRate: {{ 'cart.shipping_calculator.single_rate' | t | json }},
+          multipleRates: {{ 'cart.shipping_calculator.multiple_rates' | t | json }},
+          noRates: {{ 'cart.shipping_calculator.no_rates' | t | json }}
+        },
+        regularPrice: {{ 'products.product.price.regular_price' | t | json }},
+        salePrice: {{ 'products.product.price.sale_price' | t | json }}
+      },
+      settings: {
+        moneyWithCurrencyFormat: {{ shop.money_with_currency_format | json }},
+        cartType: {{ settings.cart_type | json }},
+        afterAddToCart: {{ settings.after_add_to_cart | json }},
+        quickbuyStyle: {{ settings.quickbuy_style | json }},
+        externalLinksNewTab: {{ settings.external_links_new_tab | json }},
+        internalLinksSmoothScroll: {{ settings.internal_links_smooth_scroll | json }}
+      }
+    }
+
+    theme.inlineNavigationCheck = function() {
+      var pageHeader = document.querySelector('.pageheader'),
+          inlineNavContainer = pageHeader.querySelector('.logo-area__left__inner'),
+          inlineNav = inlineNavContainer.querySelector('.navigation--left');
+      if (inlineNav && getComputedStyle(inlineNav).display != 'none') {
+        var inlineMenuCentered = document.querySelector('.pageheader--layout-inline-menu-center'),
+            logoContainer = document.querySelector('.logo-area__middle__inner');
+        if(inlineMenuCentered) {
+          var rightWidth = document.querySelector('.logo-area__right__inner').clientWidth,
+              middleWidth = logoContainer.clientWidth,
+              logoArea = document.querySelector('.logo-area'),
+              computedLogoAreaStyle = getComputedStyle(logoArea),
+              logoAreaInnerWidth = logoArea.clientWidth - Math.ceil(parseFloat(computedLogoAreaStyle.paddingLeft)) - Math.ceil(parseFloat(computedLogoAreaStyle.paddingRight)),
+              availableNavWidth = logoAreaInnerWidth - Math.max(rightWidth, middleWidth) * 2 - 40;
+          inlineNavContainer.style.maxWidth = availableNavWidth + 'px';
+        }
+
+        var firstInlineNavLink = inlineNav.querySelector('.navigation__item:first-child'),
+            lastInlineNavLink = inlineNav.querySelector('.navigation__item:last-child');
+        if (lastInlineNavLink) {
+          var inlineNavWidth = null;
+          if(document.querySelector('html[dir=rtl]')) {
+            inlineNavWidth = firstInlineNavLink.offsetLeft - lastInlineNavLink.offsetLeft + firstInlineNavLink.offsetWidth;
+          } else {
+            inlineNavWidth = lastInlineNavLink.offsetLeft - firstInlineNavLink.offsetLeft + lastInlineNavLink.offsetWidth;
+          }
+          if (inlineNavContainer.offsetWidth >= inlineNavWidth) {
+            pageHeader.classList.add('pageheader--layout-inline-permitted');
+            var tallLogo = logoContainer.clientHeight > lastInlineNavLink.clientHeight + 20;
+            if (tallLogo) {
+              inlineNav.classList.add('navigation--tight-underline');
+            } else {
+              inlineNav.classList.remove('navigation--tight-underline');
+            }
+          } else {
+            pageHeader.classList.remove('pageheader--layout-inline-permitted');
+          }
+        }
+      }
+    };
+
+    theme.setInitialHeaderHeightProperty = () => {
+      const section = document.querySelector('.section-header');
+      if (section) {
+        document.documentElement.style.setProperty('--theme-header-height', Math.ceil(section.clientHeight) + 'px');
+      }
+    };
+  </script>
+
+  <script src="{{ 'main.js' | asset_url }}" defer></script>
+
+  {%- if request.design_mode -%}
+    <script src="{{ 'theme-editor.js' | asset_url }}" defer data-contact="{{ shop.email | escape }}"></script>
+  {%- endif -%}
+
+  {% if settings.animations_enabled_desktop %}
+    <script src="{{ 'animate-on-scroll.js' | asset_url }}" defer></script>
+    {{ 'animate-on-scroll.css' | asset_url | stylesheet_tag: preload: true }}
+  {% endif %}
+
+  {{ content_for_header }}
+
+  {%- if settings.custom_html_head -%}
+    <!-- CC Custom Head Start -->
+    {{- settings.custom_html_head -}}
+    <!-- CC Custom Head End -->
+  {%- endif -%}
+</head>
+
+<body class="template-{{ template | split: '.' | first | handle }}
+    {%- if template.suffix %} template-suffix-{{ template.suffix }}{% endif -%}
+    {%- if settings.swatch_source == 'native' %} swatch-source-native swatch-method-swatches swatch-style-{{ settings.swatch_style }}
+    {%- elsif settings.swatch_source == 'theme' %} swatch-source-theme swatch-method-{{ settings.swatch_method }} swatch-style-{{ settings.swatch_style }}{% endif -%}
+    {%- if settings.animations_enabled_desktop %} cc-animate-enabled{% endif -%}
+    ">
+
+  <a class="skip-link visually-hidden" href="#content" data-cs-role="skip">{{ 'accessibility.skip_to_content' | t }}</a>
+
+  {%- sections 'header-group' -%}
+
+  <main id="content" role="main">
+    <div class="container cf">
+
+      {{ content_for_layout }}
+
+    </div>
+  </main>
+
+  {%- if request.path != '/challenge' -%}
+    <div id="pagefooter">
+      {%- sections 'footer-group' -%}
+    </div>
+
+    {%- sections 'overlay-group' -%}
+  {%- endif -%}
+
+
+  <a href="#" class="page-shade" aria-label="{{ 'general.navigation.close' | t }}"></a>
+  <div class="overlay fixed top-0 right-0 bottom-0 left-0 js-overlay"></div>
+
+  {%- if settings.after_add_to_cart == 'notification' -%}
+    <script src="{{ 'added-notification.js' | asset_url }}" defer></script>
+    <template id="AddedNotification">
+      <added-notification class="added-notification added-notification--hidden">
+        <div class="added-notification__message-area">
+          <div class="added-notification__message-title"></div>
+          <div class="added-notification__message-text underline-child">{{ 'products.product.added_to_cart_with_link_html' | t: cart_url: routes.cart_url }}</div>
+        </div>
+        <div class="added-notification__button-area">
+          <button type="button" class="added-notification__close" aria-label="{{ 'general.icon_labels.close' | t | escape }}">
+            {%- render 'icon-close' -%}
+          </button>
+        </div>
+      </added-notification>
+    </template>
+  {%- endif -%}
+  <!-- Replace your existing code in theme.liquid with this: -->
+  <a class="quiz-button btn btn--primary" href="{{ settings.sticky_formula_link }}">
+    {{ settings.sticky_formula_text }}
+  </a>
+
+  <style>
+      .quiz-button {
+          position: fixed;
+          bottom: 30px;
+          opacity: 0;
+          visibility: hidden;
+          transition: opacity 0.3s, visibility 0.3s;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+          z-index: 9;
+          background: {{ settings.sticky_formula_bg_color }};
+          color: {{ settings.sticky_formula_text_color }};
+          border: none;
+          width: 274px;
+          border-radius: 2rem; 
+      }
+
+      .quiz-button.visible {
+          opacity: 1;
+          visibility: visible;
+      }
+
+      /* Desktop positioning */
+      @media (min-width: 768px) {
+      {% if settings.sticky_formula_position_desktop == 'left' %}
+          .quiz-button {
+              left: 30px;
+          }
+      {% elsif settings.sticky_formula_position_desktop == 'center' %}
+          .quiz-button {
+              left: 50%;
+              transform: translateX(-50%);
+          }
+          .quiz-button.visible {
+              transform: translateX(-50%);
+          }
+      {% else %}
+          .quiz-button {
+              right: 30px;
+          }
+      {% endif %}
+      }
+
+      /* Mobile positioning */
+      @media (max-width: 767px) {
+      {% if settings.sticky_formula_position_mobile == 'left' %}
+          .quiz-button {
+              left: 30px;
+          }
+      {% elsif settings.sticky_formula_position_mobile == 'center' %}
+          .quiz-button {
+              left: 50%;
+              transform: translateX(-50%);
+          }
+          .quiz-button.visible {
+              transform: translateX(-50%);
+          }
+      {% else %}
+          .quiz-button {
+              right: 30px;
+          }
+      {% endif %}
+      }
+  </style>
+  <script>
+      const scrollButton = document.querySelector('.quiz-button');
+
+      window.addEventListener('scroll', () => {
+          if (window.scrollY > 400) {
+              scrollButton.classList.add('visible');
+          } else {
+              scrollButton.classList.remove('visible');
+          }
+      });
+  </script>
+</body>
+</html>

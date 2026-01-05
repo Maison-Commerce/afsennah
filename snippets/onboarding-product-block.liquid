@@ -1,0 +1,31 @@
+<div class="product-block onboarding{% if compact %} product-block--compact{% endif %}{% if card_layout == 'landscape' %} product-block--landscape{% endif %}">
+  <div class="block-inner">
+    <div class="block-inner-inner">
+      <div class="image-cont">
+        {% capture placeholder_svg_name %}product-{{ forloop.index | modulo: 6 | plus: 1 }}{% endcapture %}
+        <div class="placeholder-image">{{ placeholder_svg_name | placeholder_svg_tag }}</div>
+      </div>
+
+      <div class="product-block__detail align-ltr-{{ settings.prod_thumb_text_align }}">
+        <div class="inner">
+          <div class="innerer">
+            <div class="product-block__title">{{ 'onboarding.product.title' | t }}</div>
+            <div class="product-price product-price--block">
+              <div class="price">
+                <div class="price__default">
+                  <span class="price__current">
+                    {%- if settings.product_currency_code_enabled -%}
+                      {{- 1234 | money_with_currency -}}
+                    {%- else -%}
+                      {{- 1234 | money -}}
+                    {%- endif -%}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,641 @@
+<image-with-text-overlay id="section-id-{{ section.id }}">
+  {% style %}
+    {%- if section.settings.height == 'fixed' %}
+      #section-id-{{ section.id }} .height--fixed {
+      --image-height: {{ section.settings.height_mobile }}px;
+      }
+
+      @media (min-width: 768px) {
+      #section-id-{{ section.id }} .height--fixed {
+      --image-height: {{ section.settings.height_desktop }}px;
+      }
+      }
+    {%- elsif section.settings.height == 'adapt' -%}
+      #section-id-{{ section.id }} .height--adapt {
+      {%- if section.settings.mobile_image -%}
+        --aspect-ratio: {{ section.settings.mobile_image.aspect_ratio }};
+      {%- else -%}
+        --aspect-ratio: {{ section.settings.image.aspect_ratio | default: 2.0 }};
+      {%- endif -%}
+      }
+      {%- if section.settings.mobile_image -%}
+        @media (min-width: 768px) {
+        #section-id-{{ section.id }} .height--adapt {
+        --aspect-ratio: {{ section.settings.image.aspect_ratio | default: 2.0 }};
+        }
+        }
+      {%- endif -%}
+    {%- endif -%}
+
+    {%- for block in section.blocks -%}
+      {% if block.type == 'heading' %}
+        #section-id-{{ section.id }} .block-{{ block.id }} {
+        --heading-max-width: {{ block.settings.heading_max_width }}em;
+        font-size: {{ block.settings.title_size_mobile }}px;
+        {%- if block.settings.title_size_mobile >= 90 -%}
+          line-height: 1em;
+        {%- endif %}
+        }
+
+        @media (min-width: 768px) {
+        #section-id-{{ section.id }} .block-{{ block.id }} {
+        {%- assign title_size_medium = block.settings.title_size | times: 0.7 | at_least: block.settings.title_size_mobile -%}
+        font-size: {{ title_size_medium }}px;
+        {%- if title_size_medium >= 90 -%}
+          line-height: 1em;
+        {%- endif %}
+        }
+        }
+
+        @media (min-width: 1100px) {
+        #section-id-{{ section.id }} .block-{{ block.id }} {
+        font-size: {{ block.settings.title_size }}px;
+        {%- if block.settings.title_size >= 90 -%}
+          line-height: 1em;
+        {%- endif %}
+        }
+        }
+      {% elsif block.type == 'image' %}
+        #section-id-{{ section.id }} .block-{{ block.id }} {
+        --image-max-width: {{ block.settings.image_width }}px;
+        }
+      {% endif %}
+    {%- endfor -%}
+  {% endstyle %}
+
+{%- unless section.settings.full_width -%}<div class="container container--not-mobile fully-spaced-row--medium fully-spaced-row--not-mobile">{%- endunless -%}
+
+    {%- liquid
+      assign show_overlay_text = false
+      if section.blocks != empty
+        assign show_overlay_text = true
+        assign wrap_image_with_link = true
+        if section.settings.image_link == blank
+          assign wrap_image_with_link = false
+        else
+          for block in section.blocks
+            if block.type == 'text' and block.settings.text contains '</a>'
+              assign wrap_image_with_link = false
+              break
+            endif
+            if block.type == 'button' and block.settings.button_link != blank
+              assign wrap_image_with_link = false
+              break
+            endif
+          endfor
+        endif
+      elsif section.settings.image_link != blank
+        assign wrap_image_with_link = true
+      endif
+    -%}
+    <div class="height--{{ section.settings.height }} image-overlay image-overlay--bg-{{ section.settings.overlay_style }} {% if section.settings.mobile_overlay_under %}text-overlay-parent--mobile-stack{% endif %}" {%- render 'animation-attrs', attrs: 'data-cc-animate' -%}>
+    {%- if wrap_image_with_link -%}
+      <a class="image-overlay__image-link" href="{{ section.settings.image_link }}">
+        {%- endif -%}
+
+        {%- if section.settings.image == blank -%}
+          <div class="height__image image-overlay__image">
+            <div class="placeholder-image{% if show_overlay_text %} dark{% endif %}">
+              {{- 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' -}}
+            </div>
+          </div>
+        {%- else -%}
+          {%- liquid
+            assign loading = 'lazy'
+            assign fetchpriority = nil
+            if section.location == 'header' or section.location == 'template' and section.index == 1
+              assign loading = 'eager'
+              assign fetchpriority = 'high'
+            endif
+          -%}
+
+          <div class="height__image image-overlay__image">
+            {%- render 'image-desktop-and-mobile', desktop_image: section.settings.image, mobile_image: section.settings.mobile_image, loading: loading, fetchpriority: fetchpriority -%}
+          </div>
+        {%- endif -%}
+
+        {%- if show_overlay_text -%}
+          <div class="text-overlay text-overlay--for-banner text-overlay--v-{{ section.settings.text_alignment | split: ' ' | first }} text-overlay--h-{{ section.settings.text_alignment | split: ' ' | last }} image-overlay__over">
+            <div class="text-overlay__inner" style="--heading-max-width: {{ section.settings.heading_max_width }}em">
+              <div class="text-overlay__text">
+                {% assign skip_block_count = 0 %}
+                {% for block in section.blocks %}
+                  {%- liquid
+                    if skip_block_count > 0
+                      assign skip_block_count = skip_block_count | minus: 1
+                      continue
+                    endif
+                  -%}
+                  {% case block.type %}
+                  {% when 'heading' %}
+                  {% if block.settings.use_h1 %}
+                    <h1 class="text-overlay__title block-{{ block.id }}" {{ block.shopify_attributes }}>{% render 'multiline-text' with block.settings.title %}</h1>
+                  {% else %}
+                    <h2 class="text-overlay__title h1 block-{{ block.id }}" {{ block.shopify_attributes }}>{% render 'multiline-text' with block.settings.title %}</h2>
+                  {% endif %}
+
+                  {% when 'subheading' %}
+                    <div class="text-overlay__subheading subheading subheading--over lightish-spaced-row-above" {{ block.shopify_attributes }}>{{ block.settings.subheading | escape }}</div>
+
+                  {% when 'text' %}
+                    <div class="text-overlay__rte rte lightly-spaced-row {% if block.settings.enlarge_text %}large-text{% endif %}" {{ block.shopify_attributes }}>{{ block.settings.text }}</div>
+
+                  {% when 'image' %}
+                    <div class="text-overlay__image lightly-spaced-row block-{{ block.id }}" {{ block.shopify_attributes }}>
+                      {%- if block.settings.image != blank -%}
+                        {%- if block.settings.image_link != blank -%}
+                          <a href="{{ block.settings.image_link }}">
+                        {%- endif -%}
+                        <img
+                            src="{{ block.settings.image | image_url: width: block.settings.image_width }}"
+                            alt="{{ block.settings.image.alt | escape }}"
+                            loading="lazy"
+                            width="{{ block.settings.image_width }}"
+                            style="max-width: 100%; height: auto; display: block; margin: 0 auto;"
+                        >
+                        {%- if block.settings.image_link != blank -%}
+                          </a>
+                        {%- endif -%}
+                      {%- else -%}
+                        <div class="placeholder-image" style="max-width: {{ block.settings.image_width }}px; margin: 0 auto;">
+                          {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+                        </div>
+                      {%- endif -%}
+                    </div>
+
+                  {% when 'custom_liquid' %}
+                    <div class="text-overlay__custom-liquid lightly-spaced-row" {{ block.shopify_attributes }}>
+                      {{ block.settings.custom_liquid }}
+                    </div>
+
+                  {% when 'button' %}
+                    <div class="text-overlay__button-row button-row lightish-spaced-row-above" {{ block.shopify_attributes }}>
+                      <a class="text-overlay__button button-row__btn {% if block.settings.button_style != 'link' %}btn btn--{{ block.settings.button_style }}{% else %}small-feature-link{% endif %}" href="{{ block.settings.button_link }}">{{ block.settings.button_label | escape }}</a>
+                      {%- assign skip_block_count = 0 -%}
+                      {%- for next_block in section.blocks offset: forloop.index -%}
+                        {%- if next_block.type == 'button' -%}
+                          {%- assign skip_block_count = skip_block_count | plus: 1 -%}
+                          <a class="text-overlay__button button-row__btn {% if next_block.settings.button_style != 'link' %}btn btn--{{ next_block.settings.button_style }}{% else %}small-feature-link{% endif %}" href="{{ next_block.settings.button_link }}" {{ block.shopify_attributes }}>{{ next_block.settings.button_label | escape }}</a>
+                        {%- else -%}
+                          {%- break -%}
+                        {%- endif -%}
+                      {%- endfor -%}
+                    </div>
+
+                  {%- when 'countdown' -%}
+                    <script src="{{ 'countdown-timer.js' | asset_url }}" defer></script>
+                    {% style %}
+                      .block-id-{{ block.id }} .countdown {
+                      --countdown-desktop-size: {{ block.settings.number_size }}px;
+                      }
+                    {% endstyle %}
+
+                    <div class="block-id-{{ block.id }} lightly-spaced-row lightish-spaced-row-above countdown-font-{{ block.settings.number_font }} countdown-divider-{{ block.settings.divider_type }}" {{ block.shopify_attributes }}>
+                      {% render 'countdown-timer',
+                          end_date: block.settings.end_date,
+                          end_time: block.settings.end_time,
+                          end_text: block.settings.end_text,
+                          end_midnight: true,
+                          hide_on_end: block.settings.hide_on_end,
+                          show_labels: block.settings.show_timer_labels
+                      %}
+                    </div>
+
+                  {% endcase %}
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+        {%- endif -%}
+
+        {%- if wrap_image_with_link -%}
+      </a>
+      {%- endif -%}
+    </div>
+
+    {%- unless section.settings.full_width -%}</div>{%- endunless -%}
+</image-with-text-overlay>
+
+
+{% schema %}
+{
+  "name": "Image with text overlay",
+  "class": "section-image-with-text-overlay",
+  "disabled_on": {
+    "groups": [
+      "aside"
+    ]
+  },
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image",
+      "info": "2048 x 1024px recommended"
+    },
+    {
+      "type": "image_picker",
+      "id": "mobile_image",
+      "label": "Mobile image",
+      "info": "1024px x 1024px recommended"
+    },
+    {
+      "type": "radio",
+      "id": "height",
+      "label": "Image height",
+      "options": [
+        {
+          "value": "adapt",
+          "label": "Adapt to image"
+        },
+        {
+          "value": "full",
+          "label": "Full screen"
+        },
+        {
+          "value": "fixed",
+          "label": "Fixed height"
+        }
+      ],
+      "default": "fixed"
+    },
+    {
+      "type": "range",
+      "id": "height_desktop",
+      "min": 200,
+      "max": 1000,
+      "step": 20,
+      "unit": "px",
+      "label": "Desktop fixed height",
+      "default": 600
+    },
+    {
+      "type": "range",
+      "id": "height_mobile",
+      "min": 100,
+      "max": 1000,
+      "step": 20,
+      "unit": "px",
+      "label": "Mobile fixed height",
+      "default": 460
+    },
+    {
+      "type": "url",
+      "id": "image_link",
+      "label": "Image link",
+      "info": "Not used if buttons or text contain links"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "id": "full_width",
+      "type": "checkbox",
+      "label": "Full page width",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Text overlay position",
+      "options": [
+        {
+          "value": "top left",
+          "label": "Top left"
+        },
+        {
+          "value": "top center",
+          "label": "Top center"
+        },
+        {
+          "value": "top right",
+          "label": "Top right"
+        },
+        {
+          "value": "center left",
+          "label": "Middle left"
+        },
+        {
+          "value": "center center",
+          "label": "Middle center"
+        },
+        {
+          "value": "center right",
+          "label": "Middle right"
+        },
+        {
+          "value": "bottom left",
+          "label": "Bottom left"
+        },
+        {
+          "value": "bottom center",
+          "label": "Bottom center"
+        },
+        {
+          "value": "bottom right",
+          "label": "Bottom right"
+        }
+      ],
+      "default": "center center"
+    },
+    {
+      "id": "mobile_overlay_under",
+      "type": "checkbox",
+      "label": "Show text below image on mobile",
+      "default": false
+    },
+    {
+      "id": "overlay_style",
+      "type": "select",
+      "label": "Overlay style",
+      "default": "shadow",
+      "options": [
+        {
+          "value": "full",
+          "label": "Tint"
+        },
+        {
+          "value": "box",
+          "label": "Box"
+        },
+        {
+          "value": "shadow",
+          "label": "Text shadow"
+        },
+        {
+          "value": "full image-overlay--bg-shadow",
+          "label": "Text shadow and tint"
+        },
+        {
+          "value": "no_background",
+          "label": "No background"
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "heading",
+      "name": "Heading",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading",
+          "info": "Enter <br> for a line-break",
+          "default": "Image with text overlay"
+        },
+        {
+          "type": "range",
+          "id": "heading_max_width",
+          "min": 4,
+          "max": 40,
+          "step": 1,
+          "unit": "em",
+          "label": "Maximum heading width",
+          "default": 15
+        },
+        {
+          "type": "range",
+          "id": "title_size",
+          "min": 20,
+          "max": 150,
+          "step": 2,
+          "unit": "px",
+          "label": "Desktop heading text size",
+          "default": 84
+        },
+        {
+          "type": "range",
+          "id": "title_size_mobile",
+          "min": 20,
+          "max": 150,
+          "step": 2,
+          "unit": "px",
+          "label": "Mobile heading text size",
+          "default": 32
+        },
+        {
+          "type": "checkbox",
+          "id": "use_h1",
+          "label": "Set as primary page heading",
+          "info": "Use <h1> tag. One per page recommended. [Read more](https://cleancanvas.co.uk/support/symmetry/section-h1-setting)",
+          "default": false
+        }
+      ]
+    },
+    {
+      "type": "subheading",
+      "name": "Subheading",
+      "settings": [
+        {
+          "type": "text",
+          "id": "subheading",
+          "label": "Subheading",
+          "default": "Tell your story"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "name": "Text",
+      "settings": [
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text",
+          "default": "<p>Promote your brand or products with this feature section</p>"
+        },
+        {
+          "type": "checkbox",
+          "id": "enlarge_text",
+          "label": "Enlarge text",
+          "default": true
+        }
+      ]
+    },
+    {
+      "type": "image",
+      "name": "Image",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "range",
+          "id": "image_width",
+          "min": 50,
+          "max": 600,
+          "step": 10,
+          "unit": "px",
+          "label": "Image width",
+          "default": 200
+        },
+        {
+          "type": "url",
+          "id": "image_link",
+          "label": "Image link"
+        }
+      ]
+    },
+    {
+      "type": "custom_liquid",
+      "name": "Custom Liquid",
+      "settings": [
+        {
+          "type": "liquid",
+          "id": "custom_liquid",
+          "label": "Custom Liquid",
+          "info": "Add custom Liquid code to display dynamic content"
+        }
+      ]
+    },
+    {
+      "type": "button",
+      "name": "Button",
+      "settings": [
+        {
+          "type": "paragraph",
+          "content": "Consecutive buttons will show on the same row"
+        },
+        {
+          "type": "text",
+          "id": "button_label",
+          "label": "Button",
+          "default": "Button text"
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "Button link"
+        },
+        {
+          "type": "select",
+          "id": "button_style",
+          "label": "Button style",
+          "default": "primary",
+          "options": [
+            {
+              "label": "Primary",
+              "value": "primary"
+            },
+            {
+              "label": "Secondary",
+              "value": "secondary"
+            },
+            {
+              "label": "Link",
+              "value": "link"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "countdown",
+      "name": "Countdown timer",
+      "settings": [
+        {
+          "type": "text",
+          "id": "end_date",
+          "label": "End date",
+          "info": "Required. Format: YYYY-MM-DD."
+        },
+        {
+          "type": "text",
+          "id": "end_time",
+          "label": "End time (optional)",
+          "info": "Format: 17:00 (24 hour clock). Uses the store's timezone."
+        },
+        {
+          "type": "richtext",
+          "id": "end_text",
+          "label": "End text",
+          "info": "This shows when the date and time elapses."
+        },
+        {
+          "type": "checkbox",
+          "id": "hide_on_end",
+          "label": "Hide the timer when the date and time elapses",
+          "default": false
+        },
+        {
+          "type": "range",
+          "id": "number_size",
+          "min": 20,
+          "max": 120,
+          "step": 2,
+          "unit": "px",
+          "label": "Number size",
+          "default": 40
+        },
+        {
+          "type": "select",
+          "id": "number_font",
+          "label": "Number font",
+          "options": [
+            {
+              "label": "Text font",
+              "value": "base"
+            },
+            {
+              "label": "Heading font",
+              "value": "heading"
+            }
+          ],
+          "default": "base"
+        },
+        {
+          "type": "select",
+          "id": "divider_type",
+          "label": "Divider type",
+          "default": "colon",
+          "options": [
+            {
+              "value": "colon",
+              "label": "Colon"
+            },
+            {
+              "value": "dot",
+              "label": "Dot"
+            },
+            {
+              "value": "line",
+              "label": "Line"
+            },
+            {
+              "value": "none",
+              "label": "None"
+            }
+          ]
+        },
+        {
+          "type": "checkbox",
+          "id": "show_timer_labels",
+          "label": "Show labels",
+          "default": true
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Image with text overlay",
+      "blocks": [
+        {
+          "type": "subheading"
+        },
+        {
+          "type": "heading"
+        },
+        {
+          "type": "text"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

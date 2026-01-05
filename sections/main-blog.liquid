@@ -1,0 +1,257 @@
+{% paginate blog.articles by 12 %}
+<div class="container">
+  {% if section.settings.show_page_title %}
+    <div class="page-header" {%- render 'animation-attrs', attrs: 'data-cc-animate' -%}>
+      <h1 class="majortitle">{{ blog.title }}</h1>
+    </div>
+  {% endif %}
+
+  <div class="utility-bar" {%- render 'animation-attrs', attrs: 'data-cc-animate' -%}>
+    <div class="utility-bar__left">
+      {% if blog.all_tags.size > 0 %}
+        <div class="utility-bar__item">
+          <link-dropdown class="link-dropdown link-dropdown--left-aligned link-dropdown--with-icon">
+            <div class="visually-hidden" id="filter-dropdown-heading">{{ 'blogs.filtering.filter_by' | t | escape }}</div>
+            <button class="link-dropdown__button has-motion" aria-expanded="false" aria-controls="filter-dropdown-options" aria-describedby="filter-dropdown-heading">
+              <span class="link-dropdown__button-text">
+                <span class="link-dropdown__button-prefix-icon">{% render 'icon-filter', stroke_width: 1.3 %}</span>
+                {%- if current_tags -%}
+                  {{- current_tags | join: ', ' -}}
+                {%- else -%}
+                  {{- 'blogs.filtering.filter_by' | t -}}
+                {%- endif -%}
+              </span>
+              <span class="link-dropdown__button-icon has-motion">{% render 'icon-chevron-down', stroke_width: 1.3 %}</span>
+            </button>
+            <div class="link-dropdown__options" id="filter-dropdown-options">
+              {% if current_tags %}
+                <a href="{{ blog.url }}" class="link-dropdown__link">
+                  {{- 'blogs.filtering.all' | t -}}
+                </a>
+              {% endif %}
+
+              {% for tag in blog.all_tags %}
+                <a href="{{ tag | link_to_tag: tag | split: 'href="' | last | split: '"' | first }}"
+                  class="link-dropdown__link{% if current_tags contains tag %} link-dropdown__link--active{% endif %}">
+                  {{- tag -}}
+                </a>
+              {% endfor %}
+            </div>
+          </link-dropdown>
+        </div>
+      {% endif %}
+    </div>
+
+    {% if section.settings.show_twitter or section.settings.show_facebook or section.settings.show_rss_icon %}
+      <div class="utility-bar__right" {%- render 'animation-attrs', attrs: 'data-cc-animate' -%}>
+        {% if section.settings.show_twitter or section.settings.show_facebook %}
+          <span class="utility-bar__item desktop-only">
+            <div class="social-share flex items-center">
+              <p class="social-share__heading">{{ 'general.social.share_heading' | t }}</p>
+              {% render 'social-share',
+                  share_twitter: section.settings.show_twitter,
+                  share_facebook: section.settings.show_facebook,
+                  share_title: blog.title,
+                  share_url: blog.url %}
+            </div>
+          </span>
+        {% endif %}
+        {% if section.settings.show_rss_icon %}
+          <a class="rsslink utility-bar__item" href="{{ blog.url }}.atom" title="{{ blog.title | escape }} RSS">{% render 'icon-rss' %}</a>
+        {% endif %}
+      </div>
+    {% endif %}
+  </div>
+</div>
+
+{% if section.settings.layout == 'columns' %}<div class="container">{% endif %}
+
+<div class="article-list article-layout--{{ section.settings.layout }}">
+
+  {% for article in blog.articles %}
+
+  <div class="article" {%- render 'animation-attrs', attrs: 'data-cc-animate', always: true -%}>
+    <div class="article__inner {% if section.settings.layout != 'columns' %}container container--reading-width{% endif %}">
+      {% if article.image %}
+        <div class="article-image">
+          <a href="{{ article.url }}">
+            {%- liquid
+              assign loading = 'lazy'
+              if section.settings.layout == 'columns'
+                if forloop.index < 4
+                  assign loading = 'eager'
+                endif
+                render 'image' with article.image, sizes: '(min-width: 1024px) 440px, (min-width: 768px) 50vw, 100vw', custom_aspect_ratio: section.settings.crop_ratio, loading: loading
+              else
+                if forloop.first
+                  assign loading = 'eager'
+                endif
+                render 'image' with article.image, sizes: '(min-width: 768px) 740px, 100vw', custom_aspect_ratio: section.settings.crop_ratio, loading: loading
+              endif
+            -%}
+          </a>
+        </div>
+      {% endif %}
+
+      <h2>{{ article.title | escape | link_to: article.url }}</h2>
+
+      <div class="meta meta--after-title small-text">
+        {% if section.settings.show_date or section.settings.show_date %}
+          <div class="iconmeta time">
+            {% if section.settings.show_date %}
+              {{ article.published_at | time_tag: format: 'date' }}
+            {% endif %}
+            {% if section.settings.show_author %}
+              {% if section.settings.show_date %}&mdash;{% endif %}
+              <span class="author">{{ article.author }}</span>
+            {% endif %}
+          </div>
+        {% endif %}
+
+        {% if section.settings.show_article_tags %}
+          {% capture tag_markup %}
+            <div class="iconmeta tags">
+              <span class="label">{{ 'blogs.tags.label' | t }}:</span>
+              {% for tag in article.tags %}
+                {{ tag | link_to_tag: tag }}
+              {% endfor %}
+            </div>
+          {% endcapture %}
+          {% if tag_markup contains '</a>' %}{{ tag_markup }}{% endif %}
+        {% endif %}
+      </div>
+
+      {%- if section.settings.show_excerpts -%}
+        <div class="rte cf">
+          {%- if article.excerpt.size > 0 -%}
+            {{ article.excerpt }}
+          {%- else -%}
+            {{ article.content | strip_html | truncatewords: 30 }}
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+
+      <div class="article__read-more-container">
+        <a class="small-feature-link" href="{{ article.url }}" aria-hidden="true">{{ 'blogs.article.read_more' | t }}</a>
+      </div>
+    </div>
+  </div>
+
+  {% else %}
+
+  <div class="container"><h5 class="align-centre fully-spaced-row">{{ 'blogs.article.no_matches' | t }}</h5></div>
+
+  {% endfor %}
+</div>
+
+{% if section.settings.layout == 'columns' %}</div>{% endif %}
+
+<div class="container pagination-row">{% render 'pagination-control', paginate: paginate %}</div>
+{% endpaginate %}
+
+
+{% schema %}
+{
+  "name": "Blog pages",
+  "class": "page-section-spacing",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_page_title",
+      "label": "Show page title",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Layout",
+      "default": "columns",
+      "options": [
+        {
+          "label": "List",
+          "value": "list"
+        },
+        {
+          "label": "Grid",
+          "value": "columns"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "crop_ratio",
+      "label": "Image aspect ratio",
+      "options": [
+        {
+          "value": "",
+          "label": "Natural (no crop)"
+        },
+        {
+          "value": "0.67",
+          "label": "Portrait (2:3)"
+        },
+        {
+          "value": "1.0",
+          "label": "Square (1:1)"
+        },
+        {
+          "value": "1.33",
+          "label": "Landscape (4:3)"
+        },
+        {
+          "value": "1.78",
+          "label": "Wide (16:9)"
+        }
+      ],
+      "default": "1.78"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_author",
+      "label": "Show author",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_date",
+      "label": "Show date",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_excerpts",
+      "label": "Show excerpt",
+      "info": "Change excerpts by editing your blog posts. [Learn more](https://help.shopify.com/en/manual/online-store/blogs/writing-blogs#display-an-excerpt-from-a-blog-post)",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_article_tags",
+      "label": "Show tags beneath blog post titles",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Sharing"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_rss_icon",
+      "label": "Show RSS feed link",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_twitter",
+      "label": "Show X (formerly Twitter) sharing icon",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_facebook",
+      "label": "Show Facebook sharing icon",
+      "default": true
+    }
+  ]
+}
+{% endschema %}

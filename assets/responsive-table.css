@@ -1,0 +1,80 @@
+/* used for: transparent header, dropdown nav, docked utility bar */
+.responsive-table {
+  width: 100%;
+}
+.responsive-table .responsive-table__cell-label,
+.responsive-table .responsive-table__cell-head__icon,
+.responsive-table .responsive-table__more {
+  display: none;
+}
+@media (max-width: 767.98px) {
+  .responsive-table {
+    display: block;
+    width: auto;
+    margin-right: calc(-1 * var(--gutter-mobile));
+    margin-left: calc(-1 * var(--gutter-mobile));
+    border-top: 1px solid rgb(var(--text-color)/var(--divider-opacity));
+  }
+  .responsive-table thead {
+    display: none;
+  }
+  .responsive-table tbody,
+  .responsive-table tr,
+  .responsive-table td {
+    display: block;
+  }
+  .responsive-table tr {
+    border-bottom: 1px solid rgb(var(--text-color)/var(--divider-opacity));
+  }
+  .responsive-table td {
+    display: none;
+    padding: 0 var(--gutter-mobile);
+    border: 0;
+    background: rgba(0, 0, 0, 0.08);
+    color: rgb(var(--heading-color));
+  }
+  .responsive-table td.responsive-table__first-mobile-cell {
+    padding-top: var(--gutter-mobile);
+  }
+  .responsive-table td:last-child {
+    padding-bottom: var(--gutter-mobile);
+  }
+  .responsive-table .responsive-table__cell-head {
+    display: block;
+    position: relative;
+    padding-top: var(--gutter-mobile);
+    padding-right: 50px;
+    padding-bottom: var(--gutter-mobile);
+    background: rgb(var(--body-bg-color));
+    cursor: pointer;
+  }
+  .responsive-table .responsive-table__cell-head a {
+    color: inherit;
+  }
+  .responsive-table .responsive-table__cell-head__icon {
+    display: block;
+    position: absolute;
+    top: var(--gutter-mobile);
+    right: var(--gutter-mobile);
+  }
+  .responsive-table .responsive-table__cell-label {
+    display: inline;
+    font-weight: bold;
+  }
+  .responsive-table .responsive-table__cell-label::after {
+    content: ":";
+  }
+  .responsive-table .responsive-table__more {
+    display: block;
+    margin-top: 1em;
+  }
+  .responsive-table .desktop-only {
+    display: none !important;
+  }
+  .responsive-table .expanded .responsive-table__cell-head__icon {
+    transform: rotate(90deg);
+  }
+  .responsive-table .expanded td {
+    display: block;
+  }
+}

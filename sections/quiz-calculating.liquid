@@ -1,0 +1,237 @@
+{% comment %}
+  Quiz Calculating Section for Shopify
+  Place this section BETWEEN quiz steps and quiz results
+{% endcomment %}
+
+{{ 'quiz-section.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+  .quiz-calculating-{{ section.id }} {
+  --primary-color: {{ section.settings.primary_color }};
+  --text-color: {{ section.settings.text_color }};
+  --button-color: {{ section.settings.button_color }};
+  --button-text-color: {{ section.settings.button_text_color }};
+  --btn-border-radius: {{ section.settings.button_border_radius }};
+  }
+
+  .quiz-calculating-{{ section.id }}.quiz-section {
+  background: {{ section.settings.background_color }};
+  }
+{%- endstyle -%}
+
+<style>
+  .nav-mobile {
+      display: none!important;
+      .quiz-btn-next {
+          margin: 0 auto 20px auto;
+      }
+  }
+  @media (max-width: 767px) {
+      .nav-mobile {
+          display: block!important;
+      }
+      .nav-desktop {
+          display: none!important;
+      }
+  }
+</style>
+
+<div class="quiz-calculating quiz-calculating-{{ section.id }}" data-calculating style="display: none;">
+  <div class="container">
+    <div class="quiz-container">
+      <div class="calculating-content">
+        {% if section.settings.title != blank %}
+          <h2 class="calculating-title">{{ section.settings.title }}</h2>
+        {% endif %}
+
+        {% if section.settings.subtitle != blank %}
+          <p class="calculating-subtitle">{{ section.settings.subtitle }}</p>
+        {% endif %}
+
+        <div class="quiz-navigation nav-mobile">
+          <button type="button" class="quiz-btn quiz-btn-next" data-view-results-btn>
+            {{ section.settings.button_text }}
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <path d="M7.5 15L12.5 10L7.5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+        </div>
+
+        {% if section.blocks.size > 0 %}
+          <div class="reviews-container">
+            {% for block in section.blocks %}
+              <div class="review-card" {{ block.shopify_attributes }}>
+                <div class="review-stars">
+                  {% for i in (1..5) %}
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                      <path d="M10 1.66669L12.575 6.88335L18.3333 7.72502L14.1667 11.7834L15.15 17.5167L10 14.8084L4.85 17.5167L5.83333 11.7834L1.66667 7.72502L7.425 6.88335L10 1.66669Z" fill="#FFC107" stroke="#FFC107" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  {% endfor %}
+                </div>
+                <p class="review-text">{{ block.settings.review_text }}</p>
+                <div class="review-author-info">
+                  <p class="review-author">— {{ block.settings.author_name }}</p>
+                  {% if block.settings.author_image != blank %}
+                    <img src="{{ block.settings.author_image | image_url: width: 60, height: 60, crop: 'center' }}"
+                         alt="{{ block.settings.author_name }}"
+                         class="review-author-image">
+                  {% endif %}
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+        {% endif %}
+
+        <div class="quiz-navigation nav-desktop">
+          <button type="button" class="quiz-btn quiz-btn-next" data-view-results-btn>
+            {{ section.settings.button_text }}
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <path d="M7.5 15L12.5 10L7.5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+    (function() {
+        // Select all buttons with the data-attribute
+        const viewResultsBtns = document.querySelectorAll('[data-view-results-btn]');
+
+        // Check if any buttons were found
+        if (viewResultsBtns.length > 0) {
+            // Loop through each button found
+            viewResultsBtns.forEach(function(btn) {
+                // Add the click event listener to each one
+                btn.addEventListener('click', function() {
+                    if (window.QuizManager) {
+                        window.QuizManager.showResults();
+                    }
+                });
+            });
+        }
+    })();
+</script>
+
+{% schema %}
+{
+  "name": "Quiz Calculating",
+  "class": "quiz-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Analyzing your answers..."
+    },
+    {
+      "type": "textarea",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "See what others with your concern are saying about our formula"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button Text",
+      "default": "View your results"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "primary_color",
+      "label": "Primary Color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#111827"
+    },
+    {
+      "type": "color",
+      "id": "button_color",
+      "label": "Button Background Color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button Text Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "text",
+      "id": "button_border_radius",
+      "label": "Button Border Radius",
+      "default": "5rem",
+      "info": "CSS value for button border radius (e.g., 5rem, 8px, 50%)"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "#f0f0ff"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "review",
+      "name": "Review",
+      "settings": [
+        {
+          "type": "textarea",
+          "id": "review_text",
+          "label": "Review Text",
+          "default": "This product has completely transformed my hair!"
+        },
+        {
+          "type": "text",
+          "id": "author_name",
+          "label": "Author Name",
+          "default": "Sarah M."
+        },
+        {
+          "type": "image_picker",
+          "id": "author_image",
+          "label": "Author Image"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Quiz Calculating",
+      "blocks": [
+        {
+          "type": "review",
+          "settings": {
+            "review_text": "This product has completely transformed my hair!",
+            "author_name": "Sarah M."
+          }
+        },
+        {
+          "type": "review",
+          "settings": {
+            "review_text": "I've tried so many products, but this is the only one that actually works.",
+            "author_name": "Jessica L."
+          }
+        },
+        {
+          "type": "review",
+          "settings": {
+            "review_text": "My hair has never felt healthier. Highly recommend!",
+            "author_name": "Amanda K."
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

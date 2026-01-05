@@ -1,0 +1,269 @@
+{%- comment -%}
+  Parameters:
+  - filter_context {Collection|Search} - Object containing filters.
+  - clear_url {String} - The URL to clear all filters.
+  - current_sort {SortOption} - The sort option the current product grid is sorted by.
+
+  Example usage:
+  {% render 'faceted-filters', filter_context: collection, clear_url: collection.url, current_sort: current_sort %}
+{%- endcomment -%}
+
+<a class="filter-shade" href="#" data-toggle-filters></a>
+<div class="filters{% if section.settings.enable_filtering == false or filter_context.filters == empty %} mobile-only{% endif %}"
+    data-auto-apply-hide-unavailable="{{ section.settings.auto_apply_hide_unavailable }}"
+    {%- if settings.swatch_option_name != blank %} data-swatch-option-name="{{ settings.swatch_option_name | escape }}"{% endif %}
+    {%- if section.settings.button_grid_filter_name != blank %} data-button-grid-filter-name="{{ section.settings.button_grid_filter_name | escape }}"{% endif %}>
+  <div class="filters__inner{% if section.settings.enable_sticky_filter %} sticky-content-container{% endif %}" data-ajax-container>
+    <header class="filters__heading">
+      <div class="filters__heading-text heading-font h4">{{ 'products.filtering.title' | t }}</div>
+      <a class="filters__close" href="#" data-toggle-filters aria-label="{{ 'accessibility.close' | t }}">
+        {%- render 'icon-close', stroke_width: 1.3 -%}
+      </a>
+    </header>
+
+    {%- if section.settings.enable_filtering and filter_context.filters != empty -%}
+      {% capture active_filters_html %}
+        <div class="filter-group filter-group--applied">
+          <div class="filter-group__heading">
+            <div class="filter-group__heading__text">{{ 'products.filtering.applied_filters' | t }}</div>
+          </div>
+          <div class="filter-group__items">
+            {%- for filter in filter_context.filters -%}
+              {%- for value in filter.active_values -%}
+                {%- if value.param_name != 'filter.v.availability' -%}
+                  <a class="filter-group__applied-item" href="{{ value.url_to_remove }}">
+                    <span class="filter-group__applied-item__text">
+                      {% if filter.type == 'boolean' %}
+                        {{ filter.label | escape }}:
+                      {% endif %}
+                      {{ value.label | escape }}
+                    </span>
+                    <span class="filter-group__applied-item__icon">{% render 'icon-close', stroke_width: 1.3 %}</span>
+                  </a>
+                {%- endif -%}
+              {%- endfor -%}
+
+              {%- if filter.type == 'price_range' -%}
+                {%- if filter.min_value.value != nil or filter.max_value.value != nil -%}
+                  <a class="filter-group__applied-item" href="{{ filter.url_to_remove }}">
+                    <span class="filter-group__applied-item__text">
+                      {% if filter.min_value.value %}{{ filter.min_value.value | money }}{%- else -%}{{ 0 | money }}{% endif %} - {% if filter.max_value.value %}{{ filter.max_value.value | money }}{%- else -%}{{ filter.range_max | money }}{% endif %}
+                    </span>
+                    <span class="filter-group__applied-item__icon">{% render 'icon-close', stroke_width: 1.3 %}</span>
+                  </a>
+                {%- endif -%}
+              {%- endif -%}
+            {%- endfor -%}
+            <div class="filter-group__clear-row">
+              <a class="filter-group__clear-link" href="{{ clear_url }}">{{ 'products.filtering.clear_all' | t }}</a>
+            </div>
+          </div>
+        </div>
+      {% endcapture %}
+      {%- if active_filters_html contains 'filter-group__applied-item' -%}
+        {{ active_filters_html }}
+      {%- endif -%}
+    {%- endif -%}
+
+    <form id="CollectionFilterForm">
+      {%- comment -%}
+        Preserve automatic vendor/type collections & sorting
+      {%- endcomment -%}
+      {%- if filter_context.current_vendor or filter_context.current_type -%}
+        <input type="hidden" name="q" value="{{ filter_context.current_vendor }}{{ filter_context.current_type }}">
+      {%- endif -%}
+      {%- comment -%}
+        Preserve search terms
+      {%- endcomment -%}
+      {%- if filter_context.terms -%}
+        <input type="hidden" name="q" value="{{ filter_context.terms | escape }}">
+      {%- endif -%}
+
+      {%- if section.settings.enable_filtering -%}
+        {%- for filter in filter_context.filters -%}
+          {%- if filter.param_name == 'filter.v.availability' -%}
+            <div class="filter-group filter-group--availability">
+              <div class="filter-toggle filter-toggle--inline">
+                <span class="filter-toggle__group-label">{{ 'products.filtering.out_of_stock_label' | t }}</span>
+                <div class="filter-toggle__options">
+                  <label class="filter-toggle__input-label">
+                    <input class="filter-toggle__input"
+                      id="Filter-{{ filter.param_name }}-1"
+                      type="radio"
+                      name="{{ filter.param_name }}"
+                      value=""
+                      {% if filter.active_values == empty %}checked{% endif %}>
+                    <span class="filter-toggle__input-label-text">{{ 'products.filtering.show_label' | t }}</span>
+                  </label>
+                  <label class="filter-toggle__input-label">
+                    <input class="filter-toggle__input"
+                      id="Filter-{{ filter.param_name }}-2"
+                      type="radio"
+                      name="{{ filter.param_name }}"
+                      value="1"
+                      {% if filter.active_values != empty and filter.active_values.first.value == '1' %}checked{% endif %}>
+                      <span class="filter-toggle__input-label-text">{{ 'products.filtering.hide_label' | t }}</span>
+                  </label>
+                </div>
+              </div>
+            </div>
+
+          {%- elsif filter.type == 'boolean' or filter.type == 'list' or filter.type == 'price_range' -%}
+            {%- liquid
+              if filter.type == 'price_range'
+                assign filter_values_to_show_count = 1
+              else
+                assign filter_values_to_show_count = 0
+                for value in filter.values
+                  assign filter_values_to_show_count = filter_values_to_show_count | plus: 1
+                endfor
+              endif
+
+              assign filter_group_is_swatch = false
+              if settings.swatch_source == 'theme' and settings.enable_filter_swatches and settings.swatch_option_name contains filter.label and filter.type == "list"
+                assign filter_group_is_swatch = true
+              endif
+
+              if filter.presentation == 'swatch' or filter.presentation == 'image'
+                assign filter_group_is_swatch = true
+              endif
+
+              assign filter_group_is_button_grid = false
+              if filter.type == 'list' and section.settings.button_grid_filter_name contains filter.label
+                assign filter_group_is_button_grid = true
+              endif
+
+              if section.settings.collapse_filters_method == 'all'
+                assign collapse_filters = true
+              elsif section.settings.collapse_filters_method == 'none'
+                assign collapse_filters = false
+              elsif section.settings.collapse_filters_method contains 'over-'
+                assign limit = section.settings.collapse_filters_method | split: '-' | last | plus: 0
+                if filter_values_to_show_count > limit
+                  assign collapse_filters = true
+                else
+                  assign collapse_filters = false
+                endif
+              endif
+
+              if filter.active_values.size > 0
+                assign collapse_filters = false
+              elsif filter.type == 'price_range'
+                if filter.min_value.value != nil or filter.max_value.value != nil
+                  assign collapse_filters = false
+                endif
+              endif
+            -%}
+            {%- if filter_values_to_show_count > 0 -%}
+              <div class="filter-group{% if filter_group_is_swatch %} filter-group--swatch filter-group--layout-{{ settings.filter_swatch_layout }}{% elsif filter_group_is_button_grid %} filter-group--button-grid filter-group--layout-three-column{% elsif section.settings.filter_two_columns %}{% if filter.type == 'boolean' or filter.type == 'list' %} filter-group--layout-two-column{% endif %}{% endif %}">
+                <toggle-target role="button" tabindex="0" class="filter-group__heading{% if collapse_filters %} toggle-target-toggler--is-hidden{% endif %}" data-toggle-target=".filter-group--{{ forloop.index | plus: 1 }}">
+                  <div class="filter-group__heading__text">{{ filter.label | escape }}</div>
+                  <span class="filter-group__heading__indicator">{% render 'icon-chevron-down', stroke_width: 1.3 %}</span>
+                </toggle-target>
+                <div class="filter-group__items filter-group--{{ forloop.index | plus: 1 }} toggle-target{% if collapse_filters %} toggle-target--hidden{% endif %}">
+                  <div class="toggle-target-container">
+                    {% case filter.type %}
+                    {% when 'boolean' or 'list' %}
+                      {%- for value in filter.values -%}
+                        <label class="filter-group__item{% if value.active %} filter-group__item--active{% endif %}{% if value.count == 0 and value.active == false %} filter-group__item--disabled{% endif %}"
+                            data-tag="{{ value.label | handle }}"
+                            {%- if filter_group_is_swatch %} data-swatch="{{ value.label | replace: '"', '' | downcase }}"
+                              {%- if value.swatch and value.swatch.image %}
+                                style="--swatch-background-image: url({{ value.swatch.image | image_url: width: 40, height: 40, crop: 'center' }})"
+                              {%- elsif value.swatch and value.swatch.color %}
+                                style="--swatch-background-color: rgb({{ value.swatch.color.rgb }})"
+                              {%- endif %}
+                            {% endif %}>
+                          <input class="filter-group__checkbox"
+                            id="Filter-{{ value.param_name }}-{{ value.value | handle }}"
+                            type="checkbox"
+                            name="{{ value.param_name }}"
+                            value="{{ value.value | escape }}"
+                            {% if value.active %}checked{% endif %}
+                            {% if value.count == 0 and value.active == false %}disabled{% endif %}>
+                          <span class="filter-group__item__text">
+                            {{ value.label | escape }}
+                            {% unless filter_group_is_swatch or filter_group_is_button_grid %}
+                              <svg class="filter-tick" role="presentation" viewBox="0 0 20 20"><path d="M8.315 13.859l-3.182-3.417a.506.506 0 0 1 0-.684l.643-.683a.437.437 0 0 1 .642 0l2.22 2.393 4.942-5.327a.436.436 0 0 1 .643 0l.643.684a.504.504 0 0 1 0 .683l-5.91 6.35a.437.437 0 0 1-.642 0"></path></svg>
+                            {% endunless %}
+                          </span>
+                          {% if section.settings.show_filter_counts %}
+                            {% unless filter_group_is_swatch or filter_group_is_button_grid %}
+                              <span class="filter-group__item__count">{{ value.count }}</span>
+                            {%  endunless %}
+                          {% endif %}
+                        </label>
+                      {%- endfor -%}
+
+                    {% when 'price_range' %}
+                      {% render 'price-range', filter: filter %}
+
+                    {% endcase %}
+                  </div>
+                </div>
+              </div>
+            {%- endif -%}
+          {%- endif -%}
+        {%- endfor -%}
+      {%- endif -%}
+
+      {% if section.settings.show_sort %}
+        <div class="filter-group mobile-only">
+          <toggle-target role="button" tabindex="0" class="filter-group__heading" data-toggle-target=".filter-group--sort">
+            <div class="filter-group__heading__text">{{ 'products.sorting.sort_by_label' | t }}</div>
+            <span class="filter-group__heading__indicator">{% render 'icon-chevron-down', stroke_width: 1.3 %}</span>
+          </toggle-target>
+          <div class="filter-group__items filter-group--sort toggle-target">
+            <div class="toggle-target-container">
+              {%- for option in filter_context.sort_options -%}
+                {%- liquid
+                  if section.settings.sort_show_featured == false and option.value == 'manual' and collection.default_sort_by != 'manual'
+                    continue
+                  endif
+                  if section.settings.sort_show_best == false and option.value == 'best-selling' and collection.default_sort_by != 'best-selling'
+                    continue
+                  endif
+                  if section.settings.sort_show_alpha == false and option.value == 'title-ascending' and collection.default_sort_by != 'title-ascending'
+                    continue
+                  endif
+                  if section.settings.sort_show_alpha == false and option.value == 'title-descending' and collection.default_sort_by != 'title-descending'
+                    continue
+                  endif
+                  if section.settings.sort_show_price == false and option.value == 'price-ascending' and collection.default_sort_by != 'price-ascending'
+                    continue
+                  endif
+                  if section.settings.sort_show_price == false and option.value == 'price-descending' and collection.default_sort_by != 'price-descending'
+                    continue
+                  endif
+                  if section.settings.sort_show_date == false and option.value == 'created-ascending' and collection.default_sort_by != 'created-ascending'
+                    continue
+                  endif
+                  if section.settings.sort_show_date == false and option.value == 'created-descending' and collection.default_sort_by != 'created-descending'
+                    continue
+                  endif
+                -%}
+                <label class="filter-group__item{% if current_sort == option.value %} filter-group__item--active{% endif %}">
+                  <input class="filter-group__checkbox"
+                    id="Filter-Sort-{{ option.value }}"
+                    type="radio"
+                    name="sort_by"
+                    value="{{ option.value }}"
+                    {% if current_sort == option.value %}checked{% endif %}>
+
+                  <span class="filter-group__item__text">
+                    {{ option.name | escape }}
+                    <svg class="filter-tick" role="presentation" viewBox="0 0 20 20"><path d="M8.315 13.859l-3.182-3.417a.506.506 0 0 1 0-.684l.643-.683a.437.437 0 0 1 .642 0l2.22 2.393 4.942-5.327a.436.436 0 0 1 .643 0l.643.684a.504.504 0 0 1 0 .683l-5.91 6.35a.437.437 0 0 1-.642 0"></path></svg>
+                  </span>
+                </label>
+              {%- endfor -%}
+            </div>
+          </div>
+        </div>
+      {% endif %}
+
+      <noscript>
+        <button type="submit" class="btn">{{ 'products.filtering.apply' | t }}</button>
+      </noscript>
+    </form>
+  </div>
+</div>

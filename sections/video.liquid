@@ -1,0 +1,380 @@
+{%- if section.settings.video_shopify != blank or section.settings.video_external != blank -%}
+{%- liquid
+  assign using_video_tag = false
+  if section.settings.video_shopify != blank
+    assign using_video_tag = true
+  endif
+
+  if section.settings.placeholder_image
+    assign placeholder_image = section.settings.placeholder_image
+  elsif section.settings.video_shopify
+    assign placeholder_image = section.settings.video_shopify.preview_image
+  endif
+-%}
+
+<link rel="stylesheet" href="{{ 'video.css' | asset_url }}" {%- render 'lazy-stylesheet-attrs' %}>
+<script src="{{ 'video.js' | asset_url }}" defer></script>
+
+<div id="section-id-{{ section.id }}" class="{% unless section.settings.full_width %}container fully-spaced-row{% endunless %} video-section" {%- render 'animation-attrs', attrs: 'data-cc-animate' -%}>
+  {% style %}
+    {%- if placeholder_image -%}
+    #section-id-{{ section.id }} .height--adapt {
+      --aspect-ratio: {{ placeholder_image.aspect_ratio }};
+    }
+    {%- endif -%}
+
+    {%- for block in section.blocks -%}
+      {% if block.type == 'heading' %}
+        #section-id-{{ section.id }} .block-{{ block.id }} {
+          --heading-max-width: {{ block.settings.heading_max_width }}em;
+          font-size: {{ block.settings.title_size_mobile }}px;
+          {%- if block.settings.title_size_mobile >= 90 -%}
+          line-height: 1em;
+          {%- endif %}
+        }
+
+        @media (min-width: 768px) {
+          #section-id-{{ section.id }} .block-{{ block.id }} {
+            {%- assign title_size_medium = block.settings.title_size | times: 0.7 | at_least: block.settings.title_size_mobile -%}
+            font-size: {{ title_size_medium }}px;
+            {%- if title_size_medium >= 90 -%}
+            line-height: 1em;
+            {%- endif %}
+          }
+        }
+
+        @media (min-width: 1100px) {
+          #section-id-{{ section.id }} .block-{{ block.id }} {
+            font-size: {{ block.settings.title_size }}px;
+            {%- if block.settings.title_size >= 90 -%}
+            line-height: 1em;
+            {%- endif %}
+          }
+        }
+      {% endif %}
+    {%- endfor -%}
+  {% endstyle %}
+
+  <div class="height--adapt height--adapt-to-overlay-mobile image-overlay image-overlay--bg-{{ section.settings.overlay_style }}" {%- render 'animation-attrs', attrs: 'data-cc-animate' -%}>
+    <div class="image-overlay__image height__image">
+      <deferred-media>
+        <button type="button" class="js-load-media hidden" aria-hidden="true"></button>
+        <template>
+          <video-component class="{% if using_video_tag %}has-video{% else %}has-iframe{% endif %}"
+            {%- unless using_video_tag %} data-video-url="{{ section.settings.video_external | escape }}"{% endunless %}
+                          data-video-id="{{ section.id }}"
+                          data-autoplay="false"
+                          data-background="false"
+                          data-description="{{ section.settings.video_description | escape }}">
+            {%- if using_video_tag -%}
+              {{ section.settings.video_shopify | video_tag: playsinline: true, controls: true, autoplay: false, muted: false, loop: false, poster: '' | replace: '<img ', '<img loading="lazy" hidden ' }}
+            {%- else -%}
+              <div></div>
+            {%- endif -%}
+          </video-component>
+        </template>
+      </deferred-media>
+
+      {% if placeholder_image %}
+        {%- render 'image' with placeholder_image, class: 'video-played-hidden' -%}
+      {% else %}
+        <div class="placeholder-image video-played-hidden">{{- 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' -}}</div>
+      {% endif %}
+    </div>
+
+    <div class="text-overlay text-overlay--for-banner text-overlay--v-{{ section.settings.text_alignment | split: ' ' | first }} text-overlay--h-{{ section.settings.text_alignment | split: ' ' | last }} image-overlay__over video-played-hidden">
+      <div class="text-overlay__inner">
+        <div class="text-overlay__text fade-in-up" {%- render 'animation-attrs', attrs: 'data-cc-animate data-cc-animate-delay="0.5s"' -%}>
+          {%- assign play_button_found = false -%}
+          {% for block in section.blocks %}
+            {% case block.type %}
+              {% when 'heading' %}
+                {% if block.settings.use_h1 %}
+                  <h1 class="text-overlay__title block-{{ block.id }}" {{ block.shopify_attributes }}>{% render 'multiline-text' with block.settings.title %}</h1>
+                {% else %}
+                  <h2 class="text-overlay__title h1 block-{{ block.id }}" {{ block.shopify_attributes }}>{% render 'multiline-text' with block.settings.title %}</h2>
+                {% endif %}
+
+              {% when 'subheading' %}
+                <div class="text-overlay__subheading subheading subheading--over lightish-spaced-row-above" {{ block.shopify_attributes }}>{{ block.settings.subheading | escape }}</div>
+
+              {% when 'text' %}
+                <div class="text-overlay__rte rte lightly-spaced-row {% if block.settings.enlarge_text %}large-text{% endif %}" {{ block.shopify_attributes }}>{{ block.settings.text }}</div>
+
+              {% when 'play-button' %}
+                {%- assign play_button_found = true -%}
+                <div class="text-overlay__button-row" {{ block.shopify_attributes }}>
+                  <video-section-play-button role="button" tabindex="0" type="button" class="button-row__btn video-section__play-btn inline-block">
+                    <span class="visually-hidden">{{ 'general.icon_labels.play' | t }}</span>
+                    {%- render 'icon-play' -%}
+                  </video-section-play-button>
+                </div>
+            {% endcase %}
+          {% endfor %}
+
+          {%- unless play_button_found -%}
+            <div class="text-overlay__button-row" {{ block.shopify_attributes }}>
+              <video-section-play-button role="button" tabindex="0" type="button" class="button-row__btn video-section__play-btn inline-block">
+                <span class="visually-hidden">{{ 'general.icon_labels.play' | t }}</span>
+                {%- render 'icon-play' -%}
+              </video-section-play-button>
+            </div>
+          {%- endunless -%}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endif %}
+
+<script>
+if (!customElements.get('video-section-play-button')) {
+  class VideoSectionPlayButton extends HTMLElement {
+    connectedCallback() {
+      this.addEventListener('click', this.handleClick);
+    }
+
+    handleClick(evt) {
+      const section = evt.target.closest('.video-section');
+      section.querySelector('.js-load-media').click();
+      setTimeout(() => section.classList.add('video-section--played'), Shopify.designMode ? 500 : 1500);
+    }
+  }
+
+  customElements.define('video-section-play-button', VideoSectionPlayButton);
+}
+</script>
+
+
+{% schema %}
+{
+  "name": "Video",
+  "class": "section-video",
+  "disabled_on": {
+    "groups": [
+      "aside"
+    ]
+  },
+  "settings": [
+    {
+      "id": "video_shopify",
+      "type": "video",
+      "label": "Video upload",
+      "info": "Hosted by Shopify. Replaces External video if both are set."
+    },
+    {
+      "id": "video_external",
+      "type": "text",
+      "label": "External video",
+      "info": "Supports YouTube and Vimeo.",
+      "default": "https://www.youtube.com/watch?v=_9VUPq3SxOc"
+    },
+    {
+      "type": "text",
+      "id": "video_description",
+      "label": "Video description",
+      "info": "Describe the video for customers using screen readers. [Learn more](https://help.shopify.com/manual/online-store/themes/theme-structure/theme-features#video-block)"
+    },
+    {
+      "id": "placeholder_image",
+      "type": "image_picker",
+      "label": "Custom cover image",
+      "info": "Choose an image the same shape as your video."
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Text overlay position",
+      "options": [
+        {
+          "value": "top left",
+          "label": "Top left"
+        },
+        {
+          "value": "top center",
+          "label": "Top center"
+        },
+        {
+          "value": "top right",
+          "label": "Top right"
+        },
+        {
+          "value": "center left",
+          "label": "Middle left"
+        },
+        {
+          "value": "center center",
+          "label": "Middle center"
+        },
+        {
+          "value": "center right",
+          "label": "Middle right"
+        },
+        {
+          "value": "bottom left",
+          "label": "Bottom left"
+        },
+        {
+          "value": "bottom center",
+          "label": "Bottom center"
+        },
+        {
+          "value": "bottom right",
+          "label": "Bottom right"
+        }
+      ],
+      "default": "center center"
+    },
+    {
+      "id": "full_width",
+      "type": "checkbox",
+      "label": "Full page width",
+      "default": true
+    },
+    {
+      "id": "overlay_style",
+      "type": "select",
+      "label": "Overlay style",
+      "default": "shadow",
+      "options": [
+        {
+          "value": "full",
+          "label": "Tint"
+        },
+        {
+          "value": "box",
+          "label": "Box"
+        },
+        {
+          "value": "shadow",
+          "label": "Text shadow"
+        },
+        {
+          "value": "full image-overlay--bg-shadow",
+          "label": "Text shadow and tint"
+        },
+        {
+          "value": "no_background",
+          "label": "No background"
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "heading",
+      "name": "Heading",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading",
+          "info": "Enter <br> for a line-break",
+          "default": "Video"
+        },
+        {
+          "type": "range",
+          "id": "heading_max_width",
+          "min": 4,
+          "max": 40,
+          "step": 1,
+          "unit": "em",
+          "label": "Maximum heading width",
+          "default": 15
+        },
+        {
+          "type": "range",
+          "id": "title_size",
+          "min": 20,
+          "max": 150,
+          "step": 2,
+          "unit": "px",
+          "label": "Desktop heading text size",
+          "default": 84
+        },
+        {
+          "type": "range",
+          "id": "title_size_mobile",
+          "min": 20,
+          "max": 150,
+          "step": 2,
+          "unit": "px",
+          "label": "Mobile heading text size",
+          "default": 32
+        },
+        {
+          "type": "checkbox",
+          "id": "use_h1",
+          "label": "Set as primary page heading",
+          "info": "Use <h1> tag. One per page recommended. [Read more](https://cleancanvas.co.uk/support/symmetry/section-h1-setting)",
+          "default": false
+        }
+      ]
+    },
+    {
+      "type": "subheading",
+      "name": "Subheading",
+      "settings": [
+        {
+          "type": "text",
+          "id": "subheading",
+          "label": "Subheading",
+          "default": "Tell your story"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "name": "Text",
+      "settings": [
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text",
+          "default": "<p>Use a video to get a customer's attention</p>"
+        },
+        {
+          "type": "checkbox",
+          "id": "enlarge_text",
+          "label": "Enlarge text",
+          "default": true
+        }
+      ]
+    },
+    {
+      "type": "play-button",
+      "name": "Play button",
+      "settings": [
+        {
+          "type": "paragraph",
+          "content": "This block allows you to position the play button."
+        },
+        {
+          "type": "paragraph",
+          "content": "If this block is removed, the play button will show under all other blocks."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Video",
+      "blocks": [
+        {
+          "type": "heading"
+        },
+        {
+          "type": "text"
+        },
+        {
+          "type": "play-button"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

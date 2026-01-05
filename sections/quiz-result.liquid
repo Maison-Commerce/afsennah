@@ -1,0 +1,220 @@
+{% comment %}
+  Quiz Results Section for Shopify
+  Place this section AFTER all quiz step sections
+
+  Use [[question_id]] syntax to insert user answers
+  Example: You have [[thickness]] x [[texture]] hair
+{% endcomment %}
+
+{{ 'quiz-section.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+  .quiz-results-{{ section.id }} {
+  --primary-color: {{ section.settings.primary_color }};
+  --text-color: {{ section.settings.text_color }};
+  --button-color: {{ section.settings.button_color }};
+  --button-text-color: {{ section.settings.button_text_color }};
+  --btn-border-radius: {{ section.settings.button_border_radius }};
+  }
+
+  #shopify-section-{{ section.id }}.quiz-section {
+  background: {{ section.settings.background_color }};
+  }
+
+  .quiz-results-{{ section.id }} .results-image {
+  background-image: url('{{ section.settings.results_image | image_url: width: 1200 }}');
+  }
+{%- endstyle -%}
+
+<style>
+  .continue-mobile-button {
+      display: none;
+      & button {
+          width: 100%;
+      }
+      @media (max-width: 767px) {
+          display: block;
+          order: 3;
+      }
+  }
+
+  .results-answers-table {
+      @media (max-width: 767px) {
+          margin-bottom: 24px!important;
+      }
+  }
+</style>
+
+<div class="quiz-results quiz-results-{{ section.id }}" data-results style="display: none;" data-visible-questions="{{ section.settings.visible_questions }}">
+  <div class="results-layout">
+    <div class="results-image"></div>
+    <div class="results-right">
+      <div class="results-content-wrapper">
+        <div class="results-content">
+          {{ section.settings.results_text }}
+        </div>
+
+        <div class="results-answers-table">
+          <h3>Your Answers</h3>
+          <table class="answers-table" data-answers-table>
+            <!-- Table will be populated by JavaScript -->
+          </table>
+        </div>
+
+        <div class="continue-mobile-button">
+          <button type="button" class="quiz-btn quiz-btn-next show-me-my-recs" data-next-results-btn>
+            {{ section.settings.next_button_text }}
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <path d="M7.5 15L12.5 10L7.5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+        </div>
+
+        <div class="results-actions">
+          <div class="quiz-navigation results">
+            <button type="button" class="quiz-btn quiz-btn-back" data-restart-btn>
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                <path d="M2.5 10C2.5 5.85786 5.85786 2.5 10 2.5C14.1421 2.5 17.5 5.85786 17.5 10C17.5 14.1421 14.1421 17.5 10 17.5C7.5 17.5 5.32 16.18 4.16 14.16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M2.5 14.1667V14.1667C2.5 14.1667 2.5 11.6667 2.5 10.8333" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              Retake Quiz
+            </button>
+            <button type="button" class="quiz-btn quiz-btn-next show-me-my-recs" data-next-results-btn>
+              {{ section.settings.next_button_text }}
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                <path d="M7.5 15L12.5 10L7.5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+    (function() {
+        // Auto-save results when shown
+        const results = document.querySelector('[data-results]');
+        if (results) {
+            const observer = new MutationObserver(function(mutations) {
+                mutations.forEach(function(mutation) {
+                    if (mutation.attributeName === 'style' && results.style.display !== 'none') {
+                        if (window.QuizManager && window.QuizManager.answers) {
+                            window.QuizManager.saveResults();
+                        }
+                    }
+                });
+            });
+            observer.observe(results, { attributes: true });
+        }
+
+        // Next button to show recommendations (attach to ALL buttons)
+        const nextBtns = document.querySelectorAll('[data-next-results-btn]');
+        nextBtns.forEach(nextBtn => {
+            if (nextBtn) {
+                nextBtn.addEventListener('click', function() {
+                    const results = document.querySelector('[data-results]');
+                    const recommendations = document.querySelector('[data-recommendations]');
+
+                    if (results && recommendations) {
+                        results.style.display = 'none';
+                        recommendations.style.display = 'block';
+                        setTimeout(() => recommendations.classList.add('active'), 50);
+
+                        window.scrollTo({
+                            top: 0,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            }
+        });
+    })();
+</script>
+
+<script src="{{ 'quiz-section.js' | asset_url }}" defer></script>
+
+{% schema %}
+{
+  "name": "Quiz Results",
+  "class": "quiz-section",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "results_image",
+      "label": "Results Image",
+      "info": "Image will display at 50% width, full height on the left side"
+    },
+    {
+      "type": "richtext",
+      "id": "results_text",
+      "label": "Results Template",
+      "info": "Use [[question_id]] to insert answers (e.g., [[thickness]], [[texture]], [[goals]]). Double brackets won't interfere with Shopify's Liquid syntax.",
+      "default": "<h2>[[customer_name]], your results are ready!</h2><p>You have [[thickness]] x [[texture]] hair and based on your answers, we've selected the products that will best help you achieve your hair transformation goals: [[goals]]</p><p>Once you select your products, Afsennah will personally review your consultation to ensure the right formulation is chosen for your unique hair and scalp needs.</p><p>If additional information is needed to finalize your custom formulation, Afsennah will reach out to you within 72 hours.</p>"
+    },
+    {
+      "type": "text",
+      "id": "next_button_text",
+      "label": "Next Button Text",
+      "default": "Show me my recommendations"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "primary_color",
+      "label": "Primary Color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#111827"
+    },
+    {
+      "type": "color",
+      "id": "button_color",
+      "label": "Button Background Color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button Text Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "text",
+      "id": "button_border_radius",
+      "label": "Button Border Radius",
+      "default": "5rem",
+      "info": "CSS value for button border radius (e.g., 5rem, 8px, 50%)"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "#f0f0ff"
+    },
+    {
+      "type": "header",
+      "content": "Answers Table Settings"
+    },
+    {
+      "type": "textarea",
+      "id": "visible_questions",
+      "label": "Visible Question IDs",
+      "info": "Comma-separated list of question IDs to show in the answers table. Leave empty to show all questions. Example: hair_type,goals,concerns"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Quiz Results"
+    }
+  ]
+}
+{% endschema %}

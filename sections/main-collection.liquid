@@ -1,0 +1,809 @@
+<div data-section-id="{{ section.id }}" {%- render 'animation-attrs', attrs: 'data-cc-animate' -%}>
+{% paginate collection.products by section.settings.coll_num_per_page_int %}
+
+{%- liquid
+  if section.settings.show_image_behind_heading and collection.image
+    assign header_image_enabled = true
+  else
+    assign header_image_enabled = false
+  endif
+  assign current_sort = collection.sort_by | default: collection.default_sort_by
+
+  assign show_filters = section.settings.enable_filtering
+  if collection.filters == empty
+    assign show_filters = false
+  endif
+-%}
+
+{%- liquid
+  assign related_collections_count = 0
+  if section.settings.related_collections != empty
+    for loop_collection in section.settings.related_collections
+      unless loop_collection.handle == collection.handle
+        assign related_collections_count = related_collections_count | plus: 1
+      endunless
+    endfor
+  endif
+-%}
+
+{%- if related_collections_count > 0 -%}
+  {% capture related_collection_html %}
+    {% if section.settings.related_collections_style == 'buttons' %}
+      <div class="container{% if header_image_enabled %} container--not-mobile{% endif %} lightish-spaced-row-above">
+        <related-collection-link-buttons class="related-collection-links related-collection-links--buttons align-center{% if header_image_enabled %} image-overlay__over{% endif %}" data-expander-btn-text="{{ 'sections.collection.view_all_related_collections' | t }}">
+          {%- for loop_collection in section.settings.related_collections -%}
+            {%- unless loop_collection.handle == collection.handle -%}
+              <a class="btn btn--tertiary" href="{{ loop_collection.url }}">{{ loop_collection.title | escape }}</a>
+            {%- endunless -%}
+          {%- endfor -%}
+        </related-collection-link-buttons>
+      </div>
+    {% else %}
+      {% unless section.settings.rel_coll_gall_full_width %}
+        <div class="container container--not-mobile lightish-spaced-row-above lightish-spaced-row-above--not-mobile{% if section.settings.rel_coll_grid_mobile == 'hide' %} desktop-only{% endif %}">
+      {% endunless %}
+      <div class="
+        gallery
+        gallery--height-adapt
+        gallery--grid-desktop-{{ related_collections_count | at_most: 4 }}
+        gallery--grid-mobile-{{ section.settings.rel_coll_grid_mobile }}
+        {%- if section.settings.rel_coll_grid_mobile != 'hide' -%}
+          {%- assign rel_coll_grid_mobile_int = section.settings.rel_coll_grid_mobile | plus: 0 -%}
+          {%- if related_collections_count > rel_coll_grid_mobile_int %} gallery--mobile-carousel{% endif %}
+        {%- endif -%}
+        {%- if section.settings.rel_coll_gall_enable_margin %} gallery--with-margins{% endif %}
+        related-collection-links
+        related-collection-links--gallery
+        {%- if section.settings.rel_coll_gall_full_width %} related-collection-links--is-full-width{% endif %}
+        {%- if header_image_enabled %} related-collection-links--under-image-header{% endif %}
+        {%- if section.settings.rel_coll_grid_mobile == 'hide' %} desktop-only{% endif %}">
+        <carousel-slider class="carousel{% if section.settings.rel_coll_gall_mobile_layout == 'hide' %} desktop-only{% endif %}" inactive>
+          <div class="slider slider--no-scrollbar" id="slider-{{ section.id }}">
+            <div class="slider__grid">
+              {%- for loop_collection in section.settings.related_collections -%}
+                {%- unless loop_collection.handle == collection.handle -%}
+                  <div class="slider__item
+                      gallery__item
+                      image-overlay
+                      image-overlay--bg-{{ section.settings.rel_coll_gall_overlay_style }}
+                      image-overlay--edge-boxes
+                      {% unless section.settings.rel_coll_gall_full_width and section.settings.rel_coll_gall_enable_margin == false %}image-overlay--edge-boxes--pad-to-corner{% endunless %}
+                      ">
+                    <a class="image-overlay__image-link" href="{{ loop_collection.url }}">
+                      <div class="image-overlay__image gallery__image img-stretch">
+                        {%- liquid
+                          if loop_collection.featured_image
+                            assign rel_coll_image = loop_collection.featured_image
+                          else
+                            assign rel_coll_image = false
+                          endif
+                          assign custom_aspect_ratio = section.settings.rel_coll_gall_aspect_ratio | times: 1.0
+                        -%}
+                        {%- if rel_coll_image -%}
+                          {%- liquid
+                            assign desktop_image_cols = section.settings.grid | at_most: section.blocks.size
+                          -%}
+                          {%- render 'image' with rel_coll_image, custom_aspect_ratio: custom_aspect_ratio, custom_crop: section.settings.image_position, size_cols_mobile: section.settings.rel_coll_grid_mobile, size_cols_desktop: desktop_image_cols -%}
+                        {%- else -%}
+                          <div class="placeholder-image dark">
+                            {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+                          </div>
+                        {%- endif -%}
+                      </div>
+
+                      <div class="text-overlay text-overlay--v-{{ section.settings.rel_coll_gall_text_alignment | split: ' ' | first }} text-overlay--h-{{ section.settings.rel_coll_gall_text_alignment | split: ' ' | last }} image-overlay__over">
+                        <div class="text-overlay__inner">
+                          <div class="text-overlay__text">
+                            <h2 class="text-overlay__title h4">{{ loop_collection.title | escape }}</h2>
+                          </div>
+                        </div>
+                      </div>
+                    </a>
+                  </div>
+                {%- endunless -%}
+              {%- endfor -%}
+            </div>
+          </div>
+          <div class="slider-nav slider-nav--floating desktop-only no-js-hidden">
+            <button type="button" class="slider-nav__btn has-ltr-icon" name="prev" aria-controls="slider-{{ section.id }}">
+              <span class="visually-hidden">{{ 'general.slider.previous' | t }}</span>
+              {%- render 'icon-chevron-left', stroke_width: 1.3 -%}
+            </button>
+            <button type="button" class="slider-nav__btn has-ltr-icon" name="next" aria-controls="slider-{{ section.id }}">
+              <span class="visually-hidden">{{ 'general.slider.next' | t }}</span>
+              {%- render 'icon-chevron-right', stroke_width: 1.3 -%}
+            </button>
+          </div>
+        </carousel-slider>
+      </div>
+      {% unless section.settings.rel_coll_gall_full_width %}
+        </div>
+      {% endunless %}
+    {% endif %}
+  {% endcapture %}
+{%- endif -%}
+
+{% if header_image_enabled %}
+  {%- liquid
+    assign show_header = false
+    if section.settings.show_title
+      assign show_header = true
+    endif
+    if collection.description != blank and section.settings.coll_desc_pos == 'above'
+      assign show_header = true
+    endif
+    if related_collections_count > 0 and section.settings.related_collections_style == 'buttons'
+      assign show_header = true
+    endif
+  -%}
+  {%- if show_header -%}
+    <div class="page-header page-header--with-background img-fill image-overlay image-overlay--bg-{{ section.settings.overlay_style }} page-header--padded-{{ section.settings.heading_image_height }}">
+      <div class="image-overlay__image">
+        {%- render 'image' with collection.image, loading: 'eager', fetchpriority: 'high' -%}
+      </div>
+      <div class="text-overlay text-overlay--inline text-overlay--v-center text-overlay--h-center image-overlay__over" {%- render 'animation-attrs', attrs: 'data-cc-animate data-cc-animate-delay="0.2s"' -%}>
+        <div class="text-overlay__inner">
+          <div class="text-overlay__text">
+            {%- if section.settings.show_title -%}
+              <h1 class="text-overlay__title super-large-text">{{ collection.title | escape }}</h1>
+            {%- endif -%}
+
+            {% if collection.description != blank and section.settings.coll_desc_pos == 'above' %}
+              <div class="text-overlay__rte rte cf align-center reading-width large-text">{{ collection.description }}</div>
+            {% endif %}
+
+            {%- if related_collections_count > 0 and section.settings.related_collections_style == 'buttons' -%}
+              {{ related_collection_html }}
+            {%- endif -%}
+          </div>
+        </div>
+      </div>
+    </div>
+  {%- endif -%}
+{% else %}
+  {{ related_collection_html }}
+  {%- liquid
+    assign show_header = false
+    if section.settings.show_title
+      assign show_header = true
+    endif
+    if collection.description != blank and section.settings.coll_desc_pos == 'above'
+      assign show_header = true
+    endif
+  -%}
+  {%- if show_header -%}
+    <div class="page-header page-header--with-upper-spacing">
+      <div class="container">
+        {%- if section.settings.show_title -%}
+          <h1 class="pagetitle h3">{{ collection.title | escape }}</h1>
+        {%- endif -%}
+
+        {% if collection.description != blank and section.settings.coll_desc_pos == 'above' %}
+          <div class="rte cf align-center reading-width">{{ collection.description }}</div>
+        {% endif %}
+      </div>
+    </div>
+  {% endif %}
+{% endif %}
+
+  {%- if related_collections_count > 0 and header_image_enabled and section.settings.related_collections_style != 'buttons' -%}
+    {{ related_collection_html }}
+  {%- endif -%}
+
+  <div class="container{% if settings.use_fullwidth_layout %} container--no-max{% endif %}{% if show_header == false %} lightly-spaced-row-above{% endif %}">
+    <div class="utility-bar" data-ajax-container data-ajax-scroll-to>
+      <div class="utility-bar__left">
+        {% if section.settings.show_sort or show_filters %}
+          <a href="#" class="toggle-btn utility-bar__item{% if section.settings.collapse_tag_sidebar_by_default == false %} toggle-btn--revealed-desktop{% endif %}{% if show_filters == false %} mobile-only{% endif %}" data-toggle-filters>
+            <span class="btn-icon">{% render 'icon-filter' %}</span>
+            <span>{{ 'products.filtering.filter' | t }}</span>
+            {% liquid
+              assign filter_count = 0
+              for filter in collection.filters
+                assign filter_count = filter_count | plus: filter.active_values.size
+                if filter.type == 'price_range'
+                  if filter.min_value.value != nil or filter.max_value.value != nil
+                    assign filter_count = filter_count | plus: 1
+                  endif
+                endif
+              endfor
+            %}
+            {% if filter_count > 0 %}
+              <span class="toggle-btn__count">({{ filter_count }})</span>
+            {% endif %}
+            <span class="toggle-btn__chevron has-motion has-ltr-icon">{% render 'icon-chevron-right', stroke_width: 1.3 %}</span>
+          </a>
+        {% endif %}
+      </div>
+
+      {% if section.settings.show_total and paginate.items > 0 %}
+        <div class="utility-bar__centre">
+          <div class="utility-bar__item">{{ 'sections.collection.product_count' | t: count: paginate.items }}</div>
+        </div>
+      {% endif %}
+
+      <div class="utility-bar__right">
+        {% if section.settings.show_sort %}
+          <span class="utility-bar__item desktop-only">
+            <link-dropdown class="link-dropdown link-dropdown--right-aligned">
+              <div class="visually-hidden" id="sort-dropdown-heading">{{ 'products.sorting.sort_by_label' | t | escape }}</div>
+              <button class="link-dropdown__button has-motion" aria-expanded="false" aria-controls="sort-dropdown-options" aria-describedby="sort-dropdown-heading">
+                <span class="link-dropdown__button-text">
+                  {%- for option in collection.sort_options -%}
+                    {%- if current_sort == option.value -%}
+                      {{ option.name | escape }}
+                      {%- break -%}
+                    {%- endif -%}
+                  {%- endfor -%}
+                </span>
+                <span class="link-dropdown__button-icon has-motion">{% render 'icon-chevron-down', stroke_width: 1.3 %}</span>
+              </button>
+              <div class="link-dropdown__options" id="sort-dropdown-options">
+                {%- for option in collection.sort_options -%}
+                  {%- liquid
+                    if section.settings.sort_show_featured == false and option.value == 'manual' and collection.default_sort_by != 'manual'
+                      continue
+                    endif
+                    if section.settings.sort_show_best == false and option.value == 'best-selling' and collection.default_sort_by != 'best-selling'
+                      continue
+                    endif
+                    if section.settings.sort_show_alpha == false and option.value == 'title-ascending' and collection.default_sort_by != 'title-ascending'
+                      continue
+                    endif
+                    if section.settings.sort_show_alpha == false and option.value == 'title-descending' and collection.default_sort_by != 'title-descending'
+                      continue
+                    endif
+                    if section.settings.sort_show_price == false and option.value == 'price-ascending' and collection.default_sort_by != 'price-ascending'
+                      continue
+                    endif
+                    if section.settings.sort_show_price == false and option.value == 'price-descending' and collection.default_sort_by != 'price-descending'
+                      continue
+                    endif
+                    if section.settings.sort_show_date == false and option.value == 'created-ascending' and collection.default_sort_by != 'created-ascending'
+                      continue
+                    endif
+                    if section.settings.sort_show_date == false and option.value == 'created-descending' and collection.default_sort_by != 'created-descending'
+                      continue
+                    endif
+                  -%}
+                  <a href="{{ request.path | sort_by: option.value | escape }}" class="link-dropdown__link{% if current_sort == option.value %} link-dropdown__link--active{% endif %}">{{ option.name | escape }}</a>
+                {%- endfor -%}
+              </div>
+            </link-dropdown>
+          </span>
+        {% endif %}
+        <span class="utility-bar__item mobile-only">
+          <div class="layout-switchers">
+            <a class="layout-switch layout-switch--two-columns{% if settings.prod_thumb_mob_per_row == '2' %} layout-switch--active{% endif %}" href="#" aria-label="{{ 'sections.collection.grid_layout' | t }}">{%- render 'icon-grid', stroke_width: 1.3 -%}</a>
+            <a class="layout-switch layout-switch--one-column{% if settings.prod_thumb_mob_per_row == '1' %} layout-switch--active{% endif %}" href="#" aria-label="{{ 'sections.collection.list_layout' | t }}">{%- render 'icon-box', stroke_width: 1.3 -%}</a>
+          </div>
+        </span>
+      </div>
+    </div>
+
+    <filter-container class="filter-container filter-container--side{% if section.settings.collapse_tag_sidebar_by_default == false %} filter-container--show-filters-desktop{% endif %}" data-ajax-filtering="{{ settings.ajax_products }}" data-filter-section-id="{{ section.id }}">
+      {% if section.settings.show_sort or show_filters %}
+        {% render 'faceted-filters', filter_context: collection, clear_url: collection.url, current_sort: current_sort %}
+      {% endif %}
+
+      <div class="filters-adjacent collection-listing" data-ajax-container>
+        {% if collection.products.size == 0 %}
+          <h5 class="align-centre fully-spaced-row">{{ 'sections.collection.empty' | t }}</h5>
+        {% else %}
+          <div class="product-grid product-grid--per-row-{{ section.settings.grid }} product-grid--per-row-mob-{{ settings.prod_thumb_mob_per_row }} product-grid--per-row-mob-{{ settings.prod_thumb_mob_per_row }}">
+            {%- liquid
+              if settings.prod_thumb_shape == 'portrait-23'
+                assign chosen_aspect_ratio = 0.67
+              elsif settings.prod_thumb_shape == 'portrait-45'
+                assign chosen_aspect_ratio = 0.8
+              elsif settings.prod_thumb_shape == 'square'
+                assign chosen_aspect_ratio = 1.0
+              elsif settings.prod_thumb_shape == 'landscape-54'
+                assign chosen_aspect_ratio = 1.25
+              elsif settings.prod_thumb_shape == 'landscape-32'
+                assign chosen_aspect_ratio = 1.50
+              elsif settings.prod_thumb_shape == 'tallest'
+                assign chosen_aspect_ratio = 99
+                for product in collection.products
+                  if product.featured_media.preview_image.aspect_ratio < chosen_aspect_ratio
+                    assign chosen_aspect_ratio = product.featured_media.preview_image.aspect_ratio
+                  endif
+                endfor
+              else
+                assign chosen_aspect_ratio = 0
+                for product in collection.products
+                  if product.featured_media.preview_image.aspect_ratio > chosen_aspect_ratio
+                    assign chosen_aspect_ratio = product.featured_media.preview_image.aspect_ratio
+                  endif
+                endfor
+              endif
+
+              for product in collection.products
+                assign prioritised_loading = false
+                if forloop.index0 < section.settings.grid
+                  assign prioritised_loading = true
+                endif
+                render 'product-block', product: product, custom_aspect_ratio: chosen_aspect_ratio, animate: true, prioritised_loading: prioritised_loading
+              endfor
+            -%}
+          </div>
+        {% endif %}
+      </div>
+    </filter-container>
+  </div>
+
+  <div class="container pagination-row" data-ajax-container>{% render 'pagination-control', paginate: paginate %}</div>
+
+  {% endpaginate %}
+
+  {% if collection.description != blank and section.settings.coll_desc_pos == 'below' %}
+    <div class="container container--reading-width fully-spaced-row" {%- render 'animation-attrs', attrs: 'data-cc-animate' -%}>
+      <div class="rte cf">{{ collection.description }}</div>
+    </div>
+  {% endif %}
+</div>
+
+
+{% schema %}
+{
+  "name": "Collection pages",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Heading"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_title",
+      "label": "Show collection title",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_image_behind_heading",
+      "label": "Show collection image behind title",
+      "default": true
+    },
+    {
+      "visible_if": "{{ section.settings.show_image_behind_heading }}",
+      "type": "select",
+      "id": "heading_image_height",
+      "label": "Heading image height",
+      "options": [
+        {
+          "value": "small",
+          "label": "Compact"
+        },
+        {
+          "value": "medium",
+          "label": "Small"
+        },
+        {
+          "value": "large",
+          "label": "Medium"
+        },
+        {
+          "value": "huge",
+          "label": "Large"
+        }
+      ],
+      "default": "medium"
+    },
+    {
+      "visible_if": "{{ section.settings.show_image_behind_heading }}",
+      "id": "overlay_style",
+      "type": "select",
+      "label": "Overlay style",
+      "default": "shadow",
+      "options": [
+        {
+          "value": "full",
+          "label": "Tint"
+        },
+        {
+          "value": "box",
+          "label": "Box"
+        },
+        {
+          "value": "shadow",
+          "label": "Text shadow"
+        },
+        {
+          "value": "full image-overlay--bg-shadow",
+          "label": "Text shadow and tint"
+        },
+        {
+          "value": "no_background",
+          "label": "No background"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "coll_desc_pos",
+      "label": "Description position",
+      "default": "above",
+      "options": [
+        {
+          "value": "above",
+          "label": "Below collection title"
+        },
+        {
+          "value": "below",
+          "label": "Below products"
+        }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "coll_num_per_page_int",
+      "min": 16,
+      "max": 50,
+      "step": 2,
+      "label": "Number of products to show per page",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "grid",
+      "label": "Products per row",
+      "min": 2,
+      "max": 5,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "checkbox",
+      "id": "show_vendor",
+      "label": "Show product vendors",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_total",
+      "label": "Show product total",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Filters"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_filtering",
+      "label": "Enable filtering",
+      "info": "Customize filters with the [Search & Discovery app](https://help.shopify.com/manual/online-store/search-and-discovery/filters)",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "collapse_tag_sidebar_by_default",
+      "label": "Collapse filter column",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "collapse_filters_method",
+      "label": "Filter row collapse",
+      "default": "over-12",
+      "options": [
+        {
+          "value": "none",
+          "label": "None"
+        },
+        {
+          "value": "over-6",
+          "label": "Over 6 items"
+        },
+        {
+          "value": "over-12",
+          "label": "Over 12 items"
+        },
+        {
+          "value": "over-18",
+          "label": "Over 18 items"
+        },
+        {
+          "value": "all",
+          "label": "All rows"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "show_filter_counts",
+      "label": "Show filter counts",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "filter_two_columns",
+      "label": "Show filter values in two columns",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "button_grid_filter_name",
+      "label": "Filters to show as buttons",
+      "info": "Counts will not show. Separate options with a comma. E.g. Size,Taille,Größe",
+      "default": "Size,Taille,Größe"
+    },
+    {
+      "type": "checkbox",
+      "id": "auto_apply_hide_unavailable",
+      "label": "On selecting a filter, automatically apply 'Hide out of stock'",
+      "default": false,
+      "info": "Requires Availability filter to be enabled"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_sticky_filter",
+      "label": "Enable sticky filter column",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Sorting"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_sort",
+      "label": "Show sorting dropdown",
+      "default": true
+    },
+    {
+      "visible_if": "{{ section.settings.show_sort }}",
+      "type": "checkbox",
+      "id": "sort_show_featured",
+      "label": "Enable order: Featured",
+      "default": false
+    },
+    {
+      "visible_if": "{{ section.settings.show_sort }}",
+      "type": "checkbox",
+      "id": "sort_show_best",
+      "label": "Enable order: Best selling",
+      "default": true
+    },
+    {
+      "visible_if": "{{ section.settings.show_sort }}",
+      "type": "checkbox",
+      "id": "sort_show_alpha",
+      "label": "Enable order: Alphabetical",
+      "default": true
+    },
+    {
+      "visible_if": "{{ section.settings.show_sort }}",
+      "type": "checkbox",
+      "id": "sort_show_price",
+      "label": "Enable order: Price",
+      "default": true
+    },
+    {
+      "visible_if": "{{ section.settings.show_sort }}",
+      "type": "checkbox",
+      "id": "sort_show_date",
+      "label": "Enable order: Date added",
+      "default": true
+    },
+    {
+      "visible_if": "{{ section.settings.show_sort }}",
+      "type": "paragraph",
+      "content": "The collection's default sort order will always show."
+    },
+    {
+      "type": "header",
+      "content": "Related collections / Subcollections"
+    },
+    {
+      "type": "paragraph",
+      "content": "Show links to other collections at the top of the page. Use a metafield to change which links show on each collection page. [Read more](https://cleancanvas.co.uk/support/symmetry/related-collections)"
+    },
+    {
+      "type": "collection_list",
+      "id": "related_collections",
+      "label": "Collections"
+    },
+    {
+      "type": "select",
+      "id": "related_collections_style",
+      "label": "Related collections style",
+      "default": "buttons",
+      "options": [
+        {
+          "value": "buttons",
+          "label": "Buttons"
+        },
+        {
+          "value": "gallery",
+          "label": "Gallery"
+        }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Related collections gallery layout"
+    },
+    {
+      "visible_if": "{{ section.settings.related_collections_style == 'gallery' }}",
+      "type": "select",
+      "id": "rel_coll_gall_aspect_ratio",
+      "label": "Image shape",
+      "default": "1",
+      "options": [
+        {
+          "value": "2",
+          "label": "Landscape (2x1)"
+        },
+        {
+          "value": "1.5",
+          "label": "Landscape (6x4)"
+        },
+        {
+          "value": "1.25",
+          "label": "Landscape (5x4)"
+        },
+        {
+          "value": "1",
+          "label": "Square (1x1)"
+        },
+        {
+          "value": "0.8",
+          "label": "Portrait (4x5)"
+        }
+      ]
+    },
+    {
+      "visible_if": "{{ section.settings.related_collections_style == 'gallery' }}",
+      "type": "select",
+      "id": "image_position",
+      "label": "Image alignment",
+      "info": "Used to keep the subject of your image in view",
+      "default": "center center",
+      "options": [
+        {
+          "value": "top left",
+          "label": "Top left"
+        },
+        {
+          "value": "top center",
+          "label": "Top center"
+        },
+        {
+          "value": "top right",
+          "label": "Top right"
+        },
+        {
+          "value": "center left",
+          "label": "Middle left"
+        },
+        {
+          "value": "center center",
+          "label": "Middle center"
+        },
+        {
+          "value": "center right",
+          "label": "Middle right"
+        },
+        {
+          "value": "bottom left",
+          "label": "Bottom left"
+        },
+        {
+          "value": "bottom center",
+          "label": "Bottom center"
+        },
+        {
+          "value": "bottom right",
+          "label": "Bottom right"
+        }
+      ]
+    },
+    {
+      "visible_if": "{{ section.settings.related_collections_style == 'gallery' }}",
+      "id": "rel_coll_gall_enable_margin",
+      "type": "checkbox",
+      "label": "Add spacing around images",
+      "default": true
+    },
+    {
+      "visible_if": "{{ section.settings.related_collections_style == 'gallery' }}",
+      "id": "rel_coll_gall_full_width",
+      "type": "checkbox",
+      "label": "Full page width",
+      "default": false
+    },
+    {
+      "visible_if": "{{ section.settings.related_collections_style == 'gallery' }}",
+      "id": "rel_coll_gall_overlay_style",
+      "type": "select",
+      "label": "Overlay style",
+      "default": "shadow",
+      "options": [
+        {
+          "value": "full",
+          "label": "Tint"
+        },
+        {
+          "value": "box",
+          "label": "Box"
+        },
+        {
+          "value": "shadow",
+          "label": "Text shadow"
+        },
+        {
+          "value": "full image-overlay--bg-shadow",
+          "label": "Text shadow and tint"
+        },
+        {
+          "value": "no_background",
+          "label": "No background"
+        }
+      ]
+    },
+    {
+      "visible_if": "{{ section.settings.related_collections_style == 'gallery' }}",
+      "type": "select",
+      "id": "rel_coll_gall_text_alignment",
+      "label": "Text overlay position",
+      "options": [
+        {
+          "value": "top left",
+          "label": "Top left"
+        },
+        {
+          "value": "top center",
+          "label": "Top center"
+        },
+        {
+          "value": "top right",
+          "label": "Top right"
+        },
+        {
+          "value": "center center",
+          "label": "Middle"
+        },
+        {
+          "value": "bottom left",
+          "label": "Bottom left"
+        },
+        {
+          "value": "bottom center",
+          "label": "Bottom center"
+        },
+        {
+          "value": "bottom right",
+          "label": "Bottom right"
+        }
+      ],
+      "default": "center center"
+    },
+    {
+      "visible_if": "{{ section.settings.related_collections_style == 'gallery' }}",
+      "type": "select",
+      "id": "rel_coll_grid_mobile",
+      "label": "Images per row - mobile",
+      "options": [
+        {
+          "value": "1",
+          "label": "1"
+        },
+        {
+          "value": "2",
+          "label": "2"
+        },
+        {
+          "value": "hide",
+          "label": "Hide"
+        }
+      ],
+      "default": "2"
+    }
+  ]
+}
+{% endschema %}

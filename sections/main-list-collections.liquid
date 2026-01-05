@@ -1,0 +1,370 @@
+{% if section.settings.title != blank %}
+  <div class="container" {%- render 'animation-attrs', attrs: 'data-cc-animate' -%}>
+    <div class="page-header cf">
+      <h1 class="majortitle">{{ section.settings.title | escape }}</h1>
+    </div>
+  </div>
+{% endif %}
+
+<div class="container{% if settings.use_fullwidth_layout %} container--no-max{% endif %}">
+
+  {% if section.settings.display_type == 'all' %}
+
+  {% assign paginate_amount = section.settings.grid | times: 6 %}
+    {% paginate collections by paginate_amount %}
+      <div class="collection-listing overlay-mode-{{ section.settings.overlay_mode }}">
+        <div class="product-grid product-grid--per-row-{{ section.settings.grid }} product-grid--per-row-mob-{{ section.settings.coll_thumb_mob_per_row }} product-grid--image-shape-{{ section.settings.coll_grid_image_shape }}">
+          {%- liquid
+            if section.settings.coll_grid_image_shape == 'portrait-23'
+              assign chosen_aspect_ratio = 0.67
+            elsif section.settings.coll_grid_image_shape == 'portrait-45'
+              assign chosen_aspect_ratio = 0.8
+            elsif section.settings.coll_grid_image_shape == 'square'
+              assign chosen_aspect_ratio = 1.0
+            elsif section.settings.coll_grid_image_shape == 'landscape-54'
+              assign chosen_aspect_ratio = 1.25
+            elsif section.settings.coll_grid_image_shape == 'landscape-32'
+              assign chosen_aspect_ratio = 1.50
+            elsif section.settings.coll_grid_image_shape == 'tallest'
+              assign chosen_aspect_ratio = 99
+              for collection in collections
+                if collection.featured_image.aspect_ratio < chosen_aspect_ratio
+                  assign chosen_aspect_ratio = collection.featured_image.aspect_ratio
+                endif
+              endfor
+            else
+              assign chosen_aspect_ratio = 0
+              for collection in collections
+                if collection.featured_image.aspect_ratio > chosen_aspect_ratio
+                  assign chosen_aspect_ratio = collection.featured_image.aspect_ratio
+                endif
+              endfor
+            endif
+
+            for collection in collections
+              render 'collection-block', collection: collection, custom_aspect_ratio: chosen_aspect_ratio, animate: true, settings_object: section.settings
+            endfor
+          -%}
+        </div>
+      </div>
+
+      <div class="pagination-row" {%- render 'animation-attrs', attrs: 'data-cc-animate', always: true -%}>{% render 'pagination-control', paginate: paginate %}</div>
+    {% endpaginate %}
+
+  {% else %}
+
+    <div class="collection-listing overlay-mode-{{ section.settings.overlay_mode }}">
+      <div class="product-grid product-grid--per-row-{{ section.settings.grid }} product-grid--per-row-mob-{{ section.settings.coll_thumb_mob_per_row }} product-grid--image-shape-{{ section.settings.coll_grid_image_shape }}">
+        {%- liquid
+          if section.settings.coll_grid_image_shape == 'portrait-23'
+            assign chosen_aspect_ratio = 0.67
+          elsif section.settings.coll_grid_image_shape == 'portrait-45'
+            assign chosen_aspect_ratio = 0.8
+          elsif section.settings.coll_grid_image_shape == 'square'
+            assign chosen_aspect_ratio = 1.0
+          elsif section.settings.coll_grid_image_shape == 'landscape-54'
+            assign chosen_aspect_ratio = 1.25
+          elsif section.settings.coll_grid_image_shape == 'landscape-32'
+            assign chosen_aspect_ratio = 1.50
+          elsif section.settings.coll_grid_image_shape == 'tallest'
+            assign chosen_aspect_ratio = 99
+            for block in section.blocks
+              assign collection = collections[block.settings.collection]
+              if collection != blank
+                assign collection_image = block.settings.image | default: collection.featured_image
+                if collection_image.aspect_ratio < chosen_aspect_ratio
+                  assign chosen_aspect_ratio = collection_image.aspect_ratio
+                endif
+              endif
+            endfor
+          else
+            assign chosen_aspect_ratio = 0
+            for block in section.blocks
+              assign collection = collections[block.settings.collection]
+              if collection != blank
+                assign collection_image = block.settings.image | default: collection.featured_image
+                if collection_image.aspect_ratio > chosen_aspect_ratio
+                  assign chosen_aspect_ratio = collection_image.aspect_ratio
+                endif
+              endif
+            endfor
+          endif
+
+          for block in section.blocks
+            assign collection = collections[block.settings.collection]
+            if collection != blank
+              render 'collection-block', collection: collection, subheading: block.settings.subheading, button_label: block.settings.button_label, custom_image: block.settings.image, custom_aspect_ratio: chosen_aspect_ratio, prioritised_loading: true, animate: true, custom_attrs: block.shopify_attributes, settings_object: section.settings
+            else
+              render 'onboarding-collection-block', forloop: forloop, custom_attrs: block.shopify_attributes, settings_object: section.settings
+            endif
+          endfor
+        -%}
+      </div>
+    </div>
+
+  {% endif %}
+</div>
+
+
+{% schema %}
+{
+  "name": "All collections",
+  "class": "page-section-spacing",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Our collections"
+    },
+    {
+      "type": "paragraph",
+      "content": "All of your collections are listed by default. To customize your list, choose 'Selected' and add collections."
+    },
+    {
+      "type": "select",
+      "id": "display_type",
+      "label": "Select collections to show",
+      "default": "all",
+      "options": [
+        {
+          "value": "all",
+          "label": "All"
+        },
+        {
+          "value": "selected",
+          "label": "Selected"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "grid",
+      "label": "Collections per row",
+      "min": 2,
+      "max": 5,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "header",
+      "content": "Collection cards"
+    },
+    {
+      "type": "select",
+      "id": "coll_grid_image_shape",
+      "label": "Image shape",
+      "options": [
+        {
+          "value": "shortest",
+          "label": "Automatic (shortest image)"
+        },
+        {
+          "value": "tallest",
+          "label": "Automatic (tallest image)"
+        },
+        {
+          "value": "landscape-32",
+          "label": "Landscape (3:2)"
+        },
+        {
+          "value": "landscape-54",
+          "label": "Landscape (5:4)"
+        },
+        {
+          "value": "square",
+          "label": "Square (1:1)"
+        },
+        {
+          "value": "portrait-45",
+          "label": "Portrait (4:5)"
+        },
+        {
+          "value": "portrait-23",
+          "label": "Portrait (2:3)"
+        }
+      ],
+      "default": "square"
+    },
+    {
+      "type": "select",
+      "id": "coll_grid_image_position",
+      "label": "Image alignment",
+      "info": "Used to keep the subject of your image in view, when cropped to a fixed shape",
+      "default": "center center",
+      "options": [
+        {
+          "value": "top left",
+          "label": "Top left"
+        },
+        {
+          "value": "top center",
+          "label": "Top center"
+        },
+        {
+          "value": "top right",
+          "label": "Top right"
+        },
+        {
+          "value": "center left",
+          "label": "Middle left"
+        },
+        {
+          "value": "center center",
+          "label": "Middle center"
+        },
+        {
+          "value": "center right",
+          "label": "Middle right"
+        },
+        {
+          "value": "bottom left",
+          "label": "Bottom left"
+        },
+        {
+          "value": "bottom center",
+          "label": "Bottom center"
+        },
+        {
+          "value": "bottom right",
+          "label": "Bottom right"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "coll_thumb_mob_per_row",
+      "label": "Collections per row on mobile",
+      "options": [
+        {
+          "value": "1",
+          "label": "1"
+        },
+        {
+          "value": "2",
+          "label": "2"
+        }
+      ],
+      "default": "2"
+    },
+    {
+      "type": "checkbox",
+      "id": "coll_grid_show_count",
+      "label": "Show product count",
+      "default": true
+    },
+    {
+      "id": "coll_text_position",
+      "type": "select",
+      "label": "Text position",
+      "default": "below",
+      "options": [
+        {
+          "value": "below",
+          "label": "Below"
+        },
+        {
+          "value": "over-full",
+          "label": "Over - Tint"
+        },
+        {
+          "value": "over-box",
+          "label": "Over - Box"
+        },
+        {
+          "value": "over-shadow",
+          "label": "Over - Text shadow"
+        },
+        {
+          "value": "over-full image-overlay--bg-shadow",
+          "label": "Over - Text shadow and tint"
+        },
+        {
+          "value": "over-no_background",
+          "label": "Over - No background"
+        }
+      ]
+    },
+    {
+      "id": "coll_text_position_under_mobile",
+      "type": "checkbox",
+      "label": "Show text below image on mobile",
+      "default": false
+    },
+    {
+      "type": "text_alignment",
+      "id": "coll_thumb_text_align_x",
+      "label": "Text alignment",
+      "default": "center"
+    },
+    {
+      "type": "select",
+      "id": "coll_thumb_text_align_y",
+      "label": "Text overlay alignment",
+      "options": [
+        {
+          "value": "top",
+          "label": "Top"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "bottom",
+          "label": "Bottom"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "select",
+      "id": "coll_button_style",
+      "label": "Button style (where shown)",
+      "default": "primary",
+      "options": [
+        {
+          "label": "Primary",
+          "value": "primary"
+        },
+        {
+          "label": "Secondary",
+          "value": "secondary"
+        },
+        {
+          "label": "Link",
+          "value": "link"
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "image",
+      "name": "Collection",
+      "settings": [
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Collection"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "subheading",
+          "label": "Subheading"
+        },
+        {
+          "type": "text",
+          "id": "button_label",
+          "label": "Button label"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

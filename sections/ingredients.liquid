@@ -1,0 +1,413 @@
+<style>
+    .custom-ingredients-section {
+        padding: 32px;
+        border-radius: var(--btn-border-radius);
+        @media (max-width: 767px) {
+            padding: 20px;
+        }
+        margin: 32px 0;
+        @media (max-width: 767px) {
+            margin: 20px 0;
+        }
+    }
+
+    .ingredients-container {
+        margin: 0 auto;
+    }
+
+    .ingredients-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: -20px;
+        gap: 20px;
+        @media (max-width: 767px) {
+            flex-direction: column;
+            margin-bottom: 20px;
+        }
+    }
+
+    .ingredients-title {
+        font-weight: 300;
+        margin: 0;
+        font-family: var(--font-heading-family);
+        @media (max-width: 767px) {
+            /*font-size: 32px;*/
+        }
+    }
+
+    .ingredients-subtitle {
+        font-size: 14px;
+        margin: 12px 0 0 0;
+        line-height: 1.6;
+        max-width: 600px;
+    }
+
+    .ingredients-cta {
+        flex-shrink: 0;
+        align-self: center;
+        @media (max-width: 767px) {
+            align-self: flex-start;
+        }
+    }
+
+    .ingredients-link {
+        text-decoration: underline;
+        text-transform: uppercase;
+        font-size: 12px;
+        letter-spacing: 1px;
+        color: currentColor;
+        font-weight: 400;
+        white-space: nowrap;
+    }
+
+    .ingredients-slider-wrapper {
+        position: relative;
+        overflow: hidden;
+    }
+
+    .ingredients-slider-wrapper:hover .ingredient-slider-nav {
+        opacity: 1;
+    }
+
+    .ingredients-slider {
+        display: flex;
+        gap: 20px;
+        overflow-x: auto;
+        scroll-behavior: smooth;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+        padding: 50px 0 0 0;
+    }
+
+    .ingredients-slider::-webkit-scrollbar {
+        display: none;
+    }
+
+    .ingredient-slider-item {
+        flex: 0 0 280px;
+        min-width: 280px;
+        @media (max-width: 767px) {
+            flex: 0 0 220px;
+            min-width: 220px;
+        }
+    }
+
+    .ingredient-card {
+        border-radius: var(--btn-border-radius, 8px);
+        padding: 32px 24px 24px 24px;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        position: relative;
+        overflow: visible;
+        @media (max-width: 767px) {
+            padding: 28px 20px 20px 20px;
+        }
+    }
+
+    .ingredient-image-wrapper {
+        position: absolute;
+        top: -60px;
+        right: -10px;
+        width: 120px;
+        height: 120px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 2;
+        @media (max-width: 767px) {
+            width: 100px;
+            height: 100px;
+        }
+    }
+
+    .ingredient-image {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+    }
+
+    .ingredient-content {
+        margin-top: 20px;
+        @media (max-width: 767px) {
+            margin-top: 20px;
+        }
+    }
+
+    .ingredient-name {
+        font-size: 16px;
+        font-weight: 300;
+        margin: 0 0 12px 0;
+        font-family: var(--font-heading-family);
+        @media (max-width: 767px) {
+            font-size: 16px;
+        }
+    }
+
+    .ingredient-description {
+        font-size: 14px;
+        line-height: 1.6;
+        margin: 0;
+        color: inherit;
+        opacity: 0.9;
+    }
+
+    .ingredient-slider-nav {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        background: white;
+        border: 1px solid #e0e0e0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        z-index: 10;
+        transition: all 0.3s ease;
+        opacity: 0;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .ingredient-slider-nav:hover {
+        background: #f5f5f5;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+
+    .ingredient-slider-nav.prev {
+        left: 20px;
+    }
+
+    .ingredient-slider-nav.next {
+        right: 20px;
+    }
+
+    @media (max-width: 767px) {
+        .ingredient-slider-nav {
+            display: none;
+        }
+    }
+
+    /* ----- ADDED STYLES ----- */
+    .ingredients-cta--mobile {
+        display: none;
+    }
+
+    @media (max-width: 767px) {
+        .ingredients-cta--desktop {
+            display: none;
+        }
+        .ingredients-cta--mobile {
+            display: block;
+            text-align: center;
+            margin-top: 24px;
+        }
+    }
+    /* --- END ADDED STYLES --- */
+</style>
+
+<div class="custom-ingredients-section" style="background-color: {{ section.settings.section_bg_color }}; color: {{ section.settings.section_text_color }};">
+  <div class="ingredients-container">
+    <div class="ingredients-header">
+      <div>
+        {%- if section.settings.section_title != blank -%}
+          <h2 class="ingredients-title">{{ section.settings.section_title }}</h2>
+        {%- endif -%}
+        {%- if section.settings.section_subtitle != blank -%}
+          <p class="ingredients-subtitle">{{ section.settings.section_subtitle }}</p>
+        {%- endif -%}
+      </div>
+      {%- if section.settings.cta_text != blank and section.settings.cta_url != blank -%}
+        <div class="ingredients-cta ingredients-cta--desktop">
+          <a href="{{ section.settings.cta_url }}" class="ingredients-link">
+            {{ section.settings.cta_text }}
+          </a>
+        </div>
+      {%- endif -%}
+    </div>
+
+    {%- if section.blocks.size > 0 -%}
+      <div class="ingredients-slider-wrapper">
+        <button class="ingredient-slider-nav prev" onclick="scrollIngredientSlider(this, 'prev')" aria-label="Previous ingredients">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+
+        <div class="ingredients-slider">
+          {%- for block in section.blocks -%}
+            <div class="ingredient-slider-item" {{ block.shopify_attributes }}>
+              <div class="ingredient-card" style="background-color: {{ block.settings.card_bg_color }}; color: {{ block.settings.card_text_color }};">
+                <div class="ingredient-image-wrapper">
+                  {%- if block.settings.ingredient_image != blank -%}
+                    {{ block.settings.ingredient_image | image_url: width: 240 | image_tag: class: 'ingredient-image', loading: 'lazy', alt: block.settings.ingredient_name }}
+                  {%- else -%}
+                    {{ 'product-1' | placeholder_svg_tag: 'ingredient-image' }}
+                  {%- endif -%}
+                </div>
+
+                <div class="ingredient-content">
+                  {%- if block.settings.ingredient_name != blank -%}
+                    <h3 class="ingredient-name">{{ block.settings.ingredient_name }}</h3>
+                  {%- endif -%}
+
+                  {%- if block.settings.ingredient_description != blank -%}
+                    <p class="ingredient-description">{{ block.settings.ingredient_description }}</p>
+                  {%- endif -%}
+                </div>
+              </div>
+            </div>
+          {%- endfor -%}
+        </div>
+
+        <button class="ingredient-slider-nav next" onclick="scrollIngredientSlider(this, 'next')" aria-label="Next ingredients">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      </div>
+    {%- else -%}
+      <p style="text-align: center; padding: 40px 0;">Add ingredient blocks to display your ingredients.</p>
+    {%- endif -%}
+
+    {%- if section.settings.cta_text != blank and section.settings.cta_url != blank -%}
+      <div class="ingredients-cta ingredients-cta--mobile">
+        <a href="{{ section.settings.cta_url }}" class="ingredients-link">
+          {{ section.settings.cta_text }}
+        </a>
+      </div>
+    {%- endif -%}
+  </div>
+</div>
+
+<script>
+    function scrollIngredientSlider(button, direction) {
+        const wrapper = button.closest('.ingredients-slider-wrapper');
+        const slider = wrapper.querySelector('.ingredients-slider');
+        const scrollAmount = slider.offsetWidth * 0.8;
+
+        if (direction === 'next') {
+            slider.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+        } else {
+            slider.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+        }
+    }
+</script>
+
+{% schema %}
+{
+  "name": "Ingredients Section",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section Settings"
+    },
+    {
+      "type": "color",
+      "id": "section_bg_color",
+      "label": "Section Background Color",
+      "default": "#f5f5f5"
+    },
+    {
+      "type": "color",
+      "id": "section_text_color",
+      "label": "Section Text Color",
+      "default": "#000000"
+    },
+    {
+      "type": "text",
+      "id": "section_title",
+      "label": "Section Title",
+      "default": "Naturally powerful ingredients"
+    },
+    {
+      "type": "textarea",
+      "id": "section_subtitle",
+      "label": "Section Subtitle",
+      "default": "Your formula is uniquely yours. We target your goals with multi-benefit ingredients like:"
+    },
+    {
+      "type": "header",
+      "content": "Call to Action"
+    },
+    {
+      "type": "text",
+      "id": "cta_text",
+      "label": "CTA Text",
+      "default": "SEE ALL 185+ INGREDIENTS"
+    },
+    {
+      "type": "url",
+      "id": "cta_url",
+      "label": "CTA Link"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "ingredient",
+      "name": "Ingredient",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "ingredient_image",
+          "label": "Ingredient Image"
+        },
+        {
+          "type": "text",
+          "id": "ingredient_name",
+          "label": "Ingredient Name",
+          "default": "Hyaluronic Acid"
+        },
+        {
+          "type": "textarea",
+          "id": "ingredient_description",
+          "label": "Ingredient Description",
+          "default": "to hydrate skin and support its moisture barrier"
+        },
+        {
+          "type": "color",
+          "id": "card_bg_color",
+          "label": "Card Background Color",
+          "default": "#ffffff"
+        },
+        {
+          "type": "color",
+          "id": "card_text_color",
+          "label": "Card Text Color",
+          "default": "#000000"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Ingredients Section",
+      "blocks": [
+        {
+          "type": "ingredient"
+        },
+        {
+          "type": "ingredient"
+        },
+        {
+          "type": "ingredient"
+        },
+        {
+          "type": "ingredient"
+        },
+        {
+          "type": "ingredient"
+        },
+        {
+          "type": "ingredient"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

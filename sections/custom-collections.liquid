@@ -1,0 +1,630 @@
+<style>
+    .custom-haircare-section {
+        padding: 32px 0;
+        @media (max-width: 767px) {
+            padding: 20px 0;
+        }
+    }
+
+    .haircare-block {
+        margin-bottom: 32px;
+        &:last-of-type {
+            margin-bottom: 0;
+        }
+    }
+
+    .haircare-block:last-child {
+        margin-bottom: 0;
+    }
+
+    .haircare-container {
+        display: grid;
+        grid-template-columns: 30% 1fr;
+        gap: 32px;
+        margin: 0 auto;
+    }
+
+    .haircare-left {
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+        border-radius: var(--btn-border-radius);
+        padding: 32px;
+    }
+
+    .haircare-collection-name {
+        font-size: 32px;
+        font-weight: 400;
+        margin: 0;
+        font-family: var(--heading-font-family);
+        text-transform: capitalize;
+    }
+
+    .haircare-shop-all {
+        text-decoration: underline;
+        text-transform: uppercase;
+        font-size: 12px;
+        letter-spacing: 1px;
+        color: currentColor;
+        font-weight: 500;
+    }
+
+    .haircare-description {
+        margin-top: auto;
+    }
+
+    .haircare-info-wrapper {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-top: 8px;
+    }
+
+    .haircare-info-title {
+        font-size: 28px;
+        margin: 0;
+    }
+
+    .haircare-info-icon {
+        position: relative;
+        display: inline-flex;
+        cursor: help;
+    }
+
+    .haircare-info-icon-btn {
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        border: 1px solid currentColor;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 11px;
+        font-weight: 600;
+        background: transparent;
+        cursor: pointer;
+        flex-shrink: 0;
+        /*margin-top: 2px;*/
+    }
+
+    .haircare-info-popover {
+        position: absolute;
+        bottom: calc(100% + 8px);
+        left: 50%;
+        transform: translateX(-50%);
+        background: white;
+        border: 1px solid #e0e0e0;
+        border-radius: 4px;
+        padding: 12px;
+        min-width: 200px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        display: none;
+        z-index: 10;
+        font-size: 13px;
+        line-height: 1.5;
+    }
+
+    .haircare-info-icon:hover .haircare-info-popover {
+        display: block;
+    }
+
+    .haircare-right {
+         overflow: hidden;
+    }
+
+    .haircare-slider-wrapper {
+        position: relative;
+    }
+
+    .haircare-slider {
+        display: flex;
+        gap: 20px;
+        overflow-x: scroll;
+        scroll-behavior: smooth;
+
+        /* --- HIDE NATIVE SCROLLBAR --- */
+        scrollbar-width: none; /* Firefox */
+        -ms-overflow-style: none; /* IE/Edge */
+    }
+
+    /* Webkit (Chrome, Safari) */
+    .haircare-slider::-webkit-scrollbar {
+        display: none; /* Hide scrollbar */
+        height: 0;
+        width: 0;
+    }
+
+    .haircare-slider-item {
+        flex: 0 0 calc(25% - 15px);
+        min-width: 280px;
+    }
+
+    .haircare-slider-nav {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: white;
+        border: 1px solid #e0e0e0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        z-index: 5;
+        transition: all 0.2s;
+    }
+
+    .haircare-slider-nav:hover {
+        background: #f5f5f5;
+    }
+
+    .haircare-slider-nav.prev {
+        left: 20px;
+    }
+
+    .haircare-slider-nav.next {
+        right: 20px;
+    }
+
+    /* --- NEW CUSTOM SCROLLBAR STYLES --- */
+    .custom-scrollbar {
+        padding-top: 12px; /* Space between slider and track */
+        display: none; /* JS will show this if scrolling is needed */
+    }
+
+    .custom-scrollbar-track {
+        height: 5px;
+        background-color: #f0f0f0;
+        border-radius: 5px;
+        position: relative;
+        cursor: pointer;
+    }
+
+    .custom-scrollbar-thumb {
+        height: 100%;
+        background-color: #102b26;
+        border-radius: 5px;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 50px; /* Default width, JS will override */
+        cursor: grab;
+    }
+
+    .custom-scrollbar-thumb:active {
+        cursor: grabbing;
+    }
+    /* --- END CUSTOM SCROLLBAR STYLES --- */
+
+
+    @media (max-width: 1024px) {
+        .haircare-container {
+            grid-template-columns: 1fr;
+            gap: 32px;
+        }
+
+        .custom-haircare-section {
+            padding: 32px 0;
+        }
+
+        .haircare-left {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            grid-template-rows: auto auto;
+            gap: 16px;
+            align-items: start;
+        }
+
+        .haircare-collection-name {
+            grid-column: 1;
+            grid-row: 1;
+        }
+
+        .haircare-shop-all-wrapper {
+            grid-column: 2;
+            grid-row: 1;
+            align-self: center;
+        }
+
+        .haircare-description {
+            grid-column: 1 / -1;
+            grid-row: 2;
+            margin-top: auto;
+        }
+    }
+
+    @media (max-width: 767px) {
+        .haircare-container {
+            padding: 0;
+            gap: 10px;
+        }
+
+        .custom-haircare-section {
+            padding: 20px 0;
+        }
+
+        .haircare-block {
+            margin-bottom: 40px;
+            &:last-of-type {
+                margin-bottom: 0;
+            }
+        }
+
+        .haircare-left {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+            border-radius: 0;
+            padding: 20px;
+        }
+
+        .haircare-right {
+            padding: 0 20px; /* Scrollbar will sit within this padding */
+        }
+
+        .haircare-description {
+            display: none;
+        }
+
+        .haircare-collection-name {
+            font-size: 24px;
+        }
+
+        .haircare-mobile-content {
+            display: block;
+            padding: 40px 0 0 0;
+        }
+
+        .haircare-slider-item {
+            flex: 0 0 calc(66.66% - 13.33px);
+            min-width: calc(66.66% - 13.33px);
+        }
+
+        .haircare-slider-nav {
+            display: none;
+        }
+    }
+
+    @media (min-width: 769px) {
+        .haircare-mobile-content {
+            display: none;
+        }
+    }
+</style>
+
+<div class="custom-haircare-section">
+  {%- for block in section.blocks -%}
+    <style>
+        .haircare-left {
+            background: {{ block.settings.bgcolor }};
+            @media (max-width: 767px) {
+                background: transparent;
+            }
+        }
+    </style>
+    <div class="haircare-block" {{ block.shopify_attributes }}>
+      <div class="haircare-container">
+        <div class="haircare-left">
+          <div>
+            <h2 class="haircare-collection-name">
+              {%- if block.settings.collection_title != blank -%}
+                {{ block.settings.collection_title }}
+              {%- elsif block.settings.collection != blank -%}
+                {{ block.settings.collection.title }}
+              {%- else -%}
+                Custom haircare
+              {%- endif -%}
+            </h2>
+          </div>
+
+          <div class="haircare-shop-all-wrapper">
+            {%- if block.settings.collection != blank -%}
+              <a href="{{ block.settings.collection.url }}" class="haircare-shop-all">
+                Shop all
+              </a>
+            {%- endif -%}
+          </div>
+
+          <div class="haircare-description">
+            {%- if block.settings.description_title != blank -%}
+              <p style="margin: 0 0 12px 0; font-size: 14px;">{{ block.settings.description_title }}</p>
+            {%- endif -%}
+
+            {%- if block.settings.info_title != blank or block.settings.info_description != blank -%}
+              <div class="haircare-info-wrapper">
+                {%- if block.settings.info_title != blank -%}
+                  <p class="haircare-info-title">{{ block.settings.info_title }}</p>
+                {%- endif -%}
+                {%- if block.settings.info_description != blank -%}
+                  <div class="haircare-info-icon">
+                    <button class="haircare-info-icon-btn" type="button" aria-label="More information">
+                      i
+                    </button>
+                    <div class="haircare-info-popover">
+                      {{ block.settings.info_description }}
+                    </div>
+                  </div>
+                {%- endif -%}
+              </div>
+            {%- endif -%}
+          </div>
+        </div>
+
+        <div class="haircare-right">
+          {%- if block.settings.collection != blank and block.settings.collection.products.size > 0 -%}
+            <div class="haircare-slider-wrapper">
+              <button class="haircare-slider-nav prev" onclick="scrollSlider(this, 'prev')" aria-label="Previous products">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                  <path d="M12.5 15L7.5 10L12.5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </button>
+
+              <div class="haircare-slider" data-slider>
+                {%- for product in block.settings.collection.products limit: block.settings.products_to_show -%}
+                  <div class="haircare-slider-item">
+                    {%- render 'product-block', product: product, custom_aspect_ratio: 1 -%}
+                  </div>
+                {%- endfor -%}
+              </div>
+
+              <button class="haircare-slider-nav next" onclick="scrollSlider(this, 'next')" aria-label="Next products">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                  <path d="M7.5 15L12.5 10L7.5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </button>
+              <div class="custom-scrollbar">
+                <div class="custom-scrollbar-track">
+                  <div class="custom-scrollbar-thumb"></div>
+                </div>
+              </div>
+            </div>
+          {%- else -%}
+            <p>No products found. Please select a collection in the theme editor.</p>
+          {%- endif -%}
+
+          <div class="haircare-mobile-content">
+            {%- if block.settings.description_title != blank -%}
+              <p style="margin: 0 0 12px 0; font-size: 14px;">{{ block.settings.description_title }}</p>
+            {%- endif -%}
+
+            {%- if block.settings.info_title != blank or block.settings.info_description != blank -%}
+              <div class="haircare-info-wrapper">
+                {%- if block.settings.info_title != blank -%}
+                  <p class="haircare-info-title">{{ block.settings.info_title }}</p>
+                {%- endif -%}
+                {%- if block.settings.info_description != blank -%}
+                  <div class="haircare-info-icon">
+                    <button class="haircare-info-icon-btn" type="button" aria-label="More information">
+                      i
+                    </button>
+                    <div class="haircare-info-popover">
+                      {{ block.settings.info_description }}
+                    </div>
+                  </div>
+                {%- endif -%}
+              </div>
+            {%- endif -%}
+          </div>
+        </div>
+      </div>
+    </div>
+  {%- endfor -%}
+</div>
+
+<script>
+    // --- Existing Nav Button Script ---
+    function scrollSlider(button, direction) {
+        const wrapper = button.closest('.haircare-slider-wrapper');
+        const slider = wrapper.querySelector('.haircare-slider');
+        const scrollAmount = slider.offsetWidth * 0.8;
+
+        if (direction === 'next') {
+            slider.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+        } else {
+            slider.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+        }
+    }
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // Run this for each haircare block on the page
+        document.querySelectorAll('.haircare-block').forEach(block => {
+            const slider = block.querySelector('.haircare-slider');
+            const scrollbar = block.querySelector('.custom-scrollbar');
+            const track = block.querySelector('.custom-scrollbar-track');
+            const thumb = block.querySelector('.custom-scrollbar-thumb');
+
+            if (!slider || !scrollbar || !track || !thumb) return;
+
+            let isDragging = false;
+            let startX = 0;
+            let scrollLeftStart = 0;
+
+            function updateThumb() {
+                const scrollWidth = slider.scrollWidth;
+                const clientWidth = slider.clientWidth;
+
+                if (scrollWidth <= clientWidth) {
+                    scrollbar.style.display = 'none';
+                    return;
+                }
+
+                scrollbar.style.display = 'block';
+
+                const trackWidth = track.clientWidth;
+
+                // Calculate Thumb Width
+                const thumbWidth = Math.max(20, (clientWidth / scrollWidth) * trackWidth); // 20px min width
+                thumb.style.width = `${thumbWidth}px`;
+
+                // Calculate Thumb Position
+                const maxSliderScroll = scrollWidth - clientWidth;
+                const scrollPercentage = slider.scrollLeft / maxSliderScroll;
+                const maxThumbScroll = trackWidth - thumbWidth;
+                const thumbPosition = scrollPercentage * maxThumbScroll;
+
+                thumb.style.transform = `translateX(${thumbPosition}px)`;
+            }
+
+            // --- Slider Scroll Event ---
+            slider.addEventListener('scroll', () => {
+                if (!isDragging) {
+                    window.requestAnimationFrame(updateThumb);
+                }
+            });
+
+            // --- Thumb Dragging Events ---
+            thumb.addEventListener('mousedown', (e) => {
+                isDragging = true;
+                startX = e.clientX;
+                scrollLeftStart = slider.scrollLeft;
+                thumb.style.cursor = 'grabbing';
+                document.body.style.cursor = 'grabbing';
+                document.body.style.userSelect = 'none';
+            });
+
+            document.addEventListener('mousemove', (e) => {
+                if (!isDragging) return;
+
+                const deltaX = e.clientX - startX;
+                const trackWidth = track.clientWidth;
+                if (trackWidth === 0) return; // Avoid divide by zero
+
+                const scrollWidth = slider.scrollWidth;
+                const clientWidth = slider.clientWidth;
+                const thumbWidth = thumb.offsetWidth;
+
+                const maxThumbScroll = trackWidth - thumbWidth;
+                const maxSliderScroll = scrollWidth - clientWidth;
+
+                if (maxThumbScroll === 0) return; // Avoid divide by zero
+
+                // How much to move the slider
+                const scrollableRatio = maxSliderScroll / maxThumbScroll;
+                const deltaScroll = deltaX * scrollableRatio;
+
+                slider.scrollLeft = scrollLeftStart + deltaScroll;
+
+                window.requestAnimationFrame(updateThumb);
+            });
+
+            document.addEventListener('mouseup', () => {
+                if (isDragging) {
+                    isDragging = false;
+                    thumb.style.cursor = 'grab';
+                    document.body.style.cursor = '';
+                    document.body.style.userSelect = '';
+                }
+            });
+
+            // --- Track Clicking Event ---
+            track.addEventListener('click', (e) => {
+                if (e.target === thumb) return;
+
+                const trackRect = track.getBoundingClientRect();
+                const clickX = e.clientX - trackRect.left;
+                const trackWidth = track.clientWidth;
+                const thumbWidth = thumb.offsetWidth;
+
+                const clickPercent = (clickX - thumbWidth / 2) / (trackWidth - thumbWidth);
+
+                const scrollWidth = slider.scrollWidth;
+                const clientWidth = slider.clientWidth;
+                const maxSliderScroll = scrollWidth - clientWidth;
+
+                let newScrollLeft = clickPercent * maxSliderScroll;
+
+                // Clamp values
+                newScrollLeft = Math.max(0, Math.min(newScrollLeft, maxSliderScroll));
+
+                slider.scrollLeft = newScrollLeft;
+            });
+
+            // --- Resize Observer ---
+            const resizeObserver = new ResizeObserver(() => {
+                window.requestAnimationFrame(updateThumb);
+            });
+
+            resizeObserver.observe(slider);
+
+            // Initial call after layout
+            setTimeout(updateThumb, 50);
+        });
+    });
+</script>
+
+{% schema %}
+{
+  "name": "Custom Collections",
+  "tag": "section",
+  "class": "section",
+  "settings": [],
+  "blocks": [
+    {
+      "type": "collection_block",
+      "name": "Collection Block",
+      "settings": [
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Collection"
+        },
+        {
+          "type": "text",
+          "id": "collection_title",
+          "label": "Collection Title Override",
+          "info": "Leave blank to use collection name"
+        },
+        {
+          "type": "range",
+          "id": "products_to_show",
+          "min": 3,
+          "max": 12,
+          "step": 1,
+          "default": 8,
+          "label": "Products to show"
+        },
+        {
+          "type": "textarea",
+          "id": "description_title",
+          "label": "Description",
+          "default": "DISCOVER THE CUSTOM DIFFERENCE"
+        },
+        {
+          "type": "text",
+          "id": "info_title",
+          "label": "Info Title",
+          "default": "3x stronger hair"
+        },
+        {
+          "type": "textarea",
+          "id": "info_description",
+          "label": "Info Description",
+          "default": "+ less breakage after just one use"
+        },
+        {
+          "type": "color",
+          "id": "bgcolor",
+          "label": "Background color",
+          "default": "#fff"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Custom Collections",
+      "blocks": [
+        {
+          "type": "collection_block"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,81 @@
+/* used for: transparent header, dropdown nav, docked utility bar */
+.section-shop-the-look .slideshow-ctrl:first-child .slideshow-nav {
+  margin-bottom: 16px;
+}
+.section-shop-the-look .slideshow-ctrl:last-child .slideshow-nav {
+  margin-top: 16px;
+}
+.section-shop-the-look .slideshow-nav__btn {
+  background: rgb(var(--body-bg-color));
+  border-radius: var(--btn-border-radius);
+}
+.section-shop-the-look .slideshow-nav__btn:hover {
+  background: rgb(var(--body-bg-color));
+  opacity: 1;
+}
+.section-shop-the-look .slideshow-nav__btn[name=next] {
+  margin-inline-start: 8px;
+}
+.section-shop-the-look .slideshow-nav__btn svg {
+  opacity: 1;
+  filter: none;
+  stroke: rgb(var(--body-text-color));
+  stroke-width: 1.6;
+}
+.section-shop-the-look .product-block {
+  padding: 16px;
+  border: 1px solid rgb(var(--body-text-color)/0.15);
+  background-color: rgb(var(--body-bg-color));
+  color: rgb(var(--body-text-color));
+}
+.section-shop-the-look .block-inner {
+  margin-bottom: 0;
+}
+.section-shop-the-look carousel-slider {
+  margin: 0 -20px;
+}
+.section-shop-the-look .slider {
+  --gutter: 0px;
+  padding-inline-end: 50px;
+}
+.section-shop-the-look .slider__item {
+  margin-inline-end: -1px;
+}
+.section-shop-the-look .slider__item:last-child {
+  padding-inline-end: 20px;
+}
+@media (max-width: 767.98px) and (min-width: 580px) {
+  .section-shop-the-look .product-grid--carousel {
+    --product-columns-desktop: 2;
+  }
+}
+@media (min-width: 768px) {
+  .section-shop-the-look .product-block {
+    border: 0;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  }
+  .section-shop-the-look .text-overlay__rte {
+    max-width: min(65ch, 45vw);
+  }
+}
+@media (max-width: 767.98px) {
+  .section-shop-the-look .slider__item {
+    display: flex;
+  }
+  .section-shop-the-look .slider__item .product-block {
+    flex: 1 0 auto;
+  }
+  .section-shop-the-look carousel-slider {
+    margin: 20px 0;
+  }
+  .section-shop-the-look .text-overlay carousel-slider {
+    margin: -10px -20px 0;
+  }
+}
+
+.section-shop-the-look__single-product {
+  margin: 20px;
+}
+.text-overlay .section-shop-the-look__single-product {
+  margin: -10px 0 20px;
+}

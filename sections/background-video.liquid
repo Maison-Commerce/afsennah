@@ -1,0 +1,530 @@
+{%- if section.settings.video_shopify != blank or section.settings.video_external != blank -%}
+{%- liquid
+  assign using_video_tag = false
+  if section.settings.video_shopify != blank
+    assign using_video_tag = true
+  endif
+
+  if section.settings.placeholder_image
+    assign placeholder_image = section.settings.placeholder_image
+  elsif section.settings.video_shopify
+    assign placeholder_image = section.settings.video_shopify.preview_image
+  endif
+-%}
+
+<link rel="stylesheet" href="{{ 'video.css' | asset_url }}" {%- render 'lazy-stylesheet-attrs' %}>
+<script src="{{ 'video.js' | asset_url }}" defer></script>
+
+<div id="section-id-{{ section.id }}" class="{% unless section.settings.full_width %}container fully-spaced-row{% endunless %} video-section video-section--background" {%- render 'animation-attrs', attrs: 'data-cc-animate' -%}>
+  {% style %}
+    #section-id-{{ section.id }} .height--fixed {
+      --image-height: {{ section.settings.height_mobile }}px;
+    }
+
+    @media (min-width: 768px) {
+      #section-id-{{ section.id }} .height--fixed {
+        --image-height: {{ section.settings.height_desktop }}px;
+      }
+    }
+
+    {%- for block in section.blocks -%}
+      {% if block.type == 'heading' %}
+        #section-id-{{ section.id }} .block-{{ block.id }} {
+          --heading-max-width: {{ block.settings.heading_max_width }}em;
+          font-size: {{ block.settings.title_size_mobile }}px;
+          {%- if block.settings.title_size_mobile >= 90 -%}
+          line-height: 1em;
+          {%- endif %}
+        }
+
+        @media (min-width: 768px) {
+          #section-id-{{ section.id }} .block-{{ block.id }} {
+            {%- assign title_size_medium = block.settings.title_size | times: 0.7 | at_least: block.settings.title_size_mobile -%}
+            font-size: {{ title_size_medium }}px;
+            {%- if title_size_medium >= 90 -%}
+            line-height: 1em;
+            {%- endif %}
+          }
+        }
+
+        @media (min-width: 1100px) {
+          #section-id-{{ section.id }} .block-{{ block.id }} {
+            font-size: {{ block.settings.title_size }}px;
+            {%- if block.settings.title_size >= 90 -%}
+            line-height: 1em;
+            {%- endif %}
+          }
+        }
+      {% endif %}
+    {%- endfor -%}
+  {% endstyle %}
+
+  <div class="height--fixed image-overlay image-overlay--bg-{{ section.settings.overlay_style }}" {%- render 'animation-attrs', attrs: 'data-cc-animate' -%}>
+    <div class="image-overlay__image height__image">
+      <div class="{% unless using_video_tag %}video-section__bg-iframe-video{% endunless %}">
+        <deferred-media>
+          <template>
+            <video-component class="{% if using_video_tag %}has-video{% else %}has-iframe{% endif %}"
+              {%- unless using_video_tag %} data-video-url="{{ section.settings.video_external | escape }}"{% endunless %}
+                            data-video-id="{{ section.id }}"
+                            data-autoplay="true"
+                            data-background="true"
+                            data-description="{{ section.settings.video_description | escape }}">
+              {%- if using_video_tag -%}
+                {{ section.settings.video_shopify | video_tag: playsinline: true, autoplay: true, muted: true, loop: true, poster: '' | replace: '<img ', '<img loading="lazy" hidden ' }}
+              {%- else -%}
+                <div></div>
+              {%- endif -%}
+            </video-component>
+          </template>
+        </deferred-media>
+      </div>
+
+      {% if placeholder_image %}
+        {%- render 'image' with placeholder_image, class: 'video-played-hidden' -%}
+      {% endif %}
+    </div>
+
+    {%- if section.blocks != empty -%}
+      <div class="text-overlay text-overlay--for-banner text-overlay--v-{{ section.settings.text_alignment | split: ' ' | first }} text-overlay--h-{{ section.settings.text_alignment | split: ' ' | last }} image-overlay__over">
+        <div class="text-overlay__inner">
+          <div class="text-overlay__text fade-in-up" {%- render 'animation-attrs', attrs: 'data-cc-animate data-cc-animate-delay="0.5s"' -%}>
+            {% assign skip_block_count = 0 %}
+            {% for block in section.blocks %}
+              {%- liquid
+                if skip_block_count > 0
+                  assign skip_block_count = skip_block_count | minus: 1
+                  continue
+                endif
+              -%}
+              {% case block.type %}
+                {% when 'heading' %}
+                  {% if block.settings.use_h1 %}
+                    <h1 class="text-overlay__title block-{{ block.id }}" {{ block.shopify_attributes }}>{% render 'multiline-text' with block.settings.title %}</h1>
+                  {% else %}
+                    <h2 class="text-overlay__title h1 block-{{ block.id }}" {{ block.shopify_attributes }}>{% render 'multiline-text' with block.settings.title %}</h2>
+                  {% endif %}
+
+                {% when 'subheading' %}
+                  <div class="text-overlay__subheading subheading subheading--over lightish-spaced-row-above" {{ block.shopify_attributes }}>{{ block.settings.subheading | escape }}</div>
+
+                {% when 'text' %}
+                  <div class="text-overlay__rte rte lightly-spaced-row {% if block.settings.enlarge_text %}large-text{% endif %}" {{ block.shopify_attributes }}>{{ block.settings.text }}</div>
+
+                {% when 'button' %}
+                  <div class="text-overlay__button-row button-row lightish-spaced-row-above" {{ block.shopify_attributes }}>
+                    <a class="text-overlay__button button-row__btn {% if block.settings.button_style != 'link' %}btn btn--{{ block.settings.button_style }}{% else %}small-feature-link{% endif %}" href="{{ block.settings.button_link }}">{{ block.settings.button_label | escape }}</a>
+                    {%- assign skip_block_count = 0 -%}
+                    {%- for next_block in section.blocks offset: forloop.index -%}
+                      {%- if next_block.type == 'button' -%}
+                        {%- assign skip_block_count = skip_block_count | plus: 1 -%}
+                        <a class="text-overlay__button button-row__btn {% if next_block.settings.button_style != 'link' %}btn btn--{{ next_block.settings.button_style }}{% else %}small-feature-link{% endif %}" href="{{ next_block.settings.button_link }}" {{ block.shopify_attributes }}>{{ next_block.settings.button_label | escape }}</a>
+                      {%- else -%}
+                        {%- break -%}
+                      {%- endif -%}
+                    {%- endfor -%}
+                  </div>
+
+                {%- when 'countdown' -%}
+                  <script src="{{ 'countdown-timer.js' | asset_url }}" defer></script>
+                  {% style %}
+                    .block-id-{{ block.id }} .countdown {
+                      --countdown-desktop-size: {{ block.settings.number_size }}px;
+                    }
+                  {% endstyle %}
+
+                  <div class="block-id-{{ block.id }} lightly-spaced-row lightish-spaced-row-above countdown-font-{{ block.settings.number_font }} countdown-divider-{{ block.settings.divider_type }}" {{ block.shopify_attributes }}>
+                    {% render 'countdown-timer',
+                      end_date: block.settings.end_date,
+                      end_time: block.settings.end_time,
+                      end_text: block.settings.end_text,
+                      end_midnight: true,
+                      hide_on_end: block.settings.hide_on_end,
+                      show_labels: block.settings.show_timer_labels
+                    %}
+                  </div>
+
+              {% endcase %}
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    {%- endif -%}
+  </div>
+</div>
+{% endif %}
+
+
+{% schema %}
+{
+  "name": "Background video",
+  "class": "section-background-video",
+  "disabled_on": {
+    "groups": [
+      "aside"
+    ]
+  },
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Background videos play on loop, with no sound. If you need a video with sound use the Video section."
+    },
+    {
+      "type": "paragraph",
+      "content": "Please read documentation before using. [Read more](https://cleancanvas.co.uk/support/general/background-video)"
+    },
+    {
+      "id": "video_shopify",
+      "type": "video",
+      "label": "Video upload",
+      "info": "Hosted by Shopify. Replaces External video if both are set."
+    },
+    {
+      "id": "video_external",
+      "type": "text",
+      "label": "External video",
+      "info": "Supports YouTube and Vimeo. Landscape videos with a 16:9 aspect ratio recommended.",
+      "default": "https://www.youtube.com/watch?v=_9VUPq3SxOc"
+    },
+    {
+      "type": "text",
+      "id": "video_description",
+      "label": "Video description",
+      "info": "Describe the video for customers using screen readers. [Learn more](https://help.shopify.com/manual/online-store/themes/theme-structure/theme-features#video-block)"
+    },
+    {
+      "id": "placeholder_image",
+      "type": "image_picker",
+      "label": "Custom placeholder image",
+      "info": "Shows while the video is loading, or if it cannot autoplay."
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Text overlay position",
+      "options": [
+        {
+          "value": "top left",
+          "label": "Top left"
+        },
+        {
+          "value": "top center",
+          "label": "Top center"
+        },
+        {
+          "value": "top right",
+          "label": "Top right"
+        },
+        {
+          "value": "center left",
+          "label": "Middle left"
+        },
+        {
+          "value": "center center",
+          "label": "Middle center"
+        },
+        {
+          "value": "center right",
+          "label": "Middle right"
+        },
+        {
+          "value": "bottom left",
+          "label": "Bottom left"
+        },
+        {
+          "value": "bottom center",
+          "label": "Bottom center"
+        },
+        {
+          "value": "bottom right",
+          "label": "Bottom right"
+        }
+      ],
+      "default": "center center"
+    },
+    {
+      "type": "range",
+      "id": "height_desktop",
+      "min": 200,
+      "max": 1000,
+      "step": 20,
+      "unit": "px",
+      "label": "Desktop fixed height",
+      "default": 600
+    },
+    {
+      "type": "range",
+      "id": "height_mobile",
+      "min": 100,
+      "max": 1000,
+      "step": 20,
+      "unit": "px",
+      "label": "Mobile fixed height",
+      "default": 500
+    },
+    {
+      "id": "full_width",
+      "type": "checkbox",
+      "label": "Full page width",
+      "default": true
+    },
+    {
+      "id": "overlay_style",
+      "type": "select",
+      "label": "Overlay style",
+      "default": "shadow",
+      "options": [
+        {
+          "value": "full",
+          "label": "Tint"
+        },
+        {
+          "value": "box",
+          "label": "Box"
+        },
+        {
+          "value": "shadow",
+          "label": "Text shadow"
+        },
+        {
+          "value": "full image-overlay--bg-shadow",
+          "label": "Text shadow and tint"
+        },
+        {
+          "value": "no_background",
+          "label": "No background"
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "heading",
+      "name": "Heading",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading",
+          "info": "Enter <br> for a line-break",
+          "default": "Background video"
+        },
+        {
+          "type": "range",
+          "id": "heading_max_width",
+          "min": 4,
+          "max": 40,
+          "step": 1,
+          "unit": "em",
+          "label": "Maximum heading width",
+          "default": 15
+        },
+        {
+          "type": "range",
+          "id": "title_size",
+          "min": 20,
+          "max": 150,
+          "step": 2,
+          "unit": "px",
+          "label": "Desktop heading text size",
+          "default": 84
+        },
+        {
+          "type": "range",
+          "id": "title_size_mobile",
+          "min": 20,
+          "max": 150,
+          "step": 2,
+          "unit": "px",
+          "label": "Mobile heading text size",
+          "default": 32
+        },
+        {
+          "type": "checkbox",
+          "id": "use_h1",
+          "label": "Set as primary page heading",
+          "info": "Use <h1> tag. One per page recommended. [Read more](https://cleancanvas.co.uk/support/symmetry/section-h1-setting)",
+          "default": false
+        }
+      ]
+    },
+    {
+      "type": "subheading",
+      "name": "Subheading",
+      "settings": [
+        {
+          "type": "text",
+          "id": "subheading",
+          "label": "Subheading",
+          "default": "Tell your story"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "name": "Text",
+      "settings": [
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text",
+          "default": "<p>Use a video to get a customer's attention</p>"
+        },
+        {
+          "type": "checkbox",
+          "id": "enlarge_text",
+          "label": "Enlarge text",
+          "default": true
+        }
+      ]
+    },
+    {
+      "type": "button",
+      "name": "Button",
+      "settings": [
+        {
+          "type": "paragraph",
+          "content": "Consecutive buttons will show on the same row"
+        },
+        {
+          "type": "text",
+          "id": "button_label",
+          "label": "Button",
+          "default": "Button text"
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "Button link"
+        },
+        {
+          "type": "select",
+          "id": "button_style",
+          "label": "Button style",
+          "default": "primary",
+          "options": [
+            {
+              "label": "Primary",
+              "value": "primary"
+            },
+            {
+              "label": "Secondary",
+              "value": "secondary"
+            },
+            {
+              "label": "Link",
+              "value": "link"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "countdown",
+      "name": "Countdown timer",
+      "settings": [
+        {
+          "type": "text",
+          "id": "end_date",
+          "label": "End date",
+          "info": "Required. Format: YYYY-MM-DD."
+        },
+        {
+          "type": "text",
+          "id": "end_time",
+          "label": "End time (optional)",
+          "info": "Format: 17:00 (24 hour clock). Uses the store's timezone."
+        },
+        {
+          "type": "richtext",
+          "id": "end_text",
+          "label": "End text",
+          "info": "This shows when the date and time elapses."
+        },
+        {
+          "type": "checkbox",
+          "id": "hide_on_end",
+          "label": "Hide the timer when the date and time elapses",
+          "default": false
+        },
+        {
+          "type": "range",
+          "id": "number_size",
+          "min": 20,
+          "max": 120,
+          "step": 2,
+          "unit": "px",
+          "label": "Number size",
+          "default": 40
+        },
+        {
+          "type": "select",
+          "id": "number_font",
+          "label": "Number font",
+          "options": [
+            {
+              "label": "Text font",
+              "value": "base"
+            },
+            {
+              "label": "Heading font",
+              "value": "heading"
+            }
+          ],
+          "default": "base"
+        },
+        {
+          "type": "select",
+          "id": "divider_type",
+          "label": "Divider type",
+          "default": "colon",
+          "options": [
+            {
+              "value": "colon",
+              "label": "Colon"
+            },
+            {
+              "value": "dot",
+              "label": "Dot"
+            },
+            {
+              "value": "line",
+              "label": "Line"
+            },
+            {
+              "value": "none",
+              "label": "None"
+            }
+          ]
+        },
+        {
+          "type": "checkbox",
+          "id": "show_timer_labels",
+          "label": "Show labels",
+          "default": true
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Background video",
+      "blocks": [
+        {
+          "type": "subheading"
+        },
+        {
+          "type": "heading"
+        },
+        {
+          "type": "text"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,798 @@
+{%- liquid
+  if section.settings.media_aspect_ratio == 's'
+  assign custom_media_aspect_ratio = 0
+  for block in section.blocks
+    assign image = null
+    if block.settings.image
+      assign image = block.settings.image
+    elsif block.settings.video_shopify
+      assign image = block.settings.video_shopify.preview_image
+    endif
+    if image and image.aspect_ratio > custom_media_aspect_ratio
+      assign custom_media_aspect_ratio = image.aspect_ratio
+    endif
+  endfor
+
+  elsif section.settings.media_aspect_ratio == 't'
+  assign custom_media_aspect_ratio = 9999999
+  for block in section.blocks
+    assign image = null
+    if block.settings.image
+      assign image = block.settings.image
+    elsif block.settings.video_shopify
+      assign image = block.settings.video_shopify.preview_image
+    endif
+    if image and image.aspect_ratio < custom_media_aspect_ratio
+      assign custom_media_aspect_ratio = image.aspect_ratio
+    endif
+  endfor
+
+  else
+    assign custom_media_aspect_ratio = section.settings.media_aspect_ratio | plus: 0
+  endif
+
+  assign all_icons = true
+  for block in section.blocks
+    if block.settings.show_icon == false
+      assign all_icons = false
+      break
+    endif
+  endfor
+-%}
+<link rel="stylesheet" href="{{ 'feature-rating.css' | asset_url }}" {%- render 'lazy-stylesheet-attrs' %}>
+<link rel="stylesheet" href="{{ 'scrolling-image-list.css' | asset_url }}" {%- render 'lazy-stylesheet-attrs' %}>
+<script src="{{ 'scrolling-image-list.js' | asset_url }}" defer></script>
+
+{%- for block in section.blocks -%}
+  {%- if block.settings.video_shopify != blank -%}
+    <link rel="stylesheet" href="{{ 'video.css' | asset_url }}" {%- render 'lazy-stylesheet-attrs' %}>
+    <script src="{{ 'video.js' | asset_url }}" defer></script>
+    {%- break -%}
+  {%- endif -%}
+{%- endfor -%}
+
+{% style %}
+  {% for block in section.blocks %}
+    #{{ section.id }}[data-current-index="{{ forloop.index }}"] {
+      --text-color: {{ block.settings.text_color.rgb }};
+      --heading-color: {{ block.settings.text_color.rgb }};
+      --link-color: {{ block.settings.text_color.rgb }};
+    }
+
+    #{{ section.id }} .scrolling-image-list__background[data-index="{{ forloop.index }}"] {
+      background: {{ block.settings.bg_gradient | default: block.settings.bg_color }};
+    }
+
+    #{{ section.id }}[data-current-index="{{ forloop.index }}"] [data-index="{{ forloop.index }}"] {
+      --content-fade-delay: 200ms;
+      --content-visibility: visible;
+      opacity: 1;
+    }
+
+    #{{ section.id }}[data-current-index="{{ forloop.index }}"] .scrolling-image-list-dots__dot[data-index="{{ forloop.index }}"] {
+      background: currentColor;
+    }
+  {% endfor %}
+{% endstyle %}
+
+<scrolling-image-list
+    id="{{ section.id }}"
+    data-current-index="1"
+    class="scrolling-image-list block use-color-scheme fully-padded-row--{% if section.blocks.size > 1 %}large{% else %}medium{% endif %}"
+    style="--image-width: {{ section.settings.image_max_width }}px">
+  {% for block in section.blocks %}
+    <div class="scrolling-image-list__background" data-index="{{ forloop.index }}"></div>
+  {% endfor %}
+  <div class="container container--not-mobile">
+    <div class="flexible-layout{% if section.blocks.size == 1 %} valign-middle{% endif %}">
+      <div class="column column--half {% if section.settings.image_position == 'right' %}column--order-push-desktop{% endif %}">
+        <carousel-slider class="carousel block" data-dispatch-events="true">
+          <div class="slider slider--no-scrollbar fade-in-up" {%- render 'animation-attrs', attrs: 'data-cc-animate data-cc-animate-delay="0.1s"' -%}>
+            <div class="slider__grid md:block">
+              {% for block in section.blocks %}
+                <div class="slider__item flex-none basis-full" {{ block.shopify_attributes }}>
+                  <div class="scrolling-image-list__image" data-index="{{ forloop.index }}" tabindex="0">
+                    {%- if block.settings.video_shopify != blank -%}
+                      {%- assign placeholder_image = block.settings.image | default: section.settings.video_shopify.preview_image -%}
+                      <div class="video-section">
+                        <div class="height--adapt" {% if custom_media_aspect_ratio %}style="--aspect-ratio: {{ custom_media_aspect_ratio }}"{% endif %}>
+                          <div class="height__image">
+                            <deferred-media>
+                              <template>
+                                <video-component
+                                    class="has-video"
+                                    data-video-id="{{ section.id }}-{{ block.id }}"
+                                    data-autoplay="true"
+                                    data-background="false"
+                                    data-natural-width= "true">
+                                  {{ block.settings.video_shopify | video_tag: playsinline: true, controls: false, autoplay: true, muted: true, loop: true, poster: '' | replace: '<img ', '<img loading="lazy" hidden ' }}
+                                </video-component>
+                              </template>
+                            </deferred-media>
+                            {%- liquid
+                              if placeholder_image
+                                render 'image' with placeholder_image, class: 'video-played-hidden', size_cols_desktop: 2, custom_aspect_ratio: custom_media_aspect_ratio
+                              endif
+                            -%}
+                          </div>
+                        </div>
+                      </div>
+
+                    {%- elsif block.settings.image != blank -%}
+                      {%- render 'image' with block.settings.image, size_cols_desktop: 2, custom_aspect_ratio: section.settings.crop_ratio, custom_aspect_ratio: custom_media_aspect_ratio -%}
+
+                    {%- else -%}
+                      {%- liquid
+                        assign placeholder_svg_count = placeholder_svg_count | default: -1 | plus: 1 | modulo: 6
+                        assign placeholder_svg = placeholder_svg_count | plus: 1 | prepend: 'collection-'
+                      -%}
+                      <div class="placeholder-image">{{ placeholder_svg | placeholder_svg_tag: 'placeholder-svg' }}</div>
+                    {%- endif -%}
+
+                    <div class="mobile-only fully-spaced-row scrolling-image-list__content scrolling-image-list__content--mobile
+                                {%- if block.settings.show_icon %} scrolling-image-list__content--with-icon
+                                  {%- if block.settings.show_segments and section.settings.segment_position == 'over-text' %} scrolling-image-list__content--icon-beside-rating{% endif %}
+                                {%- endif %}" data-index="{{ forloop.index }}">
+                      {%- if section.settings.heading != blank -%}
+                        <div class="subheading spaced-row" role="heading" aria-level="2">{{ section.settings.heading }}</div>
+                      {%- endif -%}
+
+                      {%- if block.settings.show_icon -%}
+                        {%- if block.settings.icon_image == blank -%}
+                          {%- render 'icon', icon: block.settings.icon, size: 'large' -%}
+                        {%- else -%}
+                          <div class="icon icon--large">
+                            {%- render 'image' with block.settings.icon_image, sizes: '38px', widths: '38, 76' -%}
+                          </div>
+                        {%- endif -%}
+                      {%- endif -%}
+
+                      {%- if block.settings.show_segments and section.settings.segment_position == 'over-text' -%}
+                        <div class="feature-rating-row">
+                          {% render 'feature-rating',
+                            segments: block.settings.segments,
+                            active_segment: block.settings.active_segment,
+                            fill_segments: block.settings.fill_segments,
+                            show_labels: block.settings.show_labels,
+                            label_left: block.settings.label_left,
+                            label_middle: block.settings.label_middle,
+                            label_right: block.settings.label_right
+                          %}
+                        </div>
+                      {%- endif -%}
+
+                      {%- if block.settings.heading != blank -%}
+                        <h3 class="h2">{{ block.settings.heading }}</h3>
+                      {%- endif -%}
+
+                      {%- if block.settings.text != blank -%}
+                        <div class="rte">{{ block.settings.text }}</div>
+                      {%- endif -%}
+
+                      {%- if block.settings.show_segments and section.settings.segment_position == 'under-text' -%}
+                        <div class="feature-rating-row">
+                          {% render 'feature-rating',
+                            segments: block.settings.segments,
+                            active_segment: block.settings.active_segment,
+                            fill_segments: block.settings.fill_segments,
+                            show_labels: block.settings.show_labels,
+                            label_left: block.settings.label_left,
+                            label_middle: block.settings.label_middle,
+                            label_right: block.settings.label_right
+                          %}
+                        </div>
+                      {%- endif -%}
+                    </div>
+                  </div>
+                </div>
+              {% endfor %}
+            </div>
+          </div>
+
+          <div class="scrolling-image-list-dots flex justify-center mobile-only js" role="presentation">
+            {%- for block in section.blocks -%}
+              <div class="scrolling-image-list-dots__dot" data-index="{{ forloop.index }}"></div>
+            {%- endfor -%}
+          </div>
+        </carousel-slider>
+      </div>
+
+      <div class="column column--half desktop-only scrolling-image-list__content-column" {%- render 'animation-attrs', attrs: 'data-cc-animate' -%}>
+        <div class="scrolling-image-list__content-area">
+          <div class="feature-text-paired">
+            {%- if section.settings.heading != blank -%}
+              <div class="subheading spaced-row{% if all_icons %} scrolling-image-list__subheading-with-icon{% endif %}" role="heading" aria-level="2">{{ section.settings.heading }}</div>
+            {%- endif -%}
+
+            <div class="scrolling-image-list__content-list">
+              {% for block in section.blocks %}
+                <div class="spaced-row scrolling-image-list__content{% if block.settings.show_icon %} scrolling-image-list__content--with-icon{% if block.settings.show_segments and section.settings.segment_position == 'over-text' %} scrolling-image-list__content--icon-beside-rating{% endif %}{% endif %}" data-index="{{ forloop.index }}" tabindex="0">
+                  {%- if block.settings.show_icon -%}
+                    {%- if block.settings.icon_image == blank -%}
+                      {%- render 'icon', icon: block.settings.icon, size: 'large' -%}
+                    {%- else -%}
+                      <div class="icon icon--large">
+                        {%- render 'image' with block.settings.icon_image, sizes: '38px', widths: '38, 76' -%}
+                      </div>
+                    {%- endif -%}
+                  {%- endif -%}
+
+                  {%- if block.settings.show_segments and section.settings.segment_position == 'over-text' -%}
+                    <div class="feature-rating-row">
+                      {% render 'feature-rating',
+                        segments: block.settings.segments,
+                        active_segment: block.settings.active_segment,
+                        fill_segments: block.settings.fill_segments,
+                        show_labels: block.settings.show_labels,
+                        label_left: block.settings.label_left,
+                        label_middle: block.settings.label_middle,
+                        label_right: block.settings.label_right
+                      %}
+                    </div>
+                  {%- endif -%}
+
+                  {%- if block.settings.heading != blank -%}
+                    <h3 class="h2">{{ block.settings.heading }}</h3>
+                  {%- endif -%}
+
+                  {%- if block.settings.text != blank -%}
+                    <div class="rte">{{ block.settings.text }}</div>
+                  {%- endif -%}
+
+                  {%- if block.settings.show_segments and section.settings.segment_position == 'under-text' -%}
+                    <div class="feature-rating-row">
+                      {% render 'feature-rating',
+                        segments: block.settings.segments,
+                        active_segment: block.settings.active_segment,
+                        fill_segments: block.settings.fill_segments,
+                        show_labels: block.settings.show_labels,
+                        label_left: block.settings.label_left,
+                        label_middle: block.settings.label_middle,
+                        label_right: block.settings.label_right
+                      %}
+                    </div>
+                  {%- endif -%}
+                </div>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</scrolling-image-list>
+
+<style>
+    /* Desktop horizontal scroll styles */
+    @media (min-width: 768px) {
+        /* Make the slider scroll horizontally */
+        .scrolling-image-list .slider {
+            overflow-x: auto;
+            overflow-y: hidden;
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+            cursor: grab;
+            user-select: none;
+        }
+
+        /* Grabbing cursor when dragging */
+        .scrolling-image-list .slider.is-grabbing {
+            cursor: grabbing;
+            scroll-snap-type: none;
+        }
+
+        /* Change grid to horizontal layout */
+        .scrolling-image-list .slider__grid {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: nowrap;
+        }
+
+        /* Make each slide take full width */
+        .scrolling-image-list .slider__item {
+            flex: 0 0 auto;
+            width: var(--image-width, 700px);
+            scroll-snap-align: center;
+        }
+
+        /* Keep content column visible and positioned */
+        .scrolling-image-list .scrolling-image-list__content-column {
+            /*position: sticky;*/
+            /*top: 50%;*/
+            /*transform: translateY(-50%);*/
+            display: flex;
+            align-items: center;
+        }
+
+        /* Navigation buttons */
+        .scrolling-image-list-nav {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            transform: translateY(-50%);
+            display: flex;
+            justify-content: space-between;
+            pointer-events: none;
+            z-index: 10;
+            padding: 0 20px;
+        }
+
+        .scrolling-image-list-nav__btn {
+            pointer-events: auto;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: white;
+            border: 1px solid rgba(var(--body-text-color), 0.1);
+            color: rgb(var(--body-text-color));
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .scrolling-image-list-nav__btn:hover:not([disabled]) {
+            background: rgba(var(--body-bg-color), 1);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            transform: scale(1.05);
+        }
+
+        .scrolling-image-list-nav__btn[disabled] {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        .scrolling-image-list-nav__btn svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        /* Show dots on desktop */
+        .scrolling-image-list .scrolling-image-list-dots {
+            display: flex !important;
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
+            gap: 8px;
+        }
+
+        .scrolling-image-list-dots__dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(var(--body-text-color), 0.3);
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        .scrolling-image-list-dots__dot:hover {
+            background: rgba(var(--body-text-color), 0.5);
+            transform: scale(1.2);
+        }
+
+        /* Hide scrollbar on desktop for cleaner look */
+        .scrolling-image-list .slider::-webkit-scrollbar {
+            display: none;
+        }
+
+        .scrolling-image-list .slider {
+            scrollbar-width: none;
+        }
+        .js .scrolling-image-list__content-area {
+            position: static;
+        }
+    }
+</style>
+
+{% schema %}
+{
+  "name": "Key features",
+  "class": "section-key-features",
+  "disabled_on": {
+    "groups": [
+      "aside"
+    ]
+  },
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Key features"
+    },
+    {
+      "type": "range",
+      "id": "image_max_width",
+      "min": 340,
+      "max": 700,
+      "step": 10,
+      "unit": "px",
+      "label": "Image max width",
+      "default": 700
+    },
+    {
+      "type": "select",
+      "id": "media_aspect_ratio",
+      "label": "Media shape",
+      "default": "1",
+      "options": [
+        {
+          "value": "s",
+          "label": "Height of shortest media"
+        },
+        {
+          "value": "t",
+          "label": "Height of tallest media"
+        },
+        {
+          "value": "2",
+          "label": "Landscape (2x1)"
+        },
+        {
+          "value": "1.5",
+          "label": "Landscape (6x4)"
+        },
+        {
+          "value": "1.25",
+          "label": "Landscape (5x4)"
+        },
+        {
+          "value": "1",
+          "label": "Square (1x1)"
+        },
+        {
+          "value": "0.8",
+          "label": "Portrait (4x5)"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "image_position",
+      "label": "Image alignment",
+      "default": "left",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "segment_position",
+      "label": "Segments position",
+      "default": "over-text",
+      "options": [
+        {
+          "value": "over-text",
+          "label": "Over text"
+        },
+        {
+          "value": "under-text",
+          "label": "Under text"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 8,
+  "blocks": [
+    {
+      "type": "feature",
+      "name": "Feature",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "id": "video_shopify",
+          "type": "video",
+          "label": "Video upload",
+          "info": "Hosted by Shopify"
+        },
+        {
+          "type": "color",
+          "id": "bg_color",
+          "label": "Background color",
+          "default": "#e3e3e3"
+        },
+        {
+          "type": "color_background",
+          "id": "bg_gradient",
+          "label": "Background gradient"
+        },
+        {
+          "type": "color",
+          "id": "text_color",
+          "label": "Text color",
+          "default": "#505050"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Feature"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text",
+          "default": "<p>Tell your customers a few important details about your products or practices.</p>"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_segments",
+          "label": "Show segments",
+          "default": true
+        },
+        {
+          "type": "range",
+          "id": "segments",
+          "min": 4,
+          "max": 10,
+          "step": 1,
+          "label": "Segments",
+          "default": 5
+        },
+        {
+          "type": "text",
+          "id": "active_segment",
+          "label": "Active segment",
+          "default": "4"
+        },
+        {
+          "type": "checkbox",
+          "id": "fill_segments",
+          "label": "Fill segments up to active segment",
+          "default": true
+        },
+        {
+          "type": "checkbox",
+          "id": "show_labels",
+          "label": "Show labels",
+          "info": "Labels will be read by screen readers when hidden.",
+          "default": true
+        },
+        {
+          "type": "text",
+          "id": "label_left",
+          "label": "Left label"
+        },
+        {
+          "type": "text",
+          "id": "label_middle",
+          "label": "Middle label",
+          "info": "Optional"
+        },
+        {
+          "type": "text",
+          "id": "label_right",
+          "label": "Right label"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_icon",
+          "label": "Show icon",
+          "default": false
+        },
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "default": "star",
+          "options": [
+            {
+              "value": "accessible",
+              "label": "Accessible"
+            },
+            {
+              "value": "award",
+              "label": "Award"
+            },
+            {
+              "value": "beach",
+              "label": "Beach"
+            },
+            {
+              "value": "box",
+              "label": "Box"
+            },
+            {
+              "value": "briefcase",
+              "label": "Briefcase"
+            },
+            {
+              "value": "calendar",
+              "label": "Calendar"
+            },
+            {
+              "value": "chat_bubble",
+              "label": "Chat bubble"
+            },
+            {
+              "value": "check_mark",
+              "label": "Check mark"
+            },
+            {
+              "value": "check_mark_in_circle",
+              "label": "Check mark in circle"
+            },
+            {
+              "value": "clock",
+              "label": "Clock"
+            },
+            {
+              "value": "credit_card",
+              "label": "Credit card"
+            },
+            {
+              "value": "dollar_sign",
+              "label": "Dollar sign"
+            },
+            {
+              "value": "dryer",
+              "label": "Dryer"
+            },
+            {
+              "value": "eye",
+              "label": "Eye"
+            },
+            {
+              "value": "feather",
+              "label": "Feather"
+            },
+            {
+              "value": "gift",
+              "label": "Gift"
+            },
+            {
+              "value": "heart",
+              "label": "Heart"
+            },
+            {
+              "value": "iron",
+              "label": "Iron"
+            },
+            {
+              "value": "leaf",
+              "label": "Leaf"
+            },
+            {
+              "value": "leather",
+              "label": "Leather"
+            },
+            {
+              "value": "lock",
+              "label": "Lock"
+            },
+            {
+              "value": "map_pin",
+              "label": "Map pin"
+            },
+            {
+              "value": "pants",
+              "label": "Pants"
+            },
+            {
+              "value": "percent",
+              "label": "Percent"
+            },
+            {
+              "value": "plane",
+              "label": "Plane"
+            },
+            {
+              "value": "price_tag",
+              "label": "Price tag"
+            },
+            {
+              "value": "question_mark",
+              "label": "Question mark"
+            },
+            {
+              "value": "recycle",
+              "label": "Recycle"
+            },
+            {
+              "value": "return",
+              "label": "Return"
+            },
+            {
+              "value": "ruler",
+              "label": "Ruler"
+            },
+            {
+              "value": "scissors",
+              "label": "Scissors"
+            },
+            {
+              "value": "shirt",
+              "label": "Shirt"
+            },
+            {
+              "value": "shoe",
+              "label": "Shoe"
+            },
+            {
+              "value": "silhouette",
+              "label": "Silhouette"
+            },
+            {
+              "value": "star",
+              "label": "Star"
+            },
+            {
+              "value": "sun-high",
+              "label": "Sun"
+            },
+            {
+              "value": "truck",
+              "label": "Truck"
+            },
+            {
+              "value": "washing",
+              "label": "Washing"
+            },
+            {
+              "value": "world",
+              "label": "World"
+            }
+          ]
+        },
+        {
+          "type": "image_picker",
+          "id": "icon_image",
+          "label": "Icon image"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Key features",
+      "settings": {
+      },
+      "blocks": [
+        {
+          "type": "feature",
+          "settings": {
+            "bg_color": "#e3e3e3",
+            "text_color": "#505050",
+            "heading": "Stretch",
+            "active_segment": "4"
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "bg_color": "#c3c3c3",
+            "text_color": "#505050",
+            "heading": "Warmth",
+            "active_segment": "2"
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "bg_color": "#e3e3e3",
+            "text_color": "#505050",
+            "heading": "Water resistance",
+            "active_segment": "3"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

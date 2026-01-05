@@ -1,0 +1,32 @@
+/* used for: transparent header, dropdown nav, docked utility bar */
+@media (min-width: 768px) {
+  .cc-animate-enabled [data-cc-animate] {
+    opacity: 0;
+  }
+  .js .cc-animate-enabled [data-cc-animate=""],
+  .js .cc-animate-enabled [data-cc-animate].fade-in {
+    opacity: 0;
+  }
+  .js .cc-animate-enabled [data-cc-animate=""].cc-animate-in,
+  .js .cc-animate-enabled [data-cc-animate].fade-in.cc-animate-in {
+    opacity: 1;
+    transition: opacity calc(var(--aos-animate-duration, 1s) * 0.8) 0.3s cubic-bezier(0.39, 0.575, 0.565, 1);
+  }
+  .js .cc-animate-enabled [data-cc-animate].fade-in-up {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  .js .cc-animate-enabled [data-cc-animate].fade-in-up.cc-animate-in {
+    transform: translateY(0);
+    opacity: 1;
+    transition: transform calc(var(--aos-animate-duration, 1s) * 0.6) cubic-bezier(0.39, 0.575, 0.565, 1), opacity calc(var(--aos-animate-duration, 1s) * 0.6) cubic-bezier(0.39, 0.575, 0.565, 1);
+  }
+}
+@media (prefers-reduced-motion) {
+  .cc-animate-enabled [data-cc-animate] {
+    opacity: 1 !important;
+  }
+}
+.no-js .cc-animate-enabled [data-cc-animate] {
+  opacity: 1 !important;
+}

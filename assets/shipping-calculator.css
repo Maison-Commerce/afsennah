@@ -1,0 +1,15 @@
+/* used for: transparent header, dropdown nav, docked utility bar */
+shipping-calculator country-province-selector {
+  display: grid;
+  grid-template-columns: 1fr;
+  align-items: flex-end;
+  gap: 1em;
+}
+@media (min-width: 768px) {
+  shipping-calculator country-province-selector {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+shipping-calculator input {
+  width: 100%;
+}

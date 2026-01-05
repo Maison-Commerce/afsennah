@@ -1,0 +1,50 @@
+<div class="container fully-spaced-row">
+  <div class="small-form account-form" {%- render 'animation-attrs', attrs: 'data-cc-animate' -%}>
+    <div id="customer">
+      <!-- Create Customer -->
+      <div id="create-customer">
+        <div class="page-header">
+          <h2 class="title">{{ 'customer.register.title' | t }}</h2>
+        </div>
+
+        {% form 'create_customer' %}
+          {%- render 'form-errors', form: form -%}
+
+          <div class="input-row">
+            <label for="first_name" class="login">{{ 'customer.register.first_name' | t }}</label>
+            <input type="text" value="" name="customer[first_name]" id="first_name" class="large" size="30" />
+          </div>
+
+          <div class="input-row">
+            <label for="last_name" class="login">{{ 'customer.register.last_name' | t }}</label>
+            <input type="text" value="" name="customer[last_name]" id="last_name" class="large" size="30" />
+          </div>
+
+          <div class="input-row">
+            <label for="email" class="login">{{ 'customer.register.email' | t }}</label>
+            <input type="email" value="" name="customer[email]" id="email" class="large" size="30" />
+          </div>
+
+          <div class="input-row">
+            <label for="password" class="login">{{ 'customer.register.password' | t }}</label>
+            <input type="password" value="" name="customer[password]" id="password" class="large password" size="30" />
+          </div>
+
+          <div class="lightly-spaced-row-above">
+            <button class="btn" type="submit">{{ 'customer.register.submit' | t }}</button>
+            <span class="note">
+              {{ 'customer.register.have_account' | t }}
+              <a href="{{ routes.account_login_url }}" class="underline">{{ 'customer.register.log_in' | t }}</a>
+            </span>
+          </div>
+        {% endform %}
+      </div><!-- /#create-customer -->
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Customer register"
+}
+{% endschema %}

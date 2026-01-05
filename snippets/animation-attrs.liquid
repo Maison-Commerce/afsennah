@@ -1,0 +1,13 @@
+{%- liquid
+  if settings.animations_enabled_desktop
+    if section.location == 'header'
+      if settings.animations_disabled_first_section == false
+        echo ' ' | append: attrs
+      endif
+    elsif section.location == 'footer'
+      echo ' ' | append: attrs
+    elsif settings.animations_disabled_first_section == false or section.index0 >= 1 or always
+      echo ' ' | append: attrs
+    endif
+  endif
+-%}

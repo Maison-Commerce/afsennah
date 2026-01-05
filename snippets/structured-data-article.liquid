@@ -1,0 +1,11 @@
+{%- comment -%}
+  Parameters:
+  - article {Object} - Article object.
+
+  Usage:
+  {% render 'structured-data-article', article: article %}
+{%- endcomment -%}
+
+<script type="application/ld+json">
+  {{ article | structured_data }}
+</script>

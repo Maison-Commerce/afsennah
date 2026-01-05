@@ -1,0 +1,33 @@
+gift-card-recipient {
+  display: flex;
+  flex-wrap: wrap;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.gift-card-recipient__fields {
+  display: none;
+}
+
+.gift-card-recipient__checkbox:checked ~ .gift-card-recipient__fields {
+  display: block;
+  flex: 0 0 100%;
+}
+
+.no-js .gift-card-recipient__fields {
+  display: block;
+  max-height: unset;
+  width: 100%;
+}
+
+.no-js .gift-card-recipient__checkbox,
+.no-js .gift-card-recipient__checkbox-label {
+  display: none;
+}
+
+.gift-card-recipient__fields {
+  width: 100%;
+}
+.gift-card-recipient__fields .input-row {
+  margin-bottom: 0;
+}

@@ -1,0 +1,24 @@
+{%- if form == blank or form.errors -%}
+  {%- liquid
+    if error_heading == blank
+      assign error_heading = 'contact.form.error_heading' | t
+    endif
+  -%}
+  <div class="alert errors{% if form == blank %} js-errors{% endif %}{% if class != blank %} {{ class }}{% endif %}"{% if id != blank %} id="{{ id }}"{% endif %}{% if form == blank %} hidden{% endif %}>
+    <div role="heading" aria-level="3">{{ error_heading }}</div>
+    <div class="errors-text{% if form == blank %} js-errors-text{% endif %}">
+      {%- if form.errors -%}
+        <ul class="styled-list"{% if form != blank %} autofocus{% endif %}>
+          {%- for field in form.errors -%}
+            <li>
+              {% if field != 'form' %}
+                {{ form.errors.translated_fields[field] | replace: 'body', 'message' | capitalize }} 
+              {% endif %}
+              {{ form.errors.messages[field] }}
+            </li>
+          {%- endfor -%}
+        </ul>
+      {%- endif -%}
+    </div>
+  </div>
+{%- endif -%}

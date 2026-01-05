@@ -1,0 +1,692 @@
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-vs-comparison-{{ ai_gen_id }} {
+  padding: 80px 20px;
+  background: {{ block.settings.background_color }};
+  position: relative;
+  overflow: hidden;
+  }
+
+  .ai-vs-comparison-{{ ai_gen_id }}::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at 20% 50%, rgba(249, 115, 22, 0.03) 0%, transparent 50%),
+  radial-gradient(circle at 80% 50%, rgba(59, 130, 246, 0.03) 0%, transparent 50%);
+  pointer-events: none;
+  }
+
+  .ai-vs-comparison-container-{{ ai_gen_id }} {
+  max-width: 1280px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+  }
+
+  .ai-vs-comparison-title-{{ ai_gen_id }} {
+  text-align: center;
+  margin-bottom: 60px;
+  color: {{ block.settings.title_color }};
+  font-size: {{ block.settings.title_size }}px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  }
+
+  .ai-vs-comparison-grid-{{ ai_gen_id }} {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 60px;
+  align-items: center;
+  }
+
+  .ai-vs-comparison-vs-{{ ai_gen_id }} {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: {{ block.settings.vs_text_size }}px;
+  font-weight: 800;
+  color: {{ block.settings.vs_text_color }};
+  background: {{ block.settings.vs_bg_color }};
+  border-radius: 50%;
+  width: 100px;
+  height: 100px;
+  flex-shrink: 0;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1), 0 0 0 8px rgba(255, 255, 255, 0.5);
+  z-index: 2;
+  animation: pulse-{{ ai_gen_id }} 3s ease-in-out infinite;
+  }
+
+  @keyframes pulse-{{ ai_gen_id }} {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  }
+
+  .ai-vs-comparison-product-{{ ai_gen_id }} {
+  background: #ffffff;
+  border-radius: 24px;
+  padding: 40px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02), 0 12px 24px rgba(0, 0, 0, 0.04);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  position: relative;
+  }
+
+  .ai-vs-comparison-product-{{ ai_gen_id }}:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.04), 0 20px 40px rgba(0, 0, 0, 0.08);
+  }
+
+  .ai-vs-comparison-product-{{ ai_gen_id }}.competitor::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #ef4444, #dc2626);
+  border-radius: 24px 24px 0 0;
+  }
+
+  .ai-vs-comparison-product-{{ ai_gen_id }}.our-product::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #10b981, #059669);
+  border-radius: 24px 24px 0 0;
+  }
+
+  .ai-vs-comparison-product-image-{{ ai_gen_id }} {
+  width: 100%;
+  aspect-ratio: 1;
+  margin: 0 auto 32px;
+  border-radius: 16px;
+  overflow: hidden;
+  background: #f9fafb;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  }
+
+  .ai-vs-comparison-product-image-{{ ai_gen_id }} img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+  }
+
+  .ai-vs-comparison-product-{{ ai_gen_id }}:hover .ai-vs-comparison-product-image-{{ ai_gen_id }} img {
+  transform: scale(1.05);
+  }
+
+  .ai-vs-comparison-placeholder-{{ ai_gen_id }} {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  }
+
+  .ai-vs-comparison-placeholder-{{ ai_gen_id }} svg {
+  width: 80px;
+  height: 80px;
+  opacity: 0.2;
+  }
+
+  .ai-vs-comparison-product-title-{{ ai_gen_id }} {
+  font-size: {{ block.settings.product_title_size }}px;
+  font-weight: 700;
+  margin: 0 0 24px 0;
+  text-align: center;
+  letter-spacing: -0.01em;
+  }
+
+  .ai-vs-comparison-competitor-title-{{ ai_gen_id }} {
+  color: {{ block.settings.competitor_title_color }};
+  }
+
+  .ai-vs-comparison-our-title-{{ ai_gen_id }} {
+  color: {{ block.settings.our_title_color }};
+  }
+
+  .ai-vs-comparison-features-{{ ai_gen_id }} {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 32px 0;
+  }
+
+  .ai-vs-comparison-feature-{{ ai_gen_id }} {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 16px;
+  font-size: {{ block.settings.feature_text_size }}px;
+  line-height: 1.6;
+  opacity: 0;
+  animation: fadeInUp-{{ ai_gen_id }} 0.5s ease forwards;
+  }
+
+  .ai-vs-comparison-feature-{{ ai_gen_id }}:nth-child(1) { animation-delay: 0.1s; }
+  .ai-vs-comparison-feature-{{ ai_gen_id }}:nth-child(2) { animation-delay: 0.2s; }
+  .ai-vs-comparison-feature-{{ ai_gen_id }}:nth-child(3) { animation-delay: 0.3s; }
+  .ai-vs-comparison-feature-{{ ai_gen_id }}:nth-child(4) { animation-delay: 0.4s; }
+
+  @keyframes fadeInUp-{{ ai_gen_id }} {
+  from {
+  opacity: 0;
+  transform: translateY(10px);
+  }
+  to {
+  opacity: 1;
+  transform: translateY(0);
+  }
+  }
+
+  .ai-vs-comparison-feature-icon-{{ ai_gen_id }} {
+  width: 24px;
+  height: 24px;
+  margin-right: 12px;
+  flex-shrink: 0;
+  margin-top: 2px;
+  }
+
+  .ai-vs-comparison-feature-text-{{ ai_gen_id }} {
+  color: {{ block.settings.feature_text_color }};
+  flex: 1;
+  }
+
+  .ai-vs-comparison-button-{{ ai_gen_id }} {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 16px 32px;
+  background: {{ block.settings.button_bg_color }};
+  color: {{ block.settings.button_text_color }};
+  text-decoration: none;
+  border-radius: {{ block.settings.button_border_radius }}px;
+  font-size: {{ block.settings.button_text_size }}px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  .ai-vs-comparison-button-{{ ai_gen_id }}:hover {
+  background: {{ block.settings.button_hover_bg_color }};
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+  }
+
+  .ai-vs-comparison-badge-{{ ai_gen_id }} {
+  display: inline-block;
+  padding: 6px 16px;
+  background: linear-gradient(135deg, #10b981, #059669);
+  color: white;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 16px;
+  }
+
+  @media screen and (max-width: 968px) {
+  .ai-vs-comparison-{{ ai_gen_id }} {
+  padding: 60px 20px;
+  }
+
+  .ai-vs-comparison-grid-{{ ai_gen_id }} {
+  grid-template-columns: 1fr;
+  gap: 40px;
+  }
+
+  .ai-vs-comparison-vs-{{ ai_gen_id }} {
+  width: 80px;
+  height: 80px;
+  font-size: 20px;
+  margin: 0 auto;
+  order: 1;
+  }
+
+  .ai-vs-comparison-product-{{ ai_gen_id }} {
+  padding: 32px 24px;
+  }
+
+  .ai-vs-comparison-product-{{ ai_gen_id }}.competitor {
+  order: 0;
+  }
+
+  .ai-vs-comparison-product-{{ ai_gen_id }}.our-product {
+  order: 2;
+  }
+
+  .ai-vs-comparison-title-{{ ai_gen_id }} {
+  margin-bottom: 40px;
+  }
+  }
+
+  @media screen and (max-width: 480px) {
+  .ai-vs-comparison-{{ ai_gen_id }} {
+  padding: 40px 16px;
+  }
+
+  .ai-vs-comparison-product-{{ ai_gen_id }} {
+  padding: 24px 20px;
+  }
+  }
+{% endstyle %}
+
+<div class="ai-vs-comparison-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  <div class="ai-vs-comparison-container-{{ ai_gen_id }}">
+    {% if block.settings.title != blank %}
+      <h2 class="ai-vs-comparison-title-{{ ai_gen_id }}">{{ block.settings.title }}</h2>
+    {% endif %}
+
+    <div class="ai-vs-comparison-grid-{{ ai_gen_id }}">
+      <div class="ai-vs-comparison-product-{{ ai_gen_id }} competitor">
+        <div class="ai-vs-comparison-product-image-{{ ai_gen_id }}">
+          {% if block.settings.competitor_image %}
+            <img
+                src="{{ block.settings.competitor_image | image_url: width: 600 }}"
+                alt="{{ block.settings.competitor_image.alt | escape }}"
+                loading="lazy"
+                width="300"
+                height="300"
+            >
+          {% else %}
+            <div class="ai-vs-comparison-placeholder-{{ ai_gen_id }}">
+              {{ 'product-1' | placeholder_svg_tag }}
+            </div>
+          {% endif %}
+        </div>
+
+        {% if block.settings.competitor_title != blank %}
+          <h3 class="ai-vs-comparison-product-title-{{ ai_gen_id }} ai-vs-comparison-competitor-title-{{ ai_gen_id }}">
+            {{ block.settings.competitor_title }}
+          </h3>
+        {% endif %}
+
+        <ul class="ai-vs-comparison-features-{{ ai_gen_id }}">
+          {% if block.settings.competitor_feature_1 != blank %}
+            <li class="ai-vs-comparison-feature-{{ ai_gen_id }}">
+              <svg class="ai-vs-comparison-feature-icon-{{ ai_gen_id }}" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round">
+                <circle cx="12" cy="12" r="10" opacity="0.1" fill="#ef4444"/>
+                <line x1="15" y1="9" x2="9" y2="15"></line>
+                <line x1="9" y1="9" x2="15" y2="15"></line>
+              </svg>
+              <span class="ai-vs-comparison-feature-text-{{ ai_gen_id }}">{{ block.settings.competitor_feature_1 }}</span>
+            </li>
+          {% endif %}
+
+          {% if block.settings.competitor_feature_2 != blank %}
+            <li class="ai-vs-comparison-feature-{{ ai_gen_id }}">
+              <svg class="ai-vs-comparison-feature-icon-{{ ai_gen_id }}" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round">
+                <circle cx="12" cy="12" r="10" opacity="0.1" fill="#ef4444"/>
+                <line x1="15" y1="9" x2="9" y2="15"></line>
+                <line x1="9" y1="9" x2="15" y2="15"></line>
+              </svg>
+              <span class="ai-vs-comparison-feature-text-{{ ai_gen_id }}">{{ block.settings.competitor_feature_2 }}</span>
+            </li>
+          {% endif %}
+
+          {% if block.settings.competitor_feature_3 != blank %}
+            <li class="ai-vs-comparison-feature-{{ ai_gen_id }}">
+              <svg class="ai-vs-comparison-feature-icon-{{ ai_gen_id }}" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round">
+                <circle cx="12" cy="12" r="10" opacity="0.1" fill="#ef4444"/>
+                <line x1="15" y1="9" x2="9" y2="15"></line>
+                <line x1="9" y1="9" x2="15" y2="15"></line>
+              </svg>
+              <span class="ai-vs-comparison-feature-text-{{ ai_gen_id }}">{{ block.settings.competitor_feature_3 }}</span>
+            </li>
+          {% endif %}
+
+          {% if block.settings.competitor_feature_4 != blank %}
+            <li class="ai-vs-comparison-feature-{{ ai_gen_id }}">
+              <svg class="ai-vs-comparison-feature-icon-{{ ai_gen_id }}" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round">
+                <circle cx="12" cy="12" r="10" opacity="0.1" fill="#ef4444"/>
+                <line x1="15" y1="9" x2="9" y2="15"></line>
+                <line x1="9" y1="9" x2="15" y2="15"></line>
+              </svg>
+              <span class="ai-vs-comparison-feature-text-{{ ai_gen_id }}">{{ block.settings.competitor_feature_4 }}</span>
+            </li>
+          {% endif %}
+        </ul>
+      </div>
+
+      <div class="ai-vs-comparison-vs-{{ ai_gen_id }}">
+        VS
+      </div>
+
+      <div class="ai-vs-comparison-product-{{ ai_gen_id }} our-product">
+        <div class="ai-vs-comparison-product-image-{{ ai_gen_id }}">
+          {% if block.settings.our_image %}
+            <img
+                src="{{ block.settings.our_image | image_url: width: 600 }}"
+                alt="{{ block.settings.our_image.alt | escape }}"
+                loading="lazy"
+                width="300"
+                height="300"
+            >
+          {% else %}
+            <div class="ai-vs-comparison-placeholder-{{ ai_gen_id }}">
+              {{ 'product-1' | placeholder_svg_tag }}
+            </div>
+          {% endif %}
+        </div>
+
+        <div style="text-align: center;">
+          <span class="ai-vs-comparison-badge-{{ ai_gen_id }}">Recommended</span>
+        </div>
+
+        {% if block.settings.our_title != blank %}
+          <h3 class="ai-vs-comparison-product-title-{{ ai_gen_id }} ai-vs-comparison-our-title-{{ ai_gen_id }}">
+            {{ block.settings.our_title }}
+          </h3>
+        {% endif %}
+
+        <ul class="ai-vs-comparison-features-{{ ai_gen_id }}">
+          {% if block.settings.our_feature_1 != blank %}
+            <li class="ai-vs-comparison-feature-{{ ai_gen_id }}">
+              <svg class="ai-vs-comparison-feature-icon-{{ ai_gen_id }}" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10" opacity="0.1" fill="#10b981"/>
+                <polyline points="9,12 11,14 15,10"></polyline>
+              </svg>
+              <span class="ai-vs-comparison-feature-text-{{ ai_gen_id }}">{{ block.settings.our_feature_1 }}</span>
+            </li>
+          {% endif %}
+
+          {% if block.settings.our_feature_2 != blank %}
+            <li class="ai-vs-comparison-feature-{{ ai_gen_id }}">
+              <svg class="ai-vs-comparison-feature-icon-{{ ai_gen_id }}" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10" opacity="0.1" fill="#10b981"/>
+                <polyline points="9,12 11,14 15,10"></polyline>
+              </svg>
+              <span class="ai-vs-comparison-feature-text-{{ ai_gen_id }}">{{ block.settings.our_feature_2 }}</span>
+            </li>
+          {% endif %}
+
+          {% if block.settings.our_feature_3 != blank %}
+            <li class="ai-vs-comparison-feature-{{ ai_gen_id }}">
+              <svg class="ai-vs-comparison-feature-icon-{{ ai_gen_id }}" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10" opacity="0.1" fill="#10b981"/>
+                <polyline points="9,12 11,14 15,10"></polyline>
+              </svg>
+              <span class="ai-vs-comparison-feature-text-{{ ai_gen_id }}">{{ block.settings.our_feature_3 }}</span>
+            </li>
+          {% endif %}
+
+          {% if block.settings.our_feature_4 != blank %}
+            <li class="ai-vs-comparison-feature-{{ ai_gen_id }}">
+              <svg class="ai-vs-comparison-feature-icon-{{ ai_gen_id }}" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10" opacity="0.1" fill="#10b981"/>
+                <polyline points="9,12 11,14 15,10"></polyline>
+              </svg>
+              <span class="ai-vs-comparison-feature-text-{{ ai_gen_id }}">{{ block.settings.our_feature_4 }}</span>
+            </li>
+          {% endif %}
+        </ul>
+
+        {% if block.settings.button_text != blank and block.settings.button_link != blank %}
+          <a href="{{ block.settings.button_link }}" class="ai-vs-comparison-button-{{ ai_gen_id }}">
+            {{ block.settings.button_text }}
+          </a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "VS comparison",
+  "settings": [
+    {
+      "type": "header",
+      "content": "General"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Why switch to us?"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#fafafa"
+    },
+    {
+      "type": "header",
+      "content": "Competitor product"
+    },
+    {
+      "type": "text",
+      "id": "competitor_title",
+      "label": "Competitor title",
+      "default": "Generic product"
+    },
+    {
+      "type": "image_picker",
+      "id": "competitor_image",
+      "label": "Competitor image"
+    },
+    {
+      "type": "text",
+      "id": "competitor_feature_1",
+      "label": "Competitor feature 1",
+      "default": "Basic functionality"
+    },
+    {
+      "type": "text",
+      "id": "competitor_feature_2",
+      "label": "Competitor feature 2",
+      "default": "Standard quality"
+    },
+    {
+      "type": "text",
+      "id": "competitor_feature_3",
+      "label": "Competitor feature 3",
+      "default": "Limited support"
+    },
+    {
+      "type": "text",
+      "id": "competitor_feature_4",
+      "label": "Competitor feature 4",
+      "default": "No warranty"
+    },
+    {
+      "type": "header",
+      "content": "Our product"
+    },
+    {
+      "type": "text",
+      "id": "our_title",
+      "label": "Our product title",
+      "default": "Our product"
+    },
+    {
+      "type": "image_picker",
+      "id": "our_image",
+      "label": "Our product image"
+    },
+    {
+      "type": "text",
+      "id": "our_feature_1",
+      "label": "Our feature 1",
+      "default": "Advanced functionality"
+    },
+    {
+      "type": "text",
+      "id": "our_feature_2",
+      "label": "Our feature 2",
+      "default": "Premium quality"
+    },
+    {
+      "type": "text",
+      "id": "our_feature_3",
+      "label": "Our feature 3",
+      "default": "24/7 support"
+    },
+    {
+      "type": "text",
+      "id": "our_feature_4",
+      "label": "Our feature 4",
+      "default": "Lifetime warranty"
+    },
+    {
+      "type": "header",
+      "content": "Button"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button text",
+      "default": "Shop now"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link"
+    },
+    {
+      "type": "header",
+      "content": "Style"
+    },
+    {
+      "type": "range",
+      "id": "title_size",
+      "min": 20,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "label": "Title size",
+      "default": 42
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Title color",
+      "default": "#1f2937"
+    },
+    {
+      "type": "range",
+      "id": "product_title_size",
+      "min": 16,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "label": "Product title size",
+      "default": 24
+    },
+    {
+      "type": "color",
+      "id": "competitor_title_color",
+      "label": "Competitor title color",
+      "default": "#6b7280"
+    },
+    {
+      "type": "color",
+      "id": "our_title_color",
+      "label": "Our product title color",
+      "default": "#1f2937"
+    },
+    {
+      "type": "range",
+      "id": "feature_text_size",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Feature text size",
+      "default": 15
+    },
+    {
+      "type": "color",
+      "id": "feature_text_color",
+      "label": "Feature text color",
+      "default": "#4b5563"
+    },
+    {
+      "type": "range",
+      "id": "vs_text_size",
+      "min": 16,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "label": "VS text size",
+      "default": 24
+    },
+    {
+      "type": "color",
+      "id": "vs_text_color",
+      "label": "VS text color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "vs_bg_color",
+      "label": "VS background color",
+      "default": "#f59e0b"
+    },
+    {
+      "type": "range",
+      "id": "image_border_radius",
+      "min": 0,
+      "max": 30,
+      "step": 2,
+      "unit": "px",
+      "label": "Image border radius",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "button_text_size",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Button text size",
+      "default": 16
+    },
+    {
+      "type": "color",
+      "id": "button_bg_color",
+      "label": "Button background color",
+      "default": "#3b82f6"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_bg_color",
+      "label": "Button hover background color",
+      "default": "#2563eb"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button text color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "button_border_radius",
+      "min": 0,
+      "max": 50,
+      "step": 2,
+      "unit": "px",
+      "label": "Button border radius",
+      "default": 8
+    }
+  ],
+  "presets": [
+    {
+      "name": "VS comparison"
+    }
+  ]
+}
+{% endschema %}

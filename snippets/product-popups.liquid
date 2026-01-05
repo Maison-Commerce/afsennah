@@ -1,0 +1,36 @@
+{%- liquid
+  assign popups = section.blocks | where: 'type', 'pop-up'
+  assign show_size_chart = false
+  assign size_chart_block = section.blocks | where: 'type', 'variant-picker' | first
+  if size_chart_block and size_chart_block.settings.enable_size_chart and size_chart_block.settings.size_chart_page != blank
+    assign show_size_chart = true
+  endif
+-%}
+
+{%- for block in popups -%}
+  <modal-dialog class="modal modal--for-product fixed top-0 left-0 w-full h-full flex items-center justify-center" id="modal-{{ block.id }}" role="dialog" aria-label="{{ block.settings.link_text | escape }}" aria-modal="true" tabindex="-1" {{ block.shopify_attributes }}>
+    <div class="modal__window relative bg-theme-bg text-theme-text text-start overflow-hidden has-motion">
+      <button type="button" class="modal__close-btn absolute js-close-modal">
+        {% render 'icon-close' %}
+        <span class="visually-hidden">{{ 'accessibility.close' | t }}</span>
+      </button>
+      <div class="modal__content flex-auto h-full rte">
+        {{ block.settings.page.content }}
+      </div>
+    </div>
+  </modal-dialog>
+{%- endfor -%}
+
+{%- if show_size_chart -%}
+  <modal-dialog class="modal modal--for-product invisible fixed top-0 left-0 w-full h-full flex items-center justify-center" id="size-chart-{{ product.id }}-{{ section.id }}"  role="dialog" aria-label="{{ pages[size_chart_block.settings.size_chart_page].title | escape }}" aria-modal="true" tabindex="-1">
+    <div class="modal__window relative bg-theme-bg text-theme-text text-start overflow-hidden has-motion">
+      <button type="button" class="modal__close-btn absolute js-close-modal">
+        {% render 'icon-close' %}
+        <span class="visually-hidden">{{ 'accessibility.close' | t }}</span>
+      </button>
+      <div class="modal__content flex-auto h-full rte">
+        {{ pages[size_chart_block.settings.size_chart_page].content }}
+      </div>
+    </div>
+  </modal-dialog>
+{%- endif -%}

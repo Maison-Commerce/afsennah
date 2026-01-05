@@ -1,0 +1,165 @@
+<div id="section-id-{{ section.id }}" class="{% if section.settings.color_scheme != 'default' %}use-color-scheme use-color-scheme--{{ section.settings.color_scheme }} padded-row {% else %}fully-spaced-row--medium{% endif %}">
+  {%- style -%}
+    #section-id-{{ section.id }} .logo-list__logo-image {
+      opacity: {{ section.settings.image_opacity }}%;
+    }
+    #section-id-{{ section.id }} .logo-list__link:hover .logo-list__logo-image {
+      opacity: {{ section.settings.image_opacity | times: 1.2 | at_most: 100 }}%;
+    }
+    {%- for block in section.blocks -%}
+      #section-id-{{ section.id }} .logo-list__logo-{{ forloop.index }} .logo-list__logo-image {
+        max-width: {{ block.settings.image_width }}px;
+      }
+    {%- endfor -%}
+  {%- endstyle -%}
+
+  <div class="container">
+    <h2 class="hometitle h4 align-center spaced-row" {%- render 'animation-attrs', attrs: 'data-cc-animate data-cc-animate-delay="0.15s"' -%}>
+      {{ section.settings.title | escape }}
+    </h2>
+
+    <div class="logo-list-container">
+      <div class="logo-list logo-list--count-{{ section.blocks.size }}">
+        {%- for block in section.blocks -%}
+          {%- assign animation_delay = forloop.index | times: 0.15 | append: 's' -%}
+          {%- assign animation_attrs = 'data-cc-animate data-cc-animate-delay="' | append: animation_delay | append: '"' -%}
+          {%- if block.settings.link != blank -%}
+            <a class="logo-list__logo logo-list__logo-{{ forloop.index }} logo-list__link fade-in-up" href="{{ block.settings.link }}" {{ block.shopify_attributes }} {%- render 'animation-attrs', attrs: animation_attrs -%}>
+          {%- else -%}
+            <div class="logo-list__logo logo-list__logo-{{ forloop.index }} fade-in-up" {{ block.shopify_attributes }} {%- render 'animation-attrs', attrs: animation_attrs -%}>
+          {%- endif -%}
+
+            <div class="logo-list__logo-image">
+              {%- if block.settings.image != blank -%}
+                {%- liquid
+                  assign image_sizes = block.settings.image_width | append: 'px'
+                  assign image_widths = block.settings.image_width | times: 2 | prepend: ', ' | prepend: block.settings.image_width
+                  render 'image' with block.settings.image, sizes: image_sizes, widths: image_widths
+                -%}
+              {%- else -%}
+                <div class="placeholder-image">
+                  {{- 'logo' | placeholder_svg_tag: 'placeholder-svg' -}}
+                </div>
+              {%- endif -%}
+            </div>
+
+            {%- if block.settings.title != blank -%}
+              <div class="logo-list__logo-title">
+                {{ block.settings.title | escape }}
+              </div>
+            {%- endif -%}
+
+          {%- unless block.settings.link != blank -%}
+            </div>
+          {%- else -%}
+          </a>
+          {%- endunless -%}
+        {%- endfor -%}
+
+        {% if section.blocks.size == 0 %}
+          {%- for i in (1..4) -%}
+            <div class="logo-list__logo">
+              <div class="logo-list__logo-image">
+                <div class="placeholder-image">
+                  {{- 'logo' | placeholder_svg_tag: 'placeholder-svg' -}}
+                </div>
+              </div>
+            </div>
+          {%- endfor -%}
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+
+
+{% schema %}
+{
+  "name": "Logo list",
+  "class": "section-logo-list",
+  "disabled_on": {
+    "groups": [
+      "aside"
+    ]
+  },
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Logo list"
+    },
+    {
+      "type": "range",
+      "id": "image_opacity",
+      "label": "Logo opacity",
+      "min": 20,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "default": 75
+    },
+    {
+      "type": "select",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "default",
+      "options": [
+        {
+          "value": "default",
+          "label": "Default"
+        },
+        {
+          "value": "1",
+          "label": "1"
+        },
+        {
+          "value": "2",
+          "label": "2"
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "logo",
+      "name": "Logo",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "range",
+          "id": "image_width",
+          "label": "Logo width",
+          "min": 40,
+          "max": 280,
+          "step": 10,
+          "unit": "px",
+          "default": 160
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "info": "Optional"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Logo list",
+      "settings": {
+      }
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,227 @@
+{% assign display_map = false %}
+{%- if section.settings.api_key != blank and section.settings.map_address -%}
+  {% assign display_map = true %}
+  <script src="{{ 'location-map.js' | asset_url }}" defer></script>
+{%- endif -%}
+
+<div class="section-id-{{ section.id }} map-section use-color-scheme use-color-scheme--{{ section.settings.color_scheme }}{% unless section.settings.full_width %} map-section--map-constrained{% endunless %}{% if display_map %} map-section--display-map{% endif %}{% if section.settings.show_feature_image %} map-section--has-feature-image{% endif %}" {%- render 'animation-attrs', attrs: 'data-cc-animate' -%}>
+  <div class="container">
+    <div class="map-section__wrapper">
+      <div class="map-section__content map-section__text">
+        {% if section.settings.heading != blank %}
+          <h2>{{ section.settings.heading | escape }}</h2>
+        {% endif %}
+        {% if section.settings.address != blank %}
+          <div class="rte lightly-spaced-row">{{ section.settings.address }}</div>
+        {% endif %}
+        {% if section.settings.button != blank and section.settings.map_address != blank %}
+          <div>
+            <a href="https://maps.google.com?daddr={{ section.settings.map_address | escape }}" target="_blank" class="btn btn--secondary">
+              {% if section.settings.show_pin %}
+                <span class="icon">{% render 'icon-location' %}</span>
+              {% endif %}
+              <span>{{ section.settings.button | escape }}</span>
+            </a>
+          </div>
+        {% endif %}
+      </div>
+
+      {% if section.settings.show_feature_image %}
+        <div class="map-section__content map-section__feature">
+          {% if section.settings.feature_image %}
+            <div class="map-section__feature-image img-fill">
+              {%- render 'image' with section.settings.feature_image, size_cols_desktop: 3 -%}
+            </div>
+          {% else %}
+            <div class="map-section__feature-image placeholder-image border">
+              {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+            </div>
+          {% endif %}
+        </div>
+      {% endif %}
+
+      <div class="map-section__content map-section__map">
+        {%- if section.settings.background_image -%}
+          <div class="map-section__map-image img-fill">
+            {%- render 'image' with section.settings.background_image, size_cols_desktop: 2 -%}
+          </div>
+        {%- else -%}
+          <div class="map-section__placeholder placeholder-image">
+            {{ 'lifestyle-2' | placeholder_svg_tag: 'placeholder-svg' }}
+          </div>
+        {%- endif -%}
+
+        {%- if display_map -%}
+          {%- if section.settings.map_type == 'dynamic' -%}
+            {% render 'location-map',
+              api_key: section.settings.api_key,
+              address: section.settings.map_address,
+              map_style: section.settings.map_style
+            %}
+          {%- else -%}
+            <iframe class="map" src="https://www.google.com/maps/embed/v1/place?key={{ section.settings.api_key }}&q={{ section.settings.map_address }}&zoom=14" width="400" height="300" frameborder="0" style="border:0" referrerpolicy="no-referrer-when-downgrade" allowfullscreen aria-label="{{ 'sections.map.label' | t: location: shop.name }}"></iframe>
+          {%- endif -%}
+        {%- endif -%}
+      </div>
+
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Map",
+  "class": "section-map",
+  "disabled_on": {
+    "groups": [
+      "aside"
+    ]
+  },
+  "settings": [
+    {
+      "id": "full_width",
+      "type": "checkbox",
+      "label": "Full page width",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "1",
+      "options": [
+        {
+          "value": "default",
+          "label": "Default"
+        },
+        {
+          "value": "1",
+          "label": "1"
+        },
+        {
+          "value": "2",
+          "label": "2"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Our store"
+    },
+    {
+      "type": "richtext",
+      "id": "address",
+      "label": "Address and hours",
+      "default": "<p>123 Fake St.<br>Toronto, Canada</p><p>Mon - Fri, 10am - 9pm<br>Saturday, 11am - 9pm<br>Sunday, 11am - 5pm</p>"
+    },
+    {
+      "type": "text",
+      "id": "button",
+      "label": "Map link label",
+      "default": "Directions"
+    },
+    {
+      "id": "show_pin",
+      "type": "checkbox",
+      "label": "Show pin",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Feature image"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_feature_image",
+      "label": "Show",
+      "default": true
+    },
+    {
+      "type": "image_picker",
+      "id": "feature_image",
+      "label": "Image",
+      "info": "800 x 800px recommended"
+    },
+    {
+      "type": "header",
+      "content": "Map"
+    },
+    {
+      "id": "map_address",
+      "type": "text",
+      "label": "Map address",
+      "info": "Google Maps will find the exact location",
+      "default": "80 Spadina Ave, Toronto"
+    },
+    {
+      "id": "api_key",
+      "type": "text",
+      "label": "Google Maps API key",
+      "info": "You’ll need to [register a Google Maps API Key](https://help.shopify.com/manual/using-themes/troubleshooting/map-section-api-key) to display the map"
+    },
+    {
+      "type": "select",
+      "id": "map_type",
+      "label": "Map type",
+      "info": "The type of map to add. [Learn more](https://mapsplatform.google.com/maps-products/#maps)",
+      "options": [
+        {
+          "value": "dynamic",
+          "label": "Dynamic"
+        },
+        {
+          "value": "embed",
+          "label": "Embed (free)"
+        }
+      ],
+      "default": "embed"
+    },
+    {
+      "type": "select",
+      "id": "map_style",
+      "label": "Map style",
+      "info": "Dynamic map only",
+      "default": "silver",
+      "options": [
+        {
+          "label": "Default",
+          "value": "default"
+        },
+        {
+          "label": "Silver",
+          "value": "silver"
+        },
+        {
+          "label": "Retro",
+          "value": "retro"
+        },
+        {
+          "label": "Dark",
+          "value": "dark"
+        },
+        {
+          "label": "Night",
+          "value": "night"
+        },
+        {
+          "label": "Aubergine",
+          "value": "aubergine"
+        }
+      ]
+    },
+    {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "Placeholder image",
+      "info": "To display if there is no map key. 1000px x 800px recommended."
+    }
+  ],
+  "presets": [
+    {
+      "name": "Map"
+    }
+  ]
+}
+{% endschema %}

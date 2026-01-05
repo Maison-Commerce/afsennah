@@ -1,0 +1,23 @@
+{%- if predictive_search.performed -%}
+  <div class="search-suggestions-wrapper">
+    <div class="search-suggestions">
+      {%- if predictive_search.resources.queries.size > 0 or predictive_search.resources.collections.size > 0 -%}
+        <span class="search-suggestions__heading" role="heading" aria-level="2">
+        {{- 'general.search.suggestions' | t -}}:
+        </span>
+        <ul class="search-suggestions__results-list">
+          {%- for query in predictive_search.resources.queries -%}
+            <li class="search-suggestions__list-item">
+              <a href="{{ query.url }}" class="search-suggestions__item">{{ query.styled_text }}</a>
+            </li>
+          {%- endfor -%}
+          {%- for collection in predictive_search.resources.collections -%}
+            <li class="search-suggestions__list-item search-suggestions__list-item--collection">
+              <a href="{{ collection.url }}" class="search-suggestions__item">{{ collection.title }}</a>
+            </li>
+          {%- endfor -%}
+        </ul>
+      {%- endif -%}
+    </div>
+  </div>
+{%- endif -%}

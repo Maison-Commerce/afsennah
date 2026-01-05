@@ -1,0 +1,53 @@
+{% comment %}
+  Parameters:
+  - id {String} - Unique ID.
+  - default_country {String} - Country to select by default.
+
+  Usage:
+  {% render 'shipping-calculator', id: 'some-id', default_country: 'United States' %}
+{% endcomment %}
+
+<link rel="stylesheet" href="{{ 'shipping-calculator.css' | asset_url }}">
+<script src="{{ 'country-province-selector.js' | asset_url }}" defer></script>
+<script src="{{ 'shipping-calculator.js' | asset_url }}" defer></script>
+
+<shipping-calculator>
+  <h2 class="visually-hidden">{{ 'cart.shipping_calculator.title' | t }}</h2>
+
+  <country-province-selector>
+    <div class="country-province-selector__item">
+      <label class="block" for="{{ id }}-shipping-country">{{ 'cart.shipping_calculator.country' | t }}</label>
+      <div class="lightly-styled-select">
+        <select class="js-country-select" id="{{ id }}-shipping-country" data-default="{% if shop.customer_accounts_enabled and customer %}{{ customer.default_address.country }}{% elsif default_country != blank %}{{ default_country | escape }}{% endif %}" autocomplete="country">
+          {{ all_country_option_tags }}
+        </select>
+        {% render 'icon-chevron-down' %}
+      </div>
+    </div>
+
+    <div class="country-province-selector__item js-province-container" hidden>
+      <label class="block" for="{{ id }}-shipping-province">{{ 'cart.shipping_calculator.province' | t }}</label>
+      <div class="lightly-styled-select">
+        <select class="js-province-select" id="{{ id }}-shipping-province" data-default="{{ customer.default_address.province }}" autocomplete="address-level1"></select>
+        {% render 'icon-chevron-down' %}
+      </div>
+    </div>
+
+    <div class="country-province-selector__item">
+      <label class="block" for="{{ id }}-shipping-zip">{{ 'cart.shipping_calculator.zip' | t }}</label>
+      <input type="text" class="js-zip-input" id="{{ id }}-shipping-zip" autocomplete="postal-code">
+    </div>
+
+    <button type="button" class="btn btn--primary">
+      {{- 'cart.shipping_calculator.submit' | t -}}
+    </button>
+  </country-province-selector>
+
+  <div class="alert success lightish-spaced-row-above js-rates" hidden>
+    <strong class="js-rates-heading" role="heading" aria-level="3"></strong>
+    <div class="js-rates-text"></div>
+  </div>
+
+  {%- assign error_heading = 'cart.shipping_calculator.error' | t -%}
+  {%- render 'form-errors', error_heading: error_heading -%}
+</shipping-calculator>

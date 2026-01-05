@@ -1,0 +1,105 @@
+{
+  "type": "aside",
+  "name": "Overlay Group",
+  "sections": {
+    "cart-drawer": {
+      "type": "cart-drawer",
+      "disabled": true,
+      "settings": {
+        "show_order_note": true,
+        "show_tax_and_shipping": true,
+        "enable_direct_cart": false,
+        "cart_terms_page": "",
+        "show_backorder_text": true,
+        "show_inventory_notice": "low",
+        "show_inventory_count": "low",
+        "inventory_threshold": 10,
+        "show_announcement": true,
+        "announcement_position": "below-items",
+        "announcement_text": "<a href=\"#\" title=\"Clearance\"><strong>Summer Sale!<\/strong><\/a> Bag a bargain whilst stocks last!",
+        "announcement_icon": "price_tag",
+        "announcement_icon_size": "small",
+        "announcement_enable_box": true,
+        "announcement_box_color": "#ececec",
+        "empty_icon": "bag",
+        "empty_heading": "Your bag is empty",
+        "empty_text": "<p>Looking for ideas?<\/p>",
+        "empty_button_text": "Start shopping",
+        "empty_button_link": "",
+        "empty_button_style": "primary",
+        "empty_enable_custom_colors": false,
+        "empty_color_background": "#ffffff",
+        "empty_color_background_gradient": "",
+        "empty_color_text": "#171717",
+        "enable_cross_sells": true,
+        "cross_sell_title": "You may also like",
+        "cross_sell_products": [],
+        "enable_automatic_cross_sells": true,
+        "croll_sell_color_scheme": "default"
+      }
+    },
+    "pop-up": {
+      "type": "pop-up",
+      "blocks": {
+        "heading": {
+          "type": "heading",
+          "settings": {
+            "heading": "NEWSLETTER",
+            "heading_size": "h4"
+          }
+        },
+        "text": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Receive 15% OFF your first order and get priority access to sales & exclusive deals.<\/p>",
+            "text_size": "small-text"
+          }
+        },
+        "newsletter-signup": {
+          "type": "newsletter-signup",
+          "settings": {
+            "button_style": "secondary"
+          }
+        },
+        "21558aaf-7983-4c39-a2d9-5e803d85df82": {
+          "type": "image",
+          "settings": {
+            "image_position_desktop": "right",
+            "image_position_mobile": "top"
+          }
+        },
+        "b8e4317d-d3d2-4b4c-818a-cd6ee79463b2": {
+          "type": "social",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "heading",
+        "text",
+        "newsletter-signup",
+        "21558aaf-7983-4c39-a2d9-5e803d85df82",
+        "b8e4317d-d3d2-4b4c-818a-cd6ee79463b2"
+      ],
+      "disabled": true,
+      "settings": {
+        "trigger": "delay",
+        "delay": 6,
+        "show_to_guests_only": true,
+        "show_on_mobile": true,
+        "dismiss_days": 30,
+        "position": "justify-end items-end",
+        "text_align": "text-center",
+        "bg_image": "shopify:\/\/shop_images\/Ontwerp_zonder_titel_2_-min.png",
+        "heading_color": "#ffffff",
+        "text_color": "#ffffff",
+        "bg_color": "#232323",
+        "bg_grad": "",
+        "tint_opacity": 0
+      }
+    }
+  },
+  "order": [
+    "cart-drawer",
+    "pop-up"
+  ]
+}

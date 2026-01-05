@@ -1,0 +1,49 @@
+{%- comment -%}
+  Parameters:
+  - segments {Number}: Total number of segments.
+  - active_segment {Number|String}: Which segment to highlight.
+  - fill_segments {Boolean}: Whether to fill segments leading up to active segment.
+  - show_labels {Boolean}: Visually show labels (labels are always used for accessibility).
+  - label_left {String}: Label describing lowest value.
+  - label_middle {String}: Label describing middle value (optional).
+  - label_right {String}: Label describing largest value.
+
+  Usage:
+  {% render 'feature-rating',
+    segments: 5,
+    active_segment: 4,
+    fill_segments: false,
+    show_labels: true,
+    label_left: 'Tight fit',
+    label_right: 'Loose fit'
+  %}
+{%- endcomment -%}
+
+{%- assign = active_segment = active_segment | plus: 0 -%}
+
+<div class="feature-rating">
+  <div class="visually-hidden">
+    Rating of 1 means {{ label_left }}.<br>
+    {% if label_middle != blank %}
+      Middle rating means {{ label_middle }}.<br>
+    {% endif %}
+    Rating of {{ segments }} means {{ label_right }}.<br>
+    The rating of this product for "{{ heading }}" is {{ active_segment }}.
+  </div>
+
+  <div class="segment-bar" role="presentation">
+    {% for i in (1..segments) %}
+      <div class="segment-bar__segment{% if i == active_segment or i < active_segment and fill_segments %} segment-bar__segment--filled{% endif %}"></div>
+    {% endfor %}
+  </div>
+
+  {% if show_labels %}
+    <div class="feature-rating__labels{% if label_middle != blank %} feature-rating__labels--with-middle{% endif %}" role="presentation">
+      <div class="feature-rating__label-left">{{ label_left }}</div>
+      {% if label_middle != blank %}
+        <div class="feature-rating__label-middle">{{ label_middle }}</div>
+      {% endif %}
+      <div class="feature-rating__label-right">{{ label_right }}</div>
+    </div>
+  {% endif %}
+</div>

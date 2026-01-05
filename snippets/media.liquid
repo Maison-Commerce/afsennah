@@ -1,0 +1,87 @@
+<div id="FeaturedMedia-{{ section.id }}-{{ media.id }}-wrapper"
+    class="product-media-wrapper"
+    data-media-id="{{ section.id }}-{{ media.id }}"
+    tabindex="-1">
+  {% case media.media_type %}
+    {% when 'image' %}
+      <div class="product-media product-media--image">
+        {%- liquid
+          if min_aspect_ratio
+            assign custom_aspect_ratio = media.preview_image.aspect_ratio | at_least: min_aspect_ratio
+          else
+            assign custom_aspect_ratio = false
+          endif
+
+          render 'image' with media.preview_image, size_cols_desktop: 2, custom_aspect_ratio: custom_aspect_ratio, custom_crop: 'contain', loading: loading
+        -%}
+        {%- if section.settings.show_alt_text and media.alt != blank and media.alt != product.title and media.alt != 'all-groups' -%}
+          <span class="product-media__label">
+            {%- if section.settings.alt_text_icon != blank -%}
+              {%- render 'icon', icon: section.settings.alt_text_icon, size: 'small' -%}
+            {%- endif -%}
+            <span class="product-media__label-text">{{ media.alt | remove: 'all-groups' | escape }}</span>
+          </span>
+        {%- endif -%}
+      </div>
+
+    {% when 'external_video', 'video' %}
+      <link rel="stylesheet" href="{{ 'video.css' | asset_url }}" {%- render 'lazy-stylesheet-attrs' %}>
+      <script src="{{ 'video.js' | asset_url }}" defer></script>
+      <deferred-media class="product-media product-media--video product-media--frame video-section"
+          data-video-type="external"
+          data-video-id="{{ media.external_id }}"
+          data-enable-video-looping="{{ section.settings.enable_video_looping }}"
+          data-autoplay="{{ section.settings.enable_video_autoplay }}"
+          style="padding-bottom: {{ 1 | divided_by: media.preview_image.aspect_ratio | times: 100 }}%">
+        <div class="product-media__poster img-fill">
+          {% render 'image' with media.preview_image, size_cols_desktop: 2 %}
+          {% unless section.settings.enable_video_autoplay %}
+            <button class="product-media__video-play-btn js-load-media" aria-label="{{ 'products.product.media.play_video' | t | escape }}">{% render 'icon-video-badge-full-color' %}</button>
+          {% endunless %}
+        </div>
+        <template>
+          {%- liquid
+            if media.media_type != 'video'
+              if media.host == 'youtube'
+                assign video_external = media | external_video_url: autoplay: true, loop: section.settings.enable_video_looping, playlist: media.external_id
+              else
+                assign video_external = media | external_video_url: autoplay: true, loop: section.settings.enable_video_looping
+              endif
+            endif
+
+            if section.settings.enable_video_autoplay and in_collage
+              assign background_video = true
+              assign show_controls = false
+            else
+              assign background_video = false
+              assign show_controls = true
+            endif
+          -%}
+          <video-component class="{% if media.media_type == 'video' %}has-video{% else %}has-iframe{% endif %}"
+              {%- if media.media_type != 'video' %} data-video-url="{{ video_external | escape }}"{% endif %}
+              data-video-id="{{ section.id }}-{{ media.id }}"
+              data-autoplay="{{ section.settings.enable_video_autoplay }}"
+              data-background="{% if background_video %}true{% else %}false{% endif %}"
+              data-natural-width= "true">
+            {%- if media.media_type == 'video' -%}
+              {{ media | video_tag: playsinline: true, controls: show_controls, autoplay: section.settings.enable_video_autoplay, muted: section.settings.enable_video_autoplay, loop: section.settings.enable_video_looping, poster: '' | replace: '<img ', '<img loading="lazy" hidden ' }}
+            {%- else -%}
+              <div></div>
+            {%- endif -%}
+          </video-component>
+        </template>
+      </deferred-media>
+
+    {% when 'model' %}
+      <product-model class="product-media product-media--model product-media--frame" style="padding-bottom: 100%" data-model-id="{{ media.id }}">
+        {% render 'image' with media.preview_image, size_cols_desktop: 2 %}
+        <template>
+          {{ media | media_tag: image_size: '1000x', toggleable: true }}
+        </template>
+      </product-model>
+    {% else %}
+      <div class="product-media product-media--frame" style="padding-bottom: {{ 1 | divided_by: media.aspect_ratio | times: 100 }}%;">
+        {{ media | media_tag: class: 'media-item', image_size: '1000x' }}
+      </div>
+  {% endcase %}
+</div>

@@ -1,0 +1,395 @@
+<div class="section-id-{{ section.id }} collection-slider-row for-collections {% if section.settings.color_scheme != 'default' %}use-color-scheme use-color-scheme--{{ section.settings.color_scheme }}{% endif %}">
+  <div class="container{% if section.settings.enable_carousel %} container--not-mobile{% endif %}{% if section.settings.full_width %} container--no-max{% endif %}">
+    {%- if section.settings.enable_carousel -%}
+      <carousel-slider class="carousel block collection-slider">
+    {%- endif -%}
+
+    <div class="hometitle align-center has-paging" {%- render 'animation-attrs', attrs: 'data-cc-animate data-cc-animate-delay="0.3s"' -%}>
+      {% if section.settings.enable_carousel %}
+        <button name="prev" class="slider-nav__btn has-ltr-icon">
+          <span class="visually-hidden">{{ 'general.slider.previous' | t }}</span>
+          {% render 'icon-chevron-left' %}
+        </button>
+      {% endif %}
+      <h2 class="has-paging__title h4 m-0">{{ section.settings.title | escape }}</h2>
+      {% if section.settings.enable_carousel %}
+        <button name="next" class="slider-nav__btn has-ltr-icon">
+          <span class="visually-hidden">{{ 'general.slider.next' | t }}</span>
+          {% render 'icon-chevron-right' %}
+        </button>
+      {% endif %}
+    </div>
+
+    <div class="collection-listing fade-in-up{% if section.settings.enable_carousel %} slider {% if section.settings.full_width %}slider--edge-peek{% endif %} slider--mobile-container-pad slider--no-scrollbar{% endif %}" {%- render 'animation-attrs', attrs: 'data-cc-animate' -%}>
+      <div class="product-grid product-grid--per-row-{{ section.settings.grid }} product-grid--per-row-mob-{{ section.settings.coll_thumb_mob_per_row }} product-grid--image-shape-{{ section.settings.coll_grid_image_shape }}{% if section.settings.enable_carousel %} slider__grid product-grid--carousel{% endif %}">
+        {%- liquid
+          if section.blocks.size > 0
+            if section.settings.coll_grid_image_shape == 'portrait-23'
+              assign chosen_aspect_ratio = 0.67
+            elsif section.settings.coll_grid_image_shape == 'portrait-45'
+              assign chosen_aspect_ratio = 0.8
+            elsif section.settings.coll_grid_image_shape == 'square'
+              assign chosen_aspect_ratio = 1.0
+            elsif section.settings.coll_grid_image_shape == 'landscape-54'
+              assign chosen_aspect_ratio = 1.25
+            elsif section.settings.coll_grid_image_shape == 'landscape-32'
+              assign chosen_aspect_ratio = 1.50
+            elsif section.settings.coll_grid_image_shape == 'tallest'
+              assign chosen_aspect_ratio = 999
+              for block in section.blocks
+                assign collection = collections[block.settings.collection]
+                if collection != blank
+                  assign collection_image = block.settings.image | default: collection.featured_image
+                  if collection_image.aspect_ratio < chosen_aspect_ratio
+                    assign chosen_aspect_ratio = collection_image.aspect_ratio
+                  endif
+                endif
+              endfor
+            else
+              assign chosen_aspect_ratio = 0
+              for block in section.blocks
+                assign collection = collections[block.settings.collection]
+                if collection != blank
+                  assign collection_image = block.settings.image | default: collection.featured_image
+                  if collection_image.aspect_ratio > chosen_aspect_ratio
+                    assign chosen_aspect_ratio = collection_image.aspect_ratio
+                  endif
+                endif
+              endfor
+            endif
+
+            for block in section.blocks
+              assign collection = collections[block.settings.collection]
+
+              if section.settings.enable_carousel
+                echo '<div class="slider__item">'
+              endif
+
+              unless collection == blank
+                render 'collection-block', collection: collection, subheading: block.settings.subheading, button_label: block.settings.button_label, custom_attrs: block.shopify_attributes, custom_image: block.settings.image, custom_aspect_ratio: chosen_aspect_ratio, settings_object: section.settings
+              else
+                render 'onboarding-collection-block', forloop: forloop, settings_object: section.settings
+              endunless
+
+              if section.settings.enable_carousel
+                echo '</div>'
+              endif
+            endfor
+
+          else
+
+            for i in (1..6)
+              if section.settings.enable_carousel
+                echo '<div class="slider__item">'
+              endif
+              render 'onboarding-collection-block', forloop: forloop, settings_object: section.settings
+              if section.settings.enable_carousel
+                echo '</div>'
+              endif
+            endfor
+
+          endif
+        -%}
+      </div>
+    </div>
+
+    {%- if section.settings.enable_carousel -%}
+      </carousel-slider>
+    {%- endif -%}
+  </div>
+</div>
+
+
+{% schema %}
+{
+  "name": "Collection list",
+  "class": "section-collection-list",
+  "disabled_on": {
+    "templates": [
+      "password"
+    ],
+    "groups": [
+      "aside"
+    ]
+  },
+  "max_blocks": 20,
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Collection list"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_carousel",
+      "label": "Enable carousel",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "grid",
+      "label": "Collections per row",
+      "min": 2,
+      "max": 5,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "select",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "default",
+      "options": [
+        {
+          "value": "default",
+          "label": "Default"
+        },
+        {
+          "value": "1",
+          "label": "1"
+        },
+        {
+          "value": "2",
+          "label": "2"
+        }
+      ]
+    },
+    {
+      "id": "full_width",
+      "type": "checkbox",
+      "label": "Full page width",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Collection cards"
+    },
+    {
+      "type": "select",
+      "id": "coll_grid_image_shape",
+      "label": "Image shape",
+      "options": [
+        {
+          "value": "shortest",
+          "label": "Automatic (shortest image)"
+        },
+        {
+          "value": "tallest",
+          "label": "Automatic (tallest image)"
+        },
+        {
+          "value": "landscape-32",
+          "label": "Landscape (3:2)"
+        },
+        {
+          "value": "landscape-54",
+          "label": "Landscape (5:4)"
+        },
+        {
+          "value": "square",
+          "label": "Square (1:1)"
+        },
+        {
+          "value": "portrait-45",
+          "label": "Portrait (4:5)"
+        },
+        {
+          "value": "portrait-23",
+          "label": "Portrait (2:3)"
+        }
+      ],
+      "default": "square"
+    },
+    {
+      "type": "select",
+      "id": "coll_grid_image_position",
+      "label": "Image alignment",
+      "info": "Used to keep the subject of your image in view, when cropped to a fixed shape",
+      "default": "center center",
+      "options": [
+        {
+          "value": "top left",
+          "label": "Top left"
+        },
+        {
+          "value": "top center",
+          "label": "Top center"
+        },
+        {
+          "value": "top right",
+          "label": "Top right"
+        },
+        {
+          "value": "center left",
+          "label": "Middle left"
+        },
+        {
+          "value": "center center",
+          "label": "Middle center"
+        },
+        {
+          "value": "center right",
+          "label": "Middle right"
+        },
+        {
+          "value": "bottom left",
+          "label": "Bottom left"
+        },
+        {
+          "value": "bottom center",
+          "label": "Bottom center"
+        },
+        {
+          "value": "bottom right",
+          "label": "Bottom right"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "coll_thumb_mob_per_row",
+      "label": "Collections per row on mobile",
+      "options": [
+        {
+          "value": "1",
+          "label": "1"
+        },
+        {
+          "value": "2",
+          "label": "2"
+        }
+      ],
+      "default": "2"
+    },
+    {
+      "type": "checkbox",
+      "id": "coll_grid_show_count",
+      "label": "Show product count",
+      "default": true
+    },
+    {
+      "id": "coll_text_position",
+      "type": "select",
+      "label": "Text position - desktop",
+      "default": "below",
+      "options": [
+        {
+          "value": "below",
+          "label": "Below"
+        },
+        {
+          "value": "over-full",
+          "label": "Over - Tint"
+        },
+        {
+          "value": "over-box",
+          "label": "Over - Box"
+        },
+        {
+          "value": "over-shadow",
+          "label": "Over - Text shadow"
+        },
+        {
+          "value": "over-full image-overlay--bg-shadow",
+          "label": "Over - Text shadow and tint"
+        },
+        {
+          "value": "over-no_background",
+          "label": "Over - No background"
+        }
+      ]
+    },
+    {
+      "id": "coll_text_position_under_mobile",
+      "type": "checkbox",
+      "label": "Show text below image on mobile",
+      "default": false
+    },
+    {
+      "type": "text_alignment",
+      "id": "coll_thumb_text_align_x",
+      "label": "Text alignment",
+      "default": "center"
+    },
+    {
+      "type": "select",
+      "id": "coll_thumb_text_align_y",
+      "label": "Text overlay alignment",
+      "options": [
+        {
+          "value": "top",
+          "label": "Top"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "bottom",
+          "label": "Bottom"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "select",
+      "id": "coll_button_style",
+      "label": "Button style (where shown)",
+      "default": "primary",
+      "options": [
+        {
+          "label": "Primary",
+          "value": "primary"
+        },
+        {
+          "label": "Secondary",
+          "value": "secondary"
+        },
+        {
+          "label": "Link",
+          "value": "link"
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "collection",
+      "name": "Collection",
+      "settings": [
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Collection"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "subheading",
+          "label": "Subheading"
+        },
+        {
+          "type": "text",
+          "id": "button_label",
+          "label": "Button label"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Collection list",
+      "settings": {
+      },
+      "blocks": [
+
+      ]
+    }
+  ]
+}
+{% endschema %}

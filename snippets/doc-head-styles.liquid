@@ -1,0 +1,410 @@
+{%- liquid
+  assign bg_col = settings.bg_col
+  assign font_col_base = settings.font_col_base
+  assign bg_col_brightness = bg_col | color_brightness
+  assign base_font = settings.type_base_font
+  assign heading_font = settings.type_heading_font
+  assign logo_font = settings.type_logo_font
+  assign nav_font = settings.type_nav_font
+-%}
+
+:root {
+  --page-container-width:          {{ settings.max_page_width }}px;
+  --reading-container-width:       720px;
+  --divider-opacity:               0.14;
+  --gutter-large:                  32px;
+  --gutter-desktop:                20px;
+  --gutter-mobile:                 16px;
+  --section-padding:               32px;
+  --larger-section-padding:        32px;
+  --larger-section-padding-mobile: 32px;
+  --largest-section-padding:       32px;
+  --aos-animate-duration:          0.6s;
+
+  --base-font-family:              {{ base_font.family }}, {{ base_font.fallback_families }};
+  --base-font-weight:              {{ base_font.weight }};
+  --base-font-style:               {{ base_font.style }};
+  --heading-font-family:           {{ heading_font.family }}, {{ heading_font.fallback_families }};
+  --heading-font-weight:           {{ heading_font.weight }};
+  --heading-font-style:            {{ heading_font.style }};
+  --heading-font-letter-spacing:   {% if settings.letter_spacing_heading == 0 %}normal{% else %}{{ settings.letter_spacing_heading | divided_by: 100.0 }}em{% endif %};
+  --logo-font-family:              Vanilla Ravioli, {{ logo_font.fallback_families }};
+  --logo-font-weight:              {{ logo_font.weight }};
+  --logo-font-style:               {{ logo_font.style }};
+  --nav-font-family:               {{ nav_font.family }}, {{ nav_font.fallback_families }};
+  --nav-font-weight:               {{ nav_font.weight }};
+  --nav-font-style:                {{ nav_font.style }};
+
+  --base-text-size:                {{- settings.font_size_base_int }}px;
+  --base-line-height:              1.6;
+  --input-text-size:               {{- settings.font_size_base_int | at_least: 16 }}px;
+  --smaller-text-size-1:           {{- settings.font_size_base_int | times: 0.8 | round }}px;
+  --smaller-text-size-2:           {{- settings.font_size_base_int | minus: 2 | at_least: 14 }}px;
+  --smaller-text-size-3:           {{- settings.font_size_base_int | minus: 3 }}px;
+  --smaller-text-size-4:           {{- settings.font_size_base_int | minus: 4 }}px;
+  --larger-text-size:              {{- settings.font_size_heading_int }}px;
+  --super-large-text-size:         {{- settings.font_size_heading_int | times: 1.75 | round }}px;
+  --super-large-mobile-text-size:  {{- settings.font_size_heading_int | times: 0.8 | round | at_least: settings.font_size_base_int }}px;
+  --larger-mobile-text-size:       {{- settings.font_size_heading_int | times: 0.8 | round | at_least: settings.font_size_base_int }}px;
+  --logo-text-size:                {{- settings.font_size_logo_int }}px;
+
+  {%- if settings.button_style == 'caps' -%}
+    --btn-letter-spacing: 0.08em;
+    --btn-text-transform: uppercase;
+    --button-text-size: {{ settings.font_size_base_int | times: 0.875 | round }}px;
+    --quickbuy-button-text-size: {{ settings.font_size_base_int | times: 0.875 | at_most: 13 | round }};
+    --small-feature-link-font-size: 0.75em;
+    --input-btn-padding-top: 1.2em;
+    --input-btn-padding-bottom: 1.2em;
+  {%- else -%}
+    --btn-letter-spacing: normal;
+    --btn-text-transform: none;
+    --button-text-size: {{ settings.font_size_base_int }}px;
+    --quickbuy-button-text-size: {{ settings.font_size_base_int | at_most: 14 }}px;
+    --small-feature-link-font-size: 1em;
+    --input-btn-padding-top: 13px;
+    --input-btn-padding-bottom: 13px;
+  {%- endif -%}
+
+  --heading-text-transform:             {%- if settings.capitalize_headings %}uppercase{% else %}none{% endif %};
+  --nav-text-size:                      {{ settings.font_size_nav_int }}px;
+  --mobile-menu-font-weight:            {% if settings.bold_mobile_nav %}600{% else %}inherit{% endif %};
+
+  --body-bg-color:                      {{ bg_col.rgb }};
+  --bg-color:                           {{ bg_col.rgb }};
+  --body-text-color:                    {{ font_col_base.rgb }};
+  --text-color:                         {{ font_col_base.rgb }};
+
+  --header-text-col:                    {{ settings.head_txt_col }};
+  {%- if settings.head_bg_col == settings.panel_nav_bg -%}
+    --header-text-hover-col:             var(--main-nav-link-hover-col);
+  {%- else -%}
+    --header-text-hover-col:             var(--header-text-col);
+  {%- endif -%}
+
+  --header-bg-col:                     {{ settings.head_bg_col }};
+  --heading-color:                     {{ settings.font_col_heads.rgb }};
+  --body-heading-color:                {{ settings.font_col_heads.rgb }};
+  --heading-divider-col:               {{ settings.head_nav_div_col }};
+
+  --logo-col:                          {{ settings.font_col_shoptitle }};
+  --main-nav-bg:                       {{ settings.panel_nav_bg }};
+  --main-nav-link-col:                 {{ settings.font_col_nav }};
+  --main-nav-link-hover-col:           {{ settings.font_col_nav_hov }};
+  --main-nav-link-featured-col:        {{ settings.nav_featured_col }};
+
+  --link-color:                        {{ settings.font_col_link.rgb }};
+  --body-link-color:                   {{ settings.font_col_link.rgb }};
+
+  --btn-bg-color:                        {{ settings.btn_color.rgb }};
+  --btn-bg-hover-color:                  {{ settings.btn_color_hover.rgb }};
+  --btn-border-color:                    {{ settings.btn_color.rgb }};
+  --btn-border-hover-color:              {{ settings.btn_color_hover.rgb }};
+  --btn-text-color:                      {{ settings.btn_color_text.rgb }};
+  --btn-text-hover-color:                {{ settings.btn_color_text.rgb }};
+
+  {%- liquid
+    assign btn_alt_bg = settings.btn_alt_bg | color_lighten: 0
+    assign btn_alt_text = settings.btn_alt_text
+    if bg_col == btn_alt_text
+      assign btn_alt_border = btn_alt_bg
+    else
+      assign btn_alt_border = btn_alt_text
+    endif
+
+    if bg_col == btn_alt_text
+      assign btn_alt_border_hover = btn_alt_bg
+    else
+      assign btn_alt_border_hover = btn_alt_text
+    endif
+  -%}
+  --btn-alt-bg-color:                    {{ btn_alt_bg.rgb }};
+  --btn-alt-text-color:                  {{ btn_alt_text.rgb }};
+  --btn-alt-border-color:                {{ btn_alt_border.rgb }};
+  --btn-alt-border-hover-color:          {{ btn_alt_border_hover.rgb }};
+
+  {%- liquid
+    if bg_col_brightness > 50
+      assign btn_ter_bg_col = bg_col | color_darken: 8
+      assign btn_ter_text_col = font_col_base | color_darken: 20
+    else
+      assign btn_ter_bg_col = bg_col | color_lighten: 8
+      assign btn_ter_text_col = font_col_base | color_lighten: 20
+    endif
+  -%}
+  --btn-ter-bg-color:                    {{ btn_ter_bg_col.rgb }};
+  --btn-ter-text-color:                  {{ btn_ter_text_col.rgb }};
+  --btn-ter-bg-hover-color:              {{ settings.btn_color.rgb }};
+  --btn-ter-text-hover-color:            {{ settings.btn_color_text.rgb }};
+
+  {%- if settings.button_shape == 'fullyround' -%}
+    --btn-border-radius: 1.8em;
+    --btn-inspired-border-radius: 3px;
+  {%- elsif settings.button_shape == 'sharp' -%}
+    --btn-border-radius: 0;
+    --btn-inspired-border-radius: 0;
+  {%- else -%}
+    --btn-border-radius: 8px;
+    --btn-inspired-border-radius: 8px;
+  {%- endif -%}
+
+  --color-scheme-default:                             {{ bg_col }};
+  --color-scheme-default-color:                       {{ bg_col.rgb }};
+  --color-scheme-default-text-color:                  {{ font_col_base.rgb }};
+  --color-scheme-default-head-color:                  {{ settings.font_col_heads.rgb }};
+  --color-scheme-default-link-color:                  {{ settings.font_col_link.rgb }};
+  --color-scheme-default-btn-text-color:              {{ settings.btn_color_text.rgb }};
+  --color-scheme-default-btn-text-hover-color:        {{ settings.btn_color_text.rgb }};
+  --color-scheme-default-btn-bg-color:                {{ settings.btn_color.rgb }};
+  --color-scheme-default-btn-bg-hover-color:          {{ settings.btn_color_hover.rgb }};
+  --color-scheme-default-btn-border-color:            {{ settings.btn_color.rgb }};
+  --color-scheme-default-btn-border-hover-color:      {{ settings.btn_color_hover.rgb }};
+  --color-scheme-default-btn-alt-text-color:          {{ btn_alt_text.rgb }};
+  --color-scheme-default-btn-alt-bg-color:            {{ btn_alt_bg.rgb }};
+  --color-scheme-default-btn-alt-border-color:        {{ btn_alt_border.rgb }};
+  --color-scheme-default-btn-alt-border-hover-color:  {{ btn_alt_border_hover.rgb }};
+
+  --color-scheme-1:                             {{ settings.color_scheme_1_gradient | default: settings.color_scheme_1_col }};
+  --color-scheme-1-color:                       {{ settings.color_scheme_1_col.rgb }};
+  --color-scheme-1-text-color:                  {{ settings.color_scheme_1_text_col.rgb }};
+  --color-scheme-1-head-color:                  {{ settings.color_scheme_1_head_col.rgb }};
+  --color-scheme-1-link-color:                  {{ settings.color_scheme_1_link_col.rgb }};
+  --color-scheme-1-btn-text-color:              {{ settings.color_scheme_1_btn_color_text.rgb }};
+  --color-scheme-1-btn-text-hover-color:        {{ settings.color_scheme_1_btn_color_text.rgb }};
+  --color-scheme-1-btn-bg-color:                {{ settings.color_scheme_1_btn_color.rgb }};
+  --color-scheme-1-btn-bg-hover-color:          {{ settings.color_scheme_1_btn_color_hover.rgb }};
+  --color-scheme-1-btn-border-color:            {{ settings.color_scheme_1_btn_color.rgb }};
+  --color-scheme-1-btn-border-hover-color:      {{ settings.color_scheme_1_btn_color_hover.rgb }};
+  --color-scheme-1-btn-alt-text-color:          {{ settings.color_scheme_1_btn_alt_text.rgb }};
+  --color-scheme-1-btn-alt-bg-color:            {{ settings.color_scheme_1_btn_alt_bg.rgb }};
+  --color-scheme-1-btn-alt-border-color:        {{ settings.color_scheme_1_btn_alt_text.rgb }};
+  --color-scheme-1-btn-alt-border-hover-color:  {{ settings.color_scheme_1_btn_alt_text.rgb }};
+
+  --color-scheme-2:                             {{ settings.color_scheme_2_gradient | default: settings.color_scheme_2_col }};
+  --color-scheme-2-color:                       {{ settings.color_scheme_2_col.rgb }};
+  --color-scheme-2-text-color:                  {{ settings.color_scheme_2_text_col.rgb }};
+  --color-scheme-2-head-color:                  {{ settings.color_scheme_2_head_col.rgb }};
+  --color-scheme-2-link-color:                  {{ settings.color_scheme_2_link_col.rgb }};
+  --color-scheme-2-btn-text-color:              {{ settings.color_scheme_2_btn_color_text.rgb }};
+  --color-scheme-2-btn-text-hover-color:        {{ settings.color_scheme_2_btn_color_text.rgb }};
+  --color-scheme-2-btn-bg-color:                {{ settings.color_scheme_2_btn_color.rgb }};
+  --color-scheme-2-btn-bg-hover-color:          {{ settings.color_scheme_2_btn_color_hover.rgb }};
+  --color-scheme-2-btn-border-color:            {{ settings.color_scheme_2_btn_color.rgb }};
+  --color-scheme-2-btn-border-hover-color:      {{ settings.color_scheme_2_btn_color_hover.rgb }};
+  --color-scheme-2-btn-alt-text-color:          {{ settings.color_scheme_2_btn_alt_text.rgb }};
+  --color-scheme-2-btn-alt-bg-color:            {{ settings.color_scheme_2_btn_alt_bg.rgb }};
+  --color-scheme-2-btn-alt-border-color:        {{ settings.color_scheme_2_btn_alt_text.rgb }};
+  --color-scheme-2-btn-alt-border-hover-color:  {{ settings.color_scheme_2_btn_alt_text.rgb }};
+
+  /* Shop Pay payment terms */
+  --payment-terms-background-color:    {{ bg_col }};
+
+  {%- if settings.quickbuy_color_scheme == 'default' -%}
+    --quickbuy-bg: {{ bg_col.rgb }};
+  {%- else -%}
+    {%- assign quickbuy_bg_setting = 'color_scheme_' | append: settings.quickbuy_color_scheme | append: '_col' -%}
+    --quickbuy-bg: {{ settings[quickbuy_bg_setting].rgb }};
+  {%- endif -%}
+
+  --body-input-background-color:       rgb(var(--body-bg-color));
+  --input-background-color:            rgb(var(--body-bg-color));
+  --body-input-text-color:             var(--body-text-color);
+  --input-text-color:                  var(--body-text-color);
+  --body-input-border-color:           {{ font_col_base | color_mix: bg_col, 25 | color_to_rgb }};
+  --input-border-color:                {{ font_col_base | color_mix: bg_col, 25 | color_to_rgb }};
+  --input-border-color-hover:          {{ font_col_base | color_mix: bg_col, 55 | color_to_rgb }};
+  --input-border-color-active:         {{ font_col_base | color_to_rgb }};
+
+  --swatch-cross-svg:                  url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240' viewBox='0 0 24 24' fill='none' stroke='{{ font_col_base | color_mix: bg_col, 25 | color_to_rgb }}' stroke-width='0.09' preserveAspectRatio='none' %3E%3Cline x1='24' y1='0' x2='0' y2='24'%3E%3C/line%3E%3C/svg%3E");
+  --swatch-cross-hover:                url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240' viewBox='0 0 24 24' fill='none' stroke='{{ font_col_base | color_mix: bg_col, 55 | color_to_rgb }}' stroke-width='0.09' preserveAspectRatio='none' %3E%3Cline x1='24' y1='0' x2='0' y2='24'%3E%3C/line%3E%3C/svg%3E");
+  --swatch-cross-active:               url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240' viewBox='0 0 24 24' fill='none' stroke='{{ font_col_base | color_to_rgb }}' stroke-width='0.09' preserveAspectRatio='none' %3E%3Cline x1='24' y1='0' x2='0' y2='24'%3E%3C/line%3E%3C/svg%3E");
+
+  --footer-divider-col:                {{ settings.foot_divider_col }};
+  --footer-text-col:                   {{ settings.foot_text_col.rgb }};
+  --footer-heading-col:                {{ settings.foot_heading_col.rgb }};
+  --footer-bg-col:                     {{ settings.foot_bg_col.rgb }};
+
+  {%- if settings.prod_block_label_loc contains 'top' -%}
+    --product-label-overlay-justify: flex-start;
+  {%- elsif settings.prod_block_label_loc contains 'bottom' -%}
+    --product-label-overlay-justify: flex-end;
+  {%- else -%}
+    --product-label-overlay-justify: center;
+  {%- endif -%}
+
+  {%- if settings.prod_block_label_loc contains 'left' -%}
+    --product-label-overlay-align: flex-start;
+  {%- elsif settings.prod_block_label_loc contains 'right' -%}
+    --product-label-overlay-align: flex-end;
+  {%- else -%}
+    --product-label-overlay-align: center;
+  {%- endif -%}
+
+  --product-label-overlay-reduction-text:   {{ settings.prod_over_redu_text }};
+  --product-label-overlay-reduction-bg:     {{ settings.prod_over_redu_bg }};
+  --product-label-overlay-reduction-text-weight: {% if settings.prod_over_redu_bold %}600{% else %}inherit{% endif %};
+  --product-label-overlay-stock-text:       {{ settings.prod_over_low_text }};
+  --product-label-overlay-stock-bg:         {{ settings.prod_over_low_bg }};
+  --product-label-overlay-new-text:         {{ settings.prod_over_new_text }};
+  --product-label-overlay-new-bg:           {{ settings.prod_over_new_bg }};
+  --product-label-overlay-meta-text:        {{ settings.prod_over_meta_text }};
+  --product-label-overlay-meta-bg:          {{ settings.prod_over_meta_bg }};
+  --product-label-sale-text:                {{ settings.prod_label_sale_text }};
+  --product-label-sold-text:                {{ settings.prod_label_sold_text }};
+  --product-label-preorder-text:            {{ settings.prod_label_pre_text }};
+
+  --product-block-crop-align:               {{ settings.prod_thumb_crop_align }};
+
+  {% if settings.prod_thumb_text_align == 'left' %}
+  --product-block-price-align:              flex-start;
+  --product-block-price-item-margin-start:  initial;
+  --product-block-price-item-margin-end:    .5rem;
+  {% elsif settings.prod_thumb_text_align == 'right' %}
+  --product-block-price-align:              flex-end;
+  --product-block-price-item-margin-start:  .5rem;
+  --product-block-price-item-margin-end:    initial;
+  {% else %}
+  --product-block-price-align:              center;
+  --product-block-price-item-margin-start:  .25rem;
+  --product-block-price-item-margin-end:    .25rem;
+  {% endif %}
+
+  {% if settings.blend_product_images %}
+    --product-block-blend-bg: {{ settings.blend_bg_gradient | default: settings.blend_bg_color }};
+    --product-block-blend-mode: darken;
+  {% endif %}
+
+  --collection-block-image-position:   {{ settings.coll_grid_image_position }};
+
+  --swatch-picker-image-size:          {{ settings.swatch_picker_image_size }}px;
+  --swatch-crop-align:                 {{ settings.swatch_crop_align }} center;
+
+  --image-overlay-text-color:          {{ settings.image_overlay_text.rgb }};
+
+  {%- liquid
+    assign image_overlay_opacity = settings.image_overlay_opacity | divided_by: 100.0
+    assign image_overlay_shadow_opacity = settings.image_overlay_shadow_opacity | divided_by: 100.0
+  -%}
+  --image-overlay-bg:                  {{ settings.image_overlay_bg | color_modify: "alpha", image_overlay_opacity }};
+  --image-overlay-shadow-start:        rgb(0 0 0 / {{ image_overlay_shadow_opacity }});
+  --image-overlay-box-opacity:         {{ settings.image_overlay_box_opacity | divided_by: 100.0 }};
+
+  {%- liquid
+    assign prod_inv_in_box_brightness = settings.prod_inv_in_box | color_brightness
+    if prod_inv_in_box_brightness > 170
+      assign prod_inv_in_icon_box_fill = '#fff'
+    else
+      assign prod_inv_in_icon_box_fill = 'none'
+    endif
+    assign prod_inv_low_box_brightness = settings.prod_inv_low_box | color_brightness
+    if prod_inv_low_box_brightness > 170
+      assign prod_inv_low_icon_box_fill = '#fff'
+    else
+      assign prod_inv_low_icon_box_fill = 'none'
+    endif
+  -%}
+  --product-inventory-ok-box-color:            {{ settings.prod_inv_in_box }};
+  --product-inventory-ok-text-color:           {{ settings.prod_inv_in_text }};
+  --product-inventory-ok-icon-box-fill-color:  {{ prod_inv_in_icon_box_fill }};
+  --product-inventory-low-box-color:           {{ settings.prod_inv_low_box }};
+  --product-inventory-low-text-color:          {{ settings.prod_inv_low_text }};
+  --product-inventory-low-icon-box-fill-color: {{ prod_inv_low_icon_box_fill }};
+  --product-inventory-low-text-color-channels: {{ settings.prod_inv_in_text | color_to_rgb | split: "(" | last | split: ")" | first }};
+  --product-inventory-ok-text-color-channels:  {{ settings.prod_inv_low_text | color_to_rgb | split: "(" | last | split: ")" | first }};
+
+  --rating-star-color: {{ settings.prod_rating_star.rgb }};
+
+  {%- if settings.flip_overlay_position_rtl -%}
+    --overlay-align-left: start;
+    --overlay-align-right: end;
+  {%- endif -%}
+}
+{%- if settings.flip_overlay_position_rtl -%}
+html[dir=rtl] {
+  --overlay-right-text-m-left: 0;
+  --overlay-right-text-m-right: auto;
+  --overlay-left-shadow-left-left: 15%;
+  --overlay-left-shadow-left-right: -50%;
+  --overlay-left-shadow-right-left: -85%;
+  --overlay-left-shadow-right-right: 0;
+}
+{%- endif -%}
+
+{%- if settings.image_overlay_box_scheme == 'page' -%}
+  .image-overlay--bg-box .text-overlay .text-overlay__text {
+    --image-overlay-box-bg: {{ bg_col.rgb }};
+    --heading-color: var(--body-heading-color);
+    --text-color: var(--body-text-color);
+    --link-color: var(--body-link-color);
+  }
+{%- endif -%}
+
+{%- assign bg_col_alpha = bg_col | color_extract: 'alpha' -%}
+{%- if bg_col_alpha > 0 -%}
+  ::selection {
+    background: rgb(var(--body-heading-color));
+    color: rgb(var(--body-bg-color));
+  }
+  ::-moz-selection {
+    background: rgb(var(--body-heading-color));
+    color: rgb(var(--body-bg-color));
+  }
+{%- endif -%}
+
+{%- if settings.bg_image != blank -%}
+body {
+  background: rgb(var(--body-bg-color)) url('{{ settings.bg_image | image_url: width: 2048 }}') {{ settings.bg_method }};
+}
+{%- endif -%}
+
+{%- if settings.prod_block_label_loc == 'bottom left' -%}
+@media (max-width: 767.98px) {
+  .product-block__image-dots {
+    left: auto;
+    right: 10px;
+  }
+}
+{%- endif -%}
+
+{%- if bg_col != settings.panel_nav_bg -%}
+.navigation .h1 {
+  color: inherit !important;
+}
+{%- endif -%}
+
+.use-color-scheme--default {
+  --product-label-sale-text:           {{ settings.prod_label_sale_text }};
+  --product-label-sold-text:           {{ settings.prod_label_sold_text }};
+  --product-label-preorder-text:       {{ settings.prod_label_pre_text }};
+  --input-background-color:            rgb(var(--body-bg-color));
+  --input-text-color:                  var(--body-input-text-color);
+  --input-border-color:                {{ font_col_base | color_mix: bg_col, 25 | color_to_rgb }};
+  --input-border-color-hover:          {{ font_col_base | color_mix: bg_col, 55 | color_to_rgb }};
+  --input-border-color-active:         {{ font_col_base | color_to_rgb }};
+}
+
+{%- if settings.color_scheme_1_overrides_enabled -%}
+.use-color-scheme--1 {
+  --product-label-sale-text:           currentColor;
+  --product-label-sold-text:           currentColor;
+  --product-label-preorder-text:       currentColor;
+  --input-background-color:            transparent;
+  --input-text-color:                  {{ settings.color_scheme_1_text_col.rgb }};
+  --input-border-color:                {{ settings.color_scheme_1_text_col | color_mix: settings.color_scheme_1_col, 30 | color_to_rgb }};
+  --input-border-color-hover:          {{ settings.color_scheme_1_text_col | color_mix: settings.color_scheme_1_col, 55 | color_to_rgb }};
+  --input-border-color-active:         {{ settings.color_scheme_1_text_col | color_to_rgb }};
+}
+{%- endif -%}
+
+{%- if settings.color_scheme_2_overrides_enabled -%}
+.use-color-scheme--2 {
+  --product-label-sale-text:           currentColor;
+  --product-label-sold-text:           currentColor;
+  --product-label-preorder-text:       currentColor;
+  --input-background-color:            transparent;
+  --input-text-color:                  {{ settings.color_scheme_2_text_col.rgb }};
+  --input-border-color:                {{ settings.color_scheme_2_text_col | color_mix: settings.color_scheme_2_col, 30 | color_to_rgb }};
+  --input-border-color-hover:          {{ settings.color_scheme_2_text_col | color_mix: settings.color_scheme_2_col, 55 | color_to_rgb }};
+  --input-border-color-active:         {{ settings.color_scheme_2_text_col | color_to_rgb }};
+}
+{%- endif -%}

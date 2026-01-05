@@ -1,0 +1,98 @@
+{%- liquid
+  layout none
+  assign rtl = false
+  assign rtl_iso_codes = 'ar,arc,dv,fa,ha,he,khw,ks,ku,ps,ur,yi' | split: ','
+  assign current_lang = localization.language.iso_code | split: '-' | first
+
+  if rtl_iso_codes contains current_lang
+    assign rtl = true
+  endif
+-%}
+
+<!doctype html>
+<html lang="{{ request.locale.iso_code }}" dir="{% if rtl %}rtl{% else %}ltr{% endif %}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+
+  {%- assign formatted_initial_value = gift_card.initial_value | money_without_trailing_zeros | strip_html %}
+  <title>{{ 'gift_cards.issued.title' | t: value: formatted_initial_value, shop: shop.name }}</title>
+
+  {%- if settings.favicon != blank -%}
+    {%- liquid
+      assign image_type = settings.favicon | split: '?' | first | split: '.' | last | downcase
+      if image_type == 'svg'
+        assign image_type = 'svg+xml'
+      endif
+    -%}
+    <link rel="icon" href="{{ settings.favicon | image_url: width: 48, height: 48 }}" type="image/{{ image_type }}">
+  {%- endif -%}
+
+  <meta name="description" content="{{ 'gift_cards.issued.subtext' | t }}">
+
+
+  {%- liquid
+    assign base_font = settings.type_base_font
+    assign base_font_bold = base_font | font_modify: 'weight', 'bolder'
+    assign heading_font = settings.type_heading_font
+  -%}
+
+  <style>
+    {{- base_font | font_face: font_display: 'fallback' -}}
+    {{- base_font_bold | font_face: font_display: 'fallback' -}}
+    {{- heading_font | font_face: font_display: 'fallback' -}}
+
+    {%- render 'doc-head-styles' -%}
+  </style>
+
+  {%- unless base_font.system? -%}
+    <link rel="preload" as="font" href="{{ base_font | font_url }}" type="font/woff2" crossorigin>
+  {%- endunless -%}
+
+  {%- unless heading_font.system? -%}
+    <link rel="preload" as="font" href="{{ heading_font | font_url }}" type="font/woff2" crossorigin>
+  {%- endunless -%}
+
+  <link rel="stylesheet" href="{{ 'gift-card.css' | asset_url }}">
+  <script src="{{ 'vendor/qrcode.js' | shopify_asset_url }}" defer></script>
+
+  {{ content_for_header }}
+</head>
+
+<body>
+  <header class="header">
+    <span class="header__store-name h4">{{ shop.name }}</span>
+    <h1 class="h3">{{ 'gift_cards.issued.subtext' | t }}</h1>
+    <div class="header__value h4">
+      <p>
+        {%- if settings.currency_code_enabled -%}
+          {{ gift_card.initial_value | money_with_currency }}
+        {%- else -%}
+          {{ gift_card.initial_value | money }}
+        {%- endif -%}
+      </p>
+      {%- if gift_card.enabled == false or gift_card.expired -%}
+        {%- assign gift_card_expiry_date = gift_card.expires_on | date: "%d/%m/%y" -%}
+        <p>
+          {{- 'gift_cards.issued.expired' | t: expiry: gift_card_expiry_date -}}
+        </p>
+      {%- endif -%}
+    </div>
+
+    {%- liquid
+      if settings.currency_code_enabled
+        assign gift_card_balance = gift_card.balance | money_with_currency
+      else
+        assign gift_card_balance = gift_card.balance | money
+      endif
+    -%}
+    {%- if gift_card.balance != gift_card.initial_value -%}
+      <p>{{ 'gift_cards.issued.remaining_html' | t: balance: gift_card_balance }}</p>
+    {%- endif -%}
+  </header>
+
+  <main class="gift-card">
+    {% section 'main-gift-card' %}
+  </main>
+</body>
+</html>

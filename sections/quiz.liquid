@@ -1,0 +1,596 @@
+{% comment %}
+  Quiz Step Section for Shopify
+  Place multiple sections on a page to create a multi-step quiz
+
+  Required files:
+  - assets/quiz-section.css
+  - assets/quiz-section.js
+{% endcomment %}
+
+{{ 'quiz-section.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+  .quiz-step-{{ section.id }} {
+  --primary-color: {{ section.settings.primary_color }};
+  --secondary-color: {{ section.settings.secondary_color }};
+  --text-color: {{ section.settings.text_color }};
+  --progress-color: {{ section.settings.progress_color }};
+  --button-color: {{ section.settings.button_color }};
+  --button-text-color: {{ section.settings.button_text_color }};
+  --btn-border-radius: {{ section.settings.button_border_radius }};
+  }
+
+  #shopify-section-{{ section.id }}.quiz-section {
+  background: {{ section.settings.background_color }};
+  }
+
+  .quiz-step-{{ section.id }} .quiz-answers {
+  grid-template-columns: repeat({{ section.settings.columns_desktop }}, 1fr);
+  }
+
+  @media (max-width: 1024px) {
+  .quiz-step-{{ section.id }} .quiz-answers {
+  grid-template-columns: repeat({{ section.settings.columns_tablet }}, 1fr);
+  }
+  }
+
+  @media (max-width: 640px) {
+  .quiz-step-{{ section.id }} .quiz-answers {
+  grid-template-columns: repeat({{ section.settings.columns_mobile }}, 1fr);
+  }
+  }
+{%- endstyle -%}
+
+<div
+    class="quiz-step quiz-step-{{ section.id }}"
+    data-quiz-step
+    data-step-id="{{ section.id }}"
+    data-question-id="{{ section.settings.question_id }}"
+    data-multiple-choice="{{ section.settings.allow_multiple }}"
+    data-free-text-mode="{{ section.settings.free_text_mode }}"
+    data-conditional-parent="{{ section.settings.conditional_parent }}"
+    data-conditional-value="{{ section.settings.conditional_value }}"
+    data-order-note-position="{{ section.settings.order_note_position }}"
+    style="display: none;"
+>
+  <div class="container">
+    <div class="quiz-container">
+      <div class="quiz-progress">
+        <div class="quiz-progress-bar" data-progress-bar></div>
+      </div>
+
+      <div class="quiz-content">
+        <div class="quiz-step-indicator" data-step-indicator></div>
+
+        <div class="quiz-header-wrapper">
+          <h2 class="quiz-question">
+            {{ section.settings.question_title }}
+            {% if section.settings.info_text != blank %}
+              <button type="button" class="quiz-info-toggle" data-info-toggle aria-label="More information">
+                <svg width="22" height="22" viewBox="0 0 20 20" fill="none">
+                  <circle cx="10" cy="10" r="9" stroke="currentColor" stroke-width="1.5"/>
+                  <path d="M10 14V10M10 6H10.01" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                </svg>
+              </button>
+            {% endif %}
+          </h2>
+        </div>
+
+        {% if section.settings.question_subtitle != blank %}
+          <p class="quiz-subtitle">{{ section.settings.question_subtitle }}</p>
+        {% endif %}
+
+        {% if section.settings.question_description != blank %}
+          <p class="quiz-description">{{ section.settings.question_description }}</p>
+        {% endif %}
+
+        {% if section.settings.info_text != blank %}
+          <div class="quiz-info-popup" data-info-popup>
+            <div class="quiz-info-popup-overlay" data-info-overlay></div>
+            <div class="quiz-info-popup-content">
+              <button type="button" class="quiz-info-popup-close" data-info-close aria-label="Close">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                  <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </button>
+              <div class="quiz-info-popup-body">
+                {{ section.settings.info_text }}
+              </div>
+            </div>
+          </div>
+        {% endif %}
+
+        <div class="quiz-navigation quiz-navigation-top">
+          <button type="button" class="quiz-btn quiz-btn-back" data-back-btn style="display: none;">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <path d="M12.5 15L7.5 10L12.5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Back
+          </button>
+          <button type="button" class="quiz-btn quiz-btn-next" data-next-btn disabled>
+            Next
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <path d="M7.5 15L12.5 10L7.5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+        </div>
+
+        {% if section.settings.free_text_mode %}
+          <!-- Free Text Mode -->
+          <div class="quiz-free-text-fields" data-free-text-fields>
+            {% for block in section.blocks %}
+              {% if block.type == 'free_text_field' %}
+                <div class="quiz-free-text-field" data-free-text-field>
+                  <label class="free-text-label">{{ block.settings.field_label }}</label>
+                  <textarea
+                      class="free-text-textarea"
+                      data-field-id="{{ block.settings.field_id }}"
+                      placeholder="{{ block.settings.field_placeholder }}"
+                      rows="{{ block.settings.field_rows }}"
+                  ></textarea>
+                </div>
+              {% endif %}
+            {% endfor %}
+          </div>
+        {% else %}
+          <!-- Regular Answer Mode -->
+          <div class="quiz-answers" data-answers>
+            {% for block in section.blocks %}
+              {% if block.type == 'answer' %}
+                <label class="quiz-answer" data-answer-block>
+                  <input
+                      type="{% if section.settings.allow_multiple %}checkbox{% else %}radio{% endif %}"
+                      name="question_{{ section.settings.question_id }}"
+                      value="{{ block.settings.answer_id }}"
+                      data-answer-value="{{ block.settings.answer_id }}"
+                      data-answer-title="{{ block.settings.answer_title }}"
+                      data-porosity="{{ block.settings.porosity_value }}"
+                      data-elasticity="{{ block.settings.elasticity_value }}"
+                      data-formulation-1="{{ block.settings.formulation_1 }}"
+                      data-formulation-2="{{ block.settings.formulation_2 }}"
+                      data-formulation-3="{{ block.settings.formulation_3 }}"
+                      data-formulation-4="{{ block.settings.formulation_4 }}"
+                      data-formulation-5="{{ block.settings.formulation_5 }}"
+                      data-formulation-6="{{ block.settings.formulation_6 }}"
+                      data-formulation-7="{{ block.settings.formulation_7 }}"
+                      data-product-handles="{% assign product_handles = '' %}{% for product in block.settings.product_list %}{% if forloop.first %}{% assign product_handles = product.handle %}{% else %}{% assign product_handles = product_handles | append: ',' | append: product.handle %}{% endif %}{% endfor %}{{ product_handles }}"
+                      data-product-handles-male="{% assign product_handles_male = '' %}{% for product in block.settings.product_list_male %}{% if forloop.first %}{% assign product_handles_male = product.handle %}{% else %}{% assign product_handles_male = product_handles_male | append: ',' | append: product.handle %}{% endif %}{% endfor %}{{ product_handles_male }}"
+                  >
+                  <div class="quiz-answer-content">
+                    {% if block.settings.answer_image != blank %}
+                      <div class="quiz-answer-image">
+                        <img
+                            src="{{ block.settings.answer_image | image_url: width: 400 }}"
+                            alt="{{ block.settings.answer_title }}"
+                            loading="lazy"
+                        >
+                      </div>
+                    {% endif %}
+                    <div class="quiz-answer-text">
+                      <h3>{{ block.settings.answer_title }}</h3>
+                    </div>
+                    <div class="quiz-answer-check">
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                        <path d="M20 6L9 17L4 12" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                    </div>
+                  </div>
+                </label>
+              {% endif %}
+            {% endfor %}
+          </div>
+        {% endif %}
+
+        <div class="quiz-navigation quiz-navigation-bottom">
+          <button type="button" class="quiz-btn quiz-btn-back" data-back-btn style="display: none;">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <path d="M12.5 15L7.5 10L12.5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Back
+          </button>
+          <button type="button" class="quiz-btn quiz-btn-next" data-next-btn disabled>
+            Next
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <path d="M7.5 15L12.5 10L7.5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+    .quiz-free-text-fields {
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+        margin: 32px 0;
+    }
+
+    .quiz-free-text-field {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .free-text-label {
+        font-size: 15px;
+        font-weight: 500;
+        color: var(--text-color, #111827);
+    }
+
+    .free-text-textarea {
+        width: 100%;
+        padding: 12px 14px;
+        border: 2px solid #e5e7eb;
+        border-radius: 8px;
+        font-size: 15px;
+        font-family: inherit;
+        color: #111827;
+        background: #fff;
+        transition: border-color 0.2s;
+        resize: vertical;
+        line-height: 1.5;
+    }
+
+    .free-text-textarea:focus {
+        outline: none;
+        border-color: var(--primary-color, #000);
+    }
+
+    .free-text-textarea::placeholder {
+        color: #9ca3af;
+    }
+</style>
+
+{% schema %}
+{
+  "name": "Quiz Step",
+  "class": "quiz-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "question_id",
+      "label": "Question ID",
+      "info": "Unique identifier for this question (e.g., 'hair_type'). Use this ID in results template as [[question_id]]",
+      "default": "question_1"
+    },
+    {
+      "type": "text",
+      "id": "question_title",
+      "label": "Question Title",
+      "default": "What is your hair type?"
+    },
+    {
+      "type": "textarea",
+      "id": "question_subtitle",
+      "label": "Question Subtitle (optional)",
+      "info": "Short description that appears directly under the title"
+    },
+    {
+      "type": "textarea",
+      "id": "question_description",
+      "label": "Question Description (optional)",
+      "info": "Additional context or instructions for this question"
+    },
+    {
+      "type": "richtext",
+      "id": "info_text",
+      "label": "Additional Information (optional)",
+      "info": "Expandable info panel for this question"
+    },
+    {
+      "type": "checkbox",
+      "id": "free_text_mode",
+      "label": "Free Text Mode",
+      "default": false,
+      "info": "Enable to make this a free text question. Add 'Free Text Field' blocks instead of Answer blocks."
+    },
+    {
+      "type": "checkbox",
+      "id": "allow_multiple",
+      "label": "Allow Multiple Answers",
+      "default": false,
+      "info": "Enable to allow users to select multiple answers (only for regular answer mode)"
+    },
+    {
+      "type": "text",
+      "id": "conditional_parent",
+      "label": "Conditional Parent Question ID (optional)",
+      "info": "Hide this question unless a specific answer is selected in parent question"
+    },
+    {
+      "type": "text",
+      "id": "conditional_value",
+      "label": "Required Parent Answer ID",
+      "info": "The answer ID from parent question that must be selected to show this question"
+    },
+    {
+      "type": "number",
+      "id": "order_note_position",
+      "label": "Order Note Position",
+      "info": "Controls the order this question appears in the order note (lower numbers appear first).",
+      "default": 10
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "min": 1,
+      "max": 6,
+      "step": 1,
+      "label": "Columns - Desktop",
+      "default": 2,
+      "info": "Number of answer columns on desktop screens"
+    },
+    {
+      "type": "range",
+      "id": "columns_tablet",
+      "min": 1,
+      "max": 6,
+      "step": 1,
+      "label": "Columns - Tablet",
+      "default": 2,
+      "info": "Number of answer columns on tablet screens"
+    },
+    {
+      "type": "range",
+      "id": "columns_mobile",
+      "min": 1,
+      "max": 6,
+      "step": 1,
+      "label": "Columns - Mobile",
+      "default": 1,
+      "info": "Number of answer columns on mobile screens"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "primary_color",
+      "label": "Primary Color",
+      "default": "#A6A8DE"
+    },
+    {
+      "type": "color",
+      "id": "secondary_color",
+      "label": "Secondary Color",
+      "default": "#D9DAF4"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#102B26"
+    },
+    {
+      "type": "color",
+      "id": "progress_color",
+      "label": "Progress Bar Color",
+      "default": "#10b981"
+    },
+    {
+      "type": "color",
+      "id": "button_color",
+      "label": "Button Background Color",
+      "default": "#A6A8DE"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button Text Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "text",
+      "id": "button_border_radius",
+      "label": "Button Border Radius",
+      "default": "5rem",
+      "info": "CSS value for button border radius (e.g., 5rem, 8px, 50%)"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "#f0f0ff"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "answer",
+      "name": "Answer",
+      "settings": [
+        {
+          "type": "text",
+          "id": "answer_id",
+          "label": "Answer ID",
+          "info": "Unique identifier for this answer (e.g., 'thick', 'thin')",
+          "default": "answer_1"
+        },
+        {
+          "type": "text",
+          "id": "answer_title",
+          "label": "Answer Title",
+          "default": "Option 1"
+        },
+        {
+          "type": "image_picker",
+          "id": "answer_image",
+          "label": "Answer Image (optional)"
+        },
+        {
+          "type": "header",
+          "content": "Internal Calculations (Not visible to user)"
+        },
+        {
+          "type": "select",
+          "id": "porosity_value",
+          "label": "Porosity",
+          "options": [
+            {
+              "value": "none",
+              "label": "Not Set"
+            },
+            {
+              "value": "low",
+              "label": "Low (a)"
+            },
+            {
+              "value": "medium",
+              "label": "Medium (b)"
+            },
+            {
+              "value": "high",
+              "label": "High (c)"
+            }
+          ],
+          "default": "none",
+          "info": "For internal calculations only"
+        },
+        {
+          "type": "select",
+          "id": "elasticity_value",
+          "label": "Elasticity",
+          "options": [
+            {
+              "value": "none",
+              "label": "Not Set"
+            },
+            {
+              "value": "low",
+              "label": "Low (a)"
+            },
+            {
+              "value": "medium",
+              "label": "Medium (b)"
+            },
+            {
+              "value": "high",
+              "label": "High (c)"
+            }
+          ],
+          "default": "none",
+          "info": "For internal calculations only"
+        },
+        {
+          "type": "number",
+          "id": "formulation_1",
+          "label": "Formulation - Product 1",
+          "info": "Formulation value for the first product in the list"
+        },
+        {
+          "type": "number",
+          "id": "formulation_2",
+          "label": "Formulation - Product 2",
+          "info": "Formulation value for the second product in the list"
+        },
+        {
+          "type": "number",
+          "id": "formulation_3",
+          "label": "Formulation - Product 3",
+          "info": "Formulation value for the third product in the list"
+        },
+        {
+          "type": "number",
+          "id": "formulation_4",
+          "label": "Formulation - Product 4",
+          "info": "Formulation value for the fourth product in the list"
+        },
+        {
+          "type": "number",
+          "id": "formulation_5",
+          "label": "Formulation - Product 5",
+          "info": "Formulation value for the fifth product in the list"
+        },
+        {
+          "type": "number",
+          "id": "formulation_6",
+          "label": "Formulation - Product 6",
+          "info": "Formulation value for the sixth product in the list"
+        },
+        {
+          "type": "number",
+          "id": "formulation_7",
+          "label": "Formulation - Product 7",
+          "info": "Formulation value for the seventh product in the list"
+        },
+        {
+          "type": "product_list",
+          "id": "product_list",
+          "label": "Recommended Products Female (optional)",
+          "info": "Select multiple products to recommend when this answer is selected",
+          "limit": 10
+        },
+        {
+          "type": "product_list",
+          "id": "product_list_male",
+          "label": "Recommended Products Male (optional)",
+          "info": "Select multiple products to recommend for male users when this answer is selected",
+          "limit": 10
+        }
+      ]
+    },
+    {
+      "type": "free_text_field",
+      "name": "Free Text Field",
+      "settings": [
+        {
+          "type": "text",
+          "id": "field_id",
+          "label": "Field ID",
+          "info": "Unique identifier for this field (e.g., 'first_name', 'email')",
+          "default": "field_1"
+        },
+        {
+          "type": "text",
+          "id": "field_label",
+          "label": "Field Label",
+          "default": "Your Name"
+        },
+        {
+          "type": "text",
+          "id": "field_placeholder",
+          "label": "Placeholder Text",
+          "default": "Enter your answer here..."
+        },
+        {
+          "type": "range",
+          "id": "field_rows",
+          "label": "Number of Rows",
+          "min": 1,
+          "max": 10,
+          "step": 1,
+          "default": 3
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Quiz Step",
+      "blocks": [
+        {
+          "type": "answer",
+          "settings": {
+            "answer_id": "option_1",
+            "answer_title": "Option 1"
+          }
+        },
+        {
+          "type": "answer",
+          "settings": {
+            "answer_id": "option_2",
+            "answer_title": "Option 2"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,153 @@
+{%- comment -%}
+  Parameters:
+  - image {Object} - Image object.
+  - sizes {String} - Content for the 'sizes' attribute (optional, default is 100vw).
+  - widths {String} - Comma separated list of image widths for the 'srcset' attribute (optional).
+  - class {String} - Class name(s) for the 'class' attribute (optional).
+  - loading {String} - eager/lazy/manual (optional, default is lazy)
+  - fetchpriority {String} - low/high/nil, passed on to image_tag (optional, default is nil)
+  - size_cols_desktop {Number} - width on desktop is 'page container width / this number'
+  - size_cols_mobile {Number} - width on mobile is 'screen width / this number'
+  - custom_aspect_ratio {Number} - aspect ratio to force on image (optional)
+  - custom_crop {String} - top/bottom/left/right/contain (optional, default is cover with focal point).
+  - as_mobile_source {Boolean} - Will output <source> instead of <img> for use in <picture> (optional, default is false)
+
+  Usage:
+  {% render 'image',
+    image: image,
+    sizes: '100vw',
+    widths: '480, 640, 960, 1280',
+    class: 'img-fit'
+  %}
+{%- endcomment -%}
+
+{%- liquid
+  # 5760 limit is handled here. Note: Not currently handled by the image cropper, resulting in empty output if 5760+ passed in.
+  assign shopify_max_length = 5760
+  assign image_width = image.width
+  assign image_height = image.height
+
+  if image.aspect_ratio > 1
+    if image_width > shopify_max_length
+      assign image_width = image.width | at_most: shopify_max_length
+      assign image_height = image_width | divided_by: image.aspect_ratio | round
+    endif
+  elsif image.aspect_ratio < 1
+    if image_height > shopify_max_length
+      assign image_height = image_height | at_most: shopify_max_length
+      assign image_width = image_height | times: image.aspect_ratio | round
+    endif
+  endif
+
+  if size_cols_desktop != blank
+    assign page_max_width = settings.max_page_width
+    assign sizes_mid_val = 100 | divided_by: size_cols_desktop | round | append: 'vw'
+    assign sizes_wide_val = page_max_width | divided_by: size_cols_desktop | append: 'px'
+
+    if size_cols_mobile
+      assign sizes_mobile = 100 | divided_by: size_cols_mobile | round | append: 'vw'
+    else
+      assign sizes_mobile = '100vw'
+    endif
+
+    assign sizes = '(min-width: ' | append: page_max_width | append: 'px) ' | append: sizes_wide_val | append: ', (min-width: 768px) ' | append: sizes_mid_val | append: ', ' | append: sizes_mobile
+  endif
+
+  assign sizes = sizes | default: '100vw'
+
+  if widths == blank
+    assign widths = '340, 480, 740, 980, 1200, 1400, 1600, 1920, 2560, 3200, 4000, ' | append: image_width
+  endif
+
+  if class == blank
+    assign class = 'theme-img'
+  else
+    assign class = class | append: ' theme-img'
+  endif
+
+  if loading == 'manual'
+    assign manual_load = true
+    assign loading = 'lazy'
+  else
+    assign loading = loading | default: nil
+
+    if loading == nil and section.location != 'header'
+      if section.location != 'template' or section.index > 2
+        assign loading = 'lazy'
+      endif
+    endif
+  endif
+
+  if custom_aspect_ratio != blank and custom_aspect_ratio != image.aspect_ratio and custom_crop != 'contain'
+    assign custom_aspect_ratio = custom_aspect_ratio | plus: 0
+
+    if custom_crop
+      if custom_crop contains 'left'
+        assign fp_x = 0
+      elsif custom_crop contains 'right'
+        assign fp_x = 1
+      else
+        assign fp_x = 0.5
+      endif
+      if custom_crop contains 'top'
+        assign fp_y = 0
+      elsif custom_crop contains 'bottom'
+        assign fp_y = 1
+      else
+        assign fp_y = 0.5
+      endif
+    else
+      assign fp_x = image.presentation.focal_point.x | default: 50 | divided_by: 100.0
+      assign fp_y = image.presentation.focal_point.y | default: 50 | divided_by: 100.0
+    endif
+
+
+    assign crop = 'region'
+    if custom_aspect_ratio > image.aspect_ratio
+      assign crop_left = 0
+      assign crop_width = image_width
+      assign crop_height = crop_width | divided_by: custom_aspect_ratio
+      assign crop_top = image_height | minus: crop_height | times: fp_y
+    else
+      assign crop_top = 0
+      assign crop_height = image_height
+      assign crop_width = crop_height | times: custom_aspect_ratio
+      assign crop_left = image_width | minus: crop_width | times: fp_x
+    endif
+  endif
+
+  if fetchpriority == blank
+    assign fetchpriority = nil
+  endif
+
+  assign image_src = image | image_url: width: image_width, crop: crop, crop_left: crop_left, crop_top: crop_top, crop_width: crop_width, crop_height: crop_height
+  assign srcset = nil
+  if settings.image_quality != '1'
+    assign srcset = ''
+    assign split_widths = widths | remove: ' ' | split: ','
+    for w in split_widths
+      assign w_num = w | times: 1
+      if w_num <= image_width
+        assign w_scaled_num = w_num | times: settings.image_quality
+        assign img_url = image | image_url: width: w_scaled_num, crop: crop, crop_left: crop_left, crop_top: crop_top, crop_width: crop_width, crop_height: crop_height
+        assign srcset = srcset | append: img_url | append: ' ' | append: w_num | append: 'w, '
+      endif
+    endfor
+    assign srcset = srcset | remove_last: ', '
+    assign image_html = image_src | image_tag: sizes: sizes, widths: widths, srcset: srcset, class: class, loading: loading, fetchpriority: fetchpriority
+  else
+    assign image_html = image_src | image_tag: sizes: sizes, widths: widths, class: class, loading: loading, fetchpriority: fetchpriority
+  endif
+-%}
+{%- if as_mobile_source -%}
+  {{- image_html | replace: '<img ', '<source media="(max-width: 767.98px)" ' | replace: ' src=', ' og-src=' -}}
+{%- else -%}
+  {%- if custom_aspect_ratio != blank -%}<div class="img-ar img-ar--{% if custom_crop == 'contain' %}contain{% else %}cover{% endif %}" style="--aspect-ratio: {{ custom_aspect_ratio }}">{% endif %}
+  {%- if manual_load -%}
+    {{- image_html | replace: ' srcset=', ' data-manual-srcset=' | replace: ' src=', ' data-manual-src=' -}}
+    <noscript>{{ image_html }}</noscript>
+  {%- else -%}
+    {{- image_html -}}
+  {%- endif -%}
+  {%- if custom_aspect_ratio != blank -%}</div>{% endif %}
+{%- endif -%}

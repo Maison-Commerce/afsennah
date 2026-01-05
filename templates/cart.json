@@ -1,0 +1,40 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-cart",
+      "blocks": {
+        "subtotal-and-checkout": {
+          "type": "subtotal-and-checkout",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "subtotal-and-checkout"
+      ],
+      "settings": {
+        "show_page_title": true,
+        "show_backorder_text": false,
+        "show_inventory_notice": "low",
+        "show_inventory_count": "low",
+        "inventory_threshold": 10,
+        "show_order_note": false,
+        "show_tax_and_shipping": true,
+        "show_additional_checkout_buttons": true,
+        "cart_terms_page": "",
+        "show_continue_shopping": true,
+        "continue_shopping_url": "",
+        "empty_icon": "basket",
+        "empty_heading": "Your cart is empty",
+        "empty_text": "",
+        "empty_button_text": "Start shopping",
+        "empty_button_link": "shopify:\/\/collections\/all",
+        "empty_button_style": "primary",
+        "show_shipping_calculator": false,
+        "shipping_calculator_default_country": "United States"
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

@@ -1,0 +1,44 @@
+<div id="section-id-{{ section.id }}" class="section-id-{{ section.id }}{% unless section.settings.full_width %} container{% endunless %}{% if section.settings.show_space %} fully-spaced-row--medium{% endif %}">
+  <div class="custom-html">
+    {{ section.settings.code }}
+  </div>
+</div>
+
+
+{% schema %}
+{
+  "name": "Custom Liquid",
+  "class": "section-custom-liquid",
+  "disabled_on": {
+    "groups": [
+      "aside"
+    ]
+  },
+  "settings": [
+    {
+      "id": "full_width",
+      "type": "checkbox",
+      "label": "Full page width",
+      "default": true
+    },
+    {
+      "id": "show_space",
+      "type": "checkbox",
+      "label": "Show space above and below section",
+      "default": true
+    },
+    {
+      "type": "liquid",
+      "id": "code",
+      "label": "Liquid code"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Custom Liquid",
+      "settings": {
+      }
+    }
+  ]
+}
+{% endschema %}

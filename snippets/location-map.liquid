@@ -1,0 +1,16 @@
+{%- comment -%}
+  Parameters:
+  - api_key {String} - Google Maps API key.
+  - address {String} - Map address.
+  - map_id {String} - Map ID for styling (optional).
+  - map_style {String} - Map style to match options in JS
+
+  Usage:
+  {% render 'location-map',
+    api_key: section.settings.api_key,
+    address: section.settings.address,
+    map_id: section.settings.map_id
+  %}
+{%- endcomment -%}
+
+<location-map class="map" data-api-key="{{ api_key }}" data-address="{{ address | escape }}"{% if map_id != blank %} data-map-id="{{ map_id }}"{% endif %}{% if map_style != blank %} data-map-style="{{ map_style }}"{% endif %} aria-label="{{ 'sections.map.label' | t: location: shop.name }}"></location-map>

@@ -1,0 +1,387 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "disabled": true,
+      "settings": {
+        "show_page_title": false,
+        "full_width": false
+      }
+    },
+    "image_with_text_overlay_PVTUPk": {
+      "type": "image-with-text-overlay",
+      "blocks": {
+        "subheading_g3DDcX": {
+          "type": "subheading",
+          "settings": {}
+        },
+        "heading_iNdVkn": {
+          "type": "heading",
+          "settings": {
+            "title": "Lookbook",
+            "heading_max_width": 15,
+            "title_size": 84,
+            "title_size_mobile": 32,
+            "use_h1": true
+          }
+        },
+        "text_TD8CrK": {
+          "type": "text",
+          "settings": {
+            "enlarge_text": true
+          }
+        }
+      },
+      "block_order": [
+        "subheading_g3DDcX",
+        "heading_iNdVkn",
+        "text_TD8CrK"
+      ],
+      "settings": {
+        "height": "fixed",
+        "height_desktop": 600,
+        "height_mobile": 460,
+        "image_link": "",
+        "full_width": true,
+        "text_alignment": "center left",
+        "mobile_overlay_under": false,
+        "overlay_style": "shadow"
+      }
+    },
+    "rich_text_d64PDz": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_GyKCDU": {
+          "type": "heading",
+          "settings": {
+            "title": "EXPLORE",
+            "use_h1": false
+          }
+        },
+        "text_rrAEX9": {
+          "type": "text",
+          "settings": {
+            "text": "<p>See the unique additions we have to offer in our new collection<\/p>",
+            "enlarge_text": true
+          }
+        }
+      },
+      "block_order": [
+        "heading_GyKCDU",
+        "text_rrAEX9"
+      ],
+      "settings": {
+        "height": "medium",
+        "text_alignment": "center",
+        "full_width": false,
+        "color_scheme": "default"
+      }
+    },
+    "gallery_U88LkW": {
+      "type": "gallery",
+      "blocks": {
+        "media_Dgm6CP": {
+          "type": "media",
+          "settings": {
+            "enlarge_media": false,
+            "subheading": "",
+            "title": "",
+            "button_label": "",
+            "link": "",
+            "text_alignment": "bottom left"
+          }
+        },
+        "media_xKGcLp": {
+          "type": "media",
+          "settings": {
+            "enlarge_media": false,
+            "subheading": "",
+            "title": "",
+            "button_label": "",
+            "link": "",
+            "text_alignment": "bottom left"
+          }
+        },
+        "media_VUgCMF": {
+          "type": "media",
+          "settings": {
+            "enlarge_media": false,
+            "subheading": "",
+            "title": "",
+            "button_label": "",
+            "link": "",
+            "text_alignment": "bottom left"
+          }
+        },
+        "media_HpkEk6": {
+          "type": "media",
+          "settings": {
+            "enlarge_media": false,
+            "subheading": "",
+            "title": "",
+            "button_label": "",
+            "link": "",
+            "text_alignment": "bottom left"
+          }
+        },
+        "media_efAye8": {
+          "type": "media",
+          "settings": {
+            "enlarge_media": false,
+            "subheading": "",
+            "title": "",
+            "button_label": "",
+            "link": "",
+            "text_alignment": "bottom left"
+          }
+        },
+        "media_XEpGta": {
+          "type": "media",
+          "settings": {
+            "enlarge_media": false,
+            "subheading": "",
+            "title": "",
+            "button_label": "",
+            "link": "",
+            "text_alignment": "bottom left"
+          }
+        },
+        "media_6iWQWa": {
+          "type": "media",
+          "settings": {
+            "enlarge_media": false,
+            "subheading": "",
+            "title": "",
+            "button_label": "",
+            "link": "",
+            "text_alignment": "bottom left"
+          }
+        }
+      },
+      "block_order": [
+        "media_Dgm6CP",
+        "media_xKGcLp",
+        "media_VUgCMF",
+        "media_HpkEk6",
+        "media_efAye8",
+        "media_XEpGta",
+        "media_6iWQWa"
+      ],
+      "settings": {
+        "grid_desktop": 4,
+        "grid_mobile": "1",
+        "height": "fixed",
+        "desktop_image_height": 400,
+        "mobile_image_height": 370,
+        "title_size": 30,
+        "title_size_mobile": 22,
+        "enable_margin": true,
+        "enable_row_spacing": true,
+        "full_width": false,
+        "color_scheme": "default",
+        "enable_carousel": true,
+        "overlay_style": "full",
+        "button_style": "primary"
+      }
+    },
+    "hotspots_8XY7Aj": {
+      "type": "hotspots",
+      "blocks": {
+        "hotspot_4Dnnhg": {
+          "type": "hotspot",
+          "settings": {
+            "hotspot_x": 53,
+            "hotspot_y": 55,
+            "hotspot_x_mobile": 47,
+            "hotspot_y_mobile": 18,
+            "heading": "Feature name",
+            "text": "<p>Share useful information about your product features.<\/p>",
+            "icon": "",
+            "icon_width": 32
+          }
+        },
+        "hotspot_z99WRq": {
+          "type": "hotspot",
+          "settings": {
+            "hotspot_x": 60,
+            "hotspot_y": 23,
+            "hotspot_x_mobile": 60,
+            "hotspot_y_mobile": 23,
+            "heading": "Feature name",
+            "text": "<p>Share useful information about your product features.<\/p>",
+            "icon": "",
+            "icon_width": 32
+          }
+        },
+        "hotspot_BH9XqK": {
+          "type": "hotspot",
+          "settings": {
+            "hotspot_x": 73,
+            "hotspot_y": 54,
+            "hotspot_x_mobile": 73,
+            "hotspot_y_mobile": 54,
+            "heading": "Feature name",
+            "text": "<p>Share useful information about your product features.<\/p>",
+            "icon": "",
+            "icon_width": 32
+          }
+        }
+      },
+      "block_order": [
+        "hotspot_4Dnnhg",
+        "hotspot_z99WRq",
+        "hotspot_BH9XqK"
+      ],
+      "settings": {
+        "hotspot_color": "#070707",
+        "button_content": "plus",
+        "outer_circle": "none",
+        "full_width": true,
+        "text_alignment": "top left",
+        "overlay_style": "box",
+        "subheading": "",
+        "title": "Shoppable Image",
+        "use_h1": false,
+        "heading_max_width": 10,
+        "text": "<p>Create a Shop the Look section to assist with upselling or helping customers with purchasing complementary products.<\/p>",
+        "button_1_label": "",
+        "button_1_link": "",
+        "button_1_style": "secondary",
+        "button_2_label": "",
+        "button_2_link": "",
+        "button_2_style": "primary"
+      }
+    },
+    "featured_collection_edaFyq": {
+      "type": "featured-collection",
+      "settings": {
+        "title": "Featured collection",
+        "show_vendor": false,
+        "enable_carousel": true,
+        "grid": 4,
+        "rows": 1,
+        "color_scheme": "default",
+        "show_view_all": true,
+        "full_width": true
+      }
+    },
+    "gallery_gJm7LD": {
+      "type": "gallery",
+      "blocks": {
+        "media_i4JGhL": {
+          "type": "media",
+          "settings": {
+            "enlarge_media": true,
+            "subheading": "",
+            "title": "Tell your story",
+            "button_label": "",
+            "link": "",
+            "text_alignment": "bottom left"
+          }
+        },
+        "media_BWNB4k": {
+          "type": "media",
+          "settings": {
+            "enlarge_media": false,
+            "subheading": "",
+            "title": "Tell your story",
+            "button_label": "",
+            "link": "",
+            "text_alignment": "bottom left"
+          }
+        },
+        "media_6r8bHP": {
+          "type": "media",
+          "settings": {
+            "enlarge_media": false,
+            "subheading": "",
+            "title": "Tell your story",
+            "button_label": "",
+            "link": "",
+            "text_alignment": "bottom left"
+          }
+        },
+        "media_7GD3k8": {
+          "type": "media",
+          "settings": {
+            "enlarge_media": true,
+            "subheading": "",
+            "title": "Tell your story",
+            "button_label": "",
+            "link": "",
+            "text_alignment": "bottom left"
+          }
+        }
+      },
+      "block_order": [
+        "media_i4JGhL",
+        "media_BWNB4k",
+        "media_6r8bHP",
+        "media_7GD3k8"
+      ],
+      "settings": {
+        "grid_desktop": 2,
+        "grid_mobile": "1",
+        "height": "fixed",
+        "desktop_image_height": 460,
+        "mobile_image_height": 400,
+        "title_size": 30,
+        "title_size_mobile": 22,
+        "enable_margin": true,
+        "enable_row_spacing": true,
+        "full_width": false,
+        "color_scheme": "default",
+        "enable_carousel": true,
+        "overlay_style": "full",
+        "button_style": "primary"
+      }
+    },
+    "product_list_KTppg9": {
+      "type": "product-list",
+      "settings": {
+        "title": "",
+        "product_list": [],
+        "show_vendor": false,
+        "enable_carousel": true,
+        "grid": 4,
+        "color_scheme": "default",
+        "full_width": true
+      }
+    },
+    "background_video_jikcYw": {
+      "type": "background-video",
+      "blocks": {
+        "heading_z7iaT3": {
+          "type": "heading",
+          "settings": {
+            "heading_max_width": 15,
+            "title_size": 84,
+            "title_size_mobile": 32,
+            "use_h1": false
+          }
+        }
+      },
+      "block_order": [
+        "heading_z7iaT3"
+      ],
+      "settings": {
+        "text_alignment": "center center",
+        "height_desktop": 600,
+        "height_mobile": 500,
+        "full_width": true,
+        "overlay_style": "shadow"
+      }
+    }
+  },
+  "order": [
+    "main",
+    "image_with_text_overlay_PVTUPk",
+    "rich_text_d64PDz",
+    "gallery_U88LkW",
+    "hotspots_8XY7Aj",
+    "featured_collection_edaFyq",
+    "gallery_gJm7LD",
+    "product_list_KTppg9",
+    "background_video_jikcYw"
+  ]
+}

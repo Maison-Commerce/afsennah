@@ -1,0 +1,216 @@
+{%- assign blog = blogs[section.settings.blog] -%}
+<div class="{% if section.settings.color_scheme != 'default' %}use-color-scheme use-color-scheme--{{ section.settings.color_scheme }} fully-padded-row--medium{% else %}fully-spaced-row--medium{% endif %}">
+  <div class="container blog-row">
+    {% unless blog.empty? %}
+
+      <h2 class="hometitle h4 align-center"><a href="{{ blog.url }}" {%- render 'animation-attrs', attrs: 'data-cc-animate' -%}>{{ section.settings.title | escape }}</a></h2>
+
+      {% if blog.articles.size == 0 %}
+
+        <p class="align-center" {%- render 'animation-attrs', attrs: 'data-cc-animate' -%}>{{ 'onboarding.blog.empty' | t }}</p>
+
+      {% else %}
+
+        <div class="article-list article-layout--columns article-layout--one-row">
+          {% for article in blog.articles limit: section.settings.post_limit %}
+          {%- assign animation_delay = forloop.index | times: 0.15 | append: 's' -%}
+          {%- assign animation_attrs = 'data-cc-animate data-cc-animate-delay="' | append: animation_delay | append: '"' -%}
+          <div class="article" {%- render 'animation-attrs', attrs: animation_attrs -%}>
+            <div class="article__inner">
+              {% if article.image %}
+                <div class="article-image">
+                  <a href="{{ article.url }}">
+                    {%- render 'image' with article.image, sizes: '(min-width: 1024px) 440px, (min-width: 768px) 50vw, 100vw', custom_aspect_ratio: section.settings.crop_ratio -%}
+                  </a>
+                </div>
+              {% endif %}
+
+              <h3><a href="{{ article.url }}">{{ article.title | escape }}</a></h3>
+
+              {% if section.settings.show_date or section.settings.show_date %}
+                <div class="meta meta--after-title small-text">
+                  <div class="iconmeta time">
+                    {% if section.settings.show_date %}
+                      {{ article.published_at | time_tag: format: 'date' }}
+                    {% endif %}
+                    {% if section.settings.show_author %}
+                      {% if section.settings.show_date %}&mdash;{% endif %}
+                      <span class="author">{{ article.author }}</span>
+                    {% endif %}
+                  </div>
+                </div>
+              {% endif %}
+
+              {%- if section.settings.show_excerpts -%}
+                <div class="rte">
+                  {%- if article.excerpt.size > 0 -%}
+                    {{ article.excerpt }}
+                  {%- else -%}
+                    {{ article.content | strip_html | truncatewords: 30 }}
+                  {%- endif -%}
+                </div>
+              {%- endif -%}
+
+              <div class="article__read-more-container">
+                <a class="small-feature-link" href="{{ article.url }}" aria-hidden="true">{{ 'blogs.article.read_more' | t }}</a>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+
+    {% else %}
+
+      <h2 class="hometitle h4 align-center">{{ section.settings.title | escape }}</h2>
+
+      <div class="article-list article-layout--columns article-layout--one-row">
+        {% for i in (1..section.settings.post_limit) %}
+        <div class="article">
+          <div class="article__inner">
+            <div class="article-image">
+              <div class="placeholder-image">{{ 'image' | placeholder_svg_tag }}</div>
+            </div>
+
+            <h3>{{ 'onboarding.article.title' | t }}</h3>
+
+            {% if section.settings.show_date or section.settings.show_date %}
+              <div class="meta meta--after-title small-text">
+                <div class="iconmeta time">
+                  {% if section.settings.show_date %}
+                    {{ 'now' | time_tag: format: 'date' }}
+                  {% endif %}
+                  {% if section.settings.show_author %}
+                    {% if section.settings.show_date %}&mdash;{% endif %}
+                    <span class="author">{{ 'onboarding.article.author' | t }}</span>
+                  {% endif %}
+                </div>
+              </div>
+            {% endif %}
+
+            {%- if section.settings.show_excerpts -%}
+              <div class="rte">
+                {{ 'onboarding.article.excerpt' | t }}
+              </div>
+            {%- endif -%}
+
+            <div class="article__read-more-container">
+              <a class="small-feature-link" href="#" aria-hidden="true">{{ 'blogs.article.read_more' | t }}</a>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+
+    {% endunless %}
+  </div>
+</div>
+
+
+{% schema %}
+{
+  "name": "Blog posts",
+  "class": "section-featured-blog",
+  "disabled_on": {
+    "groups": [
+      "aside"
+    ]
+  },
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Blog posts"
+    },
+    {
+      "type": "blog",
+      "id": "blog",
+      "label": "Blog"
+    },
+    {
+      "type": "range",
+      "id": "post_limit",
+      "label": "Posts",
+      "min": 3,
+      "max": 12,
+      "step": 3,
+      "default": 3
+    },
+    {
+      "type": "checkbox",
+      "id": "show_author",
+      "label": "Show author",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_date",
+      "label": "Show date",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_excerpts",
+      "label": "Show excerpt",
+      "info": "Change excerpts by editing your blog posts. [Learn more](https://help.shopify.com/en/manual/online-store/blogs/writing-blogs#display-an-excerpt-from-a-blog-post)",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "crop_ratio",
+      "label": "Image aspect ratio",
+      "options": [
+        {
+          "value": "",
+          "label": "Natural (no crop)"
+        },
+        {
+          "value": "0.67",
+          "label": "Portrait (2:3)"
+        },
+        {
+          "value": "1.0",
+          "label": "Square (1:1)"
+        },
+        {
+          "value": "1.33",
+          "label": "Landscape (4:3)"
+        },
+        {
+          "value": "1.78",
+          "label": "Wide (16:9)"
+        }
+      ],
+      "default": "1.78"
+    },
+    {
+      "type": "select",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "default",
+      "options": [
+        {
+          "value": "default",
+          "label": "Default"
+        },
+        {
+          "value": "1",
+          "label": "1"
+        },
+        {
+          "value": "2",
+          "label": "2"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Blog posts",
+      "settings": {
+      }
+    }
+  ]
+}
+{% endschema %}

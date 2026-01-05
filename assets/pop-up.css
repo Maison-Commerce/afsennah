@@ -1,0 +1,93 @@
+/* used for: transparent header, dropdown nav, docked utility bar */
+.popup-section .modal__window {
+  width: 480px;
+  max-width: calc(100vw - var(--gutter) * 2);
+  overflow-y: auto;
+}
+.popup-section .modal__window--no-image-block {
+  overflow: hidden;
+}
+.popup-section .modal__window--no-image-block .modal__content {
+  overflow-y: auto;
+}
+.popup-section .modal__window--side-image {
+  width: 600px;
+  overflow: hidden;
+}
+.popup-section .modal__window--side-image .modal__content {
+  overflow-y: auto;
+}
+.popup-section .modal__content {
+  padding: 64px var(--gutter) 40px;
+}
+.popup-section .modal__content:empty {
+  display: none;
+}
+.popup-section .modal__close-btn {
+  top: 20px;
+  right: 20px;
+}
+.popup-section .modal__close-btn svg {
+  display: block;
+}
+.popup-section .modal__image {
+  max-width: none;
+}
+.popup-section .signup-form {
+  margin-top: 25px;
+}
+.popup-section .modal__content:not(:last-child) .signup-form {
+  margin-bottom: 25px;
+}
+.popup-section .signup-form__email {
+  width: 100%;
+}
+.popup-section .signup-form__button {
+  width: 100%;
+}
+.popup-section .section__block:not(:last-child) {
+  margin-bottom: 0.75rem;
+}
+.popup-section .social {
+  margin-bottom: -8px;
+}
+.popup-section .social__link {
+  margin: 0 5px 8px;
+}
+
+.popup-section__background-image {
+  z-index: -1;
+}
+.popup-section__background-image::after {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+@media (min-width: 768px) {
+  .popup-section .modal__window {
+    width: 640px;
+  }
+  .popup-section .modal__window--side-image {
+    width: 800px;
+  }
+  .popup-section .modal__window--side-image .modal__content {
+    padding: 64px 48px;
+  }
+  .popup-section .modal__window--side-image .placeholder-image {
+    position: absolute;
+    inset: 0;
+    height: auto;
+    padding: 0;
+  }
+  .popup-section .modal__content {
+    padding: 64px 80px;
+  }
+}
+@media (max-width: 767.98px) {
+  .popup-section .modal__window.flex-col .media__placeholder {
+    position: relative;
+  }
+}
