@@ -10,16 +10,6 @@
 <!doctype html>
 <html class="no-js" lang="{{ request.locale.iso_code }}" dir="{{ lang_dir }}">
 <head>
-  <style>
-      @font-face {
-          font-family: 'Vanilla Ravioli';
-          src: url("{{ 'VanillaRavioli.woff2' | asset_url }}") format('woff2'),
-          url("{{ 'VanillaRavioli.woff' | asset_url }}") format('woff');
-          font-weight: normal;
-          font-style: normal;
-          font-display: swap;
-      }
-  </style>
   {%- render 'doc-head-core' -%}
   {%- render 'doc-head-social' -%}
 
