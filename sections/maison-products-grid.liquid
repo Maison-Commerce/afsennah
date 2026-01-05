@@ -50,10 +50,24 @@
                 </h3>
 
                 {% if block.settings.show_rating %}
-                  {% assign rating_metafield = product.metafields[section.settings.rating_metafield_namespace][section.settings.rating_metafield_key] %}
-                  {% assign review_count_metafield = product.metafields[section.settings.review_count_metafield_namespace][section.settings.review_count_metafield_key] %}
-                  {% assign product_rating = rating_metafield.value | default: rating_metafield | times: 1.0 %}
-                  {% assign product_review_count = review_count_metafield.value | default: review_count_metafield %}
+                  {% comment %} Try Loox metafields first {% endcomment %}
+                  {% assign loox_rating = product.metafields.loox.avg_rating %}
+                  {% assign loox_review_count = product.metafields.loox.num_reviews %}
+                  
+                  {% comment %} Fallback to custom metafields if Loox not available {% endcomment %}
+                  {% if loox_rating == blank %}
+                    {% assign rating_metafield = product.metafields[section.settings.rating_metafield_namespace][section.settings.rating_metafield_key] %}
+                    {% assign product_rating = rating_metafield.value | default: rating_metafield | times: 1.0 %}
+                  {% else %}
+                    {% assign product_rating = loox_rating | times: 1.0 %}
+                  {% endif %}
+                  
+                  {% if loox_review_count == blank %}
+                    {% assign review_count_metafield = product.metafields[section.settings.review_count_metafield_namespace][section.settings.review_count_metafield_key] %}
+                    {% assign product_review_count = review_count_metafield.value | default: review_count_metafield %}
+                  {% else %}
+                    {% assign product_review_count = loox_review_count %}
+                  {% endif %}
                   
                   {% if product_rating > 0 or product_review_count != blank %}
                     <div class="maison_commerce_maison_products_grid__rating">
@@ -975,32 +989,36 @@
       "content": "Metafield Settings"
     },
     {
+      "type": "paragraph",
+      "content": "By default, this section uses Loox ratings (loox.avg_rating and loox.num_reviews). If Loox is not installed, it will fallback to custom metafields below."
+    },
+    {
       "type": "text",
       "id": "rating_metafield_namespace",
-      "label": "Rating Metafield Namespace",
+      "label": "Rating Metafield Namespace (Fallback)",
       "default": "custom",
-      "info": "Namespace for the rating metafield (e.g., 'custom', 'reviews')"
+      "info": "Namespace for the rating metafield if Loox is not available (e.g., 'custom', 'reviews')"
     },
     {
       "type": "text",
       "id": "rating_metafield_key",
-      "label": "Rating Metafield Key",
+      "label": "Rating Metafield Key (Fallback)",
       "default": "rating",
-      "info": "Key for the rating metafield (should be a number 0-5)"
+      "info": "Key for the rating metafield if Loox is not available (should be a number 0-5)"
     },
     {
       "type": "text",
       "id": "review_count_metafield_namespace",
-      "label": "Review Count Metafield Namespace",
+      "label": "Review Count Metafield Namespace (Fallback)",
       "default": "custom",
-      "info": "Namespace for the review count metafield"
+      "info": "Namespace for the review count metafield if Loox is not available"
     },
     {
       "type": "text",
       "id": "review_count_metafield_key",
-      "label": "Review Count Metafield Key",
+      "label": "Review Count Metafield Key (Fallback)",
       "default": "review_count",
-      "info": "Key for the review count metafield"
+      "info": "Key for the review count metafield if Loox is not available"
     },
     {
       "type": "header",
