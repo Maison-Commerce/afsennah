@@ -126,7 +126,9 @@
                         <span class="maison_commerce_maison_testimonials__customer-name">{{ block.settings.customer_name }}</span>
                       {% endif %}
                       {% if block.settings.show_verified_badge %}
-                        <span class="maison_commerce_maison_testimonials__customer-separator">•</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="4" height="4" viewBox="0 0 4 4" fill="none">
+                            <circle opacity="0.2" cx="2" cy="2" r="2" fill="#2F3936"/>
+                        </svg>
                         <div class="maison_commerce_maison_testimonials__verified-badge">
                           <svg xmlns="http://www.w3.org/2000/svg" class="maison_commerce_maison_testimonials__verified-icon" width="16" height="16" viewBox="0 0 16 16" fill="none">
                             <g clip-path="url(#clip0_10248_6530{{ block.id }})">
