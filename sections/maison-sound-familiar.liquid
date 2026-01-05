@@ -204,10 +204,6 @@
     border-radius: {{ section.settings.media_border_radius }}px;
   }
 
-  @media (max-width: 768px) {
-    border-radius: 18px;
-  }
-
   .maison_commerce_maison_sound_familiar__video {
     position: absolute;
     top: 0;
@@ -217,6 +213,12 @@
     object-fit: cover;
     border-radius: {{ section.settings.media_border_radius }}px;
     cursor: pointer;
+  }
+
+  @media (max-width: 768px) {
+    .maison_commerce_maison_sound_familiar__video-wrapper, .maison_commerce_maison_sound_familiar__video {
+        border-radius: 18px;
+    }
   }
 
   /* Play Button */
