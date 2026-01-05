@@ -398,25 +398,12 @@
             "customer_name": "Andreea B.",
             "show_verified_badge": true
           }
-        },
-        "testimonial_yWCjb4": {
-          "type": "testimonial",
-          "settings": {
-            "before_label": "Before",
-            "after_label": "After 1 Months",
-            "show_rating": true,
-            "rating": 5,
-            "review_text": "Significant reduction of shedding. But I'm still on my way to fuller hair.",
-            "customer_name": "Alenka Čakš Č.",
-            "show_verified_badge": true
-          }
         }
       },
       "block_order": [
         "testimonial_wzdhLp",
         "testimonial_GWqx6c",
-        "testimonial_nDJNNf",
-        "testimonial_yWCjb4"
+        "testimonial_nDJNNf"
       ],
       "name": "Maison Testimonials",
       "settings": {
