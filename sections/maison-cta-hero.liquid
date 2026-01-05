@@ -50,9 +50,9 @@
             {% endfor %}
           </div>
           {% if section.settings.rating_text != blank %}
-            <span class="maison_commerce_maison_cta_hero__rating-text">
+            <div class="maison_commerce_maison_cta_hero__rating-text">
               {{ section.settings.rating_text }}
-            </span>
+            </div>
           {% endif %}
         </div>
       {% endif %}
@@ -223,6 +223,10 @@
     font-weight: 300;
     line-height: 1.5;
     color: {{ section.settings.rating_text_color }};
+  }
+
+  .maison_commerce_maison_cta_hero__rating-text p{
+    margin: 0;
   }
 
   @media (max-width: 768px) {
