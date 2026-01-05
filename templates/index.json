@@ -1118,7 +1118,7 @@
         "badge_font_size": 12,
         "badge_text_color": "#15130E",
         "button_text": "Get Your Custom Formula",
-        "button_url": "",
+        "button_url": "#",
         "button_bg_color": "#FBF7BD",
         "button_text_color": "#1A365D",
         "button_border_radius": 12,
