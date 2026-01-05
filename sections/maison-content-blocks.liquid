@@ -5,7 +5,7 @@
       {% for block in section.blocks %}
         {% if block.type == 'image' or block.type == 'visual' %}
           {% if block.type == 'image' %}
-            <div class="maison_commerce_maison_content_blocks__image-block" {{ block.shopify_attributes }}>
+            <div class="maison_commerce_maison_content_blocks__image-block{% if block.settings.image_position == 'right' %} maison_commerce_maison_content_blocks__image-block--right{% endif %}" {{ block.shopify_attributes }}>
               {% if block.settings.image != blank %}
                 <div class="maison_commerce_maison_content_blocks__image-wrapper">
                   <img 
@@ -61,11 +61,17 @@
 
       {% comment %} Render content blocks (title, text, button, quote) {% endcomment %}
       {% assign has_content = false %}
+      {% assign image_position = 'left' %}
+      {% for block in section.blocks %}
+        {% if block.type == 'image' and block.settings.image_position %}
+          {% assign image_position = block.settings.image_position %}
+        {% endif %}
+      {% endfor %}
       {% for block in section.blocks %}
         {% if block.type == 'title' or block.type == 'text' or block.type == 'button' or block.type == 'quote' %}
           {% unless has_content %}
             {% assign has_content = true %}
-            <div class="maison_commerce_maison_content_blocks__content-block">
+            <div class="maison_commerce_maison_content_blocks__content-block{% if image_position == 'right' %} maison_commerce_maison_content_blocks__content-block--left{% endif %}">
           {% endunless %}
           
           {% case block.type %}
@@ -164,6 +170,11 @@
   .maison_commerce_maison_content_blocks__image-block {
     flex: {{ section.settings.image_width_desktop }}%;
     min-width: 0;
+    order: 1;
+  }
+
+  .maison_commerce_maison_content_blocks__image-block--right {
+    order: 2;
   }
 
   @media (max-width: 950px) {
@@ -283,6 +294,11 @@
     display: flex;
     flex-direction: column;
     gap: {{ section.settings.content_inner_gap }}px;
+    order: 2;
+  }
+
+  .maison_commerce_maison_content_blocks__content-block--left {
+    order: 1;
   }
 
   @media (max-width: 950px) {
@@ -1211,6 +1227,23 @@
           "type": "text",
           "id": "image_alt",
           "label": "Image Alt Text"
+        },
+        {
+          "type": "select",
+          "id": "image_position",
+          "label": "Image Position",
+          "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            }
+          ],
+          "default": "left",
+          "info": "Position of the image block relative to content (desktop only)"
         }
       ]
     },
