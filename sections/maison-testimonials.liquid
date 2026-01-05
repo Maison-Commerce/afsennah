@@ -641,12 +641,13 @@
   .maison_commerce_maison_testimonials__divider-progress {
     position: absolute;
     top: 50%;
-    left: 50%;
-    width: {{ section.settings.divider_progress_width }}px;
+    left: 0;
+    width: 0%;
     height: 2px;
     background-color: {{ section.settings.divider_color }};
     border-radius: 999px;
-    transform: translate(-50%, -50%);
+    transform: translateY(-50%);
+    transition: width 0.3s ease;
   }
 
   @media (max-width: 768px) {
@@ -797,6 +798,25 @@
         }
 
         const swiper = new Swiper(swiperContainer, swiperConfig);
+        
+        // Update progress bar
+        const dividerProgress = sectionElement.querySelector('.maison_commerce_maison_testimonials__divider-progress');
+        if (dividerProgress) {
+          // Update progress on slide change
+          swiper.on('progress', function(swiper, progress) {
+            dividerProgress.style.width = (progress * 100) + '%';
+          });
+          
+          // Update progress on slide change transition
+          swiper.on('slideChangeTransitionStart', function(swiper) {
+            const progress = swiper.progress;
+            dividerProgress.style.width = (progress * 100) + '%';
+          });
+          
+          // Set initial progress
+          dividerProgress.style.width = (swiper.progress * 100) + '%';
+        }
+        
         return true;
       } catch (error) {
         console.error('Swiper initialization error:', error);
