@@ -14,9 +14,9 @@
                   </svg>
                 {% endfor %}
               </div>
-              <p class="maison_commerce_maison_banner__rating-text">
-                Rated <strong>{{ section.settings.rating_value }}</strong> based on <strong>{{ section.settings.review_count }}</strong> reviews.
-              </p>
+              <div class="maison_commerce_maison_banner__rating-text">
+                {{ section.settings.rating_text }}
+              </div>
             </div>
           {% endif %}
 
@@ -219,6 +219,10 @@
     .maison_commerce_maison_banner__rating-text {
       font-size: {{ section.settings.rating_font_size_mobile }}px;
     }
+  }
+
+  .maison_commerce_maison_banner__rating-text p {
+    margin: 0;
   }
 
   .maison_commerce_maison_banner__rating-text strong {
@@ -568,16 +572,10 @@
       "default": true
     },
     {
-      "type": "text",
-      "id": "rating_value",
-      "label": "Rating Value",
-      "default": "4.8/5"
-    },
-    {
-      "type": "text",
-      "id": "review_count",
-      "label": "Review Count",
-      "default": "8,450+"
+      "type": "richtext",
+      "id": "rating_text",
+      "label": "Rating Text",
+      "default": "<p>Rated <strong>4.8/5</strong> based on <strong>8,450+</strong> reviews.</p>"
     },
     {
       "type": "color",
