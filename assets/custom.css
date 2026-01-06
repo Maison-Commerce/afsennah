@@ -836,7 +836,7 @@ video-section-play-button {
     pointer-events: none;
 }
 
-.tiered-rewards-bar__progress-container::first-child {
+.tiered-rewards-bar__progress-container .tiered-rewards-bar__segment-wrap::first-child {
     border-top-left-radius: 90px;
     border-bottom-left-radius: 90px;
 } 
