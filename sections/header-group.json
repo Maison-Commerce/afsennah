@@ -112,6 +112,26 @@
     },
     "maison_header_qiEQxF": {
       "type": "maison-header",
+      "blocks": {
+        "mega_menu_card_b4hAmy": {
+          "type": "mega_menu_card",
+          "settings": {
+            "link_title": "Women's Hair Care",
+            "image": "shopify://shop_images/d20662d6cd4c578f058d9abb2606ca6168de4dd8.png"
+          }
+        },
+        "mega_menu_card_48EPTk": {
+          "type": "mega_menu_card",
+          "settings": {
+            "link_title": "Men’s Hair Care",
+            "image": "shopify://shop_images/614ba465645405a7a80c8dbd4c438a4f9517dbb2.png"
+          }
+        }
+      },
+      "block_order": [
+        "mega_menu_card_b4hAmy",
+        "mega_menu_card_48EPTk"
+      ],
       "name": "Maison Header",
       "settings": {
         "logo": "shopify://shop_images/Logo_bb4b8c8c-7971-48d5-b69c-0aa9c1f600a8.png",
