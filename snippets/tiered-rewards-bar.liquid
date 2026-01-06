@@ -131,15 +131,21 @@
       
       <div class="tiered-rewards-bar__markers">
         {%- comment -%} Free Shipping Marker {%- endcomment -%}
+        {%- liquid
+          assign free_shipping_cents = free_shipping_threshold | times: 100
+        -%}
         <span class="tiered-rewards-bar__marker-image" data-index="0">
           <span class="tiered-rewards-bar__marker-icon">
             {% render 'icon', icon: 'truck', size: 'small' %}
           </span>
-          <span class="tiered-rewards-bar__marker-price">{{ free_shipping_threshold | money_without_trailing_zeros }}</span>
+          <span class="tiered-rewards-bar__marker-price" data-price-cents="{{ free_shipping_cents }}">{{ free_shipping_cents | money_without_trailing_zeros }}</span>
         </span>
         
         {%- comment -%} Tier 1 Marker {%- endcomment -%}
         {%- if section.settings.gift_tier_1_label != blank -%}
+          {%- liquid
+            assign tier_1_cents = tier_1_threshold | times: 100
+          -%}
           <span class="tiered-rewards-bar__marker-image{% if tier_1_achieved %} active{% endif %}" data-index="1">
             {%- if section.settings.gift_tier_1_image != blank -%}
               {%- liquid
@@ -152,12 +158,15 @@
                 {% render 'icon', icon: 'gift', size: 'small' %}
               </span>
             {%- endif -%}
-            <span class="tiered-rewards-bar__marker-price">{{ tier_1_threshold | money_without_trailing_zeros }}</span>
+            <span class="tiered-rewards-bar__marker-price" data-price-cents="{{ tier_1_cents }}">{{ tier_1_cents | money_without_trailing_zeros }}</span>
           </span>
         {%- endif -%}
         
         {%- comment -%} Tier 2 Marker {%- endcomment -%}
         {%- if section.settings.gift_tier_2_label != blank -%}
+          {%- liquid
+            assign tier_2_cents = tier_2_threshold | times: 100
+          -%}
           <span class="tiered-rewards-bar__marker-image{% if tier_2_achieved %} active{% endif %}" data-index="2">
             {%- if section.settings.gift_tier_2_image != blank -%}
               {%- liquid
@@ -170,12 +179,15 @@
                 {% render 'icon', icon: 'gift', size: 'small' %}
               </span>
             {%- endif -%}
-            <span class="tiered-rewards-bar__marker-price">{{ tier_2_threshold | money_without_trailing_zeros }}</span>
+            <span class="tiered-rewards-bar__marker-price" data-price-cents="{{ tier_2_cents }}">{{ tier_2_cents | money_without_trailing_zeros }}</span>
           </span>
         {%- endif -%}
         
         {%- comment -%} Tier 3 Marker {%- endcomment -%}
         {%- if section.settings.gift_tier_3_label != blank -%}
+          {%- liquid
+            assign tier_3_cents = tier_3_threshold | times: 100
+          -%}
           <span class="tiered-rewards-bar__marker-image{% if tier_3_achieved %} active{% endif %}" data-index="3">
             {%- if section.settings.gift_tier_3_image != blank -%}
               {%- liquid
@@ -188,7 +200,7 @@
                 {% render 'icon', icon: 'gift', size: 'small' %}
               </span>
             {%- endif -%}
-            <span class="tiered-rewards-bar__marker-price">{{ tier_3_threshold | money_without_trailing_zeros }}</span>
+            <span class="tiered-rewards-bar__marker-price" data-price-cents="{{ tier_3_cents }}">{{ tier_3_cents | money_without_trailing_zeros }}</span>
           </span>
         {%- endif -%}
       </div>
@@ -197,6 +209,55 @@
 
   <script>
     (function() {
+      // Function to convert and format prices in user's currency
+      function convertMarkerPrices() {
+        const markerPrices = document.querySelectorAll('.tiered-rewards-bar__marker-price');
+        
+        markerPrices.forEach(function(priceEl) {
+          // Get the original price in cents from data attribute
+          const originalCents = parseFloat(priceEl.getAttribute('data-price-cents')) || 0;
+          
+          if (originalCents <= 0) return;
+          
+          // If we have Shopify currency conversion available
+          if (typeof Shopify !== 'undefined' && Shopify.currency && Shopify.currency.rate) {
+            const rate = parseFloat(Shopify.currency.rate);
+            const activeCurrency = Shopify.currency.active;
+            
+            // Only convert if rate is not 1 (meaning user is not viewing in base currency)
+            if (rate && rate !== 1) {
+              // Convert from base currency to user's currency
+              const convertedCents = Math.round(originalCents * rate);
+              
+              // Format using Shopify's money format
+              const formatted = formatMoney(convertedCents, activeCurrency);
+              
+              // Update the price element
+              priceEl.textContent = formatted;
+            } else {
+              // If rate is 1, just format the original amount
+              const formatted = formatMoney(originalCents, activeCurrency);
+              priceEl.textContent = formatted;
+            }
+          }
+        });
+      }
+      
+      // Helper function to format money
+      function formatMoney(cents, currency) {
+        const amount = cents / 100;
+        try {
+          return new Intl.NumberFormat('en', {
+            style: 'currency',
+            currency: currency || 'USD',
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 0
+          }).format(amount);
+        } catch (e) {
+          return (currency || 'USD') + ' ' + Math.round(amount);
+        }
+      }
+      
       function updateProgressBar() {
         const container = document.querySelector('.tiered-rewards-bar__progress-container');
         if (!container) return;
@@ -262,15 +323,33 @@
 
       // Run on DOMContentLoaded
       if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', updateProgressBar);
+        document.addEventListener('DOMContentLoaded', function() {
+          updateProgressBar();
+          convertMarkerPrices();
+        });
       } else {
         updateProgressBar();
+        convertMarkerPrices();
       }
 
       // Update when cart changes
-      document.addEventListener('cart:updated', updateProgressBar);
-      document.addEventListener('cart:refresh', updateProgressBar);
-      document.addEventListener('on:cart:after-merge', updateProgressBar);
+      document.addEventListener('cart:updated', function() {
+        updateProgressBar();
+        convertMarkerPrices();
+      });
+      document.addEventListener('cart:refresh', function() {
+        updateProgressBar();
+        convertMarkerPrices();
+      });
+      document.addEventListener('on:cart:after-merge', function() {
+        updateProgressBar();
+        convertMarkerPrices();
+      });
+      
+      // Update prices when currency changes
+      if (typeof Shopify !== 'undefined' && Shopify.currency) {
+        document.addEventListener('currency:change', convertMarkerPrices);
+      }
       
       // Watch for mutations in cart drawer
       const observer = new MutationObserver(function(mutations) {
