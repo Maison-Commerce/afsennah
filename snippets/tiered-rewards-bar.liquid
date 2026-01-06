@@ -158,12 +158,14 @@
         {%- if section.settings.gift_tier_1_label != blank -%}
           <div class="marker-wrapper">
             <span class="tiered-rewards-bar__marker-image{% if tier_1_achieved %} active{% endif %}" data-index="1">
+                <span class="tiered-rewards-bar__marker-icon">
                 {%- if section.settings.gift_tier_1_image != blank -%}
                 {%- liquid
                     assign icon_sizes = '40px'
                     assign icon_widths = '40, 80'
                     render 'image', image: section.settings.gift_tier_1_image, sizes: icon_sizes, widths: icon_widths
                 -%}
+                </span>
                 {%- else -%}
                 <span class="tiered-rewards-bar__marker-icon">
                     {% render 'icon', icon: 'gift', size: 'small' %}
@@ -179,11 +181,13 @@
           <div class="marker-wrapper">
           <span class="tiered-rewards-bar__marker-image{% if tier_2_achieved %} active{% endif %}" data-index="2">
             {%- if section.settings.gift_tier_2_image != blank -%}
+                <span class="tiered-rewards-bar__marker-icon">
               {%- liquid
                 assign icon_sizes = '40px'
                 assign icon_widths = '40, 80'
                 render 'image', image: section.settings.gift_tier_2_image, sizes: icon_sizes, widths: icon_widths
               -%}
+              </span>
             {%- else -%}
               <span class="tiered-rewards-bar__marker-icon">
                 {% render 'icon', icon: 'gift', size: 'small' %}
@@ -198,12 +202,14 @@
         {%- if section.settings.gift_tier_3_label != blank -%}
           <div class="marker-wrapper">
           <span class="tiered-rewards-bar__marker-image{% if tier_3_achieved %} active{% endif %}" data-index="3">
-            {%- if section.settings.gift_tier_3_image != blank -%}
-              {%- liquid
-                assign icon_sizes = '40px'
-                assign icon_widths = '40, 80'
-                render 'image', image: section.settings.gift_tier_3_image, sizes: icon_sizes, widths: icon_widths
-              -%}
+              {%- if section.settings.gift_tier_3_image != blank -%}
+                <span class="tiered-rewards-bar__marker-icon">
+                {%- liquid
+                    assign icon_sizes = '40px'
+                    assign icon_widths = '40, 80'
+                    render 'image', image: section.settings.gift_tier_3_image, sizes: icon_sizes, widths: icon_widths
+                -%}
+              </span>
             {%- else -%}
               <span class="tiered-rewards-bar__marker-icon">
                 {% render 'icon', icon: 'gift', size: 'small' %}
