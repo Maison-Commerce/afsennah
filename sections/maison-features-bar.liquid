@@ -86,12 +86,14 @@
     display: flex;
     gap: {{ section.settings.feature_gap_desktop }}px;
     align-items: flex-start;
+    flex-wrap: wrap;
   }
 
   @media (max-width: 950px) {
     .maison_commerce_maison_features_bar__features {
       flex-direction: column;
       gap: {{ section.settings.feature_gap_mobile }}px;
+      flex-wrap: nowrap;
     }
   }
 
