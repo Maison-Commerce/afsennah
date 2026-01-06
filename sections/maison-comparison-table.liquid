@@ -60,113 +60,110 @@
 
     <!-- Comparison Table -->
     <div class="maison_commerce_maison_comparison_table__table-wrapper">
-      <table class="maison_commerce_maison_comparison_table__table">
+      <div class="maison_commerce_maison_comparison_table__table">
         <!-- Header Row -->
-        <thead>
-          <tr class="maison_commerce_maison_comparison_table__header-row">
-            <th class="maison_commerce_maison_comparison_table__header-cell maison_commerce_maison_comparison_table__header-cell--label"></th>
-            <th class="maison_commerce_maison_comparison_table__header-cell maison_commerce_maison_comparison_table__header-cell--primary">
-              {% if section.settings.column_1_image != blank %}
-                <div class="maison_commerce_maison_comparison_table__column-image">
-                  <img 
-                    src="{{ section.settings.column_1_image | image_url: width: 200 }}" 
-                    alt="{{ section.settings.column_1_image.alt | default: section.settings.column_1_title | escape }}"
-                    width="{{ section.settings.column_1_image.width }}"
-                    height="{{ section.settings.column_1_image.height }}"
-                    loading="lazy"
-                  />
+        <div class="maison_commerce_maison_comparison_table__header-row">
+          <div class="maison_commerce_maison_comparison_table__header-cell maison_commerce_maison_comparison_table__header-cell--label"></div>
+          <div class="maison_commerce_maison_comparison_table__header-cell maison_commerce_maison_comparison_table__header-cell--primary">
+            {% if section.settings.column_1_image != blank %}
+              <div class="maison_commerce_maison_comparison_table__column-image">
+                <img 
+                  src="{{ section.settings.column_1_image | image_url: width: 200 }}" 
+                  alt="{{ section.settings.column_1_image.alt | default: section.settings.column_1_title | escape }}"
+                  width="{{ section.settings.column_1_image.width }}"
+                  height="{{ section.settings.column_1_image.height }}"
+                  loading="lazy"
+                />
+              </div>
+            {% endif %}
+            <span>{{ section.settings.column_1_title }}</span>
+          </div>
+          <div class="maison_commerce_maison_comparison_table__header-cell maison_commerce_maison_comparison_table__header-cell--secondary maison_commerce_maison_comparison_table__header-cell--generic" x-show="activeTab === 'generic'">
+            {{ section.settings.column_2_title }}
+          </div>
+          <div class="maison_commerce_maison_comparison_table__header-cell maison_commerce_maison_comparison_table__header-cell--secondary maison_commerce_maison_comparison_table__header-cell--medical" x-show="activeTab === 'medical'">
+            {{ section.settings.column_3_title }}
+          </div>
+        </div>
+        <!-- Body Rows -->
+        {% for block in section.blocks %}
+          {% case block.type %}
+            {% when 'comparison_row' %}
+              <div class="maison_commerce_maison_comparison_table__row" {{ block.shopify_attributes }}>
+                <div class="maison_commerce_maison_comparison_table__label-cell">
+                  {{ block.settings.row_label }}
                 </div>
-              {% endif %}
-              <span>{{ section.settings.column_1_title }}</span>
-            </th>
-            <th class="maison_commerce_maison_comparison_table__header-cell maison_commerce_maison_comparison_table__header-cell--secondary maison_commerce_maison_comparison_table__header-cell--generic" x-show="activeTab === 'generic'">
-              {{ section.settings.column_2_title }}
-            </th>
-            <th class="maison_commerce_maison_comparison_table__header-cell maison_commerce_maison_comparison_table__header-cell--secondary maison_commerce_maison_comparison_table__header-cell--medical" x-show="activeTab === 'medical'">
-              {{ section.settings.column_3_title }}
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for block in section.blocks %}
-            {% case block.type %}
-              {% when 'comparison_row' %}
-                <tr class="maison_commerce_maison_comparison_table__row" {{ block.shopify_attributes }}>
-                  <td class="maison_commerce_maison_comparison_table__label-cell">
-                    {{ block.settings.row_label }}
-                  </td>
-                  <td class="maison_commerce_maison_comparison_table__value-cell maison_commerce_maison_comparison_table__value-cell--primary">
-                    {% case block.settings.column_1_value_type %}
-                      {% when 'checkmark' %}
-                        <div class="maison_commerce_maison_comparison_table__icon-wrapper">
-                          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                            <path d="M11.75 0C5.26065 0 0 5.26065 0 11.75C0 18.2394 5.26065 23.5 11.75 23.5C18.2394 23.5 23.5 18.2394 23.5 11.75C23.5 5.26065 18.2394 0 11.75 0Z" fill="#FFFFFE"/>
-                            <path d="M16.3329 8.56299L9.5728 15.3231L6.5 12.2503" stroke="#1A365D" stroke-width="2" stroke-linecap="square" stroke-linejoin="round"/>
-                          </svg>
-                        </div>
-                      {% when 'x' %}
-                        <div class="maison_commerce_maison_comparison_table__icon-wrapper">
-                          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                            <rect width="24" height="24" rx="12" fill="#E7EAEE"/>
-                            <path fill-rule="evenodd" clip-rule="evenodd" d="M8.37145 8.1837C8.44947 8.10578 8.55523 8.06201 8.6655 8.06201C8.77577 8.06201 8.88153 8.10578 8.95955 8.1837L15.6173 14.8415C15.6582 14.8796 15.691 14.9255 15.7137 14.9765C15.7365 15.0276 15.7487 15.0827 15.7497 15.1386C15.7507 15.1944 15.7404 15.2499 15.7195 15.3017C15.6985 15.3536 15.6674 15.4006 15.6279 15.4401C15.5884 15.4796 15.5413 15.5108 15.4895 15.5317C15.4377 15.5527 15.3822 15.5629 15.3263 15.5619C15.2704 15.561 15.2153 15.5487 15.1643 15.526C15.1132 15.5032 15.0673 15.4705 15.0292 15.4296L8.37145 8.77181C8.29352 8.69379 8.24976 8.58803 8.24976 8.47776C8.24976 8.36749 8.29352 8.26173 8.37145 8.1837Z" fill="#3E5576"/>
-                            <path fill-rule="evenodd" clip-rule="evenodd" d="M15.6173 8.1837C15.6952 8.26173 15.739 8.36749 15.739 8.47776C15.739 8.58803 15.6952 8.69379 15.6173 8.77181L8.95955 15.4296C8.88067 15.5031 8.77634 15.5431 8.66854 15.5412C8.56073 15.5393 8.45788 15.4956 8.38164 15.4194C8.3054 15.3431 8.26173 15.2403 8.25983 15.1325C8.25793 15.0247 8.29794 14.9204 8.37144 14.8415L15.0292 8.1837C15.1072 8.10578 15.213 8.06201 15.3233 8.06201C15.4335 8.06201 15.5393 8.10578 15.6173 8.1837Z" fill="#3E5576"/>
-                          </svg>
-                        </div>
-                      {% when 'text' %}
-                        <span class="maison_commerce_maison_comparison_table__text-value">
-                          {{ block.settings.column_1_text }}
-                        </span>
-                    {% endcase %}
-                  </td>
-                  <td class="maison_commerce_maison_comparison_table__value-cell maison_commerce_maison_comparison_table__value-cell--generic" x-show="activeTab === 'generic'">
-                    {% case block.settings.column_2_value_type %}
-                      {% when 'checkmark' %}
-                        <div class="maison_commerce_maison_comparison_table__icon-wrapper">
-                          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <circle cx="12" cy="12" r="12" fill="{{ section.settings.icon_bg_color }}"/>
-                            <path d="M8 12L11 15L16 9" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                          </svg>
-                        </div>
-                      {% when 'x' %}
-                        <div class="maison_commerce_maison_comparison_table__icon-wrapper">
-                          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <circle cx="12" cy="12" r="12" fill="{{ section.settings.icon_bg_color }}"/>
-                            <path d="M8 8L16 16M16 8L8 16" stroke="{{ section.settings.icon_color }}" stroke-width="2" stroke-linecap="round"/>
-                          </svg>
-                        </div>
-                      {% when 'text' %}
-                        <span class="maison_commerce_maison_comparison_table__text-value">
-                          {{ block.settings.column_2_text }}
-                        </span>
-                    {% endcase %}
-                  </td>
-                  <td class="maison_commerce_maison_comparison_table__value-cell maison_commerce_maison_comparison_table__value-cell--medical" x-show="activeTab === 'medical'">
-                    {% case block.settings.column_3_value_type %}
-                      {% when 'checkmark' %}
-                        <div class="maison_commerce_maison_comparison_table__icon-wrapper">
-                          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <circle cx="12" cy="12" r="12" fill="{{ section.settings.icon_bg_color }}"/>
-                            <path d="M8 12L11 15L16 9" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                          </svg>
-                        </div>
-                      {% when 'x' %}
-                        <div class="maison_commerce_maison_comparison_table__icon-wrapper">
-                          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <circle cx="12" cy="12" r="12" fill="{{ section.settings.icon_bg_color }}"/>
-                            <path d="M8 8L16 16M16 8L8 16" stroke="{{ section.settings.icon_color }}" stroke-width="2" stroke-linecap="round"/>
-                          </svg>
-                        </div>
-                      {% when 'text' %}
-                        <span class="maison_commerce_maison_comparison_table__text-value">
-                          {{ block.settings.column_3_text }}
-                        </span>
-                    {% endcase %}
-                  </td>
-                </tr>
-            {% endcase %}
-          {% endfor %}
-        </tbody>
-      </table>
+                <div class="maison_commerce_maison_comparison_table__value-cell maison_commerce_maison_comparison_table__value-cell--primary">
+                  {% case block.settings.column_1_value_type %}
+                    {% when 'checkmark' %}
+                      <div class="maison_commerce_maison_comparison_table__icon-wrapper">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                          <path d="M11.75 0C5.26065 0 0 5.26065 0 11.75C0 18.2394 5.26065 23.5 11.75 23.5C18.2394 23.5 23.5 18.2394 23.5 11.75C23.5 5.26065 18.2394 0 11.75 0Z" fill="#FFFFFE"/>
+                          <path d="M16.3329 8.56299L9.5728 15.3231L6.5 12.2503" stroke="#1A365D" stroke-width="2" stroke-linecap="square" stroke-linejoin="round"/>
+                        </svg>
+                      </div>
+                    {% when 'x' %}
+                      <div class="maison_commerce_maison_comparison_table__icon-wrapper">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                          <rect width="24" height="24" rx="12" fill="#E7EAEE"/>
+                          <path fill-rule="evenodd" clip-rule="evenodd" d="M8.37145 8.1837C8.44947 8.10578 8.55523 8.06201 8.6655 8.06201C8.77577 8.06201 8.88153 8.10578 8.95955 8.1837L15.6173 14.8415C15.6582 14.8796 15.691 14.9255 15.7137 14.9765C15.7365 15.0276 15.7487 15.0827 15.7497 15.1386C15.7507 15.1944 15.7404 15.2499 15.7195 15.3017C15.6985 15.3536 15.6674 15.4006 15.6279 15.4401C15.5884 15.4796 15.5413 15.5108 15.4895 15.5317C15.4377 15.5527 15.3822 15.5629 15.3263 15.5619C15.2704 15.561 15.2153 15.5487 15.1643 15.526C15.1132 15.5032 15.0673 15.4705 15.0292 15.4296L8.37145 8.77181C8.29352 8.69379 8.24976 8.58803 8.24976 8.47776C8.24976 8.36749 8.29352 8.26173 8.37145 8.1837Z" fill="#3E5576"/>
+                          <path fill-rule="evenodd" clip-rule="evenodd" d="M15.6173 8.1837C15.6952 8.26173 15.739 8.36749 15.739 8.47776C15.739 8.58803 15.6952 8.69379 15.6173 8.77181L8.95955 15.4296C8.88067 15.5031 8.77634 15.5431 8.66854 15.5412C8.56073 15.5393 8.45788 15.4956 8.38164 15.4194C8.3054 15.3431 8.26173 15.2403 8.25983 15.1325C8.25793 15.0247 8.29794 14.9204 8.37144 14.8415L15.0292 8.1837C15.1072 8.10578 15.213 8.06201 15.3233 8.06201C15.4335 8.06201 15.5393 8.10578 15.6173 8.1837Z" fill="#3E5576"/>
+                        </svg>
+                      </div>
+                    {% when 'text' %}
+                      <span class="maison_commerce_maison_comparison_table__text-value">
+                        {{ block.settings.column_1_text }}
+                      </span>
+                  {% endcase %}
+                </div>
+                <div class="maison_commerce_maison_comparison_table__value-cell maison_commerce_maison_comparison_table__value-cell--generic" x-show="activeTab === 'generic'">
+                  {% case block.settings.column_2_value_type %}
+                    {% when 'checkmark' %}
+                      <div class="maison_commerce_maison_comparison_table__icon-wrapper">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <circle cx="12" cy="12" r="12" fill="{{ section.settings.icon_bg_color }}"/>
+                          <path d="M8 12L11 15L16 9" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                      </div>
+                    {% when 'x' %}
+                      <div class="maison_commerce_maison_comparison_table__icon-wrapper">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <circle cx="12" cy="12" r="12" fill="{{ section.settings.icon_bg_color }}"/>
+                          <path d="M8 8L16 16M16 8L8 16" stroke="{{ section.settings.icon_color }}" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                      </div>
+                    {% when 'text' %}
+                      <span class="maison_commerce_maison_comparison_table__text-value">
+                        {{ block.settings.column_2_text }}
+                      </span>
+                  {% endcase %}
+                </div>
+                <div class="maison_commerce_maison_comparison_table__value-cell maison_commerce_maison_comparison_table__value-cell--medical" x-show="activeTab === 'medical'">
+                  {% case block.settings.column_3_value_type %}
+                    {% when 'checkmark' %}
+                      <div class="maison_commerce_maison_comparison_table__icon-wrapper">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <circle cx="12" cy="12" r="12" fill="{{ section.settings.icon_bg_color }}"/>
+                          <path d="M8 12L11 15L16 9" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                      </div>
+                    {% when 'x' %}
+                      <div class="maison_commerce_maison_comparison_table__icon-wrapper">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <circle cx="12" cy="12" r="12" fill="{{ section.settings.icon_bg_color }}"/>
+                          <path d="M8 8L16 16M16 8L8 16" stroke="{{ section.settings.icon_color }}" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                      </div>
+                    {% when 'text' %}
+                      <span class="maison_commerce_maison_comparison_table__text-value">
+                        {{ block.settings.column_3_text }}
+                      </span>
+                  {% endcase %}
+                </div>
+              </div>
+          {% endcase %}
+        {% endfor %}
+      </div>
     </div>
 
     <!-- CTA Button -->
@@ -360,14 +357,21 @@
 
   /* Table */
   .maison_commerce_maison_comparison_table__table {
-    width: 100%;
-    border-collapse: collapse;
+    display: grid;
+    grid-template-columns: {{ section.settings.label_column_width }}px repeat(3, 1fr);
     border-radius: {{ section.settings.table_border_radius }}px;
+    overflow: hidden;
+  }
+
+  @media (max-width: 768px) {
+    .maison_commerce_maison_comparison_table__table {
+      grid-template-columns: {{ section.settings.label_column_width }}px repeat(2, 1fr);
+    }
   }
 
   /* Header Row */
   .maison_commerce_maison_comparison_table__header-row {
-    background: transparent;
+    display: contents;
   }
 
   .maison_commerce_maison_comparison_table__header-cell {
@@ -377,9 +381,11 @@
     font-size: {{ section.settings.header_font_size_desktop }}px;
     font-weight: 500;
     color: {{ section.settings.header_text_color }};
-    vertical-align: bottom;
     height: {{ section.settings.header_height }}px;
     position: relative;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
   }
 
   @media (max-width: 768px) {
@@ -389,10 +395,10 @@
   }
 
   .maison_commerce_maison_comparison_table__header-cell--label {
-    width: {{ section.settings.label_column_width }}px;
     background: transparent;
     text-align: left;
     padding-left: {{ section.settings.label_padding_horizontal }}px;
+    justify-content: flex-start;
   }
 
   .maison_commerce_maison_comparison_table__header-cell--primary {
@@ -404,14 +410,13 @@
 
   .maison_commerce_maison_comparison_table__header-cell--secondary {
     background: transparent;
-    border-top: none;
     border-bottom: {{ section.settings.table_border_width }}px solid {{ section.settings.table_border_color }};
   }
 
   @media (max-width: 768px) {
     .maison_commerce_maison_comparison_table__header-cell--generic,
     .maison_commerce_maison_comparison_table__header-cell--medical {
-      display: table-cell;
+      display: flex;
     }
   }
 
@@ -432,10 +437,14 @@
 
   /* Table Rows */
   .maison_commerce_maison_comparison_table__row {
+    display: contents;
+  }
+
+  .maison_commerce_maison_comparison_table__row > div:not(:last-child) {
     border-bottom: {{ section.settings.table_border_width }}px solid {{ section.settings.table_border_color }};
   }
 
-  .maison_commerce_maison_comparison_table__row:last-child {
+  .maison_commerce_maison_comparison_table__row:last-child > div {
     border-bottom: none;
   }
 
@@ -448,7 +457,9 @@
     font-weight: 400;
     color: {{ section.settings.label_text_color }};
     text-align: left;
-    width: {{ section.settings.label_column_width }}px;
+    display: flex;
+    align-items: center;
+    border-right: {{ section.settings.table_border_width }}px solid {{ section.settings.table_border_color }};
   }
 
   @media (max-width: 768px) {
@@ -462,7 +473,9 @@
     padding: {{ section.settings.cell_padding_vertical }}px {{ section.settings.cell_padding_horizontal }}px;
     text-align: center;
     height: {{ section.settings.cell_height }}px;
-    vertical-align: middle;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .maison_commerce_maison_comparison_table__value-cell--primary {
@@ -480,7 +493,7 @@
   @media (max-width: 768px) {
     .maison_commerce_maison_comparison_table__value-cell--generic,
     .maison_commerce_maison_comparison_table__value-cell--medical {
-      display: table-cell;
+      display: flex;
     }
   }
 
