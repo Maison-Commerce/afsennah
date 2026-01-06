@@ -755,3 +755,210 @@ video-section-play-button {
         padding: 15px 0 40px 0;
     }
 }
+
+
+
+
+
+
+/* TIERED REWARDS BAR */
+.tiered-rewards-bar {
+    margin: 15px 0 30px;
+}
+
+.tiered-rewards-bar--no-cart {
+    display: none;
+}
+
+.tiered-rewards-bar__banner {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 16px;
+    background: #F0E8FF;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+.tiered-rewards-bar__banner--all-achieved {
+    background: #E0F4D5;
+}
+
+.tiered-rewards-bar__banner-icon {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+}
+
+.tiered-rewards-bar__banner-icon--image img {
+    width: 16px;
+    height: 16px;
+    object-fit: contain;
+}
+
+.tiered-rewards-bar__banner-text {
+    flex: 1;
+}
+
+.tiered-rewards-bar__progress-grid {
+    position: relative;
+    margin-top: 24px;
+}
+
+.tiered-rewards-bar__progress-container {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    margin-bottom: 20px;
+    position: relative;
+    border-radius: 0;
+    overflow: hidden;
+}
+
+.tiered-rewards-bar__segment-wrap {
+    position: relative;
+    flex: 1 1 auto;
+    padding-right: 20px;
+}
+
+.tiered-rewards-bar__segment-wrap:last-child {
+    padding-right: 0;
+}
+
+.tiered-rewards-bar__segment-wrap::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: -14px;
+    width: 40px;
+    height: 40px;
+    pointer-events: none;
+}
+
+.tiered-rewards-bar__segment {
+    flex: 1 1 auto;
+    background-color: #e8e8e8;
+    position: relative;
+    height: 12px;
+    overflow: hidden;
+    border-radius: 0;
+}
+
+.tiered-rewards-bar__segment-fill {
+    width: 0%;
+    height: 100%;
+    background-color: #1E3A8A;
+    transition: width 1s ease;
+    border-radius: 0;
+}
+
+.tiered-rewards-bar__markers {
+    width: calc(100% - 2px);
+    display: flex;
+    justify-content: space-between;
+    margin: 0 auto;
+    position: absolute;
+    top: -14px;
+    left: 2px;
+    pointer-events: none;
+}
+
+.tiered-rewards-bar__markers .tiered-rewards-bar__marker-image:first-child {
+    margin-left: 0;
+}
+
+.tiered-rewards-bar__markers .tiered-rewards-bar__marker-image:last-child {
+    margin-right: 0;
+}
+
+.tiered-rewards-bar__marker-image {
+    width: 40px;
+    height: 40px;
+    border-radius: 1px;
+    border: 3px solid transparent;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: #ffffff;
+    position: relative;
+}
+
+.tiered-rewards-bar__marker-image img {
+    width: 35px;
+    height: 35px;
+    object-fit: contain;
+    border-radius: 1px;
+    cursor: pointer;
+}
+
+.tiered-rewards-bar__marker-icon {
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #666666;
+}
+
+.tiered-rewards-bar__marker-icon svg {
+    width: 24px;
+    height: 24px;
+}
+
+.tiered-rewards-bar__marker-price {
+    color: #767676;
+    font-weight: 400;
+    font-size: 16px;
+    transition: 0.3s all;
+    margin-top: 6px;
+    cursor: pointer;
+    white-space: nowrap;
+    line-height: 20px;
+}
+
+.tiered-rewards-bar__marker-image.active .tiered-rewards-bar__marker-price {
+    color: #1E3A8A;
+    font-weight: 700;
+}
+
+.tiered-rewards-bar__marker-image.active {
+    border: 3px solid #1E3A8A;
+}
+
+.tiered-rewards-bar__marker-image:last-of-type .tiered-rewards-bar__marker-price {
+    color: #1E3A8A;
+}
+
+.tiered-rewards-bar__marker-image.active:last-of-type {
+    border: 3px solid #1E3A8A;
+}
+
+@media (max-width: 767px) {
+    .tiered-rewards-bar__banner {
+        font-size: 13px;
+        padding: 10px 12px;
+    }
+    
+    .tiered-rewards-bar__marker-image {
+        width: 35px;
+        height: 35px;
+    }
+    
+    .tiered-rewards-bar__marker-image img,
+    .tiered-rewards-bar__marker-icon {
+        width: 30px;
+        height: 30px;
+    }
+    
+    .tiered-rewards-bar__marker-price {
+        font-size: 12px;
+        line-height: 12px;
+        text-align: center;
+    }
+    
+    .tiered-rewards-bar__segment {
+        height: 10px;
+    }
+}
