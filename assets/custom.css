@@ -935,6 +935,14 @@ video-section-play-button {
 }
 .tiered-rewards-bar__marker-image .tiered-rewards-bar__marker-price {
     color: rgba(35, 35, 35, 0.75);
+    font-family: "Gotham";
+    font-weight: 500;
+    font-style: Medium;
+    font-size: 10px;
+    line-height: 150%;
+    letter-spacing: 0%;
+    text-align: center;
+
 }
 .tiered-rewards-bar__marker-image.active .tiered-rewards-bar__marker-price {
  
@@ -944,10 +952,6 @@ video-section-play-button {
 .tiered-rewards-bar__marker-image.active .tiered-rewards-bar__marker-icon {
     border: 1px solid #fff;
     background: #1A365D;
-}
-
-.tiered-rewards-bar__marker-image:last-of-type .tiered-rewards-bar__marker-price {
-    color: #1E3A8A;
 }
 
 
