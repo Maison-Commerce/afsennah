@@ -82,8 +82,12 @@
               assign discount_percent = compare_at_price | minus: price | times: 100.0 | divided_by: compare_at_price | round
             endif
             
-            assign rating = product.metafields.loox.avg_rating | default: 5.0
+            assign rating = product.metafields.loox.avg_rating
             assign review_count = product.metafields.loox.num_reviews | default: 0
+            assign has_rating = false
+            if rating != blank and rating != null
+              assign has_rating = true
+            endif
             assign best_seller = false
             for block in section.blocks
               if block.type == 'product' and block.settings.product.id == product.id
@@ -127,23 +131,25 @@
                   </h3>
 
                   <!-- Rating -->
-                  <div class="maison_commerce_maison_you_may_also_like__rating">
-                    <div class="maison_commerce_maison_you_may_also_like__stars">
-                      {% assign rating_int = rating | floor %}
-                      {% for i in (1..5) %}
-                        {% if i <= rating_int %}
-                          <span class="maison_commerce_maison_you_may_also_like__star maison_commerce_maison_you_may_also_like__star--filled">★</span>
-                        {% else %}
-                          <span class="maison_commerce_maison_you_may_also_like__star maison_commerce_maison_you_may_also_like__star--empty">☆</span>
-                        {% endif %}
-                      {% endfor %}
+                  {% if has_rating %}
+                    <div class="maison_commerce_maison_you_may_also_like__rating">
+                      <div class="maison_commerce_maison_you_may_also_like__stars">
+                        {% assign rating_int = rating | floor %}
+                        {% for i in (1..5) %}
+                          {% if i <= rating_int %}
+                            <span class="maison_commerce_maison_you_may_also_like__star maison_commerce_maison_you_may_also_like__star--filled">★</span>
+                          {% else %}
+                            <span class="maison_commerce_maison_you_may_also_like__star maison_commerce_maison_you_may_also_like__star--empty">☆</span>
+                          {% endif %}
+                        {% endfor %}
+                      </div>
+                      {% if review_count > 0 %}
+                        <span class="maison_commerce_maison_you_may_also_like__review-count">
+                          ({{ review_count | number_with_delimiter }} Reviews)
+                        </span>
+                      {% endif %}
                     </div>
-                    {% if review_count > 0 %}
-                      <span class="maison_commerce_maison_you_may_also_like__review-count">
-                        ({{ review_count | number_with_delimiter }} Reviews)
-                      </span>
-                    {% endif %}
-                  </div>
+                  {% endif %}
 
                   <!-- Price -->
                   <div class="maison_commerce_maison_you_may_also_like__price">
