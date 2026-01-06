@@ -114,6 +114,7 @@
       "type": "maison-header",
       "name": "Maison Header",
       "settings": {
+        "logo": "shopify://shop_images/Logo_bb4b8c8c-7971-48d5-b69c-0aa9c1f600a8.png",
         "logo_img_width_int": 127,
         "mobile_logo_img_width_int": 119,
         "logo_font_size_desktop": 32,
@@ -143,7 +144,7 @@
         "shop_all_text": "Shop All",
         "shop_all_link": "",
         "quiz_button_text": "Hair Quiz",
-        "quiz_button_url": "",
+        "quiz_button_url": "#",
         "quiz_button_bg_color": "#FFFBC0",
         "quiz_button_text_color": "#1A365D",
         "quiz_button_border_radius": 8,
