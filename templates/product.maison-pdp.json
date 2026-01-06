@@ -927,14 +927,14 @@
           "type": "product",
           "settings": {
             "product": "womens-conditioner",
-            "show_best_seller": false
+            "show_best_seller": true
           }
         },
         "product_xjUDYy": {
           "type": "product",
           "settings": {
             "product": "growth-care-bundle",
-            "show_best_seller": false
+            "show_best_seller": true
           }
         },
         "product_XNiWYj": {
