@@ -922,56 +922,20 @@
     },
     "maison_you_may_also_like_qdari9": {
       "type": "maison-you-may-also-like",
-      "blocks": {
-        "product_CrhpaQ": {
-          "type": "product",
-          "settings": {
-            "product": "womens-conditioner",
-            "show_best_seller": true
-          }
-        },
-        "product_xjUDYy": {
-          "type": "product",
-          "settings": {
-            "product": "growth-care-bundle",
-            "show_best_seller": true
-          }
-        },
-        "product_XNiWYj": {
-          "type": "product",
-          "settings": {
-            "product": "custom-hair-growth-oil",
-            "show_best_seller": false
-          }
-        },
-        "product_9eVVg8": {
-          "type": "product",
-          "settings": {
-            "product": "custom-hair-growth-oil-for-him",
-            "show_best_seller": false
-          }
-        },
-        "product_f48Qqy": {
-          "type": "product",
-          "settings": {
-            "product": "hair-growth-set-men",
-            "show_best_seller": false
-          }
-        }
-      },
-      "block_order": [
-        "product_CrhpaQ",
-        "product_xjUDYy",
-        "product_XNiWYj",
-        "product_9eVVg8",
-        "product_f48Qqy"
-      ],
       "name": "You May Also Like",
       "settings": {
         "heading": "You may also like",
         "heading_mobile": "<p>You may also like</p>",
         "subtitle_mobile": "",
-        "products": [],
+        "products": [
+          "custom-conditioner",
+          "custom-hair-elixir",
+          "custom-hair-growth-oil-for-her",
+          "custom-hair-growth-oil-for-him",
+          "custom-hair-treatment",
+          "custom-scalp-tonic",
+          "custom-shampoo-for-her"
+        ],
         "products_limit": 4,
         "button_text": "Shop now",
         "show_quiz_cta": false,
