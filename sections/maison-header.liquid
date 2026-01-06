@@ -585,15 +585,15 @@
                         {% comment %} This child link has no children, show as image card {% endcomment %}
                         {% assign card_found = false %}
                         {% for block in section.blocks %}
-                            {% if block.type == 'mega_menu_card' and block.settings.link_title == child_link.title %}
+                            {% if block.type == 'mega_menu_card' and block.settings.link_title == link.title %}
                             {% assign card_found = true %}
                             <div class="maison_commerce_maison_header__mega-menu-card">
-                                <a href="{{ child_link.url }}" class="maison_commerce_maison_header__mega-menu-card-link">
+                                <a href="{{ link.url }}" class="maison_commerce_maison_header__mega-menu-card-link">
                                 {% if block.settings.image != blank %}
                                     <div class="maison_commerce_maison_header__mega-menu-card-image">
                                     <img 
                                         src="{{ block.settings.image | image_url: width: 500 }}" 
-                                        alt="{{ block.settings.image.alt | default: child_link.title | escape }}"
+                                        alt="{{ block.settings.image.alt | default: link.title | escape }}"
                                         width="{{ block.settings.image.width }}"
                                         height="{{ block.settings.image.height }}"
                                         loading="lazy"
@@ -601,7 +601,7 @@
                                     </div>
                                 {% endif %}
                                 <h3 class="maison_commerce_maison_header__mega-menu-card-title">
-                                    {{ child_link.title | escape }}
+                                    {{ link.title | escape }}
                                 </h3>
                                 </a>
                             </div>
@@ -610,9 +610,9 @@
                         {% unless card_found %}
                             {% comment %} Fallback: show card even without block {% endcomment %}
                             <div class="maison_commerce_maison_header__mega-menu-card">
-                            <a href="{{ child_link.url }}" class="maison_commerce_maison_header__mega-menu-card-link">
+                            <a href="{{ link.url }}" class="maison_commerce_maison_header__mega-menu-card-link">
                                 <h3 class="maison_commerce_maison_header__mega-menu-card-title">
-                                {{ child_link.title | escape }}
+                                    {{ link.title | escape }}
                                 </h3>
                             </a>
                             </div>
