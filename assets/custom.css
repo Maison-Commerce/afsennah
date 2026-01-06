@@ -925,7 +925,9 @@ video-section-play-button {
     fill: #1e3a8a;
     /* fill: #E5E5E8; */
 }
-
+.tiered-rewards-bar__marker-image.active svg path {
+    fill: #ffffff;
+}
 .tiered-rewards-bar__marker-image.active .tiered-rewards-bar__marker-price {
     color: #1E3A8A;
     font-weight: 700;
