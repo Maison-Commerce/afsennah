@@ -936,7 +936,8 @@ video-section-play-button {
     line-height: 150%;
     letter-spacing: 0%;
     text-align: center;
-    max-width: 120px;
+    max-width: 72px;
+    width: max-content;
 }
 .tiered-rewards-bar__marker-image.active .tiered-rewards-bar__marker-price {
  
