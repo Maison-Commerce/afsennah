@@ -735,6 +735,97 @@
         "quote_author_color": "#2c2926"
       }
     },
+    "maison_why_women_choose_8At6AP": {
+      "type": "maison-why-women-choose",
+      "blocks": {
+        "feature_card_fMetyn": {
+          "type": "feature_card",
+          "settings": {
+            "icon_image": "shopify://shop_images/iconoir_sparks.svg",
+            "icon_bg_color": "",
+            "title": "Take the 2-Minute Quiz",
+            "description": "<p>Answer a few questions about your hair, scalp, and goals. It's free and takes less time than brewing your morning coffee.</p>"
+          }
+        },
+        "feature_card_6FncPH": {
+          "type": "feature_card",
+          "settings": {
+            "icon_image": "shopify://shop_images/Microscope--Streamline-Tabler.svg",
+            "icon_bg_color": "",
+            "title": "We Create Your Formula",
+            "description": "<p>Our founder — a Certified Advanced Trichologist — personally reviews your results and selects the perfect blend of natural ingredients for you.</p>"
+          }
+        },
+        "feature_card_ybPWdk": {
+          "type": "feature_card",
+          "settings": {
+            "icon_image": "shopify://shop_images/akar-icons_leaf.svg",
+            "icon_bg_color": "",
+            "title": "See Real Results",
+            "description": "<p>Your custom products arrive at your door. Most women notice less shedding in 2 weeks and visible improvement within 3 months.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "feature_card_fMetyn",
+        "feature_card_6FncPH",
+        "feature_card_ybPWdk"
+      ],
+      "name": "Why Women Choose",
+      "settings": {
+        "heading": "Why Women Choose Afsennah",
+        "cta_text": "Get Hair Quiz",
+        "cta_url": "#",
+        "max_width": 1200,
+        "cards_max_width": 1100,
+        "padding_top_desktop": 60,
+        "padding_bottom_desktop": 60,
+        "padding_left_desktop": 80,
+        "padding_right_desktop": 80,
+        "padding_top_mobile": 32,
+        "padding_bottom_mobile": 32,
+        "padding_left_mobile": 20,
+        "padding_right_mobile": 20,
+        "container_gap_desktop": 32,
+        "container_gap_mobile": 40,
+        "heading_font_size_desktop": 32,
+        "heading_font_size_mobile": 24,
+        "heading_color": "#1A1A1A",
+        "card_gap_desktop": 18,
+        "card_gap_mobile": 12,
+        "card_bg_color": "#FFFFFF",
+        "card_border_color": "#F1F1F9",
+        "card_border_radius": 18,
+        "card_padding_desktop": 24,
+        "card_padding_mobile": 18,
+        "card_content_gap_desktop": 16,
+        "card_content_gap_mobile": 16,
+        "card_shadow": "0 4px 12px rgba(0, 0, 0, 0.1)",
+        "icon_bg_color": "#FBEBDD",
+        "icon_size_desktop": 60,
+        "icon_size_mobile": 44,
+        "icon_inner_size_desktop": 24,
+        "icon_inner_size_mobile": 18,
+        "title_font_size_desktop": 18,
+        "title_font_size_mobile": 16,
+        "title_color": "#020202",
+        "description_font_size_desktop": 16,
+        "description_font_size_mobile": 14,
+        "description_color": "#635F5A",
+        "text_gap": 8,
+        "text_gap_mobile": 4,
+        "button_bg_color": "#FBF7BD",
+        "button_text_color": "#1A365D",
+        "button_border_color": "rgba(86, 63, 9, 0.08)",
+        "button_font_size_desktop": 16,
+        "button_font_size_mobile": 14,
+        "button_padding_vertical": 16,
+        "button_padding_horizontal": 32,
+        "button_border_radius": 12,
+        "button_gap": 12,
+        "button_icon_size": 24
+      }
+    },
     "maison_badges_bar_HcM3QC": {
       "type": "maison-badges-bar",
       "blocks": {
@@ -1190,7 +1281,7 @@
       ],
       "name": "Maison Features Bar",
       "settings": {
-        "bg_color": "#FFFFFF",
+        "bg_color": "#ffffff",
         "max_width": 1320,
         "padding_top_desktop": 32,
         "padding_bottom_desktop": 44,
@@ -1206,7 +1297,7 @@
         "feature_padding_mobile": 8,
         "icon_content_gap_desktop": 24,
         "icon_content_gap_mobile": 24,
-        "icon_bg_color": "#FBEBDD",
+        "icon_bg_color": "#fbebdd",
         "icon_border_radius": 90,
         "icon_size_desktop": 60,
         "icon_size_mobile": 44,
@@ -1216,11 +1307,11 @@
         "title_font_size_mobile": 20,
         "title_line_height_desktop": 1.4,
         "title_line_height_mobile": 1.4,
-        "title_color": "#2C2926",
+        "title_color": "#2c2926",
         "title_subtitle_gap": 4,
         "subtitle_font_size_desktop": 16,
         "subtitle_font_size_mobile": 16,
-        "subtitle_color": "rgba(47,57,54,0.75)"
+        "subtitle_color": "#2f3936bf"
       }
     }
   },
@@ -1232,6 +1323,7 @@
     "maison_testimonials_7wmgNc",
     "maison_content_blocks_cAcXrb",
     "maison_content_blocks_rcgVU9",
+    "maison_why_women_choose_8At6AP",
     "maison_badges_bar_HcM3QC",
     "maison_products_grid_YtGCRk",
     "maison_instagram_scroll_REyGMj",
