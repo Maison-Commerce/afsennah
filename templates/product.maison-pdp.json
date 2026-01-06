@@ -811,6 +811,93 @@
         "pause_on_hover": "paused"
       }
     },
+    "maison_how_to_use_AcH7wL": {
+      "type": "maison-how-to-use",
+      "blocks": {
+        "step_card_NraPE7": {
+          "type": "step_card",
+          "settings": {
+            "image": "shopify://shop_images/94501d20f3babf928e8bf0ebd466cb19ed670c39.png",
+            "step_number": "1",
+            "step_label": "Apply",
+            "description": "<p><strong>Apply 10-15 drops</strong> to your scalp, targeting thinning areas. Section hair for even coverage.</p>",
+            "badge_color": ""
+          }
+        },
+        "step_card_TmRwgj": {
+          "type": "step_card",
+          "settings": {
+            "image": "shopify://shop_images/98a1023d3b2a698095553a29d1655208a67b2a66.png",
+            "step_number": "2",
+            "step_label": "Massage",
+            "description": "<p>Massage the formula for <strong>2-3 minutes</strong> to boost blood flow and relax. Enjoy investing in yourself.</p>",
+            "badge_color": ""
+          }
+        },
+        "step_card_AU8rnp": {
+          "type": "step_card",
+          "settings": {
+            "image": "shopify://shop_images/15024dc6f85b4d8b8202904982e4e8fa99a239fe.png",
+            "step_number": "3",
+            "step_label": "Leave In",
+            "description": "<p>Leave on overnight (6-8 hours) or <strong>30-60 minutes</strong> before showering. Use 3-4 times weekly for best results.</p>",
+            "badge_color": ""
+          }
+        }
+      },
+      "block_order": [
+        "step_card_NraPE7",
+        "step_card_TmRwgj",
+        "step_card_AU8rnp"
+      ],
+      "name": "How to Use",
+      "settings": {
+        "heading": "How to use",
+        "max_width": 1200,
+        "padding_top_desktop": 24,
+        "padding_bottom_desktop": 24,
+        "padding_left_desktop": 80,
+        "padding_right_desktop": 80,
+        "padding_top_mobile": 32,
+        "padding_bottom_mobile": 32,
+        "padding_left_mobile": 20,
+        "padding_right_mobile": 20,
+        "header_gap": 40,
+        "header_gap_mobile": 32,
+        "heading_font_size_desktop": 32,
+        "heading_font_size_mobile": 24,
+        "heading_color": "#232323",
+        "card_gap_desktop": 24,
+        "card_gap_mobile": 16,
+        "card_bg_color": "#FFFFFF",
+        "card_border_radius": 24,
+        "card_border_radius_mobile": 18,
+        "image_height_desktop": 365,
+        "image_width_mobile": 132,
+        "image_height_mobile": 146,
+        "image_padding_mobile": 8,
+        "image_border_radius_desktop": 32,
+        "image_border_radius_mobile": 24,
+        "card_content_gap_desktop": 12,
+        "card_content_gap_mobile": 4,
+        "card_content_padding_top_desktop": 32,
+        "card_content_padding_bottom_desktop": 16,
+        "card_content_padding_top_mobile": 8,
+        "card_content_padding_bottom_mobile": 8,
+        "card_content_padding_horizontal": 16,
+        "description_font_size_desktop": 16,
+        "description_font_size_mobile": 14,
+        "description_color": "rgba(35, 35, 35, 0.75)",
+        "badge_color": "#FFFBC0",
+        "badge_text_color": "#232323",
+        "badge_font_size_desktop": 16,
+        "badge_font_size_mobile": 12,
+        "badge_border_radius": 12,
+        "badge_border_radius_mobile": 12,
+        "badge_height_mobile": 22,
+        "badge_margin_bottom_mobile": 4
+      }
+    },
     "related-products": {
       "type": "related-products",
       "disabled": true,
@@ -833,6 +920,7 @@
     "maison_badges_bar_gq38Ux",
     "maison_testimonials_cwniN7",
     "maison_instagram_scroll_CpxWXq",
+    "maison_how_to_use_AcH7wL",
     "related-products"
   ]
 }
