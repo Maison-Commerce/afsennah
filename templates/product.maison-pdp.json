@@ -379,6 +379,7 @@
         "feature_card_kBwCxm": {
           "type": "feature_card",
           "settings": {
+            "icon_image": "shopify://shop_images/iconoir_sparks.svg",
             "icon_bg_color": "",
             "title": "Tailored for Your Scalp",
             "description": "<p>Formulas are crafted for your unique hair and scalp needs.</p>"
@@ -387,6 +388,7 @@
         "feature_card_Ly83nN": {
           "type": "feature_card",
           "settings": {
+            "icon_image": "shopify://shop_images/Microscope--Streamline-Tabler.svg",
             "icon_bg_color": "",
             "title": "Trichologist-Developed Formula",
             "description": "<p>Created by certified hair and scalp specialists with years of expertise.</p>"
@@ -395,6 +397,7 @@
         "feature_card_BpaMDc": {
           "type": "feature_card",
           "settings": {
+            "icon_image": "shopify://shop_images/akar-icons_leaf.svg",
             "icon_bg_color": "",
             "title": "Natural DHT Blockers Inside",
             "description": "<p>Plant-based ingredients that target the root cause of hair thinning.</p>"
@@ -403,6 +406,7 @@
         "feature_card_UziiCK": {
           "type": "feature_card",
           "settings": {
+            "icon_image": "shopify://shop_images/ci_heart-02.svg",
             "icon_bg_color": "",
             "title": "Sensitive Scalp Safe",
             "description": "<p>Gentle, non-irritating formula suitable for even the most delicate scalps.</p>"
@@ -411,6 +415,7 @@
         "feature_card_GiwBtp": {
           "type": "feature_card",
           "settings": {
+            "icon_image": "shopify://shop_images/icon-park-outline_mirror-two.svg",
             "icon_bg_color": "",
             "title": "Results in 8-12 Weeks",
             "description": "<p>Visible improvement in hair density and scalp health within 3 months.</p>"
@@ -419,6 +424,7 @@
         "feature_card_fJxPBi": {
           "type": "feature_card",
           "settings": {
+            "icon_image": "shopify://shop_images/hugeicons_feather.svg",
             "icon_bg_color": "",
             "title": "Lightweight, Non-Greasy",
             "description": "<p>Fast-absorbing serum that won't weigh down your hair or leave residue.</p>"
