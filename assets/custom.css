@@ -921,6 +921,11 @@ video-section-play-button {
     white-space: nowrap;
     line-height: 20px;
 }
+.tiered-rewards-bar__marker-image svg,
+.tiered-rewards-bar__marker-image img {
+    width: 20px;
+    height: 20px;
+}
 .tiered-rewards-bar__marker-image svg path {
     fill: #1e3a8a;
     /* fill: #E5E5E8; */
