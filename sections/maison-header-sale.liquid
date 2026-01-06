@@ -1,0 +1,435 @@
+{% if section.settings.show_section %}
+  <div class="maison_commerce_maison_header_sale">
+    {% if section.settings.link_url != blank %}
+      <a href="{{ section.settings.link_url }}" class="maison_commerce_maison_header_sale__link">
+    {% endif %}
+    <div class="maison_commerce_maison_header_sale__container">
+      <div class="maison_commerce_maison_header_sale__content">
+        {% if section.settings.show_icon %}
+          <div class="maison_commerce_maison_header_sale__icon-wrapper">
+            {% if section.settings.custom_icon != blank %}
+              <img 
+                src="{{ section.settings.custom_icon | image_url: width: 50 }}" 
+                alt=""
+                class="maison_commerce_maison_header_sale__icon maison_commerce_maison_header_sale__icon--image"
+                width="{{ section.settings.custom_icon.width }}"
+                height="{{ section.settings.custom_icon.height }}"
+                loading="lazy"
+              />
+            {% else %}
+              <svg class="maison_commerce_maison_header_sale__icon" width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM12 20C7.59 20 4 16.41 4 12C4 7.59 7.59 4 12 4C16.41 4 20 7.59 20 12C20 16.41 16.41 20 12 20Z" fill="{{ section.settings.icon_color }}"/>
+                <path d="M12 6C8.69 6 6 8.69 6 12C6 15.31 8.69 18 12 18C15.31 18 18 15.31 18 12C18 8.69 15.31 6 12 6ZM12 16C9.79 16 8 14.21 8 12C8 9.79 9.79 8 12 8C14.21 8 16 9.79 16 12C16 14.21 14.21 16 12 16Z" fill="{{ section.settings.icon_color }}"/>
+                <path d="M12 10C10.9 10 10 10.9 10 12C10 13.1 10.9 14 12 14C13.1 14 14 13.1 14 12C14 10.9 13.1 10 12 10Z" fill="{{ section.settings.icon_color }}"/>
+              </svg>
+            {% endif %}
+          </div>
+        {% endif %}
+        {% if section.settings.text != blank %}
+          <div class="maison_commerce_maison_header_sale__text">
+            {{ section.settings.text }}
+          </div>
+        {% endif %}
+      </div>
+    </div>
+    {% if section.settings.link_url != blank %}
+      </a>
+    {% endif %}
+  </div>
+{% endif %}
+
+<style>
+  #shopify-section-{{ section.id }} {
+    padding: 0;
+  }
+
+  /* Sale Header Container */
+  .maison_commerce_maison_header_sale {
+    background-color: {{ section.settings.bg_color }};
+    padding-top: {{ section.settings.padding_top_desktop }}px;
+    padding-bottom: {{ section.settings.padding_bottom_desktop }}px;
+    padding-left: {{ section.settings.padding_left_desktop }}px;
+    padding-right: {{ section.settings.padding_right_desktop }}px;
+    {% if section.settings.show_bottom_border %}
+      border-bottom: {{ section.settings.bottom_border_thickness }}px solid {{ section.settings.bottom_border_color }};
+    {% endif %}
+  }
+
+  @media (max-width: 768px) {
+    .maison_commerce_maison_header_sale {
+      padding-top: {{ section.settings.padding_top_mobile }}px;
+      padding-bottom: {{ section.settings.padding_bottom_mobile }}px;
+      padding-left: {{ section.settings.padding_left_mobile }}px;
+      padding-right: {{ section.settings.padding_right_mobile }}px;
+    }
+  }
+
+  /* Link Wrapper */
+  .maison_commerce_maison_header_sale__link {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  /* Container */
+  .maison_commerce_maison_header_sale__container {
+    max-width: {{ section.settings.max_width }}px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: {{ section.settings.alignment }};
+  }
+
+  /* Content */
+  .maison_commerce_maison_header_sale__content {
+    display: flex;
+    align-items: center;
+    gap: {{ section.settings.icon_text_gap }}px;
+    justify-content: center;
+  }
+
+  /* Icon Wrapper */
+  .maison_commerce_maison_header_sale__icon-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  /* Icon */
+  .maison_commerce_maison_header_sale__icon {
+    width: {{ section.settings.icon_size_desktop }}px;
+    height: {{ section.settings.icon_size_desktop }}px;
+    flex-shrink: 0;
+  }
+
+  @media (max-width: 768px) {
+    .maison_commerce_maison_header_sale__icon {
+      width: {{ section.settings.icon_size_mobile }}px;
+      height: {{ section.settings.icon_size_mobile }}px;
+    }
+  }
+
+  .maison_commerce_maison_header_sale__icon--image {
+    object-fit: contain;
+  }
+
+  /* Text */
+  .maison_commerce_maison_header_sale__text {
+    font-family: 'Gotham', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    font-size: {{ section.settings.text_font_size_desktop }}px;
+    font-weight: {{ section.settings.text_font_weight }};
+    line-height: 1.5;
+    color: {{ section.settings.text_color }};
+    margin: 0;
+    white-space: nowrap;
+  }
+
+  @media (max-width: 768px) {
+    .maison_commerce_maison_header_sale__text {
+      font-size: {{ section.settings.text_font_size_mobile }}px;
+    }
+  }
+
+  .maison_commerce_maison_header_sale__text p {
+    margin: 0;
+  }
+
+  .maison_commerce_maison_header_sale__text a {
+    color: {{ section.settings.text_color }};
+    text-decoration: underline;
+  }
+
+  .maison_commerce_maison_header_sale__text a:hover {
+    opacity: 0.8;
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Maison Header Sale",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_section",
+      "label": "Show Section",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#FFFBC0"
+    },
+    {
+      "type": "range",
+      "id": "max_width",
+      "min": 800,
+      "max": 1600,
+      "step": 20,
+      "unit": "px",
+      "label": "Max Width",
+      "default": 1600
+    },
+    {
+      "type": "select",
+      "id": "alignment",
+      "label": "Alignment",
+      "options": [
+        {
+          "value": "flex-start",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "flex-end",
+          "label": "Right"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "range",
+      "id": "padding_top_desktop",
+      "min": 0,
+      "max": 30,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Top (Desktop)",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_desktop",
+      "min": 0,
+      "max": 30,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Bottom (Desktop)",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "padding_left_desktop",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Left (Desktop)",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_right_desktop",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Right (Desktop)",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "min": 0,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Top (Mobile)",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "min": 0,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Bottom (Mobile)",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "padding_left_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Left (Mobile)",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "padding_right_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Right (Mobile)",
+      "default": 12
+    },
+    {
+      "type": "header",
+      "content": "Bottom Border Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_bottom_border",
+      "label": "Show Bottom Border",
+      "default": false
+    },
+    {
+      "type": "color",
+      "id": "bottom_border_color",
+      "label": "Bottom Border Color",
+      "default": "#4A5C3F"
+    },
+    {
+      "type": "range",
+      "id": "bottom_border_thickness",
+      "min": 1,
+      "max": 5,
+      "step": 1,
+      "unit": "px",
+      "label": "Bottom Border Thickness",
+      "default": 1
+    },
+    {
+      "type": "header",
+      "content": "Icon Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_icon",
+      "label": "Show Icon",
+      "default": true
+    },
+    {
+      "type": "image_picker",
+      "id": "custom_icon",
+      "label": "Custom Icon Image",
+      "info": "If provided, this will be used instead of the default SVG icon"
+    },
+    {
+      "type": "color",
+      "id": "icon_color",
+      "label": "Icon Color",
+      "default": "#15130E",
+      "info": "Only applies to default SVG icon"
+    },
+    {
+      "type": "range",
+      "id": "icon_size_desktop",
+      "min": 12,
+      "max": 30,
+      "step": 1,
+      "unit": "px",
+      "label": "Icon Size (Desktop)",
+      "default": 18
+    },
+    {
+      "type": "range",
+      "id": "icon_size_mobile",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Icon Size (Mobile)",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "icon_text_gap",
+      "min": 4,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Gap Between Icon and Text",
+      "default": 8
+    },
+    {
+      "type": "header",
+      "content": "Text Settings"
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Text",
+      "default": "<p>WINTERSALE STARTED | 25% SALE SITEWIDE!</p>"
+    },
+    {
+      "type": "range",
+      "id": "text_font_size_desktop",
+      "min": 10,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Text Font Size (Desktop)",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "text_font_size_mobile",
+      "min": 10,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "label": "Text Font Size (Mobile)",
+      "default": 12
+    },
+    {
+      "type": "select",
+      "id": "text_font_weight",
+      "label": "Text Font Weight",
+      "options": [
+        {
+          "value": "400",
+          "label": "Regular"
+        },
+        {
+          "value": "500",
+          "label": "Medium"
+        },
+        {
+          "value": "600",
+          "label": "Semi Bold"
+        },
+        {
+          "value": "700",
+          "label": "Bold"
+        }
+      ],
+      "default": "700"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#15130E"
+    },
+    {
+      "type": "header",
+      "content": "Link Settings"
+    },
+    {
+      "type": "url",
+      "id": "link_url",
+      "label": "Link URL",
+      "info": "Optional: Make the entire bar clickable"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Maison Header Sale"
+    }
+  ]
+}
+{% endschema %}
+
