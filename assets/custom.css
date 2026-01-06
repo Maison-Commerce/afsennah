@@ -770,11 +770,22 @@ video-section-play-button {
     display: flex;
     align-items: center;
     gap: 8px;
-    padding: 12px 16px;
+    padding: 0;
     border-radius: 8px;
-    margin-bottom: 20px;
+    margin-bottom: 8px;
     font-size: 14px;
     line-height: 1.4;
+}
+.tiered-rewards-bar__banner .tiered-rewards-bar__banner-text {
+
+    font-family: "Gotham";
+    font-weight: 400;
+    font-style: Book;
+    font-size: 12px;
+    line-height: 150%;
+    letter-spacing: 0%;
+    text-align: center;
+
 }
 
 .tiered-rewards-bar__banner-icon {
