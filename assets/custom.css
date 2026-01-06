@@ -855,8 +855,8 @@ video-section-play-button {
 
 .tiered-rewards-bar__markers {
     width: calc(100% - 2px);
-    display: flex;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: 40px 1fr 1fr 1fr 40px;
     margin: 0 auto;
     position: absolute;
     top: 0;
