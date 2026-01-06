@@ -104,7 +104,7 @@
         {%- comment -%} Segment 2: Free Shipping to Tier 1 {%- endcomment -%}
         {%- if section.settings.gift_tier_1_label != blank -%}
           <div class="tiered-rewards-bar__segment-wrap">
-            <div class="tiered-rewards-bar__segment" data-min="{{ free_shipping_threshold }}" data-max="{{ tier_1_threshold }}">
+            <div class="tiered-rewards-bar__segment" data-min="{{ free_shipping_threshold | times: 100}}" data-max="{{ tier_1_threshold | times: 100}}">
               <div class="tiered-rewards-bar__segment-fill"></div>
             </div>
           </div>
@@ -113,7 +113,7 @@
         {%- comment -%} Segment 3: Tier 1 to Tier 2 {%- endcomment -%}
         {%- if section.settings.gift_tier_2_label != blank -%}
           <div class="tiered-rewards-bar__segment-wrap">
-            <div class="tiered-rewards-bar__segment" data-min="{{ tier_1_threshold }}" data-max="{{ tier_2_threshold }}">
+            <div class="tiered-rewards-bar__segment" data-min="{{ tier_1_threshold | times: 100}}" data-max="{{ tier_2_threshold | times: 100}}">
               <div class="tiered-rewards-bar__segment-fill"></div>
             </div>
           </div>
@@ -122,7 +122,7 @@
         {%- comment -%} Segment 4: Tier 2 to Tier 3 {%- endcomment -%}
         {%- if section.settings.gift_tier_3_label != blank -%}
           <div class="tiered-rewards-bar__segment-wrap">
-            <div class="tiered-rewards-bar__segment" data-min="{{ tier_2_threshold }}" data-max="{{ tier_3_threshold }}">
+            <div class="tiered-rewards-bar__segment" data-min="{{ tier_2_threshold | times: 100}}" data-max="{{ tier_3_threshold | times: 100}}">
               <div class="tiered-rewards-bar__segment-fill"></div>
             </div>
           </div>
