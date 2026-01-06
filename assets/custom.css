@@ -938,6 +938,8 @@ video-section-play-button {
     text-align: center;
     max-width: 72px;
     width: max-content;
+    display: flex;
+    align-items: flex-start;
 }
 .tiered-rewards-bar__marker-image.active .tiered-rewards-bar__marker-price {
  
