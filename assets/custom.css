@@ -962,3 +962,10 @@ video-section-play-button {
         height: 10px;
     }
 }
+
+
+.marker-wrapper {
+    display: flex;
+    width: 100%;
+    justify-content: flex-end;
+}
