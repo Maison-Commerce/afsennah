@@ -891,12 +891,14 @@ video-section-play-button {
 }
 
 .tiered-rewards-bar__marker-icon {
-    width: 35px;
-    height: 35px;
+    width: 40px;
+    height: 40px;
     display: flex;
     align-items: center;
     justify-content: center;
     color: #666666;
+    border: 1px solid #FFFFFF;
+    border-radius: 16.55px;
 }
 
 .tiered-rewards-bar__marker-icon svg {
