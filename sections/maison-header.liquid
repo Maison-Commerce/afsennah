@@ -900,8 +900,17 @@
     background-color: {{ section.settings.mobile_drawer_bg_color }};
     z-index: 1001;
     overflow-y: auto;
-    transform: translateX(-100%);
     will-change: transform;
+  }
+
+  /* Initial hidden state */
+  .maison_commerce_maison_header__mobile-drawer[style*="display: none"] {
+    transform: translateX(-100%);
+  }
+
+  /* Visible state - drawer is shown */
+  .maison_commerce_maison_header__mobile-drawer:not([style*="display: none"]) {
+    transform: translateX(0);
   }
 
   .maison_commerce_maison_header__mobile-drawer--enter {
@@ -926,15 +935,6 @@
 
   .maison_commerce_maison_header__mobile-drawer--leave-end {
     transform: translateX(-100%) !important;
-  }
-  
-  /* Ensure drawer is visible and positioned correctly when shown */
-  .maison_commerce_maison_header__mobile-drawer[x-show] {
-    display: block;
-  }
-  
-  .maison_commerce_maison_header__mobile-drawer:not([style*="display: none"]) {
-    transform: translateX(0);
   }
 
   .maison_commerce_maison_header__mobile-search {
