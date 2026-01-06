@@ -570,12 +570,7 @@
               </div>
             {% endif %}
           {% else %}
-            {% comment %} Regular link without children {% endcomment %}
-            <div class="maison_commerce_maison_header__mobile-nav-item">
-              <a href="{{ link.url }}" class="maison_commerce_maison_header__mobile-nav-link">
-                {{ link.title | escape }}
-              </a>
-            </div>
+
           {% endif %}
           {% unless forloop.last %}
             <div class="maison_commerce_maison_header__mobile-nav-divider"></div>
