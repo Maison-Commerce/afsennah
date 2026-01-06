@@ -925,8 +925,8 @@
       "name": "You May Also Like",
       "settings": {
         "heading": "You may also like",
-        "heading_mobile": "<p>Custom Products<br/>for Every Concern</p>",
-        "subtitle_mobile": "Each formula is personally created by our certified Trichologist",
+        "heading_mobile": "<p>You may also like</p>",
+        "subtitle_mobile": "",
         "products": [
           "custom-conditioner",
           "custom-hair-elixir",
