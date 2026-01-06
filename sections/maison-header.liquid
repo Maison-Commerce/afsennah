@@ -582,45 +582,41 @@
             {% unless link.title == shop_all_text %}
                 {% if link.links == blank %}
                     <div class="maison_commerce_maison_header__mega-menu-card-wrapper">
-                        {% for child_link in link.links %}
-                            {% if child_link.links == blank %}
-                            {% comment %} This child link has no children, show as image card {% endcomment %}
-                            {% assign card_found = false %}
-                            {% for block in section.blocks %}
-                                {% if block.type == 'mega_menu_card' and block.settings.link_title == child_link.title %}
-                                {% assign card_found = true %}
-                                <div class="maison_commerce_maison_header__mega-menu-card">
-                                    <a href="{{ child_link.url }}" class="maison_commerce_maison_header__mega-menu-card-link">
-                                    {% if block.settings.image != blank %}
-                                        <div class="maison_commerce_maison_header__mega-menu-card-image">
-                                        <img 
-                                            src="{{ block.settings.image | image_url: width: 500 }}" 
-                                            alt="{{ block.settings.image.alt | default: child_link.title | escape }}"
-                                            width="{{ block.settings.image.width }}"
-                                            height="{{ block.settings.image.height }}"
-                                            loading="lazy"
-                                        />
-                                        </div>
-                                    {% endif %}
-                                    <h3 class="maison_commerce_maison_header__mega-menu-card-title">
-                                        {{ child_link.title | escape }}
-                                    </h3>
-                                    </a>
-                                </div>
-                                {% endif %}
-                            {% endfor %}
-                            {% unless card_found %}
-                                {% comment %} Fallback: show card even without block {% endcomment %}
-                                <div class="maison_commerce_maison_header__mega-menu-card">
+                        {% comment %} This child link has no children, show as image card {% endcomment %}
+                        {% assign card_found = false %}
+                        {% for block in section.blocks %}
+                            {% if block.type == 'mega_menu_card' and block.settings.link_title == child_link.title %}
+                            {% assign card_found = true %}
+                            <div class="maison_commerce_maison_header__mega-menu-card">
                                 <a href="{{ child_link.url }}" class="maison_commerce_maison_header__mega-menu-card-link">
-                                    <h3 class="maison_commerce_maison_header__mega-menu-card-title">
+                                {% if block.settings.image != blank %}
+                                    <div class="maison_commerce_maison_header__mega-menu-card-image">
+                                    <img 
+                                        src="{{ block.settings.image | image_url: width: 500 }}" 
+                                        alt="{{ block.settings.image.alt | default: child_link.title | escape }}"
+                                        width="{{ block.settings.image.width }}"
+                                        height="{{ block.settings.image.height }}"
+                                        loading="lazy"
+                                    />
+                                    </div>
+                                {% endif %}
+                                <h3 class="maison_commerce_maison_header__mega-menu-card-title">
                                     {{ child_link.title | escape }}
-                                    </h3>
+                                </h3>
                                 </a>
-                                </div>
-                            {% endunless %}
+                            </div>
                             {% endif %}
                         {% endfor %}
+                        {% unless card_found %}
+                            {% comment %} Fallback: show card even without block {% endcomment %}
+                            <div class="maison_commerce_maison_header__mega-menu-card">
+                            <a href="{{ child_link.url }}" class="maison_commerce_maison_header__mega-menu-card-link">
+                                <h3 class="maison_commerce_maison_header__mega-menu-card-title">
+                                {{ child_link.title | escape }}
+                                </h3>
+                            </a>
+                            </div>
+                        {% endunless %}
                     </div>
                 {% endif %}
             {% endunless %}
