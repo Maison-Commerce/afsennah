@@ -179,9 +179,9 @@
     {% if section.settings.show_quiz_cta %}
       <div class="maison_commerce_maison_you_may_also_like__quiz-cta">
         {% if section.settings.quiz_text != blank %}
-          <p class="maison_commerce_maison_you_may_also_like__quiz-text">
+          <div class="maison_commerce_maison_you_may_also_like__quiz-text">
             {{ section.settings.quiz_text }}
-          </p>
+          </div>
         {% endif %}
         {% if section.settings.quiz_url != blank %}
           <a href="{{ section.settings.quiz_url }}" class="maison_commerce_maison_you_may_also_like__quiz-button">
@@ -676,6 +676,10 @@
     font-weight: 400;
     line-height: 1.5;
     color: {{ section.settings.quiz_text_color }};
+    margin: 0;
+  }
+
+  .maison_commerce_maison_you_may_also_like__quiz-text p{
     margin: 0;
   }
 
