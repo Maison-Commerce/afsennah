@@ -269,17 +269,17 @@
     style="display: none;"
   >
     <div class="maison_commerce_maison_header__mega-menu-container">
-      <!-- Shop All Link (Always at Top) -->
-      {% if shop_all_link != blank %}
-        <div class="maison_commerce_maison_header__shop-all">
-          <a href="{{ shop_all_link }}" class="maison_commerce_maison_header__shop-all-link">
-            {{ shop_all_text }}
-          </a>
-        </div>
-      {% endif %}
-
       <div class="maison_commerce_maison_header__mega-menu-content">
-        <!-- Left Column: Lists (Multi-level menus) -->
+        <!-- Shop All Link (Always at Top Left) -->
+        {% if shop_all_link != blank %}
+          <div class="maison_commerce_maison_header__shop-all">
+            <a href="{{ shop_all_link }}" class="maison_commerce_maison_header__shop-all-link">
+              {{ shop_all_text }}
+            </a>
+          </div>
+        {% endif %}
+
+        <!-- Lists (Multi-level menus) -->
         <div class="maison_commerce_maison_header__mega-menu-lists">
           {% for link in linklists[section.settings.menu_linklist].links %}
             {% if link.links != blank %}
@@ -319,7 +319,7 @@
           {% endfor %}
         </div>
 
-        <!-- Right Column: Image Cards (Single links without children) -->
+        <!-- Image Cards (Single links without children) -->
         <div class="maison_commerce_maison_header__mega-menu-cards">
           {% for link in linklists[section.settings.menu_linklist].links %}
             {% if link.links != blank %}
@@ -677,13 +677,20 @@
     max-width: {{ section.settings.max_width }}px;
     margin: 0 auto;
     padding: 44px 80px;
+  }
+
+  .maison_commerce_maison_header__mega-menu-content {
     display: flex;
-    flex-direction: column;
-    gap: 0;
+    gap: 44px;
+    align-items: flex-start;
+    justify-content: flex-start;
+    width: 100%;
   }
 
   .maison_commerce_maison_header__shop-all {
-    margin-bottom: 0;
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
   }
 
   .maison_commerce_maison_header__shop-all-link {
@@ -698,14 +705,6 @@
 
   .maison_commerce_maison_header__shop-all-link:hover {
     opacity: 0.8;
-  }
-
-  .maison_commerce_maison_header__mega-menu-content {
-    display: flex;
-    gap: 44px;
-    align-items: flex-start;
-    justify-content: space-between;
-    width: 100%;
   }
 
   .maison_commerce_maison_header__mega-menu-lists {
