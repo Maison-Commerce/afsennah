@@ -2,7 +2,7 @@
   assign section_id = section.id
 -%}
 
-<section class="maison_commerce_maison_transformation_timeline">
+<section class="maison_commerce_maison_transformation_timeline" id="shopify-section-{{ section_id }}">
   {% style %}
     #shopify-section-{{ section_id }} {
       background: linear-gradient(to bottom, #FFFFFF, #F7F7FC);
@@ -54,7 +54,8 @@
                     loading="lazy"
                   />
                   {% if block.settings.time_period != blank %}
-                    <div class="maison_commerce_maison_transformation_timeline__badge" style="background-color: {{ block.settings.badge_color | default: section.settings.badge_color }};">
+                    {% comment %} Desktop badge - absolutely positioned {% endcomment %}
+                    <div class="maison_commerce_maison_transformation_timeline__badge maison_commerce_maison_transformation_timeline__badge--desktop" style="background-color: {{ block.settings.badge_color | default: section.settings.badge_color }};">
                       {{ block.settings.time_period | escape }}
                     </div>
                   {% endif %}
@@ -62,6 +63,12 @@
               {% endif %}
               {% if block.settings.description != blank %}
                 <div class="maison_commerce_maison_transformation_timeline__card-content">
+                  {% if block.settings.time_period != blank %}
+                    {% comment %} Mobile badge - inline with content {% endcomment %}
+                    <div class="maison_commerce_maison_transformation_timeline__badge maison_commerce_maison_transformation_timeline__badge--mobile" style="background-color: {{ block.settings.badge_color | default: section.settings.badge_color }};">
+                      {{ block.settings.time_period | escape }}
+                    </div>
+                  {% endif %}
                   <div class="maison_commerce_maison_transformation_timeline__card-description">
                     {{ block.settings.description }}
                   </div>
@@ -79,8 +86,15 @@
   .maison_commerce_maison_transformation_timeline__container {
     max-width: {{ section.settings.max_width }}px;
     margin: 0 auto;
+    padding: 44px 40px;
     background-color: transparent;
     border-radius: 32px;
+  }
+
+  @media (max-width: 768px) {
+    .maison_commerce_maison_transformation_timeline__container {
+      padding: 32px 20px;
+    }
   }
 
   /* Header */
@@ -131,10 +145,6 @@
     margin: 0;
   }
 
-  .maison_commerce_maison_transformation_timeline__description p{
-    margin: 0;
-  }
-
   @media (max-width: 768px) {
     .maison_commerce_maison_transformation_timeline__description {
       font-size: {{ section.settings.description_font_size_mobile }}px;
@@ -165,8 +175,8 @@
     justify-content: flex-start;
     overflow: hidden;
     border-radius: 24px;
-    width: 100%;
-    max-width: 331px;
+    flex: 1;
+    max-width: 100%;
   }
 
   @media (max-width: 768px) {
@@ -182,9 +192,9 @@
   .maison_commerce_maison_transformation_timeline__card-image-wrapper {
     position: relative;
     width: 100%;
-    aspect-ratio: 1/1;
-    height: auto;
+    height: {{ section.settings.image_height_desktop }}px;
     border-radius: 32px;
+    overflow: hidden;
     flex-shrink: 0;
   }
 
@@ -216,31 +226,45 @@
 
   /* Badge */
   .maison_commerce_maison_transformation_timeline__badge {
+    background-color: {{ section.settings.badge_color }};
+    color: {{ section.settings.badge_text_color }};
+    font-family: 'Gotham', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 700;
+    line-height: 1.5;
+    white-space: nowrap;
+  }
+
+  /* Desktop Badge - Absolutely positioned */
+  .maison_commerce_maison_transformation_timeline__badge--desktop {
     position: absolute;
     bottom: 0;
     left: 50%;
     transform: translateX(-50%) translateY(50%);
-    background-color: {{ section.settings.badge_color }};
-    color: {{ section.settings.badge_text_color }};
-    font-family: 'Gotham', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
     font-size: {{ section.settings.badge_font_size_desktop }}px;
-    font-weight: 700;
-    line-height: 1.5;
     padding: 4px 12px;
     border-radius: 12px;
-    white-space: nowrap;
     z-index: 1;
   }
 
   @media (max-width: 768px) {
-    .maison_commerce_maison_transformation_timeline__badge {
-      position: static;
-      transform: none;
-      font-size: {{ section.settings.badge_font_size_mobile }}px;
-      border-radius: 8px;
-      height: 22px;
+    .maison_commerce_maison_transformation_timeline__badge--desktop {
+      display: none;
+    }
+  }
+
+  /* Mobile Badge - Inline with content */
+  .maison_commerce_maison_transformation_timeline__badge--mobile {
+    display: none;
+  }
+
+  @media (max-width: 768px) {
+    .maison_commerce_maison_transformation_timeline__badge--mobile {
       display: inline-flex;
       align-items: center;
+      font-size: {{ section.settings.badge_font_size_mobile }}px;
+      padding: 0 12px;
+      border-radius: 8px;
+      height: 22px;
       margin-bottom: 4px;
     }
   }
@@ -272,10 +296,6 @@
     line-height: 1.5;
     color: {{ section.settings.card_description_color }};
     text-align: center;
-    margin: 0;
-  }
-
-  .maison_commerce_maison_transformation_timeline__card-description p{
     margin: 0;
   }
 
@@ -353,7 +373,7 @@
       "id": "padding_right_desktop",
       "min": 0,
       "max": 100,
-      "step": 5,
+      "step": 1,
       "unit": "px",
       "label": "Padding Right (Desktop)",
       "default": 40
