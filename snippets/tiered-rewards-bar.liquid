@@ -264,8 +264,8 @@
         const container = document.querySelector('.tiered-rewards-bar__progress-container');
         if (!container) return;
         
-        // Get current cart total from data attribute or calculate from cart
-        let total = parseFloat(container.getAttribute('data-total')) || 0;
+        // Get current cart total in user's currency
+        let cartTotalInUserCurrency = parseFloat(container.getAttribute('data-total')) || 0;
         
         // Try to get updated total from cart drawer if available
         const cartDrawer = document.querySelector('cart-drawer');
@@ -274,32 +274,52 @@
           if (cartForm) {
             const cartTotalEl = cartForm.querySelector('[data-cart-total]');
             if (cartTotalEl) {
-              total = parseFloat(cartTotalEl.getAttribute('data-cart-total')) || total;
+              cartTotalInUserCurrency = parseFloat(cartTotalEl.getAttribute('data-cart-total')) || cartTotalInUserCurrency;
             }
           }
         }
         
+        // Get currency conversion rate
+        let currencyRate = 1;
+        if (typeof Shopify !== 'undefined' && Shopify.currency && Shopify.currency.rate) {
+          currencyRate = parseFloat(Shopify.currency.rate) || 1;
+        }
+        
+        // Thresholds in base currency (USD) from customizer
+        const freeShippingThresholdBase = {{ free_shipping_threshold }};
+        const tier1ThresholdBase = {{ tier_1_threshold }};
+        const tier2ThresholdBase = {{ tier_2_threshold }};
+        const tier3ThresholdBase = {{ tier_3_threshold }};
+        
+        // Convert thresholds from base currency to user's currency
+        const freeShippingThreshold = freeShippingThresholdBase * currencyRate;
+        const tier1Threshold = tier1ThresholdBase * currencyRate;
+        const tier2Threshold = tier2ThresholdBase * currencyRate;
+        const tier3Threshold = tier3ThresholdBase * currencyRate;
+        
         // Update data-total attribute
-        container.setAttribute('data-total', total);
+        container.setAttribute('data-total', cartTotalInUserCurrency);
         
         const segments = container.querySelectorAll('.tiered-rewards-bar__segment');
-        const freeShippingThreshold = {{ free_shipping_threshold }};
-
+        
         // Reset all markers
         document.querySelectorAll('.tiered-rewards-bar__marker-image').forEach(marker => {
           marker.classList.remove('active');
         });
 
+        // Define thresholds array for segments
+        const thresholds = [0, freeShippingThreshold, tier1Threshold, tier2Threshold, tier3Threshold];
+
         segments.forEach((segment, index) => {
-          const min = parseFloat(segment.getAttribute('data-min')) || 0;
-          const max = parseFloat(segment.getAttribute('data-max')) || 0;
+          const min = thresholds[index] || 0;
+          const max = thresholds[index + 1] || 0;
           const fillEl = segment.querySelector('.tiered-rewards-bar__segment-fill');
           if (!fillEl) return;
 
           let fillPercent = 0;
-          if (total <= min) {
+          if (cartTotalInUserCurrency <= min) {
             fillPercent = 0;
-          } else if (total >= max) {
+          } else if (cartTotalInUserCurrency >= max) {
             fillPercent = 100;
             // Mark marker as active (index + 1 because free shipping is index 0)
             const marker = document.querySelector(`.tiered-rewards-bar__marker-image[data-index="${index + 1}"]`);
@@ -307,7 +327,7 @@
               marker.classList.add('active');
             }
           } else {
-            fillPercent = ((total - min) / (max - min)) * 100;
+            fillPercent = ((cartTotalInUserCurrency - min) / (max - min)) * 100;
           }
 
           fillPercent = Math.max(0, Math.min(100, fillPercent));
@@ -315,7 +335,7 @@
         });
         
         // Mark free shipping as active if achieved
-        if (total >= freeShippingThreshold) {
+        if (cartTotalInUserCurrency >= freeShippingThreshold) {
           const freeShippingMarker = document.querySelector('.tiered-rewards-bar__marker-image[data-index="0"]');
           if (freeShippingMarker) {
             freeShippingMarker.classList.add('active');
@@ -348,9 +368,12 @@
         convertMarkerPrices();
       });
       
-      // Update prices when currency changes
+      // Update prices and progress bar when currency changes
       if (typeof Shopify !== 'undefined' && Shopify.currency) {
-        document.addEventListener('currency:change', convertMarkerPrices);
+        document.addEventListener('currency:change', function() {
+          convertMarkerPrices();
+          updateProgressBar();
+        });
       }
       
       // Watch for mutations in cart drawer
