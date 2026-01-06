@@ -420,6 +420,7 @@
     x-transition:leave="maison_commerce_maison_header__mobile-drawer--leave"
     x-transition:leave-start="maison_commerce_maison_header__mobile-drawer--leave-start"
     x-transition:leave-end="maison_commerce_maison_header__mobile-drawer--leave-end"
+    :style="mobileMenuOpen ? 'transform: translateX(0);' : 'transform: translateX(-100%);'"
     style="display: none;"
   >
     <!-- Search Bar -->
@@ -900,6 +901,9 @@
     background-color: {{ section.settings.mobile_drawer_bg_color }};
     z-index: 1001;
     overflow-y: auto;
+  }
+  
+  .maison_commerce_maison_header__mobile-drawer[style*="display: none"] {
     transform: translateX(-100%);
   }
 
