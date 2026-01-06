@@ -906,7 +906,7 @@
         "button_height_mobile": 44,
         "button_font_size_desktop": 16,
         "button_font_size_mobile": 14,
-        "quote_bg_color": "#fffee9",
+        "quote_bg_color": "#ffffff",
         "quote_border_radius": 20,
         "quote_padding": 16,
         "quote_gap": 12,
