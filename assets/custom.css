@@ -895,6 +895,7 @@ video-section-play-button {
     display: flex;
     align-items: center;
     justify-content: center;
+    background: white;
     color: #666666;
     border: 1px solid #E5E5E8;
     border-radius: 16.55px;
