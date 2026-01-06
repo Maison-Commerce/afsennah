@@ -701,42 +701,91 @@
 </style>
 
 <script>
-  document.addEventListener('DOMContentLoaded', function() {
-    const swiperContainer = document.querySelector('.maison_commerce_maison_you_may_also_like__swiper');
-    
-    if (swiperContainer) {
-      const prevButton = swiperContainer.closest('.maison_commerce_maison_you_may_also_like__container').querySelector('.maison_commerce_maison_you_may_also_like__nav-button--prev');
-      const nextButton = swiperContainer.closest('.maison_commerce_maison_you_may_also_like__container').querySelector('.maison_commerce_maison_you_may_also_like__nav-button--next');
-      
-      const swiperMay = new Swiper(swiperContainer, {
-        slidesPerView: 'auto',
-        spaceBetween: {{ section.settings.slide_gap_desktop }}px,
-        loop: {{ section.settings.enable_loop }},
-        autoplay: {{ section.settings.enable_autoplay }} ? {
-          delay: {{ section.settings.autoplay_delay }},
-          disableOnInteraction: false,
-        } : false,
-        navigation: {
-          nextEl: nextButton,
-          prevEl: prevButton,
-        },
-        pagination: {
-          el: swiperContainer.querySelector('.maison_commerce_maison_you_may_also_like__pagination'),
-          clickable: true,
-        },
-        breakpoints: {
-          320: {
-            slidesPerView: {{ section.settings.slides_per_view_mobile }},
-            spaceBetween: {{ section.settings.slide_gap_mobile }}px,
-          },
-          769: {
-            slidesPerView: {{ section.settings.slides_per_view_desktop }},
-            spaceBetween: {{ section.settings.slide_gap_desktop }}px,
-          },
-        },
-      });
+  function initYouMayAlsoLikeSwiper() {
+    const sectionEl = document.querySelector('#shopify-section-{{ section_id }}');
+    if (!sectionEl) return;
+
+    const swiperContainer = sectionEl.querySelector('.maison_commerce_maison_you_may_also_like__swiper');
+    if (!swiperContainer) return;
+
+    // Check if Swiper is loaded
+    if (typeof Swiper === 'undefined') {
+      setTimeout(initYouMayAlsoLikeSwiper, 100);
+      return;
     }
-  });
+
+    // Destroy existing instance if it exists
+    if (swiperContainer.swiper) {
+      swiperContainer.swiper.destroy(true, true);
+    }
+
+    const container = swiperContainer.closest('.maison_commerce_maison_you_may_also_like__container');
+    const prevButton = container ? container.querySelector('.maison_commerce_maison_you_may_also_like__nav-button--prev') : null;
+    const nextButton = container ? container.querySelector('.maison_commerce_maison_you_may_also_like__nav-button--next') : null;
+    const paginationEl = swiperContainer.querySelector('.maison_commerce_maison_you_may_also_like__pagination');
+    
+    const swiperConfig = {
+      spaceBetween: {{ section.settings.slide_gap_desktop }},
+      loop: {{ section.settings.enable_loop }},
+      {% if section.settings.enable_autoplay %}
+      autoplay: {
+        delay: {{ section.settings.autoplay_delay }},
+        disableOnInteraction: false,
+      },
+      {% endif %}
+      breakpoints: {
+        320: {
+          slidesPerView: {{ section.settings.slides_per_view_mobile }},
+          spaceBetween: {{ section.settings.slide_gap_mobile }},
+        },
+        769: {
+          slidesPerView: {{ section.settings.slides_per_view_desktop }},
+          spaceBetween: {{ section.settings.slide_gap_desktop }},
+        },
+      },
+    };
+
+    if (prevButton && nextButton) {
+      swiperConfig.navigation = {
+        nextEl: nextButton,
+        prevEl: prevButton,
+      };
+    }
+
+    if (paginationEl) {
+      swiperConfig.pagination = {
+        el: paginationEl,
+        clickable: true,
+      };
+    }
+
+    new Swiper(swiperContainer, swiperConfig);
+  }
+
+  // Initialize on page load
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function() {
+      setTimeout(initYouMayAlsoLikeSwiper, 200);
+    });
+  } else {
+    setTimeout(initYouMayAlsoLikeSwiper, 200);
+  }
+
+  // Handle Shopify theme editor
+  if (typeof Shopify !== 'undefined' && Shopify.designMode) {
+    document.addEventListener('shopify:section:load', function(event) {
+      if (event.target.querySelector('#shopify-section-{{ section_id }}')) {
+        setTimeout(initYouMayAlsoLikeSwiper, 200);
+      }
+    });
+
+    document.addEventListener('shopify:section:unload', function(event) {
+      const swiperContainer = event.target.querySelector('#shopify-section-{{ section_id }} .maison_commerce_maison_you_may_also_like__swiper');
+      if (swiperContainer && swiperContainer.swiper) {
+        swiperContainer.swiper.destroy(true, true);
+      }
+    });
+  }
 </script>
 
 {% schema %}
