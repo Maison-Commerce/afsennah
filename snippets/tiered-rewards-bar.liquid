@@ -284,7 +284,7 @@
         });
         
         // Mark markers as active based on achieved tiers
-        // Free shipping marker (index 0)
+        // Free shipping marker (index 0) - active when cart total >= free shipping threshold
         if (cartTotalInUserCurrency >= freeShippingThreshold) {
           const freeShippingMarker = document.querySelector('.tiered-rewards-bar__marker-image[data-index="0"]');
           if (freeShippingMarker) {
@@ -292,24 +292,24 @@
           }
         }
         
-        // Tier 1 marker (index 1)
-        if (cartTotalInUserCurrency >= tier1Threshold) {
+        // Tier 1 marker (index 1) - active when cart total >= tier 1 threshold
+        if (tier1Threshold && cartTotalInUserCurrency >= tier1Threshold) {
           const tier1Marker = document.querySelector('.tiered-rewards-bar__marker-image[data-index="1"]');
           if (tier1Marker) {
             tier1Marker.classList.add('active');
           }
         }
         
-        // Tier 2 marker (index 2)
-        if (cartTotalInUserCurrency >= tier2Threshold) {
+        // Tier 2 marker (index 2) - active when cart total >= tier 2 threshold
+        if (tier2Threshold && cartTotalInUserCurrency >= tier2Threshold) {
           const tier2Marker = document.querySelector('.tiered-rewards-bar__marker-image[data-index="2"]');
           if (tier2Marker) {
             tier2Marker.classList.add('active');
           }
         }
         
-        // Tier 3 marker (index 3)
-        if (cartTotalInUserCurrency >= tier3Threshold) {
+        // Tier 3 marker (index 3) - active when cart total >= tier 3 threshold
+        if (tier3Threshold && cartTotalInUserCurrency >= tier3Threshold) {
           const tier3Marker = document.querySelector('.tiered-rewards-bar__marker-image[data-index="3"]');
           if (tier3Marker) {
             tier3Marker.classList.add('active');
