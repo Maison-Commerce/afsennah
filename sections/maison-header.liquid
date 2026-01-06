@@ -72,7 +72,7 @@
         {% endif %}
         <div class="maison_commerce_maison_header__icons">
           {% if section.settings.enable_search %}
-            <a href="{{ routes.search_url }}" class="maison_commerce_maison_header__icon-lin show-search-link" aria-label="{{ 'sections.header.search' | t }}">
+            <a href="{{ routes.search_url }}" class="maison_commerce_maison_header__icon-link show-search-link" aria-label="{{ 'sections.header.search' | t }}">
               {% render 'icon-search' %}
             </a>
           {% endif %}
@@ -1880,13 +1880,29 @@
     },
     {
       "type": "header",
-      "content": "Mobile Search Settings"
+      "content": "Search Settings"
     },
     {
       "type": "checkbox",
       "id": "enable_search",
       "label": "Enable Search",
       "default": true
+    },
+    {
+      "type": "text",
+      "id": "search_recommendations_title",
+      "label": "Recommendations Title",
+      "info": "Recommendations show when the search is opened."
+    },
+    {
+      "type": "link_list",
+      "id": "search_recommendations_menu",
+      "label": "Recommendations Menu",
+      "info": "Dropdown menus will show as separate rows. Links to collections and products will show images."
+    },
+    {
+      "type": "header",
+      "content": "Mobile Search Settings"
     },
     {
       "type": "range",
