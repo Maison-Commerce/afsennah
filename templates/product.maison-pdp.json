@@ -1211,7 +1211,7 @@
         "padding_right_mobile": 16,
         "content_width_desktop": 50,
         "content_gap_desktop": 80,
-        "content_gap_mobile": 36,
+        "content_gap_mobile": 24,
         "title_accordion_gap_desktop": 36,
         "title_accordion_gap_mobile": 36,
         "title_subtitle_gap_desktop": 24,
