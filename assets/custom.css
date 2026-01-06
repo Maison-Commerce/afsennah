@@ -915,16 +915,16 @@ video-section-play-button {
     transition: 0.3s all;
     margin-top: 8px;
 }
-.tiered-rewards-bar__marker-image svg,
-.tiered-rewards-bar__marker-image img {
+.tiered-rewards-bar__marker-image .tiered-rewards-bar__marker-icon svg,
+.tiered-rewards-bar__marker-image .tiered-rewards-bar__marker-icon img {
     width: 20px;
     height: 20px;
 }
-.tiered-rewards-bar__marker-image svg path {
+.tiered-rewards-bar__marker-image .tiered-rewards-bar__marker-icon svg path {
     fill: #1e3a8a;
     /* fill: #E5E5E8; */
 }
-.tiered-rewards-bar__marker-image.active svg path {
+.tiered-rewards-bar__marker-image.active .tiered-rewards-bar__marker-icon svg path {
     fill: #ffffff;
 }
 .tiered-rewards-bar__marker-image .tiered-rewards-bar__marker-price {
