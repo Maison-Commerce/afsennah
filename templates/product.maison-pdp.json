@@ -1167,6 +1167,85 @@
         "pause_on_hover": "paused"
       }
     },
+    "maison_faq_gfc3hN": {
+      "type": "maison-faq",
+      "blocks": {
+        "faq_item_fgWfG3": {
+          "type": "faq_item",
+          "settings": {
+            "question": "How is the serum customized to my needs?",
+            "answer": "<p>Your answer goes here.</p>"
+          }
+        },
+        "faq_item_rJEkPT": {
+          "type": "faq_item",
+          "settings": {
+            "question": "How long until I see results?",
+            "answer": "<p>Your answer goes here.</p>"
+          }
+        },
+        "faq_item_wHJrdM": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Is it safe for sensitive skin and medical conditions?",
+            "answer": "<p>Your answer goes here.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "faq_item_fgWfG3",
+        "faq_item_rJEkPT",
+        "faq_item_wHJrdM"
+      ],
+      "name": "FAQ",
+      "settings": {
+        "section_bg_color": "#FFFFFE",
+        "max_width_desktop": 1200,
+        "padding_top_desktop": 80,
+        "padding_bottom_desktop": 80,
+        "padding_left_desktop": 80,
+        "padding_right_desktop": 80,
+        "padding_top_mobile": 48,
+        "padding_bottom_mobile": 48,
+        "padding_left_mobile": 16,
+        "padding_right_mobile": 16,
+        "content_width_desktop": 50,
+        "content_gap_desktop": 80,
+        "content_gap_mobile": 36,
+        "title_accordion_gap_desktop": 36,
+        "title_accordion_gap_mobile": 36,
+        "title_subtitle_gap_desktop": 24,
+        "title_subtitle_gap_mobile": 16,
+        "heading": "FAQ",
+        "heading_font_size_desktop": 48,
+        "heading_font_size_mobile": 36,
+        "heading_color": "#232323",
+        "subtitle": "Your Questions, Answered",
+        "subtitle_font_size_desktop": 20,
+        "subtitle_font_size_mobile": 18,
+        "subtitle_color": "#232323",
+        "accordion_item_padding_vertical": 18,
+        "accordion_border_width": 1,
+        "accordion_border_color": "#E5E5F4",
+        "question_icon_gap": 16,
+        "question_font_size_desktop": 18,
+        "question_font_size_mobile": 16,
+        "question_font_weight": "500",
+        "question_color": "#232323",
+        "answer_padding_top": 0,
+        "answer_padding_bottom": 0,
+        "answer_font_size_desktop": 16,
+        "answer_font_size_mobile": 14,
+        "answer_color": "#232323",
+        "icon_size": 32,
+        "icon_color": "#232323",
+        "image": "shopify://shop_images/5ed67f7c8b757446b8924b74b86a4c4241df1993.png",
+        "image_width_desktop": 50,
+        "image_height_desktop": 640,
+        "image_height_mobile": 340,
+        "image_border_radius": 24
+      }
+    },
     "related-products": {
       "type": "related-products",
       "disabled": true,
@@ -1192,6 +1271,7 @@
     "maison_content_blocks_8T9hwn",
     "maison_you_may_also_like_qdari9",
     "maison_instagram_scroll_CpxWXq",
+    "maison_faq_gfc3hN",
     "related-products"
   ]
 }
