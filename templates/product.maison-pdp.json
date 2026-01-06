@@ -633,7 +633,7 @@
       "name": "Maison Testimonials",
       "settings": {
         "bg_gradient_start": "#fffef3",
-        "bg_gradient_end": "#ffffff",
+        "bg_gradient_end": "#fffef3",
         "padding_top_desktop": 60,
         "padding_bottom_desktop": 60,
         "padding_left_desktop": 80,
