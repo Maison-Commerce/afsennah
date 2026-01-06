@@ -207,54 +207,10 @@
   <script>
     (function() {
       // Function to convert and format prices in user's currency
+      // NOTE: This function is disabled because we now show labels instead of prices
       function convertMarkerPrices() {
-        const markerPrices = document.querySelectorAll('.tiered-rewards-bar__marker-price');
-        
-        markerPrices.forEach(function(priceEl) {
-          // Get the original price in dollars from data attribute (value from customizer is already in dollars)
-          const originalDollars = parseFloat(priceEl.getAttribute('data-price-dollars')) || 0;
-          
-          if (originalDollars <= 0) return;
-          
-          // If we have Shopify currency conversion available
-          if (typeof Shopify !== 'undefined' && Shopify.currency && Shopify.currency.rate) {
-            const rate = parseFloat(Shopify.currency.rate);
-            const activeCurrency = Shopify.currency.active;
-            
-            // Convert from base currency (dollars) to user's currency
-            // rate is the conversion rate FROM base currency TO active currency
-            const convertedDollars = originalDollars * rate;
-            
-            // Convert to cents for formatting
-            const convertedCents = Math.round(convertedDollars * 100);
-            
-            // Format using Shopify's money format
-            const formatted = formatMoney(convertedCents, activeCurrency);
-            
-            // Update the price element
-            priceEl.textContent = formatted;
-          } else {
-            // If no currency conversion available, format the original amount
-            const originalCents = Math.round(originalDollars * 100);
-            const formatted = formatMoney(originalCents, 'USD');
-            priceEl.textContent = formatted;
-          }
-        });
-      }
-      
-      // Helper function to format money
-      function formatMoney(cents, currency) {
-        const amount = cents / 100;
-        try {
-          return new Intl.NumberFormat('en', {
-            style: 'currency',
-            currency: currency || 'USD',
-            minimumFractionDigits: 0,
-            maximumFractionDigits: 0
-          }).format(amount);
-        } catch (e) {
-          return (currency || 'USD') + ' ' + Math.round(amount);
-        }
+        // Do nothing - labels are displayed instead of prices
+        return;
       }
       
       function updateProgressBar() {
@@ -344,31 +300,25 @@
       if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', function() {
           updateProgressBar();
-          convertMarkerPrices();
         });
       } else {
         updateProgressBar();
-        convertMarkerPrices();
       }
 
       // Update when cart changes
       document.addEventListener('cart:updated', function() {
         updateProgressBar();
-        convertMarkerPrices();
       });
       document.addEventListener('cart:refresh', function() {
         updateProgressBar();
-        convertMarkerPrices();
       });
       document.addEventListener('on:cart:after-merge', function() {
         updateProgressBar();
-        convertMarkerPrices();
       });
       
-      // Update prices and progress bar when currency changes
+      // Update progress bar when currency changes
       if (typeof Shopify !== 'undefined' && Shopify.currency) {
         document.addEventListener('currency:change', function() {
-          convertMarkerPrices();
           updateProgressBar();
         });
       }
