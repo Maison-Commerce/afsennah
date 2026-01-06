@@ -917,7 +917,8 @@ video-section-play-button {
     line-height: 20px;
 }
 .tiered-rewards-bar__marker-image svg path {
-    fill: #E5E5E8;
+    fill: #1e3a8a;
+    /* fill: #E5E5E8; */
 }
 
 .tiered-rewards-bar__marker-image.active .tiered-rewards-bar__marker-price {
