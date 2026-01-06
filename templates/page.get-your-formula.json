@@ -2086,9 +2086,9 @@
         "checkout_button_color": "#999bce",
         "checkout_button_text_color": "#ffffff",
         "background_color": "#f0f0ff",
-        "highlight_text_desktop": "<p><strong>FREE GIFTS  + </strong>Free shipping on all orders above [[amount:100]]!<br/><br/><em>Every drop brings you closer to the hair you’ve been wishing for.</em></p>",
+        "highlight_text_desktop": "<p><strong>Free Gifts • Tiered Rewards + </strong>Free shipping on all orders above [[amount:100]]!<br/><br/><em>Every drop brings you closer to the hair you’ve been wishing for.</em></p>",
         "highlight_text_mobile": "<p>Free shipping on all orders above [[amount:100]]!</p>",
-        "checkout_subtext": "FREE GIFTS VIA TIER DISCOUNT"
+        "checkout_subtext": "Free Gifts • Tiered Rewards"
       }
     }
   },
