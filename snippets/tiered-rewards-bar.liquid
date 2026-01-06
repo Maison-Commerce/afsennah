@@ -7,11 +7,25 @@
   assign tier_2_threshold = section.settings.gift_tier_2_amount
   assign tier_3_threshold = section.settings.gift_tier_3_amount
   
-  assign free_shipping_achieved = cart_total_dollars >= free_shipping_threshold
-  assign tier_1_achieved = cart_total_dollars >= tier_1_threshold
-  assign tier_2_achieved = cart_total_dollars >= tier_2_threshold
-  assign tier_3_achieved = cart_total_dollars >= tier_3_threshold
+  assign free_shipping_achieved = false
+  assign tier_1_achieved = false
+  assign tier_2_achieved = false
+  assign tier_3_achieved = false
   
+  if cart_total_dollars >= tier_1_threshold
+    assign free_shipping_achieved = true
+  endif
+  if cart_total_dollars >= tier_1_threshold
+    assign tier_1_achieved = true
+  endif
+  if cart_total_dollars >= tier_2_threshold
+    assign tier_2_achieved = true
+  endif
+  if cart_total_dollars >= tier_3_threshold
+    assign tier_3_achieved = true
+  endif
+
+
   assign next_tier_amount = false
   assign next_tier_label = false
   if cart_total_dollars < free_shipping_threshold
