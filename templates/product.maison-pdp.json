@@ -208,6 +208,7 @@
         "phase_card_TQKxdF": {
           "type": "phase_card",
           "settings": {
+            "image": "shopify://shop_images/5d69890b1cba0e603bb179ee6a467de18eb67146.jpg",
             "time_period": "1–3 Weeks",
             "description": "<p>Noticeably less hair fall. Scalp feels healthier and less irritated. The daily panic starts to fade.</p>",
             "badge_color": ""
@@ -216,6 +217,7 @@
         "phase_card_UxDrFF": {
           "type": "phase_card",
           "settings": {
+            "image": "shopify://shop_images/82421390ee760f07849c2cfc430aa06e7fedb1ce.jpg",
             "time_period": "6+ Weeks",
             "description": "<p>Baby hairs emerge along hairline and thinning areas. Early regrowth becomes visible. Hope returns.</p>",
             "badge_color": ""
@@ -224,6 +226,7 @@
         "phase_card_xXW4mg": {
           "type": "phase_card",
           "settings": {
+            "image": "shopify://shop_images/fd186407a10463ae48deb78ec46ddd5650f2d600.jpg",
             "time_period": "12+ Weeks",
             "description": "<p>Hair appears fuller, denser, and stronger. Overall thickness improves. Confidence restored.</p>",
             "badge_color": ""
