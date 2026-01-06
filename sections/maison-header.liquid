@@ -464,11 +464,10 @@
                   :aria-expanded="mobileSubmenus['{{ forloop.index }}']"
                 >
                   <span>{{ link.title | escape }}</span>
-                  <span class="maison_commerce_maison_header__mobile-nav-toggle">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                      <path d="M6 9l6 6 6-6"/>
-                    </svg>
-                  </span>
+                <span class="maison_commerce_maison_header__mobile-nav-toggle">
+                  <span class="maison_commerce_maison_header__mobile-nav-toggle-icon maison_commerce_maison_header__mobile-nav-toggle-icon--plus">+</span>
+                  <span class="maison_commerce_maison_header__mobile-nav-toggle-icon maison_commerce_maison_header__mobile-nav-toggle-icon--minus">−</span>
+                </span>
                 </button>
                 <div 
                   class="maison_commerce_maison_header__mobile-submenu maison_commerce_maison_header__mobile-submenu--lists"
@@ -506,11 +505,10 @@
                   :aria-expanded="mobileSubmenus['{{ forloop.index }}']"
                 >
                   <span>{{ link.title | escape }}</span>
-                  <span class="maison_commerce_maison_header__mobile-nav-toggle">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                      <path d="M6 9l6 6 6-6"/>
-                    </svg>
-                  </span>
+                <span class="maison_commerce_maison_header__mobile-nav-toggle">
+                  <span class="maison_commerce_maison_header__mobile-nav-toggle-icon maison_commerce_maison_header__mobile-nav-toggle-icon--plus">+</span>
+                  <span class="maison_commerce_maison_header__mobile-nav-toggle-icon maison_commerce_maison_header__mobile-nav-toggle-icon--minus">−</span>
+                </span>
                 </button>
                 <div 
                   class="maison_commerce_maison_header__mobile-submenu maison_commerce_maison_header__mobile-submenu--cards"
@@ -1162,11 +1160,38 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: transform 0.3s ease;
+    position: relative;
+    width: 24px;
+    height: 24px;
   }
 
-  .maison_commerce_maison_header__mobile-nav-link[aria-expanded="true"] .maison_commerce_maison_header__mobile-nav-toggle {
-    transform: rotate(180deg);
+  .maison_commerce_maison_header__mobile-nav-toggle-icon {
+    position: absolute;
+    font-size: 24px;
+    font-weight: 300;
+    line-height: 1;
+    color: currentColor;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+  }
+
+  .maison_commerce_maison_header__mobile-nav-toggle-icon--plus {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  .maison_commerce_maison_header__mobile-nav-toggle-icon--minus {
+    opacity: 0;
+    transform: scale(0);
+  }
+
+  .maison_commerce_maison_header__mobile-nav-link[aria-expanded="true"] .maison_commerce_maison_header__mobile-nav-toggle-icon--plus {
+    opacity: 0;
+    transform: scale(0);
+  }
+
+  .maison_commerce_maison_header__mobile-nav-link[aria-expanded="true"] .maison_commerce_maison_header__mobile-nav-toggle-icon--minus {
+    opacity: 1;
+    transform: scale(1);
   }
 
   .maison_commerce_maison_header__mobile-submenu {
