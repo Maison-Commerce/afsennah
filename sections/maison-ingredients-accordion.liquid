@@ -47,7 +47,11 @@
           {% for block in section.blocks %}
             {% case block.type %}
               {% when 'ingredient_item' %}
-                <div class="maison_commerce_maison_ingredients_accordion__item{% if block.settings.is_expanded %} maison_commerce_maison_ingredients_accordion__item--expanded{% endif %}" {{ block.shopify_attributes }}>
+                <div 
+                  class="maison_commerce_maison_ingredients_accordion__item" 
+                  :class="{ 'maison_commerce_maison_ingredients_accordion__item--expanded': openItem === {{ forloop.index0 }} }"
+                  {{ block.shopify_attributes }}
+                >
                   <button 
                     class="maison_commerce_maison_ingredients_accordion__button"
                     @click="toggleItem({{ forloop.index0 }})"
