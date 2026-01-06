@@ -78,10 +78,10 @@
             {% endif %}
             <span>{{ section.settings.column_1_title }}</span>
           </div>
-          <div class="maison_commerce_maison_comparison_table__header-cell maison_commerce_maison_comparison_table__header-cell--secondary maison_commerce_maison_comparison_table__header-cell--generic" x-show="activeTab === 'generic'">
+          <div class="maison_commerce_maison_comparison_table__header-cell maison_commerce_maison_comparison_table__header-cell--secondary maison_commerce_maison_comparison_table__header-cell--generic" :class="{ 'maison_commerce_maison_comparison_table__mobile-hidden': activeTab !== 'generic' }">
             {{ section.settings.column_2_title }}
           </div>
-          <div class="maison_commerce_maison_comparison_table__header-cell maison_commerce_maison_comparison_table__header-cell--secondary maison_commerce_maison_comparison_table__header-cell--medical" x-show="activeTab === 'medical'">
+          <div class="maison_commerce_maison_comparison_table__header-cell maison_commerce_maison_comparison_table__header-cell--secondary maison_commerce_maison_comparison_table__header-cell--medical" :class="{ 'maison_commerce_maison_comparison_table__mobile-hidden': activeTab !== 'medical' }">
             {{ section.settings.column_3_title }}
           </div>
         </div>
@@ -117,7 +117,7 @@
                       </span>
                   {% endcase %}
                 </div>
-                <div class="maison_commerce_maison_comparison_table__value-cell maison_commerce_maison_comparison_table__value-cell--generic" x-show="activeTab === 'generic'">
+                <div class="maison_commerce_maison_comparison_table__value-cell maison_commerce_maison_comparison_table__value-cell--generic" :class="{ 'maison_commerce_maison_comparison_table__mobile-hidden': activeTab !== 'generic' }">
                   {% case block.settings.column_2_value_type %}
                     {% when 'checkmark' %}
                       <div class="maison_commerce_maison_comparison_table__icon-wrapper">
@@ -139,7 +139,7 @@
                       </span>
                   {% endcase %}
                 </div>
-                <div class="maison_commerce_maison_comparison_table__value-cell maison_commerce_maison_comparison_table__value-cell--medical" x-show="activeTab === 'medical'">
+                <div class="maison_commerce_maison_comparison_table__value-cell maison_commerce_maison_comparison_table__value-cell--medical" :class="{ 'maison_commerce_maison_comparison_table__mobile-hidden': activeTab !== 'medical' }">
                   {% case block.settings.column_3_value_type %}
                     {% when 'checkmark' %}
                       <div class="maison_commerce_maison_comparison_table__icon-wrapper">
@@ -431,21 +431,17 @@
     background: transparent;
   }
 
-  /* Desktop: Always show all columns (override x-show) */
+  /* Desktop: Always show all columns */
   .maison_commerce_maison_comparison_table__header-cell--generic,
   .maison_commerce_maison_comparison_table__header-cell--medical {
-    display: flex !important;
+    display: flex;
   }
 
   @media (max-width: 768px) {
-    /* Mobile: Respect x-show for tab switching */
-    .maison_commerce_maison_comparison_table__header-cell--generic,
-    .maison_commerce_maison_comparison_table__header-cell--medical {
+    /* Mobile: Hide columns with mobile-hidden class */
+    .maison_commerce_maison_comparison_table__header-cell--generic.maison_commerce_maison_comparison_table__mobile-hidden,
+    .maison_commerce_maison_comparison_table__header-cell--medical.maison_commerce_maison_comparison_table__mobile-hidden {
       display: none !important;
-    }
-    .maison_commerce_maison_comparison_table__header-cell--generic[x-show="activeTab === 'generic'"],
-    .maison_commerce_maison_comparison_table__header-cell--medical[x-show="activeTab === 'medical'"] {
-      display: flex !important;
     }
   }
 
@@ -522,21 +518,17 @@
     border-right: {{ section.settings.table_border_width }}px solid {{ section.settings.table_border_color }};
   }
 
-  /* Desktop: Always show all columns (override x-show) */
+  /* Desktop: Always show all columns */
   .maison_commerce_maison_comparison_table__value-cell--generic,
   .maison_commerce_maison_comparison_table__value-cell--medical {
-    display: flex !important;
+    display: flex;
   }
 
   @media (max-width: 768px) {
-    /* Mobile: Respect x-show for tab switching */
-    .maison_commerce_maison_comparison_table__value-cell--generic,
-    .maison_commerce_maison_comparison_table__value-cell--medical {
+    /* Mobile: Hide columns with mobile-hidden class */
+    .maison_commerce_maison_comparison_table__value-cell--generic.maison_commerce_maison_comparison_table__mobile-hidden,
+    .maison_commerce_maison_comparison_table__value-cell--medical.maison_commerce_maison_comparison_table__mobile-hidden {
       display: none !important;
-    }
-    .maison_commerce_maison_comparison_table__value-cell--generic[x-show="activeTab === 'generic'"],
-    .maison_commerce_maison_comparison_table__value-cell--medical[x-show="activeTab === 'medical'"] {
-      display: flex !important;
     }
   }
 
