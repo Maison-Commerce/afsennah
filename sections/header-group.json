@@ -113,7 +113,7 @@
       "settings": {
         "bg_color": "#EBEBF6",
         "border_color": "#E0E0F1",
-        "max_width": 1600,
+        "max_width": 1280,
         "alignment": "space-between",
         "padding_top_desktop": 4,
         "padding_bottom_desktop": 4,
