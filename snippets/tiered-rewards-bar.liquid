@@ -28,16 +28,17 @@
 
   assign next_tier_amount = false
   assign next_tier_label = false
+  
   if cart_total_dollars < free_shipping_threshold
     assign next_tier_amount = free_shipping_threshold | minus: cart_total_dollars
     assign next_tier_label = section.settings.free_shipping_label | default: 'Free shipping'
-  elsif cart_total_dollars < tier_1_threshold
+  elsif section.settings.gift_tier_1_label != blank and cart_total_dollars < tier_1_threshold
     assign next_tier_amount = tier_1_threshold | minus: cart_total_dollars
     assign next_tier_label = section.settings.gift_tier_1_label
-  elsif cart_total_dollars < tier_2_threshold
+  elsif section.settings.gift_tier_2_label != blank and cart_total_dollars < tier_2_threshold
     assign next_tier_amount = tier_2_threshold | minus: cart_total_dollars
     assign next_tier_label = section.settings.gift_tier_2_label
-  elsif cart_total_dollars < tier_3_threshold
+  elsif section.settings.gift_tier_3_label != blank and cart_total_dollars < tier_3_threshold
     assign next_tier_amount = tier_3_threshold | minus: cart_total_dollars
     assign next_tier_label = section.settings.gift_tier_3_label
   endif
@@ -47,6 +48,19 @@
   <div class="tiered-rewards-bar{% if cart.items == empty %} tiered-rewards-bar--no-cart{% endif %}" 
        data-cart-total="{{ cart_total_dollars }}"
        data-merge-attributes="tiered-rewards">
+    
+    {%- liquid
+      assign all_tiers_achieved = false
+      if free_shipping_achieved
+        if section.settings.gift_tier_1_label == blank or tier_1_achieved
+          if section.settings.gift_tier_2_label == blank or tier_2_achieved
+            if section.settings.gift_tier_3_label == blank or tier_3_achieved
+              assign all_tiers_achieved = true
+            endif
+          endif
+        endif
+      endif
+    -%}
     
     {%- if next_tier_amount and next_tier_amount > 0 -%}
       <div class="tiered-rewards-bar__banner">
@@ -71,7 +85,7 @@
           {%- endif -%}
         </span>
       </div>
-    {%- elsif tier_3_achieved -%}
+    {%- elsif all_tiers_achieved -%}
       <div class="tiered-rewards-bar__banner tiered-rewards-bar__banner--all-achieved">
         {%- if section.settings.banner_icon != blank -%}
           <span class="tiered-rewards-bar__banner-icon">
