@@ -395,12 +395,17 @@
     text-decoration: none;
     padding: {{ section.settings.nav_padding_vertical }}px {{ section.settings.nav_padding_horizontal }}px;
     border-radius: {{ section.settings.nav_border_radius }}px;
-    transition: opacity 0.3s ease;
+    transition: all 0.3s ease;
     white-space: nowrap;
   }
 
   .maison_commerce_maison_header__nav-link:hover {
-    opacity: 0.8;
+    text-decoration-line: underline;
+    text-decoration-style: solid;
+    text-decoration-skip-ink: auto;
+    text-decoration-thickness: auto;
+    text-underline-offset: auto;
+    text-underline-position: from-font;
   }
 
   .maison_commerce_maison_header__nav-link--active {
