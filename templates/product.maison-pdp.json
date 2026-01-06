@@ -1,0 +1,519 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-product",
+      "blocks": {
+        "loox_reviews_loox_rating_K6cdrY": {
+          "type": "shopify://apps/loox-reviews/blocks/loox-rating/5c3b337f-fd14-4df5-b1d6-80ec13e6e28e",
+          "settings": {
+            "contentSize": 16,
+            "pattern": "",
+            "hideText": false,
+            "alignment": "",
+            "layout": "",
+            "textColor": "",
+            "starColor": "",
+            "showAllReviews": false,
+            "looxOpenFloatingWidget": false,
+            "emptyRatingWidget": false
+          }
+        },
+        "title": {
+          "type": "title",
+          "settings": {}
+        },
+        "price": {
+          "type": "price",
+          "settings": {
+            "show_tax_and_shipping": false,
+            "enable_product_reviews_by_price": false
+          }
+        },
+        "richtext_9PTgzC": {
+          "type": "richtext",
+          "settings": {
+            "richtext": "<p>{{ product.metafields.custom.productline.value }}</p>",
+            "icon": "",
+            "icon_size": "small",
+            "enable_box": false,
+            "box_color": "#e0f4d5",
+            "show_in_quickbuy": false
+          }
+        },
+        "formula_button_wd8rNQ": {
+          "type": "formula_button",
+          "settings": {}
+        },
+        "vendor": {
+          "type": "vendor",
+          "disabled": true,
+          "settings": {}
+        },
+        "divider": {
+          "type": "divider",
+          "settings": {
+            "show_in_quickbuy": false
+          }
+        },
+        "variant-picker": {
+          "type": "variant-picker",
+          "settings": {
+            "show_single": false,
+            "selector_style": "dropdown",
+            "dynamic_availability": "show",
+            "enable_size_chart": false,
+            "size_chart_label": "Size guide",
+            "size_chart_variant": "Size",
+            "size_chart_page": ""
+          }
+        },
+        "buy-buttons": {
+          "type": "buy-buttons",
+          "settings": {
+            "show_quantity_selector": false,
+            "enable_payment_button": true,
+            "show_gift_card_recipient": true,
+            "show_pickup_availability": true,
+            "show_backorder_text": true,
+            "quiz_cta_text": "Get Your Formula",
+            "quiz_cta_url": "shopify://pages/get-your-formula"
+          }
+        },
+        "text_UT9ray": {
+          "type": "text",
+          "settings": {
+            "text": "Delivery in 1-2 business days",
+            "icon": "plane",
+            "icon_size": "small",
+            "enable_box": false,
+            "box_color": "#e0f4d5",
+            "show_in_quickbuy": false
+          }
+        },
+        "divider_Cwfcya": {
+          "type": "divider",
+          "settings": {
+            "show_in_quickbuy": false
+          }
+        },
+        "richtext_cyRJhp": {
+          "type": "richtext",
+          "settings": {
+            "richtext": "<p><strong>Why Custom-Made Hair Products Work Better:</strong></p><p>Because your hair isn’t “one-size-fits-all.”</p><p>Every scalp and strand has its own balance of oils, sensitivities, and growth needs which is why generic products often fall short. Afsennah Custom-made formulas are crafted specifically for <em>your</em> hair type, scalp condition, and goals. They deliver the exact nutrients your hair needs, no unnecessary fillers, no harsh ingredients.</p><p>By addressing the <em>root cause</em> of your concerns, personalized products help restore balance faster, enhance strength and shine, and create long-lasting results that standard products simply can’t match.</p><p></p>",
+            "icon": "",
+            "icon_size": "small",
+            "enable_box": false,
+            "box_color": "#e0f4d5",
+            "show_in_quickbuy": false
+          }
+        },
+        "accordion_eCyiUV": {
+          "type": "accordion",
+          "settings": {
+            "title": "How to Use",
+            "icon": "",
+            "content": "<p>{{ product.metafields.custom.how_to_use | metafield_tag }}</p>",
+            "page": "",
+            "custom_liquid": "",
+            "open": false,
+            "show_in_quickbuy": false
+          }
+        },
+        "accordion_bjJGWh": {
+          "type": "accordion",
+          "settings": {
+            "title": "Ingredients",
+            "icon": "",
+            "content": "<p>{{ product.metafields.custom.ingredients | metafield_tag }}</p>",
+            "page": "",
+            "custom_liquid": "",
+            "open": false,
+            "show_in_quickbuy": false
+          }
+        },
+        "loox_reviews_loox_snippets_widget_JQFkCB": {
+          "type": "shopify://apps/loox-reviews/blocks/loox-snippets-widget/5c3b337f-fd14-4df5-b1d6-80ec13e6e28e",
+          "settings": {
+            "alignment": "left",
+            "max-width": "",
+            "color-scheme": "default",
+            "shadow": "",
+            "show-rating": true,
+            "show-image": true,
+            "hide-arrows-mobile": false,
+            "font-size": 14,
+            "show-border": false,
+            "border-radius": 16,
+            "background-color": "",
+            "text-color": "",
+            "name-color": "",
+            "rating-icon-color": "",
+            "border-color": "",
+            "shadow-color": "",
+            "reviews-limit": 10
+          }
+        }
+      },
+      "block_order": [
+        "loox_reviews_loox_rating_K6cdrY",
+        "title",
+        "price",
+        "richtext_9PTgzC",
+        "formula_button_wd8rNQ",
+        "vendor",
+        "divider",
+        "variant-picker",
+        "buy-buttons",
+        "text_UT9ray",
+        "divider_Cwfcya",
+        "richtext_cyRJhp",
+        "accordion_eCyiUV",
+        "accordion_bjJGWh",
+        "loox_reviews_loox_snippets_widget_JQFkCB"
+      ],
+      "settings": {
+        "show_breadcrumbs": false,
+        "select_first_variant": true,
+        "show_location_underneath": false,
+        "inventory_transfers_enable": false,
+        "enable_sticky_columns": true,
+        "enable_sticky_atc": false,
+        "sticky_atc_position": "center",
+        "sticky_atc_mobile": true,
+        "sticky_atc_behavior": "add_to_cart",
+        "sticky_atc_button_style": "secondary",
+        "gallery_size": "large",
+        "gallery_layout": "carousel-under",
+        "enable_zoom": true,
+        "show_alt_text": false,
+        "alt_text_icon": "",
+        "enable_video_autoplay": true,
+        "enable_video_looping": true,
+        "enable_media_grouping": false,
+        "media_grouping_option": "Color,Colour,Couleur,Farbe"
+      }
+    },
+    "scrolling_banner_UGBBtA": {
+      "type": "scrolling-banner",
+      "blocks": {
+        "text_UKxeeE": {
+          "type": "text",
+          "settings": {
+            "text": "paraben free   -   sulfate free   -   phthalate free   -   free of mineral oilscruelty-free   -   carbon neutral   -   paraben free   -   sulfate free   -   phthalate free   -   free of mineral oilscruelty-free   -   carbon neutral",
+            "color": "rgba(0,0,0,0)",
+            "link": "",
+            "use_h1": false,
+            "stencil_all_text": false,
+            "stencil_text": ""
+          }
+        }
+      },
+      "block_order": [
+        "text_UKxeeE"
+      ],
+      "name": "Scrolling banner",
+      "settings": {
+        "full_width": true,
+        "color_scheme": "2",
+        "text_size": 20,
+        "vertical_padding": 22,
+        "speed": 2.5,
+        "direction": "left",
+        "font": "base",
+        "space": 50
+      }
+    },
+    "ingredients_bJMzcr": {
+      "type": "ingredients",
+      "blocks": {
+        "ingredient_a87QWK": {
+          "type": "ingredient",
+          "settings": {
+            "ingredient_image": "shopify://shop_images/4_db19b1e5-e5a2-40d4-a63b-398fd4288eb1.png",
+            "ingredient_name": "Hibiscus Oil",
+            "ingredient_description": "We selected hibiscus oil for its rich blend of amino acids and vitamin C a rejuvenating extract that strengthens roots, boosts shine, and restores vitality to thinning, lackluster hair.",
+            "card_bg_color": "#ffffff",
+            "card_text_color": "#000000"
+          }
+        },
+        "ingredient_XpT6Wq": {
+          "type": "ingredient",
+          "settings": {
+            "ingredient_image": "shopify://shop_images/ingredient_4.png",
+            "ingredient_name": "Saffron Oil",
+            "ingredient_description": "We thoughtfully selected the most powerful plant-based oils to craft Afsennah’s hair elixirs rich in nutrients, free from harsh additives, and designed to nourish your scalp and transform your hair with every drop.",
+            "card_bg_color": "#ffffff",
+            "card_text_color": "#000000"
+          }
+        },
+        "ingredient_PHNkeT": {
+          "type": "ingredient",
+          "settings": {
+            "ingredient_image": "shopify://shop_images/ingredient_3.png",
+            "ingredient_name": "Prickly Pear Seed Oil",
+            "ingredient_description": "We thoughtfully selected the most powerful plant-based oils to craft Afsennah’s hair elixirs rich in nutrients, free from harsh additives, and designed to nourish your scalp and transform your hair with every drop.",
+            "card_bg_color": "#ffffff",
+            "card_text_color": "#000000"
+          }
+        },
+        "ingredient_Uz4h4H": {
+          "type": "ingredient",
+          "settings": {
+            "ingredient_image": "shopify://shop_images/ingredient_afsennah.png",
+            "ingredient_name": "Rosehip Oil",
+            "ingredient_description": "We carefully chose Rosehip oil for its rich blend of vitamins, antioxidants, and fatty acids a lightweight botanical that deeply nourishes, repairs, and softens hair while restoring balance to your scalp with every use.",
+            "card_bg_color": "#ffffff",
+            "card_text_color": "#000000"
+          }
+        }
+      },
+      "block_order": [
+        "ingredient_a87QWK",
+        "ingredient_XpT6Wq",
+        "ingredient_PHNkeT",
+        "ingredient_Uz4h4H"
+      ],
+      "custom_css": [
+        "@media (max-width: 767px) {.custom-ingredients-section {margin-top: 0; }}"
+      ],
+      "name": "Ingredients Section",
+      "settings": {
+        "section_bg_color": "#f8f6f0",
+        "section_text_color": "#102b26",
+        "section_title": "Naturally powerful ingredients",
+        "section_subtitle": "Your formula is uniquely yours. We target your goals with multi-benefit ingredients like:",
+        "cta_text": "SEE ALL OUR INGREDIENTS",
+        "cta_url": "shopify://pages/ingredients"
+      }
+    },
+    "video_product_slider_JCam3g": {
+      "type": "video-product-slider",
+      "blocks": {
+        "video_product_card_jUV3AB": {
+          "type": "video_product_card",
+          "settings": {
+            "video": "shopify://files/videos/hair-growth-oil_R7yshec7.mp4",
+            "autoplay": true,
+            "loop": true,
+            "muted": true,
+            "controls": false,
+            "card_text": "<p>Transform thinning hair into thicker, stronger strands with every drop!</p>",
+            "product": "custom-hair-growth-oil-for-her"
+          }
+        },
+        "video_product_card_3LBWwY": {
+          "type": "video_product_card",
+          "settings": {
+            "video": "shopify://files/videos/hair-treatment-yellow_BouNogGI.mp4",
+            "autoplay": true,
+            "loop": true,
+            "muted": true,
+            "controls": false,
+            "card_text": "<p>Repair, strengthen, and transform your hair  made just for you.</p>",
+            "product": "custom-hair-treatment"
+          }
+        },
+        "video_product_card_nTEmGN": {
+          "type": "video_product_card",
+          "settings": {
+            "video": "shopify://files/videos/9ad83910849943d2b707235f5f144df0_Za7WQCtB.mp4",
+            "autoplay": true,
+            "loop": true,
+            "muted": true,
+            "controls": false,
+            "card_text": "<p>Lightweight leave-in oil that repairs and strengthens every strand.</p>",
+            "product": "custom-hair-elixir"
+          }
+        },
+        "video_product_card_MncF3B": {
+          "type": "video_product_card",
+          "settings": {
+            "video": "shopify://files/videos/scalp-tonic-on-dry-hair_h1numMhy.mp4",
+            "autoplay": true,
+            "loop": true,
+            "muted": true,
+            "controls": false,
+            "card_text": "<p>Daily tonic that strengthens roots and reduces hair fall.</p>",
+            "product": "custom-scalp-tonic"
+          }
+        },
+        "video_product_card_7HGaN6": {
+          "type": "video_product_card",
+          "settings": {
+            "video": "shopify://files/videos/scalp-roller_FC1vzDv1.mp4",
+            "autoplay": true,
+            "loop": true,
+            "muted": true,
+            "controls": false,
+            "card_text": "<p>Boost absorption. Stimulate growth. Renew your scalp.</p>",
+            "product": "micro-needle-scalp-roller"
+          }
+        }
+      },
+      "block_order": [
+        "video_product_card_jUV3AB",
+        "video_product_card_3LBWwY",
+        "video_product_card_nTEmGN",
+        "video_product_card_MncF3B",
+        "video_product_card_7HGaN6"
+      ],
+      "name": "Video Product Slider",
+      "settings": {
+        "section_title": "HOW TO USE",
+        "full_width": true,
+        "button_text": "Get your formula",
+        "quiz_cta_text": "Get Your Formula",
+        "quiz_url": "/pages/get-your-formula"
+      }
+    },
+    "custom_content_DiwQ9R": {
+      "type": "custom-content",
+      "blocks": {
+        "text_cQaABi": {
+          "type": "text",
+          "settings": {
+            "width": "half",
+            "text_alignment": "left",
+            "center_on_mobile": true,
+            "icon": "",
+            "icon_color": "rgba(0,0,0,0)",
+            "subheading": "EXPLORE",
+            "title": "{{ product.title }}",
+            "title_size": 42,
+            "title_size_mobile": 24,
+            "text": "<p>hoi hoi hoi hoi </p>",
+            "button_label": "",
+            "button_link": "",
+            "button_style": "primary"
+          }
+        },
+        "video_zFth6r": {
+          "type": "video",
+          "settings": {
+            "width": "third",
+            "video_shopify": "shopify://files/videos/9ad83910849943d2b707235f5f144df0.MOV",
+            "video_external": "https://www.youtube.com/watch?v=_9VUPq3SxOc",
+            "video_description": "",
+            "autoplay": false
+          }
+        }
+      },
+      "block_order": [
+        "text_cQaABi",
+        "video_zFth6r"
+      ],
+      "disabled": true,
+      "name": "Custom content",
+      "settings": {
+        "spacing": "medium",
+        "alignment": "middle",
+        "color_scheme": "2"
+      }
+    },
+    "1759871206b1f1b6dc": {
+      "type": "apps",
+      "blocks": {
+        "loox_reviews_loox_dynamic_section_rpFfVd": {
+          "type": "shopify://apps/loox-reviews/blocks/loox-dynamic-section/5c3b337f-fd14-4df5-b1d6-80ec13e6e28e",
+          "settings": {
+            "only_photos": false,
+            "aggregated": false,
+            "limit": 16,
+            "hide_thumbnails": false,
+            "maxwidth": 1080,
+            "is_sample": true
+          }
+        }
+      },
+      "block_order": [
+        "loox_reviews_loox_dynamic_section_rpFfVd"
+      ],
+      "settings": {
+        "full_width": true,
+        "show_space": true
+      }
+    },
+    "faq_header_fN8MQV": {
+      "type": "faq-header",
+      "disabled": true,
+      "name": "FAQ header",
+      "settings": {
+        "title": "FAQ",
+        "use_h1": false,
+        "text": "",
+        "show_search": false,
+        "show_index": true,
+        "index_heading": "How can we help?"
+      }
+    },
+    "collapsible_tabs_9BkHUg": {
+      "type": "collapsible-tabs",
+      "blocks": {
+        "question_kgRLyh": {
+          "type": "question",
+          "settings": {
+            "title": "Question",
+            "answer": "<p>Answer</p>"
+          }
+        },
+        "question_QDVkBX": {
+          "type": "question",
+          "settings": {
+            "title": "Question",
+            "answer": "<p>Answer</p>"
+          }
+        },
+        "question_DzYz94": {
+          "type": "question",
+          "settings": {
+            "title": "Question",
+            "answer": "<p>Answer</p>"
+          }
+        }
+      },
+      "block_order": [
+        "question_kgRLyh",
+        "question_QDVkBX",
+        "question_DzYz94"
+      ],
+      "disabled": true,
+      "name": "Collapsible tabs",
+      "settings": {
+        "title": ""
+      }
+    },
+    "related-products": {
+      "type": "related-products",
+      "disabled": true,
+      "custom_css": [
+        "{background: #f8f6f0; padding: 32px 0; @media (max-width: 767px) {padding: 20px 0; }}",
+        ".fully-spaced-row {margin: 0 auto;}"
+      ],
+      "settings": {
+        "title": "You may also like",
+        "show_vendor": false,
+        "grid": 4
+      }
+    }
+  },
+  "order": [
+    "main",
+    "scrolling_banner_UGBBtA",
+    "ingredients_bJMzcr",
+    "video_product_slider_JCam3g",
+    "custom_content_DiwQ9R",
+    "1759871206b1f1b6dc",
+    "faq_header_fN8MQV",
+    "collapsible_tabs_9BkHUg",
+    "related-products"
+  ]
+}
