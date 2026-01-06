@@ -89,8 +89,8 @@
         {% for block in section.blocks %}
           {% case block.type %}
             {% when 'comparison_row' %}
-              <div class="maison_commerce_maison_comparison_table__row" {{ block.shopify_attributes }}>
-                <div class="maison_commerce_maison_comparison_table__label-cell {% if forloop.first %}maison_commerce_maison_comparison_table__label-cell-first{% endif %} {% if forloop.last %}maison_commerce_maison_comparison_table__label-cell-last{% endif %}">
+              <div class="maison_commerce_maison_comparison_table__row {% if forloop.first %}maison_commerce_maison_comparison_table__label-cell-first{% endif %} {% if forloop.last %}maison_commerce_maison_comparison_table__label-cell-last{% endif %}" {{ block.shopify_attributes }}>
+                <div class="maison_commerce_maison_comparison_table__label-cell">
                   {{ block.settings.row_label }}
                 </div>
                 <div class="maison_commerce_maison_comparison_table__value-cell maison_commerce_maison_comparison_table__value-cell--primary">
