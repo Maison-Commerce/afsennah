@@ -649,7 +649,13 @@
     display: flex;
     justify-content: center;
     gap: {{ section.settings.pagination_gap }}px;
-    margin: 0;
+    margin-top: {{ section.settings.pagination_margin_top }}px;
+  }
+
+  @media (max-width: 768px) {
+    .maison_commerce_maison_you_may_also_like__pagination {
+      margin-top: 0;
+    }
   }
 
   .maison_commerce_maison_you_may_also_like__pagination .swiper-pagination-bullet {
@@ -675,11 +681,62 @@
     text-align: center;
   }
 
-  .maison_commerce_maison_you_may_also_like__pagination-wrapper{
-    display: flex;
-    gap: 16px;
-    align-items: center;
-    margin-top: 24px;
+  /* Pagination Wrapper - Hidden on desktop, shown on mobile */
+  .maison_commerce_maison_you_may_also_like__pagination-wrapper {
+    display: none;
+  }
+
+  @media (max-width: 768px) {
+    .maison_commerce_maison_you_may_also_like__pagination-wrapper {
+      display: flex;
+      gap: {{ section.settings.mobile_nav_gap }}px;
+      align-items: center;
+      justify-content: center;
+      margin-top: {{ section.settings.pagination_margin_top }}px;
+    }
+  }
+
+  /* Mobile Navigation Buttons */
+  .maison_commerce_maison_you_may_also_like__nav-button--prev-mobile,
+  .maison_commerce_maison_you_may_also_like__nav-button--next-mobile {
+    display: none;
+  }
+
+  @media (max-width: 768px) {
+    .maison_commerce_maison_you_may_also_like__nav-button--prev-mobile,
+    .maison_commerce_maison_you_may_also_like__nav-button--next-mobile {
+      display: flex;
+      width: {{ section.settings.mobile_nav_button_size }}px;
+      height: {{ section.settings.mobile_nav_button_size }}px;
+      border: {{ section.settings.mobile_nav_button_border_width }}px solid {{ section.settings.mobile_nav_button_border_color }};
+      border-radius: 50%;
+      background: transparent;
+      color: {{ section.settings.mobile_nav_button_color }};
+      cursor: pointer;
+      align-items: center;
+      justify-content: center;
+      padding: {{ section.settings.mobile_nav_button_padding }}px;
+      transition: opacity 0.3s ease, background-color 0.3s ease;
+      flex-shrink: 0;
+    }
+
+    .maison_commerce_maison_you_may_also_like__nav-button--prev-mobile:hover,
+    .maison_commerce_maison_you_may_also_like__nav-button--next-mobile:hover {
+      opacity: 0.8;
+      background-color: {{ section.settings.mobile_nav_button_hover_bg }};
+    }
+
+    .maison_commerce_maison_you_may_also_like__nav-button--prev-mobile.swiper-button-disabled,
+    .maison_commerce_maison_you_may_also_like__nav-button--next-mobile.swiper-button-disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+    }
+
+    .maison_commerce_maison_you_may_also_like__nav-button--prev-mobile svg,
+    .maison_commerce_maison_you_may_also_like__nav-button--next-mobile svg {
+      width: {{ section.settings.mobile_nav_icon_size }}px;
+      height: {{ section.settings.mobile_nav_icon_size }}px;
+    }
   }
 
   @media (max-width: 768px) {
