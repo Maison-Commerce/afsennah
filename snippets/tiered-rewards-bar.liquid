@@ -150,6 +150,9 @@
 
             </span>
             <span class="tiered-rewards-bar__marker-price" data-price-dollars="{{ free_shipping_threshold }}">
+                <svg width="13" height="9" viewBox="0 0 13 9" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M11.4167 0.75L4.08333 8.08333L0.75 4.75" stroke="#1A365D" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
                 {{ section.settings.free_shipping_label | default: 'Free shipping' }}</span>
             </span>
         </div>
@@ -171,7 +174,13 @@
                     {% render 'icon', icon: 'gift', size: 'small' %}
                 </span>
                 {%- endif -%}
-                <span class="tiered-rewards-bar__marker-price" data-price-dollars="{{ tier_1_threshold }}">{{ section.settings.gift_tier_1_label }}</span>
+                <span class="tiered-rewards-bar__marker-price" data-price-dollars="{{ tier_1_threshold }}">
+                    <svg width="13" height="9" viewBox="0 0 13 9" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M11.4167 0.75L4.08333 8.08333L0.75 4.75" stroke="#1A365D" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+
+                    {{ section.settings.gift_tier_1_label }}
+                </span>
             </span>
             </div>
         {%- endif -%}
