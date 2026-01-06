@@ -892,6 +892,19 @@
     new Swiper(swiperContainer, swiperConfig);
   }
 
+  // Debounce function for resize handler
+  function debounce(func, wait) {
+    let timeout;
+    return function executedFunction(...args) {
+      const later = () => {
+        clearTimeout(timeout);
+        func(...args);
+      };
+      clearTimeout(timeout);
+      timeout = setTimeout(later, wait);
+    };
+  }
+
   // Initialize on page load
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', function() {
@@ -900,6 +913,13 @@
   } else {
     setTimeout(initYouMayAlsoLikeSwiper, 200);
   }
+
+  // Handle window resize - reinitialize Swiper to update navigation buttons
+  const handleResize = debounce(function() {
+    initYouMayAlsoLikeSwiper();
+  }, 250);
+
+  window.addEventListener('resize', handleResize);
 
   // Handle Shopify theme editor
   if (typeof Shopify !== 'undefined' && Shopify.designMode) {
@@ -914,6 +934,8 @@
       if (swiperContainer && swiperContainer.swiper) {
         swiperContainer.swiper.destroy(true, true);
       }
+      // Remove resize listener when section is unloaded
+      window.removeEventListener('resize', handleResize);
     });
   }
 </script>
