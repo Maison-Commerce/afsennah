@@ -934,23 +934,40 @@
       activeMegaMenu: null,
       mobileMenuOpen: false,
       mobileSubmenus: {},
+      closeTimeout: null,
 
       openMegaMenu(index) {
+        // Clear any pending close timeout
+        if (this.closeTimeout) {
+          clearTimeout(this.closeTimeout);
+          this.closeTimeout = null;
+        }
         this.activeMegaMenu = index;
         this.megaMenuOpen = true;
       },
 
       closeMegaMenu() {
-        setTimeout(() => {
-          if (!this.megaMenuOpen) {
-            this.activeMegaMenu = null;
-          }
-        }, 100);
-        this.megaMenuOpen = false;
+        // Use a timeout to allow moving from nav link to mega menu
+        if (this.closeTimeout) {
+          clearTimeout(this.closeTimeout);
+        }
+        this.closeTimeout = setTimeout(() => {
+          this.megaMenuOpen = false;
+          setTimeout(() => {
+            if (!this.megaMenuOpen) {
+              this.activeMegaMenu = null;
+            }
+          }, 100);
+        }, 150);
       },
 
       keepMegaMenuOpen() {
-        // Keep menu open when hovering over it
+        // Cancel any pending close when hovering over mega menu
+        if (this.closeTimeout) {
+          clearTimeout(this.closeTimeout);
+          this.closeTimeout = null;
+        }
+        this.megaMenuOpen = true;
       },
 
       toggleMegaMenu(index) {
