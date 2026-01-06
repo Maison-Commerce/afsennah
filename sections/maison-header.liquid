@@ -420,8 +420,7 @@
     x-transition:leave="maison_commerce_maison_header__mobile-drawer--leave"
     x-transition:leave-start="maison_commerce_maison_header__mobile-drawer--leave-start"
     x-transition:leave-end="maison_commerce_maison_header__mobile-drawer--leave-end"
-    :style="mobileMenuOpen ? 'transform: translateX(0);' : 'transform: translateX(-100%);'"
-    style="display: none;"
+    style="display: none; transform: translateX(-100%);"
   >
     <!-- Search Bar -->
     {% if section.settings.enable_search %}
@@ -901,10 +900,8 @@
     background-color: {{ section.settings.mobile_drawer_bg_color }};
     z-index: 1001;
     overflow-y: auto;
-  }
-  
-  .maison_commerce_maison_header__mobile-drawer[style*="display: none"] {
     transform: translateX(-100%);
+    will-change: transform;
   }
 
   .maison_commerce_maison_header__mobile-drawer--enter {
@@ -912,11 +909,11 @@
   }
 
   .maison_commerce_maison_header__mobile-drawer--enter-start {
-    transform: translateX(-100%);
+    transform: translateX(-100%) !important;
   }
 
   .maison_commerce_maison_header__mobile-drawer--enter-end {
-    transform: translateX(0);
+    transform: translateX(0) !important;
   }
 
   .maison_commerce_maison_header__mobile-drawer--leave {
@@ -924,11 +921,20 @@
   }
 
   .maison_commerce_maison_header__mobile-drawer--leave-start {
-    transform: translateX(0);
+    transform: translateX(0) !important;
   }
 
   .maison_commerce_maison_header__mobile-drawer--leave-end {
-    transform: translateX(-100%);
+    transform: translateX(-100%) !important;
+  }
+  
+  /* Ensure drawer is visible and positioned correctly when shown */
+  .maison_commerce_maison_header__mobile-drawer[x-show] {
+    display: block;
+  }
+  
+  .maison_commerce_maison_header__mobile-drawer:not([style*="display: none"]) {
+    transform: translateX(0);
   }
 
   .maison_commerce_maison_header__mobile-search {
