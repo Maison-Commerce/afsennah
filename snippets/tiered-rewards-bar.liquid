@@ -12,7 +12,7 @@
   assign tier_2_achieved = false
   assign tier_3_achieved = false
   
-  if cart_total_dollars >= tier_1_threshold
+  if cart_total_dollars >= free_shipping_threshold
     assign free_shipping_achieved = true
   endif
   if cart_total_dollars >= tier_1_threshold
@@ -104,7 +104,7 @@
         {%- comment -%} Segment 2: Free Shipping to Tier 1 {%- endcomment -%}
         {%- if section.settings.gift_tier_1_label != blank -%}
           <div class="tiered-rewards-bar__segment-wrap">
-            <div class="tiered-rewards-bar__segment" data-min="{{ free_shipping_threshold | times: 100}}" data-max="{{ tier_1_threshold | times: 100}}">
+            <div class="tiered-rewards-bar__segment" data-min="{{ free_shipping_threshold }}" data-max="{{ tier_1_threshold }}">
               <div class="tiered-rewards-bar__segment-fill"></div>
             </div>
           </div>
@@ -113,7 +113,7 @@
         {%- comment -%} Segment 3: Tier 1 to Tier 2 {%- endcomment -%}
         {%- if section.settings.gift_tier_2_label != blank -%}
           <div class="tiered-rewards-bar__segment-wrap">
-            <div class="tiered-rewards-bar__segment" data-min="{{ tier_1_threshold | times: 100}}" data-max="{{ tier_2_threshold | times: 100}}">
+            <div class="tiered-rewards-bar__segment" data-min="{{ tier_1_threshold }}" data-max="{{ tier_2_threshold }}">
               <div class="tiered-rewards-bar__segment-fill"></div>
             </div>
           </div>
@@ -122,7 +122,7 @@
         {%- comment -%} Segment 4: Tier 2 to Tier 3 {%- endcomment -%}
         {%- if section.settings.gift_tier_3_label != blank -%}
           <div class="tiered-rewards-bar__segment-wrap">
-            <div class="tiered-rewards-bar__segment" data-min="{{ tier_2_threshold | times: 100}}" data-max="{{ tier_3_threshold | times: 100}}">
+            <div class="tiered-rewards-bar__segment" data-min="{{ tier_2_threshold }}" data-max="{{ tier_3_threshold }}">
               <div class="tiered-rewards-bar__segment-fill"></div>
             </div>
           </div>
@@ -138,7 +138,7 @@
           <span class="tiered-rewards-bar__marker-icon">
             {% render 'icon', icon: 'truck', size: 'small' %}
           </span>
-          <span class="tiered-rewards-bar__marker-price" data-price-cents="{{ free_shipping_cents }}">{{ free_shipping_cents | money_without_trailing_zeros }}</span>
+          <span class="tiered-rewards-bar__marker-price" data-price-dollars="{{ free_shipping_threshold }}">{{ free_shipping_cents | money_without_trailing_zeros }}</span>
         </span>
         
         {%- comment -%} Tier 1 Marker {%- endcomment -%}
@@ -158,7 +158,7 @@
                 {% render 'icon', icon: 'gift', size: 'small' %}
               </span>
             {%- endif -%}
-            <span class="tiered-rewards-bar__marker-price" data-price-cents="{{ tier_1_cents }}">{{ tier_1_cents | money_without_trailing_zeros }}</span>
+            <span class="tiered-rewards-bar__marker-price" data-price-dollars="{{ tier_1_threshold }}">{{ tier_1_cents | money_without_trailing_zeros }}</span>
           </span>
         {%- endif -%}
         
@@ -179,7 +179,7 @@
                 {% render 'icon', icon: 'gift', size: 'small' %}
               </span>
             {%- endif -%}
-            <span class="tiered-rewards-bar__marker-price" data-price-cents="{{ tier_2_cents }}">{{ tier_2_cents | money_without_trailing_zeros }}</span>
+            <span class="tiered-rewards-bar__marker-price" data-price-dollars="{{ tier_2_threshold }}">{{ tier_2_cents | money_without_trailing_zeros }}</span>
           </span>
         {%- endif -%}
         
@@ -200,7 +200,7 @@
                 {% render 'icon', icon: 'gift', size: 'small' %}
               </span>
             {%- endif -%}
-            <span class="tiered-rewards-bar__marker-price" data-price-cents="{{ tier_3_cents }}">{{ tier_3_cents | money_without_trailing_zeros }}</span>
+            <span class="tiered-rewards-bar__marker-price" data-price-dollars="{{ tier_3_threshold }}">{{ tier_3_cents | money_without_trailing_zeros }}</span>
           </span>
         {%- endif -%}
       </div>
@@ -214,31 +214,33 @@
         const markerPrices = document.querySelectorAll('.tiered-rewards-bar__marker-price');
         
         markerPrices.forEach(function(priceEl) {
-          // Get the original price in cents from data attribute
-          const originalCents = parseFloat(priceEl.getAttribute('data-price-cents')) || 0;
+          // Get the original price in dollars from data attribute (value from customizer is already in dollars)
+          const originalDollars = parseFloat(priceEl.getAttribute('data-price-dollars')) || 0;
           
-          if (originalCents <= 0) return;
+          if (originalDollars <= 0) return;
           
           // If we have Shopify currency conversion available
           if (typeof Shopify !== 'undefined' && Shopify.currency && Shopify.currency.rate) {
             const rate = parseFloat(Shopify.currency.rate);
             const activeCurrency = Shopify.currency.active;
             
-            // Only convert if rate is not 1 (meaning user is not viewing in base currency)
-            if (rate && rate !== 1) {
-              // Convert from base currency to user's currency
-              const convertedCents = Math.round(originalCents * rate);
-              
-              // Format using Shopify's money format
-              const formatted = formatMoney(convertedCents, activeCurrency);
-              
-              // Update the price element
-              priceEl.textContent = formatted;
-            } else {
-              // If rate is 1, just format the original amount
-              const formatted = formatMoney(originalCents, activeCurrency);
-              priceEl.textContent = formatted;
-            }
+            // Convert from base currency (dollars) to user's currency
+            // rate is the conversion rate FROM base currency TO active currency
+            const convertedDollars = originalDollars * rate;
+            
+            // Convert to cents for formatting
+            const convertedCents = Math.round(convertedDollars * 100);
+            
+            // Format using Shopify's money format
+            const formatted = formatMoney(convertedCents, activeCurrency);
+            
+            // Update the price element
+            priceEl.textContent = formatted;
+          } else {
+            // If no currency conversion available, format the original amount
+            const originalCents = Math.round(originalDollars * 100);
+            const formatted = formatMoney(originalCents, 'USD');
+            priceEl.textContent = formatted;
           }
         });
       }
