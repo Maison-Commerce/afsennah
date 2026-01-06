@@ -874,7 +874,6 @@ video-section-play-button {
 
 .tiered-rewards-bar__marker-image {
     width: 40px;
-    height: 40px;
     right: -40px;
     display: flex;
     flex-direction: column;
