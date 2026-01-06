@@ -808,8 +808,8 @@ video-section-play-button {
 }
 
 .tiered-rewards-bar__progress-container {
-    display: flex;
-    flex-direction: row;
+    display: grid;
+    grid-template-columns: 40px 1fr 1fr 1fr 40px;
     width: 100%;
     margin-bottom: 20px;
     position: relative;
