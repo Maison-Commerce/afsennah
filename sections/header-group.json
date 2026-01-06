@@ -82,7 +82,6 @@
     },
     "header": {
       "type": "header",
-      "disabled": true,
       "settings": {
         "logo": "shopify://shop_images/Afsennah_Logo.png",
         "logo_img_width_int": 120,
@@ -112,6 +111,7 @@
     },
     "maison_header_qiEQxF": {
       "type": "maison-header",
+      "disabled": true,
       "name": "Maison Header",
       "settings": {
         "logo_img_width_int": 127,
