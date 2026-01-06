@@ -61,19 +61,6 @@
        data-banner-text-all-achieved="{{ section.settings.banner_text_all_achieved | default: 'All rewards unlocked!' | escape }}">
     
     <div class="tiered-rewards-bar__banner" style="display: none;">
-      {%- if section.settings.banner_icon != blank -%}
-        <span class="tiered-rewards-bar__banner-icon">
-          {% render 'icon', icon: section.settings.banner_icon, size: 'small' %}
-        </span>
-      {%- elsif section.settings.banner_custom_icon != blank -%}
-        <span class="tiered-rewards-bar__banner-icon tiered-rewards-bar__banner-icon--image">
-          {%- liquid
-            assign icon_sizes = '16px'
-            assign icon_widths = '16, 32'
-            render 'image', image: section.settings.banner_custom_icon, sizes: icon_sizes, widths: icon_widths
-          -%}
-        </span>
-      {%- endif -%}
       <span class="tiered-rewards-bar__banner-text"></span>
     </div>
     
