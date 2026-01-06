@@ -1153,6 +1153,39 @@
       }
     };
   }
+
+  // Handle search link click to open modal instead of navigating
+  document.addEventListener('DOMContentLoaded', function() {
+    const header = document.querySelector('.maison_commerce_maison_header');
+    if (header) {
+      const mainSearch = header.querySelector('.main-search');
+      if (mainSearch) {
+        header.addEventListener('click', function(evt) {
+          const searchLink = evt.target.closest('.show-search-link');
+          if (searchLink) {
+            evt.preventDefault();
+            evt.stopPropagation();
+            
+            // Manually load images if theme function exists
+            if (typeof theme !== 'undefined' && theme.manuallyLoadImages) {
+              theme.manuallyLoadImages(mainSearch);
+            }
+            
+            // Show search modal
+            document.body.classList.add('show-search');
+            
+            // Focus input after animation
+            setTimeout(() => {
+              const searchInput = mainSearch.querySelector('.main-search__input');
+              if (searchInput) {
+                searchInput.focus();
+              }
+            }, 500);
+          }
+        });
+      }
+    }
+  });
 </script>
 
 {% schema %}
