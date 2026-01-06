@@ -318,7 +318,7 @@
         "description": "<p>Your formula is uniquely yours. We target your goals with multi-benefit ingredients like:</p>",
         "right_image": "shopify://shop_images/c112c02afed65c61ef39bba9acebd23111013506.png",
         "mobile_image": "shopify://shop_images/c112c02afed65c61ef39bba9acebd23111013506.png",
-        "bg_color": "#FFFFFF",
+        "bg_color": "#ffffff",
         "max_width": 1280,
         "padding_top_desktop": 64,
         "padding_bottom_desktop": 64,
@@ -333,7 +333,7 @@
         "heading_color": "#232323",
         "description_font_size_desktop": 16,
         "description_font_size_mobile": 16,
-        "description_color": "rgba(35, 35, 35, 0.75)",
+        "description_color": "#232323bf",
         "content_gap_desktop": 40,
         "content_gap_mobile": 32,
         "left_gap_desktop": 40,
@@ -342,10 +342,10 @@
         "left_border_radius": 16,
         "header_gap": 18,
         "header_gap_mobile": 12,
-        "accordion_bg_color": "#F7F7FC",
-        "accordion_item_active_bg_color": "#EBEBF6",
-        "accordion_border_color": "rgba(0, 0, 0, 0.12)",
-        "accordion_item_active_border_color": "#B4B4DE",
+        "accordion_bg_color": "#f7f7fc",
+        "accordion_item_active_bg_color": "#ebebf6",
+        "accordion_border_color": "#0000001f",
+        "accordion_item_active_border_color": "#b4b4de",
         "accordion_border_radius": 18,
         "button_padding_vertical": 16,
         "button_padding_horizontal": 18,
@@ -356,7 +356,7 @@
         "item_title_color": "#232323",
         "item_description_font_size_desktop": 14,
         "item_description_font_size_mobile": 12,
-        "item_description_color": "rgba(35, 35, 35, 0.75)",
+        "item_description_color": "#232323bf",
         "content_padding_bottom": 16,
         "content_padding_bottom_mobile": 12,
         "content_inner_gap": 16,
@@ -371,6 +371,121 @@
         "right_image_height": 580,
         "right_image_border_radius": 16,
         "mobile_image_border_radius": 12
+      }
+    },
+    "maison_why_women_choose_fa4i4p": {
+      "type": "maison-why-women-choose",
+      "blocks": {
+        "feature_card_kBwCxm": {
+          "type": "feature_card",
+          "settings": {
+            "icon_bg_color": "",
+            "title": "Tailored for Your Scalp",
+            "description": "<p>Formulas are crafted for your unique hair and scalp needs.</p>"
+          }
+        },
+        "feature_card_Ly83nN": {
+          "type": "feature_card",
+          "settings": {
+            "icon_bg_color": "",
+            "title": "Trichologist-Developed Formula",
+            "description": "<p>Created by certified hair and scalp specialists with years of expertise.</p>"
+          }
+        },
+        "feature_card_BpaMDc": {
+          "type": "feature_card",
+          "settings": {
+            "icon_bg_color": "",
+            "title": "Natural DHT Blockers Inside",
+            "description": "<p>Plant-based ingredients that target the root cause of hair thinning.</p>"
+          }
+        },
+        "feature_card_UziiCK": {
+          "type": "feature_card",
+          "settings": {
+            "icon_bg_color": "",
+            "title": "Sensitive Scalp Safe",
+            "description": "<p>Gentle, non-irritating formula suitable for even the most delicate scalps.</p>"
+          }
+        },
+        "feature_card_GiwBtp": {
+          "type": "feature_card",
+          "settings": {
+            "icon_bg_color": "",
+            "title": "Results in 8-12 Weeks",
+            "description": "<p>Visible improvement in hair density and scalp health within 3 months.</p>"
+          }
+        },
+        "feature_card_fJxPBi": {
+          "type": "feature_card",
+          "settings": {
+            "icon_bg_color": "",
+            "title": "Lightweight, Non-Greasy",
+            "description": "<p>Fast-absorbing serum that won't weigh down your hair or leave residue.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "feature_card_kBwCxm",
+        "feature_card_Ly83nN",
+        "feature_card_BpaMDc",
+        "feature_card_UziiCK",
+        "feature_card_GiwBtp",
+        "feature_card_fJxPBi"
+      ],
+      "name": "Why Women Choose",
+      "settings": {
+        "heading": "Why Women Choose Afsennah",
+        "cta_text": "Get Hair Quiz",
+        "cta_url": "",
+        "max_width": 1200,
+        "cards_max_width": 1100,
+        "padding_top_desktop": 60,
+        "padding_bottom_desktop": 60,
+        "padding_left_desktop": 80,
+        "padding_right_desktop": 80,
+        "padding_top_mobile": 32,
+        "padding_bottom_mobile": 32,
+        "padding_left_mobile": 20,
+        "padding_right_mobile": 20,
+        "container_gap_desktop": 32,
+        "container_gap_mobile": 40,
+        "heading_font_size_desktop": 32,
+        "heading_font_size_mobile": 24,
+        "heading_color": "#1A1A1A",
+        "card_gap_desktop": 18,
+        "card_gap_mobile": 12,
+        "card_bg_color": "#FFFFFF",
+        "card_border_color": "#F1F1F9",
+        "card_border_radius": 18,
+        "card_padding_desktop": 24,
+        "card_padding_mobile": 18,
+        "card_content_gap_desktop": 16,
+        "card_content_gap_mobile": 16,
+        "card_shadow": "0 4px 12px rgba(0, 0, 0, 0.1)",
+        "icon_bg_color": "#FBEBDD",
+        "icon_size_desktop": 60,
+        "icon_size_mobile": 44,
+        "icon_inner_size_desktop": 24,
+        "icon_inner_size_mobile": 18,
+        "title_font_size_desktop": 18,
+        "title_font_size_mobile": 16,
+        "title_color": "#020202",
+        "description_font_size_desktop": 16,
+        "description_font_size_mobile": 14,
+        "description_color": "#635F5A",
+        "text_gap": 8,
+        "text_gap_mobile": 4,
+        "button_bg_color": "#FBF7BD",
+        "button_text_color": "#1A365D",
+        "button_border_color": "rgba(86, 63, 9, 0.08)",
+        "button_font_size_desktop": 16,
+        "button_font_size_mobile": 14,
+        "button_padding_vertical": 16,
+        "button_padding_horizontal": 32,
+        "button_border_radius": 12,
+        "button_gap": 12,
+        "button_icon_size": 24
       }
     },
     "related-products": {
@@ -391,6 +506,7 @@
     "main",
     "maison_transformation_timeline_AjhFbF",
     "maison_ingredients_accordion_NHWGEe",
+    "maison_why_women_choose_fa4i4p",
     "related-products"
   ]
 }
