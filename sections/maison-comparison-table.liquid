@@ -374,7 +374,7 @@
   /* Table */
   .maison_commerce_maison_comparison_table__table {
     display: grid;
-    grid-template-columns: {{ section.settings.label_column_width }}px repeat(2, 1fr);
+    grid-template-columns: {{ section.settings.label_column_width }}px repeat(3, 1fr);
     border-radius: {{ section.settings.table_border_radius }}px;
   }
 
@@ -428,10 +428,21 @@
     border-bottom: {{ section.settings.table_border_width }}px solid {{ section.settings.table_border_color }};
   }
 
+  /* Desktop: Always show all columns (override x-show) */
+  .maison_commerce_maison_comparison_table__header-cell--generic,
+  .maison_commerce_maison_comparison_table__header-cell--medical {
+    display: flex !important;
+  }
+
   @media (max-width: 768px) {
+    /* Mobile: Respect x-show for tab switching */
     .maison_commerce_maison_comparison_table__header-cell--generic,
     .maison_commerce_maison_comparison_table__header-cell--medical {
-      display: flex;
+      display: none !important;
+    }
+    .maison_commerce_maison_comparison_table__header-cell--generic[x-show="activeTab === 'generic'"],
+    .maison_commerce_maison_comparison_table__header-cell--medical[x-show="activeTab === 'medical'"] {
+      display: flex !important;
     }
   }
 
@@ -505,10 +516,21 @@
     border-right: {{ section.settings.table_border_width }}px solid {{ section.settings.table_border_color }};
   }
 
+  /* Desktop: Always show all columns (override x-show) */
+  .maison_commerce_maison_comparison_table__value-cell--generic,
+  .maison_commerce_maison_comparison_table__value-cell--medical {
+    display: flex !important;
+  }
+
   @media (max-width: 768px) {
+    /* Mobile: Respect x-show for tab switching */
     .maison_commerce_maison_comparison_table__value-cell--generic,
     .maison_commerce_maison_comparison_table__value-cell--medical {
-      display: flex;
+      display: none !important;
+    }
+    .maison_commerce_maison_comparison_table__value-cell--generic[x-show="activeTab === 'generic'"],
+    .maison_commerce_maison_comparison_table__value-cell--medical[x-show="activeTab === 'medical'"] {
+      display: flex !important;
     }
   }
 
