@@ -916,7 +916,13 @@ video-section-play-button {
     white-space: nowrap;
     line-height: 20px;
 }
-
+.tiered-rewards-bar__marker-image svg {
+    fill: black;
+    stroke: black;
+}
+.tiered-rewards-bar__marker-image svg path {
+    stroke: black;
+}
 .tiered-rewards-bar__marker-image.active .tiered-rewards-bar__marker-price {
     color: #1E3A8A;
     font-weight: 700;
