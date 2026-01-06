@@ -927,15 +927,7 @@
         "heading": "You may also like",
         "heading_mobile": "<p>You may also like</p>",
         "subtitle_mobile": "",
-        "products": [
-          "custom-conditioner",
-          "custom-hair-elixir",
-          "custom-hair-growth-oil-for-her",
-          "custom-hair-growth-oil-for-him",
-          "custom-hair-treatment",
-          "custom-scalp-tonic",
-          "custom-shampoo-for-her"
-        ],
+        "products": [],
         "products_limit": 4,
         "button_text": "Shop now",
         "show_quiz_cta": false,
