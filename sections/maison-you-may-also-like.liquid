@@ -171,14 +171,17 @@
         {% endfor %}
       </div>
 
-      <!-- Pagination with Mobile Navigation -->
+      <!-- Pagination - Visible on Desktop -->
+      <div class="swiper-pagination maison_commerce_maison_you_may_also_like__pagination"></div>
+
+      <!-- Pagination with Mobile Navigation - Only on Mobile -->
       <div class="maison_commerce_maison_you_may_also_like__pagination-wrapper">
         <button class="maison_commerce_maison_you_may_also_like__nav-button maison_commerce_maison_you_may_also_like__nav-button--prev-mobile" aria-label="Previous">
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
             <path d="M6 8L2 12M2 12L6 16M2 12H22" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
         </button>
-        <div class="swiper-pagination maison_commerce_maison_you_may_also_like__pagination"></div>
+        <div class="swiper-pagination maison_commerce_maison_you_may_also_like__pagination--mobile"></div>
         <button class="maison_commerce_maison_you_may_also_like__nav-button maison_commerce_maison_you_may_also_like__nav-button--next-mobile" aria-label="Next">
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
             <path d="M18 8L22 12M22 12L18 16M22 12H2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -643,7 +646,7 @@
     }
   }
 
-  /* Pagination */
+  /* Pagination - Desktop */
   .maison_commerce_maison_you_may_also_like__pagination {
     position: static;
     display: flex;
@@ -654,11 +657,21 @@
 
   @media (max-width: 768px) {
     .maison_commerce_maison_you_may_also_like__pagination {
-      margin-top: 0;
+      display: none;
     }
   }
 
-  .maison_commerce_maison_you_may_also_like__pagination .swiper-pagination-bullet {
+  /* Pagination - Mobile (inside wrapper) */
+  .maison_commerce_maison_you_may_also_like__pagination--mobile {
+    position: static;
+    display: flex;
+    justify-content: center;
+    gap: {{ section.settings.pagination_gap }}px;
+    margin: 0;
+  }
+
+  .maison_commerce_maison_you_may_also_like__pagination .swiper-pagination-bullet,
+  .maison_commerce_maison_you_may_also_like__pagination--mobile .swiper-pagination-bullet {
     width: {{ section.settings.pagination_bullet_size }}px;
     height: 4px;
     background-color: {{ section.settings.pagination_bullet_color }};
@@ -667,7 +680,8 @@
     transition: opacity 0.3s ease, background-color 0.3s ease;
   }
 
-  .maison_commerce_maison_you_may_also_like__pagination .swiper-pagination-bullet-active {
+  .maison_commerce_maison_you_may_also_like__pagination .swiper-pagination-bullet-active,
+  .maison_commerce_maison_you_may_also_like__pagination--mobile .swiper-pagination-bullet-active {
     background-color: {{ section.settings.pagination_bullet_active_color }};
     opacity: 1;
   }
@@ -834,28 +848,30 @@
       },
     };
 
-    // Use mobile buttons if available, otherwise use desktop buttons
-    // Swiper will handle visibility based on CSS media queries
-    if (prevButtonMobile && nextButtonMobile) {
+    // Determine which navigation buttons to use based on screen size
+    const isMobile = window.innerWidth <= 768;
+    
+    if (isMobile && prevButtonMobile && nextButtonMobile) {
+      // Use mobile buttons on mobile
       swiperConfig.navigation = {
         nextEl: nextButtonMobile,
         prevEl: prevButtonMobile,
       };
     } else if (prevButton && nextButton) {
+      // Use desktop buttons on desktop
       swiperConfig.navigation = {
         nextEl: nextButton,
         prevEl: prevButton,
       };
-    } else if (prevButtonMobile && nextButtonMobile) {
-      swiperConfig.navigation = {
-        nextEl: nextButtonMobile,
-        prevEl: prevButtonMobile,
-      };
     }
 
-    if (paginationEl) {
+    // Use mobile pagination on mobile, desktop pagination on desktop
+    const paginationElMobile = swiperContainer.querySelector('.maison_commerce_maison_you_may_also_like__pagination--mobile');
+    const paginationToUse = isMobile && paginationElMobile ? paginationElMobile : paginationEl;
+    
+    if (paginationToUse) {
       swiperConfig.pagination = {
-        el: paginationEl,
+        el: paginationToUse,
         clickable: true,
       };
     }
