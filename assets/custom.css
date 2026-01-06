@@ -860,7 +860,7 @@ video-section-play-button {
     justify-content: space-between;
     margin: 0 auto;
     position: absolute;
-    top: -14px;
+    top: 0;
     left: 2px;
     pointer-events: none;
 }
