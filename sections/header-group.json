@@ -34,6 +34,7 @@
       "block_order": [
         "e33df8e3-c667-49c7-9da7-a23fac96c44d"
       ],
+      "disabled": true,
       "custom_css": [],
       "settings": {
         "message_font_size": 12,
@@ -44,6 +45,38 @@
         "menu": "",
         "enable_country_selector": true,
         "enable_language_selector": true
+      }
+    },
+    "maison_header_sale_ENwdUG": {
+      "type": "maison-header-sale",
+      "name": "Maison Header Sale",
+      "settings": {
+        "show_section": true,
+        "bg_color": "#FFFBC0",
+        "max_width": 1280,
+        "alignment": "center",
+        "padding_top_desktop": 8,
+        "padding_bottom_desktop": 8,
+        "padding_left_desktop": 80,
+        "padding_right_desktop": 80,
+        "padding_top_mobile": 8,
+        "padding_bottom_mobile": 8,
+        "padding_left_mobile": 12,
+        "padding_right_mobile": 12,
+        "show_bottom_border": false,
+        "bottom_border_color": "#4A5C3F",
+        "bottom_border_thickness": 1,
+        "show_icon": true,
+        "icon_color": "#15130E",
+        "icon_size_desktop": 18,
+        "icon_size_mobile": 16,
+        "icon_text_gap": 8,
+        "text": "<p>WINTERSALE STARTED | 25% SALE SITEWIDE!</p>",
+        "text_font_size_desktop": 14,
+        "text_font_size_mobile": 12,
+        "text_font_weight": "700",
+        "text_color": "#15130E",
+        "link_url": ""
       }
     },
     "header": {
@@ -111,8 +144,8 @@
       ],
       "name": "Maison Announcement Bar",
       "settings": {
-        "bg_color": "#EBEBF6",
-        "border_color": "#E0E0F1",
+        "bg_color": "#ebebf6",
+        "border_color": "#e0e0f1",
         "max_width": 1280,
         "alignment": "space-between",
         "padding_top_desktop": 4,
@@ -125,16 +158,16 @@
         "padding_right_mobile": 20,
         "item_gap_desktop": 0,
         "icon_text_gap": 8,
-        "icon_bg_color": "#FFFFFF",
+        "icon_bg_color": "#ffffff",
         "icon_border_radius": 90,
         "icon_size": 16,
         "icon_inner_size": 10,
         "text_font_size_desktop": 14,
         "text_font_size_mobile": 14,
-        "text_color": "#1A365D",
+        "text_color": "#1a365d",
         "divider_width": 1,
         "divider_height": 13,
-        "divider_color": "#CCCCE8"
+        "divider_color": "#cccce8"
       }
     },
     "store-messages": {
@@ -166,6 +199,7 @@
   },
   "order": [
     "announcement-bar",
+    "maison_header_sale_ENwdUG",
     "header",
     "maison_header_announcement_bar_RXLh4F",
     "store-messages"
