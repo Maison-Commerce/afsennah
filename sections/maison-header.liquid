@@ -443,38 +443,140 @@
       {% assign mobile_linklist = section.settings.menu_linklist_mobile | default: section.settings.menu_linklist %}
       {% for link in linklists[mobile_linklist].links %}
         {% unless link.title == shop_all_text %}
-          <div class="maison_commerce_maison_header__mobile-nav-item">
-            {% if link.links != blank %}
-              <button 
-                class="maison_commerce_maison_header__mobile-nav-link maison_commerce_maison_header__mobile-nav-link--has-children"
-                @click="toggleMobileSubmenu('{{ forloop.index }}')"
-                :aria-expanded="mobileSubmenus['{{ forloop.index }}']"
-              >
-                <span>{{ link.title | escape }}</span>
-                <span class="maison_commerce_maison_header__mobile-nav-toggle">
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M6 9l6 6 6-6"/>
-                  </svg>
-                </span>
-              </button>
-              <div 
-                class="maison_commerce_maison_header__mobile-submenu"
-                x-show="mobileSubmenus['{{ forloop.index }}']"
-                x-collapse
-                style="display: none;"
-              >
-                {% for child_link in link.links %}
-                  <a href="{{ child_link.url }}" class="maison_commerce_maison_header__mobile-submenu-link">
-                    {{ child_link.title | escape }}
-                  </a>
-                {% endfor %}
+          {% if link.links != blank %}
+            {% comment %} Check if this link has multi-level children (lists) or single children (cards) {% endcomment %}
+            {% assign has_multi_level = false %}
+            {% assign has_single_level = false %}
+            {% for child_link in link.links %}
+              {% if child_link.links != blank %}
+                {% assign has_multi_level = true %}
+              {% else %}
+                {% assign has_single_level = true %}
+              {% endif %}
+            {% endfor %}
+
+            {% if has_multi_level %}
+              {% comment %} Show as lists (like desktop) {% endcomment %}
+              <div class="maison_commerce_maison_header__mobile-nav-item">
+                <button 
+                  class="maison_commerce_maison_header__mobile-nav-link maison_commerce_maison_header__mobile-nav-link--has-children"
+                  @click="toggleMobileSubmenu('{{ forloop.index }}')"
+                  :aria-expanded="mobileSubmenus['{{ forloop.index }}']"
+                >
+                  <span>{{ link.title | escape }}</span>
+                  <span class="maison_commerce_maison_header__mobile-nav-toggle">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M6 9l6 6 6-6"/>
+                    </svg>
+                  </span>
+                </button>
+                <div 
+                  class="maison_commerce_maison_header__mobile-submenu maison_commerce_maison_header__mobile-submenu--lists"
+                  x-show="mobileSubmenus['{{ forloop.index }}']"
+                  x-collapse
+                  style="display: none;"
+                >
+                  {% for child_link in link.links %}
+                    {% if child_link.links != blank %}
+                      {% comment %} This is a list group {% endcomment %}
+                      <div class="maison_commerce_maison_header__mobile-menu-group">
+                        <h3 class="maison_commerce_maison_header__mobile-menu-group-title">
+                          {{ child_link.title | escape }}
+                        </h3>
+                        <ul class="maison_commerce_maison_header__mobile-menu-items">
+                          {% for grandchild_link in child_link.links %}
+                            <li class="maison_commerce_maison_header__mobile-menu-item">
+                              <a href="{{ grandchild_link.url }}" class="maison_commerce_maison_header__mobile-menu-link">
+                                {{ grandchild_link.title | escape }}
+                              </a>
+                            </li>
+                          {% endfor %}
+                        </ul>
+                      </div>
+                    {% endif %}
+                  {% endfor %}
+                </div>
+              </div>
+            {% elsif has_single_level %}
+              {% comment %} Show as image cards (like desktop) {% endcomment %}
+              <div class="maison_commerce_maison_header__mobile-nav-item">
+                <button 
+                  class="maison_commerce_maison_header__mobile-nav-link maison_commerce_maison_header__mobile-nav-link--has-children"
+                  @click="toggleMobileSubmenu('{{ forloop.index }}')"
+                  :aria-expanded="mobileSubmenus['{{ forloop.index }}']"
+                >
+                  <span>{{ link.title | escape }}</span>
+                  <span class="maison_commerce_maison_header__mobile-nav-toggle">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M6 9l6 6 6-6"/>
+                    </svg>
+                  </span>
+                </button>
+                <div 
+                  class="maison_commerce_maison_header__mobile-submenu maison_commerce_maison_header__mobile-submenu--cards"
+                  x-show="mobileSubmenus['{{ forloop.index }}']"
+                  x-collapse
+                  style="display: none;"
+                >
+                  <div class="maison_commerce_maison_header__mobile-menu-cards">
+                    {% for child_link in link.links %}
+                      {% if child_link.links == blank %}
+                        {% comment %} This child link has no children, show as image card {% endcomment %}
+                        {% assign card_found = false %}
+                        {% for block in section.blocks %}
+                          {% if block.type == 'mega_menu_card' and block.settings.link_title == child_link.title %}
+                            {% assign card_found = true %}
+                            <div class="maison_commerce_maison_header__mobile-menu-card">
+                              <a href="{{ child_link.url }}" class="maison_commerce_maison_header__mobile-menu-card-link">
+                                {% if block.settings.image != blank %}
+                                  <div class="maison_commerce_maison_header__mobile-menu-card-image">
+                                    <img 
+                                      src="{{ block.settings.image | image_url: width: 500 }}" 
+                                      alt="{{ block.settings.image.alt | default: child_link.title | escape }}"
+                                      width="{{ block.settings.image.width }}"
+                                      height="{{ block.settings.image.height }}"
+                                      loading="lazy"
+                                    />
+                                  </div>
+                                {% endif %}
+                                <h3 class="maison_commerce_maison_header__mobile-menu-card-title">
+                                  {{ child_link.title | escape }}
+                                </h3>
+                              </a>
+                            </div>
+                          {% endif %}
+                        {% endfor %}
+                        {% unless card_found %}
+                          {% comment %} Fallback: show card even without block {% endcomment %}
+                          <div class="maison_commerce_maison_header__mobile-menu-card">
+                            <a href="{{ child_link.url }}" class="maison_commerce_maison_header__mobile-menu-card-link">
+                              <h3 class="maison_commerce_maison_header__mobile-menu-card-title">
+                                {{ child_link.title | escape }}
+                              </h3>
+                            </a>
+                          </div>
+                        {% endunless %}
+                      {% endif %}
+                    {% endfor %}
+                  </div>
+                </div>
               </div>
             {% else %}
+              {% comment %} Regular link without children {% endcomment %}
+              <div class="maison_commerce_maison_header__mobile-nav-item">
+                <a href="{{ link.url }}" class="maison_commerce_maison_header__mobile-nav-link">
+                  {{ link.title | escape }}
+                </a>
+              </div>
+            {% endif %}
+          {% else %}
+            {% comment %} Regular link without children {% endcomment %}
+            <div class="maison_commerce_maison_header__mobile-nav-item">
               <a href="{{ link.url }}" class="maison_commerce_maison_header__mobile-nav-link">
                 {{ link.title | escape }}
               </a>
-            {% endif %}
-          </div>
+            </div>
+          {% endif %}
           {% unless forloop.last %}
             <div class="maison_commerce_maison_header__mobile-nav-divider"></div>
           {% endunless %}
@@ -1035,6 +1137,16 @@
     padding-left: {{ section.settings.mobile_submenu_padding_left }}px;
   }
 
+  .maison_commerce_maison_header__mobile-submenu--lists {
+    padding: 20px;
+    padding-left: {{ section.settings.mobile_submenu_padding_left }}px;
+  }
+
+  .maison_commerce_maison_header__mobile-submenu--cards {
+    padding: 20px;
+    padding-left: {{ section.settings.mobile_submenu_padding_left }}px;
+  }
+
   .maison_commerce_maison_header__mobile-submenu-link {
     font-family: 'Gotham', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
     font-size: {{ section.settings.mobile_submenu_font_size }}px;
@@ -1048,6 +1160,103 @@
 
   .maison_commerce_maison_header__mobile-submenu-link:hover {
     opacity: 0.8;
+  }
+
+  /* Mobile Menu Lists (like desktop) */
+  .maison_commerce_maison_header__mobile-menu-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 24px;
+  }
+
+  .maison_commerce_maison_header__mobile-menu-group:last-child {
+    margin-bottom: 0;
+  }
+
+  .maison_commerce_maison_header__mobile-menu-group-title {
+    font-family: 'Gotham', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 1.5;
+    color: #232323;
+    margin: 0;
+    opacity: 0.5;
+  }
+
+  .maison_commerce_maison_header__mobile-menu-items {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .maison_commerce_maison_header__mobile-menu-item {
+    margin: 0;
+    padding: 0;
+  }
+
+  .maison_commerce_maison_header__mobile-menu-link {
+    font-family: 'Gotham', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #1A365D;
+    text-decoration: none;
+    transition: opacity 0.3s ease;
+  }
+
+  .maison_commerce_maison_header__mobile-menu-link:hover {
+    opacity: 0.8;
+  }
+
+  /* Mobile Menu Cards (like desktop) */
+  .maison_commerce_maison_header__mobile-menu-cards {
+    display: flex;
+    gap: 18px;
+    align-items: flex-start;
+  }
+
+  .maison_commerce_maison_header__mobile-menu-card {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex: 1;
+    text-decoration: none;
+  }
+
+  .maison_commerce_maison_header__mobile-menu-card-link {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    text-decoration: none;
+  }
+
+  .maison_commerce_maison_header__mobile-menu-card-image {
+    width: 100%;
+    height: 159px;
+    border-radius: 16.879px;
+    overflow: hidden;
+    background-color: #f5f5f5;
+    flex-shrink: 0;
+  }
+
+  .maison_commerce_maison_header__mobile-menu-card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .maison_commerce_maison_header__mobile-menu-card-title {
+    font-family: 'Vanilla Ravioli', serif;
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 1.4;
+    color: #1A365D;
+    margin: 0;
+    white-space: nowrap;
   }
 
   .maison_commerce_maison_header__mobile-nav-divider {
