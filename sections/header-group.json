@@ -67,6 +67,7 @@
         "bottom_border_color": "#4A5C3F",
         "bottom_border_thickness": 1,
         "show_icon": true,
+        "custom_icon": "shopify://shop_images/solar_sale-bold.svg",
         "icon_color": "#15130E",
         "icon_size_desktop": 18,
         "icon_size_mobile": 16,
