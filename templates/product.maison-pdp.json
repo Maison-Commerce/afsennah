@@ -315,6 +315,7 @@
       "settings": {
         "heading": "Naturally powerful ingredients",
         "description": "<p>Your formula is uniquely yours. We target your goals with multi-benefit ingredients like:</p>",
+        "right_image": "shopify://shop_images/c112c02afed65c61ef39bba9acebd23111013506.png",
         "bg_color": "#FFFFFF",
         "max_width": 1200,
         "padding_top_desktop": 64,
