@@ -968,7 +968,7 @@
         "enable_autoplay": false,
         "autoplay_delay": 5000,
         "nav_gap": 24,
-        "nav_button_size": 48,
+        "nav_button_size": 56,
         "nav_button_padding": 16,
         "nav_button_border_width": 1.5,
         "nav_button_border_color": "#e9ebe9",
