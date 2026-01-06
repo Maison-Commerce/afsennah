@@ -918,7 +918,6 @@ video-section-play-button {
     transition: 0.3s all;
     margin-top: 6px;
     cursor: pointer;
-    white-space: nowrap;
     line-height: 20px;
 }
 .tiered-rewards-bar__marker-image svg,
