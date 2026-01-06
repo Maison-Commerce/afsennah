@@ -927,6 +927,11 @@ video-section-play-button {
 .tiered-rewards-bar__marker-image.active .tiered-rewards-bar__marker-icon svg path {
     fill: #ffffff;
 }
+.tiered-rewards-bar__marker-image .tiered-rewards-bar__marker-price svg {
+    width: 10.6px;
+    height: 7.3px;
+    display: block;
+}
 .tiered-rewards-bar__marker-image .tiered-rewards-bar__marker-price {
     color: rgba(35, 35, 35, 0.75);
     font-family: "Gotham", inherit;
