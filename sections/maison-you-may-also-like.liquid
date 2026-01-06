@@ -860,7 +860,7 @@
           slidesPerView: 'auto',
           spaceBetween: {{ section.settings.slide_gap_mobile }},
         },
-        769: {
+        951: {
           slidesPerView: 'auto',
           spaceBetween: {{ section.settings.slide_gap_desktop }},
         },
@@ -868,7 +868,7 @@
     };
 
     // Determine which navigation buttons to use based on screen size
-    const isMobile = window.innerWidth <= 768;
+    const isMobile = window.innerWidth <= 950;
     
     if (isMobile && prevButtonMobile && nextButtonMobile) {
       // Use mobile buttons on mobile
