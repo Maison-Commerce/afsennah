@@ -664,7 +664,7 @@
   }
 
   .maison_commerce_maison_header__mega-menu-container {
-    max-width: {{ section.settings.max_width }}px;
+    max-width: {{ section.settings.max_width | minus: 20 }}px;
     margin: 0 auto;
     padding: 44px 80px;
   }
