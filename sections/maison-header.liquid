@@ -676,19 +676,22 @@
   .maison_commerce_maison_header__mega-menu-container {
     max-width: {{ section.settings.max_width }}px;
     margin: 0 auto;
-    padding: {{ section.settings.mega_menu_padding_top }}px {{ section.settings.mega_menu_padding_horizontal }}px {{ section.settings.mega_menu_padding_bottom }}px;
+    padding: 44px 80px;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
   }
 
   .maison_commerce_maison_header__shop-all {
-    margin-bottom: {{ section.settings.mega_menu_gap }}px;
+    margin-bottom: 0;
   }
 
   .maison_commerce_maison_header__shop-all-link {
     font-family: 'Vanilla Ravioli', serif;
-    font-size: {{ section.settings.shop_all_font_size_desktop }}px;
+    font-size: 20px;
     font-weight: 400;
     line-height: 1.4;
-    color: {{ section.settings.shop_all_color }};
+    color: #1A365D;
     text-decoration: none;
     white-space: nowrap;
   }
@@ -699,35 +702,38 @@
 
   .maison_commerce_maison_header__mega-menu-content {
     display: flex;
-    gap: {{ section.settings.mega_menu_content_gap }}px;
+    gap: 44px;
     align-items: flex-start;
+    justify-content: space-between;
+    width: 100%;
   }
 
   .maison_commerce_maison_header__mega-menu-lists {
-    flex: 1;
     display: flex;
-    flex-wrap: wrap;
-    gap: {{ section.settings.mega_menu_list_gap }}px;
+    gap: 44px;
+    align-items: flex-start;
+    flex: 1;
   }
 
   .maison_commerce_maison_header__mega-menu-list {
     display: flex;
     flex-direction: column;
-    gap: {{ section.settings.mega_menu_group_gap }}px;
+    gap: 24px;
+    width: 200px;
   }
 
   .maison_commerce_maison_header__mega-menu-group {
     display: flex;
     flex-direction: column;
-    gap: {{ section.settings.mega_menu_items_gap }}px;
+    gap: 8px;
   }
 
   .maison_commerce_maison_header__mega-menu-group-title {
     font-family: 'Gotham', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-    font-size: {{ section.settings.mega_menu_group_title_font_size }}px;
+    font-size: 12px;
     font-weight: 500;
     line-height: 1.5;
-    color: {{ section.settings.mega_menu_group_title_color }};
+    color: #232323;
     margin: 0;
     opacity: 0.5;
   }
@@ -738,7 +744,7 @@
     padding: 0;
     display: flex;
     flex-direction: column;
-    gap: {{ section.settings.mega_menu_item_gap }}px;
+    gap: 8px;
   }
 
   .maison_commerce_maison_header__mega-menu-item {
@@ -763,33 +769,40 @@
 
   .maison_commerce_maison_header__mega-menu-cards {
     display: flex;
-    flex-direction: column;
-    gap: {{ section.settings.mega_menu_card_gap }}px;
+    gap: 44px;
     flex-shrink: 0;
+    align-items: flex-start;
   }
 
   .maison_commerce_maison_header__mega-menu-card-wrapper {
     display: flex;
-    gap: {{ section.settings.mega_menu_card_gap }}px;
-    flex-wrap: wrap;
+    gap: 44px;
+    align-items: flex-start;
   }
 
   .maison_commerce_maison_header__mega-menu-card {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 242px;
+    text-decoration: none;
     flex-shrink: 0;
   }
 
   .maison_commerce_maison_header__mega-menu-card-link {
     display: flex;
     flex-direction: column;
-    gap: {{ section.settings.mega_menu_card_content_gap }}px;
+    gap: 15px;
     text-decoration: none;
   }
 
   .maison_commerce_maison_header__mega-menu-card-image {
-    width: {{ section.settings.mega_menu_card_width }}px;
-    height: {{ section.settings.mega_menu_card_height }}px;
-    border-radius: {{ section.settings.mega_menu_card_border_radius }}px;
+    width: 242px;
+    height: 242px;
+    border-radius: 16.879px;
     overflow: hidden;
+    background-color: #f5f5f5;
+    flex-shrink: 0;
   }
 
   .maison_commerce_maison_header__mega-menu-card-image img {
@@ -800,10 +813,10 @@
 
   .maison_commerce_maison_header__mega-menu-card-title {
     font-family: 'Vanilla Ravioli', serif;
-    font-size: {{ section.settings.mega_menu_card_title_font_size }}px;
+    font-size: 20px;
     font-weight: 400;
     line-height: 1.4;
-    color: {{ section.settings.mega_menu_card_title_color }};
+    color: #1A365D;
     margin: 0;
     white-space: nowrap;
   }
