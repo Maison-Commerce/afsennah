@@ -202,6 +202,70 @@
         "media_grouping_option": "Color,Colour,Couleur,Farbe"
       }
     },
+    "maison_transformation_timeline_AjhFbF": {
+      "type": "maison-transformation-timeline",
+      "blocks": {
+        "phase_card_TQKxdF": {
+          "type": "phase_card",
+          "settings": {
+            "time_period": "1–3 Weeks",
+            "description": "<p>Noticeably less hair fall. Scalp feels healthier and less irritated. The daily panic starts to fade.</p>",
+            "badge_color": ""
+          }
+        },
+        "phase_card_UxDrFF": {
+          "type": "phase_card",
+          "settings": {
+            "time_period": "6+ Weeks",
+            "description": "<p>Baby hairs emerge along hairline and thinning areas. Early regrowth becomes visible. Hope returns.</p>",
+            "badge_color": ""
+          }
+        },
+        "phase_card_xXW4mg": {
+          "type": "phase_card",
+          "settings": {
+            "time_period": "12+ Weeks",
+            "description": "<p>Hair appears fuller, denser, and stronger. Overall thickness improves. Confidence restored.</p>",
+            "badge_color": ""
+          }
+        }
+      },
+      "block_order": [
+        "phase_card_TQKxdF",
+        "phase_card_UxDrFF",
+        "phase_card_xXW4mg"
+      ],
+      "name": "Transformation Timeline",
+      "settings": {
+        "heading": "12+ Weeks: The Transformation Phase",
+        "description": "<p>Your hair has volume and holds when styled. Others notice it. You feel comfortable wearing it down, no longer obsessing.</p>",
+        "max_width": 1200,
+        "padding_top_desktop": 40,
+        "padding_bottom_desktop": 40,
+        "padding_left_desktop": 40,
+        "padding_right_desktop": 40,
+        "padding_top_mobile": 32,
+        "padding_bottom_mobile": 32,
+        "padding_left_mobile": 20,
+        "padding_right_mobile": 20,
+        "heading_font_size_desktop": 32,
+        "heading_font_size_mobile": 24,
+        "heading_color": "#232323",
+        "description_font_size_desktop": 16,
+        "description_font_size_mobile": 14,
+        "description_color": "rgba(35, 35, 35, 0.75)",
+        "card_gap_desktop": 24,
+        "card_gap_mobile": 16,
+        "image_height_desktop": 330,
+        "card_description_font_size_desktop": 14,
+        "card_description_font_size_mobile": 12,
+        "card_description_color": "rgba(35, 35, 35, 0.75)",
+        "badge_color": "#FFFBC0",
+        "badge_text_color": "#232323",
+        "badge_font_size_desktop": 16,
+        "badge_font_size_mobile": 12
+      }
+    },
     "related-products": {
       "type": "related-products",
       "disabled": true,
@@ -218,6 +282,7 @@
   },
   "order": [
     "main",
+    "maison_transformation_timeline_AjhFbF",
     "related-products"
   ]
 }
