@@ -256,17 +256,118 @@
         "heading_color": "#232323",
         "description_font_size_desktop": 16,
         "description_font_size_mobile": 14,
-        "description_color": "rgba(35, 35, 35, 0.75)",
+        "description_color": "#232323bf",
         "card_gap_desktop": 24,
         "card_gap_mobile": 16,
         "image_height_desktop": 330,
         "card_description_font_size_desktop": 14,
         "card_description_font_size_mobile": 12,
-        "card_description_color": "rgba(35, 35, 35, 0.75)",
-        "badge_color": "#FFFBC0",
+        "card_description_color": "#232323bf",
+        "badge_color": "#fffbc0",
         "badge_text_color": "#232323",
         "badge_font_size_desktop": 16,
         "badge_font_size_mobile": 12
+      }
+    },
+    "maison_ingredients_accordion_NHWGEe": {
+      "type": "maison-ingredients-accordion",
+      "blocks": {
+        "ingredient_item_kHKtFJ": {
+          "type": "ingredient_item",
+          "settings": {
+            "title": "Hibiscus Oil",
+            "description": "<p>We selected hibiscus oil for its rich blend of amino acids and vitamin C a rejuvenating extract that strengthens roots, boosts shine, and restores vitality to thinning, lackluster hair.</p>",
+            "is_expanded": true
+          }
+        },
+        "ingredient_item_8nM9Pt": {
+          "type": "ingredient_item",
+          "settings": {
+            "title": "Saffron Oil",
+            "description": "<p>We selected hibiscus oil for its rich blend of amino acids and vitamin C a rejuvenating extract that strengthens roots, boosts shine, and restores vitality to thinning, lackluster hair.</p>",
+            "is_expanded": false
+          }
+        },
+        "ingredient_item_gBFnWz": {
+          "type": "ingredient_item",
+          "settings": {
+            "title": "Prickly Pear Seed Oil",
+            "description": "<p>We selected hibiscus oil for its rich blend of amino acids and vitamin C a rejuvenating extract that strengthens roots, boosts shine, and restores vitality to thinning, lackluster hair.</p>",
+            "is_expanded": false
+          }
+        },
+        "ingredient_item_DXGPMr": {
+          "type": "ingredient_item",
+          "settings": {
+            "title": "Rosehip Oil",
+            "description": "<p>We selected hibiscus oil for its rich blend of amino acids and vitamin C a rejuvenating extract that strengthens roots, boosts shine, and restores vitality to thinning, lackluster hair.</p>",
+            "is_expanded": false
+          }
+        }
+      },
+      "block_order": [
+        "ingredient_item_kHKtFJ",
+        "ingredient_item_8nM9Pt",
+        "ingredient_item_gBFnWz",
+        "ingredient_item_DXGPMr"
+      ],
+      "name": "Ingredients Accordion",
+      "settings": {
+        "heading": "Naturally powerful ingredients",
+        "description": "<p>Your formula is uniquely yours. We target your goals with multi-benefit ingredients like:</p>",
+        "bg_color": "#FFFFFF",
+        "max_width": 1200,
+        "padding_top_desktop": 64,
+        "padding_bottom_desktop": 64,
+        "padding_left_desktop": 80,
+        "padding_right_desktop": 80,
+        "padding_top_mobile": 32,
+        "padding_bottom_mobile": 32,
+        "padding_left_mobile": 20,
+        "padding_right_mobile": 20,
+        "heading_font_size_desktop": 32,
+        "heading_font_size_mobile": 24,
+        "heading_color": "#232323",
+        "description_font_size_desktop": 16,
+        "description_font_size_mobile": 16,
+        "description_color": "rgba(35, 35, 35, 0.75)",
+        "content_gap_desktop": 40,
+        "content_gap_mobile": 32,
+        "left_gap_desktop": 40,
+        "left_gap_mobile": 12,
+        "left_padding": 32,
+        "left_border_radius": 16,
+        "header_gap": 18,
+        "header_gap_mobile": 12,
+        "accordion_bg_color": "#F7F7FC",
+        "accordion_item_active_bg_color": "#EBEBF6",
+        "accordion_border_color": "rgba(0, 0, 0, 0.12)",
+        "accordion_item_active_border_color": "#B4B4DE",
+        "accordion_border_radius": 18,
+        "button_padding_vertical": 16,
+        "button_padding_horizontal": 18,
+        "button_padding_horizontal_mobile": 16,
+        "button_gap": 16,
+        "item_title_font_size_desktop": 18,
+        "item_title_font_size_mobile": 16,
+        "item_title_color": "#232323",
+        "item_description_font_size_desktop": 14,
+        "item_description_font_size_mobile": 12,
+        "item_description_color": "rgba(35, 35, 35, 0.75)",
+        "content_padding_bottom": 16,
+        "content_padding_bottom_mobile": 12,
+        "content_inner_gap": 16,
+        "content_inner_gap_mobile": 12,
+        "item_image_size": 102,
+        "item_image_border_radius": 0,
+        "toggle_size_desktop": 24,
+        "toggle_size_mobile": 20,
+        "toggle_font_size_desktop": 24,
+        "toggle_font_size_mobile": 20,
+        "toggle_color": "#232323",
+        "right_image_height": 580,
+        "right_image_border_radius": 16,
+        "mobile_image_border_radius": 12
       }
     },
     "related-products": {
@@ -286,6 +387,7 @@
   "order": [
     "main",
     "maison_transformation_timeline_AjhFbF",
+    "maison_ingredients_accordion_NHWGEe",
     "related-products"
   ]
 }
