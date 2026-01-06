@@ -1,53 +1,37 @@
 {%- liquid
   assign cart_total = cart.total_price
-  assign free_shipping_threshold = section.settings.free_shipping_threshold | times: 100
+  assign cart_total_dollars = cart_total | divided_by: 100.0
   
-  assign tier_1_threshold = section.settings.gift_tier_1_amount | times: 100
-  assign tier_2_threshold = section.settings.gift_tier_2_amount | times: 100
-  assign tier_3_threshold = section.settings.gift_tier_3_amount | times: 100
+  assign free_shipping_threshold = section.settings.free_shipping_threshold
+  assign tier_1_threshold = section.settings.gift_tier_1_amount
+  assign tier_2_threshold = section.settings.gift_tier_2_amount
+  assign tier_3_threshold = section.settings.gift_tier_3_amount
   
-  assign free_shipping_progress = 1.0 | times: cart_total | divided_by: free_shipping_threshold | at_least: 0 | at_most: 1
-  assign tier_1_progress = 1.0 | times: cart_total | divided_by: tier_1_threshold | at_least: 0 | at_most: 1
-  assign tier_2_progress = 1.0 | times: cart_total | divided_by: tier_2_threshold | at_least: 0 | at_most: 1
-  assign tier_3_progress = 1.0 | times: cart_total | divided_by: tier_3_threshold | at_least: 0 | at_most: 1
-
-  assign free_shipping_achieved = false
-  assign tier_1_achieved = false
-  assign tier_2_achieved = false
-  assign tier_3_achieved = false
-
-   
-  if tier_1_progress >= 1
-    assign tier_1_progress = true
-  endif
-  if tier_2_achieved >= 1
-    assign tier_1_progress = true
-  endif
-  if tier_3_achieved >= 1
-    assign tier_1_progress = true
-  endif
-
-
+  assign free_shipping_achieved = cart_total_dollars >= free_shipping_threshold
+  assign tier_1_achieved = cart_total_dollars >= tier_1_threshold
+  assign tier_2_achieved = cart_total_dollars >= tier_2_threshold
+  assign tier_3_achieved = cart_total_dollars >= tier_3_threshold
+  
   assign next_tier_amount = false
   assign next_tier_label = false
-  if free_shipping_progress < 1
-    assign next_tier_amount = free_shipping_threshold | minus: cart_total | at_least: 0
+  if cart_total_dollars < free_shipping_threshold
+    assign next_tier_amount = free_shipping_threshold | minus: cart_total_dollars
     assign next_tier_label = 'Free shipping'
-  elsif tier_1_progress < 1
-    assign next_tier_amount = tier_1_threshold | minus: cart_total | at_least: 0
+  elsif cart_total_dollars < tier_1_threshold
+    assign next_tier_amount = tier_1_threshold | minus: cart_total_dollars
     assign next_tier_label = section.settings.gift_tier_1_label
-  elsif tier_2_progress < 1
-    assign next_tier_amount = tier_2_threshold | minus: cart_total | at_least: 0
+  elsif cart_total_dollars < tier_2_threshold
+    assign next_tier_amount = tier_2_threshold | minus: cart_total_dollars
     assign next_tier_label = section.settings.gift_tier_2_label
-  elsif tier_3_progress < 1
-    assign next_tier_amount = tier_3_threshold | minus: cart_total | at_least: 0
+  elsif cart_total_dollars < tier_3_threshold
+    assign next_tier_amount = tier_3_threshold | minus: cart_total_dollars
     assign next_tier_label = section.settings.gift_tier_3_label
   endif
 -%}
 
 {%- if section.settings.enable_tiered_rewards -%}
   <div class="tiered-rewards-bar{% if cart.items == empty %} tiered-rewards-bar--no-cart{% endif %}" 
-       data-cart-total="{{ cart_total }}"
+       data-cart-total="{{ cart_total_dollars }}"
        data-merge-attributes="tiered-rewards">
     
     {%- if next_tier_amount and next_tier_amount > 0 -%}
@@ -67,9 +51,9 @@
         {%- endif -%}
         <span class="tiered-rewards-bar__banner-text">
           {%- if free_shipping_achieved -%}
-            {{ section.settings.banner_text_achieved | default: 'Free shipping added! Spend' | replace: '[AMOUNT]', next_tier_amount | money | replace: '[LABEL]', next_tier_label }}
+            {{ section.settings.banner_text_achieved | default: 'Free shipping added! Spend [AMOUNT] more to get Free [LABEL]!' | replace: '[AMOUNT]', next_tier_amount | money | replace: '[LABEL]', next_tier_label }}
           {%- else -%}
-            {{ section.settings.banner_text | default: 'Spend' | replace: '[AMOUNT]', next_tier_amount | money | replace: '[LABEL]', next_tier_label }}
+            {{ section.settings.banner_text | default: 'Spend [AMOUNT] more to get Free [LABEL]!' | replace: '[AMOUNT]', next_tier_amount | money | replace: '[LABEL]', next_tier_label }}
           {%- endif -%}
         </span>
       </div>
@@ -94,166 +78,203 @@
       </div>
     {%- endif -%}
     
-    <div class="tiered-rewards-bar__progress-container">
-      <div class="tiered-rewards-bar__progress-track">
-        {%- comment -%} Free Shipping Tier {%- endcomment -%}
-        <div class="tiered-rewards-bar__tier{% if free_shipping_achieved %} tiered-rewards-bar__tier--achieved{% endif %}" 
-             style="--free-shipping-progress: {{ free_shipping_progress }}">
-          <div class="tiered-rewards-bar__tier-icon">
-            {%- if free_shipping_achieved -%}
-              <span class="tiered-rewards-bar__tier-checkmark">{% render 'icon', icon: 'check_mark_in_circle', size: 'small' %}</span>
-            {%- else -%}
-              <span class="tiered-rewards-bar__tier-icon-image">
-                {% render 'icon', icon: 'truck', size: 'small' %}
-              </span>
-            {%- endif -%}
+    <div class="tiered-rewards-bar__progress-grid">
+      <div class="tiered-rewards-bar__progress-container" data-total="{{ cart_total_dollars }}">
+        {%- comment -%} Segment 1: 0 to Free Shipping {%- endcomment -%}
+        <div class="tiered-rewards-bar__segment-wrap">
+          <div class="tiered-rewards-bar__segment" data-min="0" data-max="{{ free_shipping_threshold }}">
+            <div class="tiered-rewards-bar__segment-fill"></div>
           </div>
-          <div class="tiered-rewards-bar__tier-progress-bar">
-            <div class="tiered-rewards-bar__tier-progress-fill" 
-                 style="--tier-progress: {{ free_shipping_progress }}"></div>
-          </div>
-          <div class="tiered-rewards-bar__tier-label">Free shipping</div>
         </div>
         
-        {%- comment -%} Gift Tier 1 {%- endcomment -%}
+        {%- comment -%} Segment 2: Free Shipping to Tier 1 {%- endcomment -%}
         {%- if section.settings.gift_tier_1_label != blank -%}
-          {%- liquid
-            assign segment_start = free_shipping_threshold
-            assign segment_end = tier_1_threshold
-            assign segment_range = segment_end | minus: segment_start
-            assign segment_progress = 0
-            if segment_range > 0
-              if cart_total > segment_start
-                if cart_total >= segment_end
-                  assign segment_progress = 1
-                else
-                  assign segment_progress = cart_total | minus: segment_start | times: 1.0 | divided_by: segment_range | at_least: 0 | at_most: 1
-                endif
-              endif
-            endif
-          -%}
-          <div class="tiered-rewards-bar__tier{% if tier_1_achieved %} tiered-rewards-bar__tier--achieved{% endif %}" 
-               style="--tier-1-progress: {{ segment_progress }}">
-            <div class="tiered-rewards-bar__tier-icon">
-              {%- if tier_1_achieved -%}
-                <span class="tiered-rewards-bar__tier-checkmark">{% render 'icon', icon: 'check_mark_in_circle', size: 'small' %}</span>
-              {%- elsif section.settings.gift_tier_1_image != blank -%}
-                <span class="tiered-rewards-bar__tier-icon-image">
-                  {%- liquid
-                    assign icon_sizes = '48px'
-                    assign icon_widths = '48, 96'
-                    render 'image', image: section.settings.gift_tier_1_image, sizes: icon_sizes, widths: icon_widths
-                  -%}
-                </span>
-              {%- else -%}
-                <span class="tiered-rewards-bar__tier-icon-image">
-                  {% render 'icon', icon: 'gift', size: 'small' %}
-                </span>
-              {%- endif -%}
+          <div class="tiered-rewards-bar__segment-wrap">
+            <div class="tiered-rewards-bar__segment" data-min="{{ free_shipping_threshold }}" data-max="{{ tier_1_threshold }}">
+              <div class="tiered-rewards-bar__segment-fill"></div>
             </div>
-            <div class="tiered-rewards-bar__tier-progress-bar">
-              <div class="tiered-rewards-bar__tier-progress-fill" 
-                   style="--tier-progress: {{ tier_1_progress }}"></div>
-            </div>
-            <div class="tiered-rewards-bar__tier-label">{{ section.settings.gift_tier_1_label }}</div>
           </div>
         {%- endif -%}
         
-        {%- comment -%} Gift Tier 2 {%- endcomment -%}
+        {%- comment -%} Segment 3: Tier 1 to Tier 2 {%- endcomment -%}
         {%- if section.settings.gift_tier_2_label != blank -%}
-          {%- liquid
-            assign segment_start = tier_1_threshold
-            assign segment_end = tier_2_threshold
-            assign segment_range = segment_end | minus: segment_start
-            assign segment_progress = 0
-            if segment_range > 0
-              if cart_total > segment_start
-                if cart_total >= segment_end
-                  assign segment_progress = 1
-                else
-                  assign segment_progress = cart_total | minus: segment_start | times: 1.0 | divided_by: segment_range | at_least: 0 | at_most: 1
-                endif
-              endif
-            endif
-          -%}
-          <div class="tiered-rewards-bar__tier{% if tier_2_achieved %} tiered-rewards-bar__tier--achieved{% endif %}" 
-               style="--tier-2-progress: {{ segment_progress }}">
-            <div class="tiered-rewards-bar__tier-icon">
-              {%- if tier_2_achieved -%}
-                <span class="tiered-rewards-bar__tier-checkmark">{% render 'icon', icon: 'check_mark_in_circle', size: 'small' %}</span>
-              {%- elsif section.settings.gift_tier_2_image != blank -%}
-                <span class="tiered-rewards-bar__tier-icon-image">
-                  {%- liquid
-                    assign icon_sizes = '48px'
-                    assign icon_widths = '48, 96'
-                    render 'image', image: section.settings.gift_tier_2_image, sizes: icon_sizes, widths: icon_widths
-                  -%}
-                </span>
-              {%- else -%}
-                <span class="tiered-rewards-bar__tier-icon-image">
-                  {% render 'icon', icon: 'gift', size: 'small' %}
-                </span>
-              {%- endif -%}
+          <div class="tiered-rewards-bar__segment-wrap">
+            <div class="tiered-rewards-bar__segment" data-min="{{ tier_1_threshold }}" data-max="{{ tier_2_threshold }}">
+              <div class="tiered-rewards-bar__segment-fill"></div>
             </div>
-            <div class="tiered-rewards-bar__tier-progress-bar">
-              <div class="tiered-rewards-bar__tier-progress-fill" 
-                   style="--tier-progress: {{ tier_2_progress }}"></div>
-            </div>
-            <div class="tiered-rewards-bar__tier-label">{{ section.settings.gift_tier_2_label }}</div>
           </div>
         {%- endif -%}
         
-        {%- comment -%} Gift Tier 3 {%- endcomment -%}
+        {%- comment -%} Segment 4: Tier 2 to Tier 3 {%- endcomment -%}
         {%- if section.settings.gift_tier_3_label != blank -%}
-          {%- liquid
-            assign segment_start = tier_2_threshold
-            assign segment_end = tier_3_threshold
-            assign segment_range = segment_end | minus: segment_start
-            assign segment_progress = 0
-            if segment_range > 0
-              if cart_total > segment_start
-                if cart_total >= segment_end
-                  assign segment_progress = 1
-                else
-                  assign segment_progress = cart_total | minus: segment_start | times: 1.0 | divided_by: segment_range | at_least: 0 | at_most: 1
-                endif
-              endif
-            endif
-          -%}
-          <div class="tiered-rewards-bar__tier{% if tier_3_achieved %} tiered-rewards-bar__tier--achieved{% endif %}" 
-               style="--tier-3-progress: {{ segment_progress }}">
-            <div class="tiered-rewards-bar__tier-icon">
-              {%- if tier_3_achieved -%}
-                <span class="tiered-rewards-bar__tier-checkmark">{% render 'icon', icon: 'check_mark_in_circle', size: 'small' %}</span>
-              {%- elsif section.settings.gift_tier_3_image != blank -%}
-                <span class="tiered-rewards-bar__tier-icon-image">
-                  {%- liquid
-                    assign icon_sizes = '48px'
-                    assign icon_widths = '48, 96'
-                    render 'image', image: section.settings.gift_tier_3_image, sizes: icon_sizes, widths: icon_widths
-                  -%}
-                </span>
-              {%- else -%}
-                <span class="tiered-rewards-bar__tier-icon-image">
-                  {% render 'icon', icon: 'gift', size: 'small' %}
-                </span>
-              {%- endif -%}
+          <div class="tiered-rewards-bar__segment-wrap">
+            <div class="tiered-rewards-bar__segment" data-min="{{ tier_2_threshold }}" data-max="{{ tier_3_threshold }}">
+              <div class="tiered-rewards-bar__segment-fill"></div>
             </div>
-            <div class="tiered-rewards-bar__tier-progress-bar">
-              <div class="tiered-rewards-bar__tier-progress-fill" 
-                   style="--tier-progress: {{ tier_3_progress }}"></div>
-            </div>
-            <div class="tiered-rewards-bar__tier-label">{{ section.settings.gift_tier_3_label }}</div>
           </div>
         {%- endif -%}
       </div>
       
-      {%- comment -%} Main progress bar connecting all tiers {%- endcomment -%}
-      <div class="tiered-rewards-bar__main-progress">
-        <div class="tiered-rewards-bar__main-progress-fill" 
-             style="--main-progress: {{ tier_3_progress }}"></div>
+      <div class="tiered-rewards-bar__markers">
+        {%- comment -%} Free Shipping Marker {%- endcomment -%}
+        <span class="tiered-rewards-bar__marker-image" data-index="0">
+          <span class="tiered-rewards-bar__marker-icon">
+            {% render 'icon', icon: 'truck', size: 'small' %}
+          </span>
+          <span class="tiered-rewards-bar__marker-price">{{ free_shipping_threshold | money_without_trailing_zeros }}</span>
+        </span>
+        
+        {%- comment -%} Tier 1 Marker {%- endcomment -%}
+        {%- if section.settings.gift_tier_1_label != blank -%}
+          <span class="tiered-rewards-bar__marker-image{% if tier_1_achieved %} active{% endif %}" data-index="1">
+            {%- if section.settings.gift_tier_1_image != blank -%}
+              {%- liquid
+                assign icon_sizes = '40px'
+                assign icon_widths = '40, 80'
+                render 'image', image: section.settings.gift_tier_1_image, sizes: icon_sizes, widths: icon_widths
+              -%}
+            {%- else -%}
+              <span class="tiered-rewards-bar__marker-icon">
+                {% render 'icon', icon: 'gift', size: 'small' %}
+              </span>
+            {%- endif -%}
+            <span class="tiered-rewards-bar__marker-price">{{ tier_1_threshold | money_without_trailing_zeros }}</span>
+          </span>
+        {%- endif -%}
+        
+        {%- comment -%} Tier 2 Marker {%- endcomment -%}
+        {%- if section.settings.gift_tier_2_label != blank -%}
+          <span class="tiered-rewards-bar__marker-image{% if tier_2_achieved %} active{% endif %}" data-index="2">
+            {%- if section.settings.gift_tier_2_image != blank -%}
+              {%- liquid
+                assign icon_sizes = '40px'
+                assign icon_widths = '40, 80'
+                render 'image', image: section.settings.gift_tier_2_image, sizes: icon_sizes, widths: icon_widths
+              -%}
+            {%- else -%}
+              <span class="tiered-rewards-bar__marker-icon">
+                {% render 'icon', icon: 'gift', size: 'small' %}
+              </span>
+            {%- endif -%}
+            <span class="tiered-rewards-bar__marker-price">{{ tier_2_threshold | money_without_trailing_zeros }}</span>
+          </span>
+        {%- endif -%}
+        
+        {%- comment -%} Tier 3 Marker {%- endcomment -%}
+        {%- if section.settings.gift_tier_3_label != blank -%}
+          <span class="tiered-rewards-bar__marker-image{% if tier_3_achieved %} active{% endif %}" data-index="3">
+            {%- if section.settings.gift_tier_3_image != blank -%}
+              {%- liquid
+                assign icon_sizes = '40px'
+                assign icon_widths = '40, 80'
+                render 'image', image: section.settings.gift_tier_3_image, sizes: icon_sizes, widths: icon_widths
+              -%}
+            {%- else -%}
+              <span class="tiered-rewards-bar__marker-icon">
+                {% render 'icon', icon: 'gift', size: 'small' %}
+              </span>
+            {%- endif -%}
+            <span class="tiered-rewards-bar__marker-price">{{ tier_3_threshold | money_without_trailing_zeros }}</span>
+          </span>
+        {%- endif -%}
       </div>
     </div>
   </div>
-{%- endif -%}
 
+  <script>
+    (function() {
+      function updateProgressBar() {
+        const container = document.querySelector('.tiered-rewards-bar__progress-container');
+        if (!container) return;
+        
+        // Get current cart total from data attribute or calculate from cart
+        let total = parseFloat(container.getAttribute('data-total')) || 0;
+        
+        // Try to get updated total from cart drawer if available
+        const cartDrawer = document.querySelector('cart-drawer');
+        if (cartDrawer) {
+          const cartForm = cartDrawer.querySelector('cart-form');
+          if (cartForm) {
+            const cartTotalEl = cartForm.querySelector('[data-cart-total]');
+            if (cartTotalEl) {
+              total = parseFloat(cartTotalEl.getAttribute('data-cart-total')) || total;
+            }
+          }
+        }
+        
+        // Update data-total attribute
+        container.setAttribute('data-total', total);
+        
+        const segments = container.querySelectorAll('.tiered-rewards-bar__segment');
+        const freeShippingThreshold = {{ free_shipping_threshold }};
+
+        // Reset all markers
+        document.querySelectorAll('.tiered-rewards-bar__marker-image').forEach(marker => {
+          marker.classList.remove('active');
+        });
+
+        segments.forEach((segment, index) => {
+          const min = parseFloat(segment.getAttribute('data-min')) || 0;
+          const max = parseFloat(segment.getAttribute('data-max')) || 0;
+          const fillEl = segment.querySelector('.tiered-rewards-bar__segment-fill');
+          if (!fillEl) return;
+
+          let fillPercent = 0;
+          if (total <= min) {
+            fillPercent = 0;
+          } else if (total >= max) {
+            fillPercent = 100;
+            // Mark marker as active (index + 1 because free shipping is index 0)
+            const marker = document.querySelector(`.tiered-rewards-bar__marker-image[data-index="${index + 1}"]`);
+            if (marker) {
+              marker.classList.add('active');
+            }
+          } else {
+            fillPercent = ((total - min) / (max - min)) * 100;
+          }
+
+          fillPercent = Math.max(0, Math.min(100, fillPercent));
+          fillEl.style.width = fillPercent + '%';
+        });
+        
+        // Mark free shipping as active if achieved
+        if (total >= freeShippingThreshold) {
+          const freeShippingMarker = document.querySelector('.tiered-rewards-bar__marker-image[data-index="0"]');
+          if (freeShippingMarker) {
+            freeShippingMarker.classList.add('active');
+          }
+        }
+      }
+
+      // Run on DOMContentLoaded
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', updateProgressBar);
+      } else {
+        updateProgressBar();
+      }
+
+      // Update when cart changes
+      document.addEventListener('cart:updated', updateProgressBar);
+      document.addEventListener('cart:refresh', updateProgressBar);
+      document.addEventListener('on:cart:after-merge', updateProgressBar);
+      
+      // Watch for mutations in cart drawer
+      const observer = new MutationObserver(function(mutations) {
+        mutations.forEach(function(mutation) {
+          if (mutation.type === 'attributes' && mutation.attributeName === 'data-cart-total') {
+            updateProgressBar();
+          }
+        });
+      });
+      
+      const tieredRewardsBar = document.querySelector('.tiered-rewards-bar');
+      if (tieredRewardsBar) {
+        observer.observe(tieredRewardsBar, {
+          attributes: true,
+          attributeFilter: ['data-cart-total'],
+          subtree: true
+        });
+      }
+    })();
+  </script>
+{%- endif -%}
