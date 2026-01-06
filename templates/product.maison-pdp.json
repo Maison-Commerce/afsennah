@@ -943,7 +943,7 @@
         "quiz_url": "",
         "quiz_button_text": "Take the Quiz",
         "bg_color": "#ffffff",
-        "max_width": 1200,
+        "max_width": 1280,
         "padding_top_desktop": 64,
         "padding_bottom_desktop": 64,
         "padding_left_desktop": 80,
