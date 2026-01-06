@@ -413,6 +413,7 @@
   <!-- Mobile Menu Drawer -->
   <div 
     class="maison_commerce_maison_header__mobile-drawer"
+    :class="{ 'maison_commerce_maison_header__mobile-drawer--open': mobileMenuOpen }"
     x-show="mobileMenuOpen"
     x-transition:enter="maison_commerce_maison_header__mobile-drawer--enter"
     x-transition:enter-start="maison_commerce_maison_header__mobile-drawer--enter-start"
@@ -420,7 +421,7 @@
     x-transition:leave="maison_commerce_maison_header__mobile-drawer--leave"
     x-transition:leave-start="maison_commerce_maison_header__mobile-drawer--leave-start"
     x-transition:leave-end="maison_commerce_maison_header__mobile-drawer--leave-end"
-    style="display: none; transform: translateX(-100%);"
+    style="display: none;"
   >
     <!-- Search Bar -->
     {% if section.settings.enable_search %}
@@ -901,15 +902,12 @@
     z-index: 1001;
     overflow-y: auto;
     will-change: transform;
-  }
-
-  /* Initial hidden state */
-  .maison_commerce_maison_header__mobile-drawer[style*="display: none"] {
     transform: translateX(-100%);
+    transition: transform 0.3s ease;
   }
 
-  /* Visible state - drawer is shown */
-  .maison_commerce_maison_header__mobile-drawer:not([style*="display: none"]) {
+  /* Open state - drawer is visible */
+  .maison_commerce_maison_header__mobile-drawer--open {
     transform: translateX(0);
   }
 
