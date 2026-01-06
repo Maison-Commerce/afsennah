@@ -1,0 +1,1068 @@
+{%- liquid
+  assign section_id = section.id
+-%}
+
+<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+<section class="maison_commerce_maison_ingredients_accordion" x-data="maison_commerce_maison_ingredients_accordion_init()">
+  {% style %}
+    #shopify-section-{{ section_id }} {
+      background-color: {{ section.settings.bg_color }};
+      padding-top: {{ section.settings.padding_top_desktop }}px;
+      padding-bottom: {{ section.settings.padding_bottom_desktop }}px;
+      padding-left: {{ section.settings.padding_left_desktop }}px;
+      padding-right: {{ section.settings.padding_right_desktop }}px;
+    }
+
+    @media (max-width: 768px) {
+      #shopify-section-{{ section_id }} {
+        padding-top: {{ section.settings.padding_top_mobile }}px;
+        padding-bottom: {{ section.settings.padding_bottom_mobile }}px;
+        padding-left: {{ section.settings.padding_left_mobile }}px;
+        padding-right: {{ section.settings.padding_right_mobile }}px;
+      }
+    }
+  {% endstyle %}
+
+  <div class="maison_commerce_maison_ingredients_accordion__container">
+    <div class="maison_commerce_maison_ingredients_accordion__content">
+      <!-- Left Column: Text and Accordion -->
+      <div class="maison_commerce_maison_ingredients_accordion__left">
+        <!-- Header -->
+        <div class="maison_commerce_maison_ingredients_accordion__header">
+          {% if section.settings.heading != blank %}
+            <h2 class="maison_commerce_maison_ingredients_accordion__heading">
+              {{ section.settings.heading }}
+            </h2>
+          {% endif %}
+          {% if section.settings.description != blank %}
+            <div class="maison_commerce_maison_ingredients_accordion__description">
+              {{ section.settings.description }}
+            </div>
+          {% endif %}
+        </div>
+
+        <!-- Accordion -->
+        <div class="maison_commerce_maison_ingredients_accordion__accordion">
+          {% for block in section.blocks %}
+            {% case block.type %}
+              {% when 'ingredient_item' %}
+                <div class="maison_commerce_maison_ingredients_accordion__item{% if block.settings.is_expanded %} maison_commerce_maison_ingredients_accordion__item--expanded{% endif %}" {{ block.shopify_attributes }}>
+                  <button 
+                    class="maison_commerce_maison_ingredients_accordion__button"
+                    @click="toggleItem({{ forloop.index0 }})"
+                    :aria-expanded="openItem === {{ forloop.index0 }}"
+                  >
+                    <span class="maison_commerce_maison_ingredients_accordion__title">
+                      {{ block.settings.title | escape }}
+                    </span>
+                    <span class="maison_commerce_maison_ingredients_accordion__toggle">
+                      <span class="maison_commerce_maison_ingredients_accordion__toggle-icon maison_commerce_maison_ingredients_accordion__toggle-icon--plus">+</span>
+                      <span class="maison_commerce_maison_ingredients_accordion__toggle-icon maison_commerce_maison_ingredients_accordion__toggle-icon--minus">−</span>
+                    </span>
+                  </button>
+                  <div 
+                    class="maison_commerce_maison_ingredients_accordion__content"
+                    x-show="openItem === {{ forloop.index0 }}"
+                    x-collapse
+                    style="display: none;"
+                  >
+                    <div class="maison_commerce_maison_ingredients_accordion__content-inner">
+                      {% if block.settings.description != blank %}
+                        <div class="maison_commerce_maison_ingredients_accordion__description-text">
+                          {{ block.settings.description }}
+                        </div>
+                      {% endif %}
+                      {% if block.settings.image != blank %}
+                        <div class="maison_commerce_maison_ingredients_accordion__image">
+                          <img 
+                            src="{{ block.settings.image | image_url: width: 200 }}" 
+                            alt="{{ block.settings.image.alt | default: block.settings.title | escape }}"
+                            width="{{ block.settings.image.width }}"
+                            height="{{ block.settings.image.height }}"
+                            loading="lazy"
+                          />
+                        </div>
+                      {% endif %}
+                    </div>
+                  </div>
+                </div>
+            {% endcase %}
+          {% endfor %}
+        </div>
+      </div>
+
+      <!-- Right Column: Image (Desktop Only) -->
+      {% if section.settings.right_image != blank %}
+        <div class="maison_commerce_maison_ingredients_accordion__right">
+          <div class="maison_commerce_maison_ingredients_accordion__right-image-wrapper">
+            <img 
+              src="{{ section.settings.right_image | image_url: width: 800 }}" 
+              alt="{{ section.settings.right_image.alt | default: section.settings.heading | escape }}"
+              class="maison_commerce_maison_ingredients_accordion__right-image"
+              width="{{ section.settings.right_image.width }}"
+              height="{{ section.settings.right_image.height }}"
+              loading="lazy"
+            />
+          </div>
+        </div>
+      {% endif %}
+    </div>
+
+    <!-- Mobile Image (Below Content) -->
+    {% if section.settings.mobile_image != blank %}
+      <div class="maison_commerce_maison_ingredients_accordion__mobile-image">
+        <img 
+          src="{{ section.settings.mobile_image | image_url: width: 400 }}" 
+          alt="{{ section.settings.mobile_image.alt | default: section.settings.heading | escape }}"
+          width="{{ section.settings.mobile_image.width }}"
+          height="{{ section.settings.mobile_image.height }}"
+          loading="lazy"
+        />
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+<style>
+  /* Container */
+  .maison_commerce_maison_ingredients_accordion__container {
+    max-width: {{ section.settings.max_width }}px;
+    margin: 0 auto;
+  }
+
+  /* Content Layout */
+  .maison_commerce_maison_ingredients_accordion__content {
+    display: flex;
+    gap: {{ section.settings.content_gap_desktop }}px;
+    align-items: flex-start;
+    justify-content: center;
+  }
+
+  @media (max-width: 768px) {
+    .maison_commerce_maison_ingredients_accordion__content {
+      flex-direction: column;
+      gap: {{ section.settings.content_gap_mobile }}px;
+    }
+  }
+
+  /* Left Column */
+  .maison_commerce_maison_ingredients_accordion__left {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: {{ section.settings.left_gap_desktop }}px;
+    padding: {{ section.settings.left_padding }}px;
+    border-radius: {{ section.settings.left_border_radius }}px;
+  }
+
+  @media (max-width: 768px) {
+    .maison_commerce_maison_ingredients_accordion__left {
+      gap: {{ section.settings.left_gap_mobile }}px;
+      padding: 0;
+    }
+  }
+
+  /* Header */
+  .maison_commerce_maison_ingredients_accordion__header {
+    display: flex;
+    flex-direction: column;
+    gap: {{ section.settings.header_gap }}px;
+  }
+
+  @media (max-width: 768px) {
+    .maison_commerce_maison_ingredients_accordion__header {
+      gap: {{ section.settings.header_gap_mobile }}px;
+    }
+  }
+
+  /* Heading */
+  .maison_commerce_maison_ingredients_accordion__heading {
+    font-family: 'Vanilla Ravioli', serif;
+    font-size: {{ section.settings.heading_font_size_desktop }}px;
+    font-weight: 400;
+    line-height: 1.3;
+    color: {{ section.settings.heading_color }};
+    margin: 0;
+    text-transform: capitalize;
+  }
+
+  @media (max-width: 768px) {
+    .maison_commerce_maison_ingredients_accordion__heading {
+      font-size: {{ section.settings.heading_font_size_mobile }}px;
+      line-height: 1.4;
+    }
+  }
+
+  /* Description */
+  .maison_commerce_maison_ingredients_accordion__description {
+    font-family: 'Gotham', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    font-size: {{ section.settings.description_font_size_desktop }}px;
+    font-weight: 400;
+    line-height: 1.5;
+    color: {{ section.settings.description_color }};
+    margin: 0;
+  }
+
+  @media (max-width: 768px) {
+    .maison_commerce_maison_ingredients_accordion__description {
+      font-size: {{ section.settings.description_font_size_mobile }}px;
+    }
+  }
+
+  /* Accordion Container */
+  .maison_commerce_maison_ingredients_accordion__accordion {
+    background-color: {{ section.settings.accordion_bg_color }};
+    border-radius: {{ section.settings.accordion_border_radius }}px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Accordion Item */
+  .maison_commerce_maison_ingredients_accordion__item {
+    border-left: 1px solid {{ section.settings.accordion_border_color }};
+  }
+
+  .maison_commerce_maison_ingredients_accordion__item:first-child {
+    border-top-left-radius: {{ section.settings.accordion_border_radius }}px;
+    border-top-right-radius: {{ section.settings.accordion_border_radius }}px;
+  }
+
+  .maison_commerce_maison_ingredients_accordion__item:last-child {
+    border-bottom-left-radius: {{ section.settings.accordion_border_radius }}px;
+    border-bottom-right-radius: {{ section.settings.accordion_border_radius }}px;
+  }
+
+  .maison_commerce_maison_ingredients_accordion__item--expanded {
+    background-color: {{ section.settings.accordion_item_active_bg_color }};
+    border-left-color: {{ section.settings.accordion_item_active_border_color }};
+  }
+
+  /* Accordion Button */
+  .maison_commerce_maison_ingredients_accordion__button {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: {{ section.settings.button_gap }}px;
+    padding: {{ section.settings.button_padding_vertical }}px {{ section.settings.button_padding_horizontal }}px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    text-align: left;
+    transition: background-color 0.3s ease;
+  }
+
+  .maison_commerce_maison_ingredients_accordion__button:hover {
+    opacity: 0.8;
+  }
+
+  /* Accordion Title */
+  .maison_commerce_maison_ingredients_accordion__title {
+    font-family: 'Gotham', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    font-size: {{ section.settings.item_title_font_size_desktop }}px;
+    font-weight: 500;
+    line-height: 1.5;
+    color: {{ section.settings.item_title_color }};
+    flex: 1;
+  }
+
+  @media (max-width: 768px) {
+    .maison_commerce_maison_ingredients_accordion__title {
+      font-size: {{ section.settings.item_title_font_size_mobile }}px;
+    }
+  }
+
+  /* Toggle Icon */
+  .maison_commerce_maison_ingredients_accordion__toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: {{ section.settings.toggle_size_desktop }}px;
+    height: {{ section.settings.toggle_size_desktop }}px;
+    flex-shrink: 0;
+    position: relative;
+  }
+
+  @media (max-width: 768px) {
+    .maison_commerce_maison_ingredients_accordion__toggle {
+      width: {{ section.settings.toggle_size_mobile }}px;
+      height: {{ section.settings.toggle_size_mobile }}px;
+    }
+  }
+
+  .maison_commerce_maison_ingredients_accordion__toggle-icon {
+    position: absolute;
+    font-size: {{ section.settings.toggle_font_size_desktop }}px;
+    font-weight: 300;
+    line-height: 1;
+    color: {{ section.settings.toggle_color }};
+    transition: opacity 0.3s ease, transform 0.3s ease;
+  }
+
+  @media (max-width: 768px) {
+    .maison_commerce_maison_ingredients_accordion__toggle-icon {
+      font-size: {{ section.settings.toggle_font_size_mobile }}px;
+    }
+  }
+
+  .maison_commerce_maison_ingredients_accordion__toggle-icon--plus {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  .maison_commerce_maison_ingredients_accordion__toggle-icon--minus {
+    opacity: 0;
+    transform: scale(0);
+  }
+
+  .maison_commerce_maison_ingredients_accordion__button[aria-expanded="true"] .maison_commerce_maison_ingredients_accordion__toggle-icon--plus {
+    opacity: 0;
+    transform: scale(0);
+  }
+
+  .maison_commerce_maison_ingredients_accordion__button[aria-expanded="true"] .maison_commerce_maison_ingredients_accordion__toggle-icon--minus {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  /* Accordion Content */
+  .maison_commerce_maison_ingredients_accordion__content {
+    overflow: hidden;
+  }
+
+  .maison_commerce_maison_ingredients_accordion__content-inner {
+    display: flex;
+    gap: {{ section.settings.content_inner_gap }}px;
+    align-items: flex-start;
+    justify-content: space-between;
+    padding: 0 {{ section.settings.button_padding_horizontal }}px {{ section.settings.content_padding_bottom }}px;
+  }
+
+  @media (max-width: 768px) {
+    .maison_commerce_maison_ingredients_accordion__content-inner {
+      flex-direction: column;
+      gap: {{ section.settings.content_inner_gap_mobile }}px;
+      padding: 0 {{ section.settings.button_padding_horizontal_mobile }}px {{ section.settings.content_padding_bottom_mobile }}px;
+    }
+  }
+
+  /* Description Text */
+  .maison_commerce_maison_ingredients_accordion__description-text {
+    font-family: 'Gotham', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    font-size: {{ section.settings.item_description_font_size_desktop }}px;
+    font-weight: 400;
+    line-height: 1.5;
+    color: {{ section.settings.item_description_color }};
+    flex: 1;
+  }
+
+  @media (max-width: 768px) {
+    .maison_commerce_maison_ingredients_accordion__description-text {
+      font-size: {{ section.settings.item_description_font_size_mobile }}px;
+      font-weight: 300;
+    }
+  }
+
+  /* Accordion Item Image */
+  .maison_commerce_maison_ingredients_accordion__image {
+    width: {{ section.settings.item_image_size }}px;
+    height: {{ section.settings.item_image_size }}px;
+    flex-shrink: 0;
+    border-radius: {{ section.settings.item_image_border_radius }}px;
+    overflow: hidden;
+  }
+
+  .maison_commerce_maison_ingredients_accordion__image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* Right Column Image (Desktop) */
+  .maison_commerce_maison_ingredients_accordion__right {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: {{ section.settings.right_image_height }}px;
+    border-radius: {{ section.settings.right_image_border_radius }}px;
+    overflow: hidden;
+  }
+
+  @media (max-width: 768px) {
+    .maison_commerce_maison_ingredients_accordion__right {
+      display: none;
+    }
+  }
+
+  .maison_commerce_maison_ingredients_accordion__right-image-wrapper {
+    width: 100%;
+    height: 100%;
+    position: relative;
+  }
+
+  .maison_commerce_maison_ingredients_accordion__right-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* Mobile Image */
+  .maison_commerce_maison_ingredients_accordion__mobile-image {
+    display: none;
+    width: 100%;
+    border-radius: {{ section.settings.mobile_image_border_radius }}px;
+    overflow: hidden;
+    margin-top: {{ section.settings.content_gap_mobile }}px;
+  }
+
+  @media (max-width: 768px) {
+    .maison_commerce_maison_ingredients_accordion__mobile-image {
+      display: block;
+    }
+  }
+
+  .maison_commerce_maison_ingredients_accordion__mobile-image img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+</style>
+
+<script>
+  function maison_commerce_maison_ingredients_accordion_init() {
+    {% assign initial_open = null %}
+    {% for block in section.blocks %}
+      {% if block.settings.is_expanded %}
+        {% assign initial_open = forloop.index0 %}
+        {% break %}
+      {% endif %}
+    {% endfor %}
+    return {
+      openItem: {% if initial_open != null %}{{ initial_open }}{% else %}null{% endif %},
+      
+      toggleItem(index) {
+        this.openItem = this.openItem === index ? null : index;
+      },
+    };
+  }
+</script>
+
+{% schema %}
+{
+  "name": "Ingredients Accordion",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Naturally powerful ingredients"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description",
+      "default": "<p>Your formula is uniquely yours. We target your goals with multi-benefit ingredients like:</p>"
+    },
+    {
+      "type": "image_picker",
+      "id": "right_image",
+      "label": "Right Side Image (Desktop)",
+      "info": "Image displayed on the right side on desktop"
+    },
+    {
+      "type": "image_picker",
+      "id": "mobile_image",
+      "label": "Mobile Image",
+      "info": "Image displayed above content on mobile"
+    },
+    {
+      "type": "header",
+      "content": "Section Settings"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "range",
+      "id": "max_width",
+      "min": 800,
+      "max": 1600,
+      "step": 20,
+      "unit": "px",
+      "label": "Max Width",
+      "default": 1200
+    },
+    {
+      "type": "range",
+      "id": "padding_top_desktop",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Top (Desktop)",
+      "default": 64
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_desktop",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Bottom (Desktop)",
+      "default": 64
+    },
+    {
+      "type": "range",
+      "id": "padding_left_desktop",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Left (Desktop)",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_right_desktop",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Right (Desktop)",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Top (Mobile)",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Bottom (Mobile)",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "padding_left_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Left (Mobile)",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "padding_right_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Right (Mobile)",
+      "default": 20
+    },
+    {
+      "type": "header",
+      "content": "Typography Settings"
+    },
+    {
+      "type": "range",
+      "id": "heading_font_size_desktop",
+      "min": 16,
+      "max": 72,
+      "step": 2,
+      "unit": "px",
+      "label": "Heading Font Size (Desktop)",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "heading_font_size_mobile",
+      "min": 16,
+      "max": 48,
+      "step": 2,
+      "unit": "px",
+      "label": "Heading Font Size (Mobile)",
+      "default": 24
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading Color",
+      "default": "#232323"
+    },
+    {
+      "type": "range",
+      "id": "description_font_size_desktop",
+      "min": 12,
+      "max": 32,
+      "step": 1,
+      "unit": "px",
+      "label": "Description Font Size (Desktop)",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "description_font_size_mobile",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Description Font Size (Mobile)",
+      "default": 16
+    },
+    {
+      "type": "color",
+      "id": "description_color",
+      "label": "Description Color",
+      "default": "rgba(35, 35, 35, 0.75)"
+    },
+    {
+      "type": "header",
+      "content": "Layout Settings"
+    },
+    {
+      "type": "range",
+      "id": "content_gap_desktop",
+      "min": 20,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "label": "Content Gap (Desktop)",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "content_gap_mobile",
+      "min": 12,
+      "max": 40,
+      "step": 4,
+      "unit": "px",
+      "label": "Content Gap (Mobile)",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "left_gap_desktop",
+      "min": 20,
+      "max": 60,
+      "step": 4,
+      "unit": "px",
+      "label": "Left Column Gap (Desktop)",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "left_gap_mobile",
+      "min": 12,
+      "max": 32,
+      "step": 4,
+      "unit": "px",
+      "label": "Left Column Gap (Mobile)",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "left_padding",
+      "min": 0,
+      "max": 60,
+      "step": 4,
+      "unit": "px",
+      "label": "Left Column Padding",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "left_border_radius",
+      "min": 0,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "label": "Left Column Border Radius",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "header_gap",
+      "min": 8,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "label": "Header Gap (Desktop)",
+      "default": 18
+    },
+    {
+      "type": "range",
+      "id": "header_gap_mobile",
+      "min": 8,
+      "max": 24,
+      "step": 2,
+      "unit": "px",
+      "label": "Header Gap (Mobile)",
+      "default": 12
+    },
+    {
+      "type": "header",
+      "content": "Accordion Settings"
+    },
+    {
+      "type": "color",
+      "id": "accordion_bg_color",
+      "label": "Accordion Background Color",
+      "default": "#F7F7FC"
+    },
+    {
+      "type": "color",
+      "id": "accordion_item_active_bg_color",
+      "label": "Active Item Background Color",
+      "default": "#EBEBF6"
+    },
+    {
+      "type": "color",
+      "id": "accordion_border_color",
+      "label": "Accordion Border Color",
+      "default": "rgba(0, 0, 0, 0.12)"
+    },
+    {
+      "type": "color",
+      "id": "accordion_item_active_border_color",
+      "label": "Active Item Border Color",
+      "default": "#B4B4DE"
+    },
+    {
+      "type": "range",
+      "id": "accordion_border_radius",
+      "min": 0,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "label": "Accordion Border Radius",
+      "default": 18
+    },
+    {
+      "type": "range",
+      "id": "button_padding_vertical",
+      "min": 8,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "label": "Button Padding Vertical",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "button_padding_horizontal",
+      "min": 8,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "label": "Button Padding Horizontal (Desktop)",
+      "default": 18
+    },
+    {
+      "type": "range",
+      "id": "button_padding_horizontal_mobile",
+      "min": 8,
+      "max": 24,
+      "step": 2,
+      "unit": "px",
+      "label": "Button Padding Horizontal (Mobile)",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "button_gap",
+      "min": 8,
+      "max": 24,
+      "step": 2,
+      "unit": "px",
+      "label": "Button Gap",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "item_title_font_size_desktop",
+      "min": 14,
+      "max": 28,
+      "step": 1,
+      "unit": "px",
+      "label": "Item Title Font Size (Desktop)",
+      "default": 18
+    },
+    {
+      "type": "range",
+      "id": "item_title_font_size_mobile",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Item Title Font Size (Mobile)",
+      "default": 16
+    },
+    {
+      "type": "color",
+      "id": "item_title_color",
+      "label": "Item Title Color",
+      "default": "#232323"
+    },
+    {
+      "type": "range",
+      "id": "item_description_font_size_desktop",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Item Description Font Size (Desktop)",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "item_description_font_size_mobile",
+      "min": 10,
+      "max": 16,
+      "step": 1,
+      "unit": "px",
+      "label": "Item Description Font Size (Mobile)",
+      "default": 12
+    },
+    {
+      "type": "color",
+      "id": "item_description_color",
+      "label": "Item Description Color",
+      "default": "rgba(35, 35, 35, 0.75)"
+    },
+    {
+      "type": "range",
+      "id": "content_padding_bottom",
+      "min": 8,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "label": "Content Padding Bottom",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "content_padding_bottom_mobile",
+      "min": 8,
+      "max": 24,
+      "step": 2,
+      "unit": "px",
+      "label": "Content Padding Bottom (Mobile)",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "content_inner_gap",
+      "min": 8,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "label": "Content Inner Gap (Desktop)",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "content_inner_gap_mobile",
+      "min": 8,
+      "max": 24,
+      "step": 2,
+      "unit": "px",
+      "label": "Content Inner Gap (Mobile)",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "item_image_size",
+      "min": 80,
+      "max": 150,
+      "step": 2,
+      "unit": "px",
+      "label": "Item Image Size",
+      "default": 102
+    },
+    {
+      "type": "range",
+      "id": "item_image_border_radius",
+      "min": 0,
+      "max": 16,
+      "step": 2,
+      "unit": "px",
+      "label": "Item Image Border Radius",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Toggle Icon Settings"
+    },
+    {
+      "type": "range",
+      "id": "toggle_size_desktop",
+      "min": 16,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "label": "Toggle Icon Size (Desktop)",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "toggle_size_mobile",
+      "min": 16,
+      "max": 28,
+      "step": 2,
+      "unit": "px",
+      "label": "Toggle Icon Size (Mobile)",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "toggle_font_size_desktop",
+      "min": 16,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "label": "Toggle Font Size (Desktop)",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "toggle_font_size_mobile",
+      "min": 14,
+      "max": 28,
+      "step": 2,
+      "unit": "px",
+      "label": "Toggle Font Size (Mobile)",
+      "default": 20
+    },
+    {
+      "type": "color",
+      "id": "toggle_color",
+      "label": "Toggle Icon Color",
+      "default": "#232323"
+    },
+    {
+      "type": "header",
+      "content": "Right Image Settings (Desktop)"
+    },
+    {
+      "type": "range",
+      "id": "right_image_height",
+      "min": 400,
+      "max": 800,
+      "step": 20,
+      "unit": "px",
+      "label": "Right Image Height",
+      "default": 580
+    },
+    {
+      "type": "range",
+      "id": "right_image_border_radius",
+      "min": 0,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "label": "Right Image Border Radius",
+      "default": 16
+    },
+    {
+      "type": "header",
+      "content": "Mobile Image Settings"
+    },
+    {
+      "type": "range",
+      "id": "mobile_image_border_radius",
+      "min": 0,
+      "max": 24,
+      "step": 2,
+      "unit": "px",
+      "label": "Mobile Image Border Radius",
+      "default": 12
+    }
+  ],
+  "blocks": [
+    {
+      "type": "ingredient_item",
+      "name": "Ingredient Item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Hibiscus Oil"
+        },
+        {
+          "type": "richtext",
+          "id": "description",
+          "label": "Description",
+          "default": "<p>We selected hibiscus oil for its rich blend of amino acids and vitamin C a rejuvenating extract that strengthens roots, boosts shine, and restores vitality to thinning, lackluster hair.</p>"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image",
+          "info": "Optional image displayed next to description when expanded"
+        },
+        {
+          "type": "checkbox",
+          "id": "is_expanded",
+          "label": "Expanded by Default",
+          "default": false,
+          "info": "Check to have this item expanded when the page loads"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Ingredients Accordion",
+      "blocks": [
+        {
+          "type": "ingredient_item",
+          "settings": {
+            "title": "Hibiscus Oil",
+            "description": "<p>We selected hibiscus oil for its rich blend of amino acids and vitamin C a rejuvenating extract that strengthens roots, boosts shine, and restores vitality to thinning, lackluster hair.</p>",
+            "is_expanded": true
+          }
+        },
+        {
+          "type": "ingredient_item",
+          "settings": {
+            "title": "Saffron Oil"
+          }
+        },
+        {
+          "type": "ingredient_item",
+          "settings": {
+            "title": "Prickly Pear Seed Oil"
+          }
+        },
+        {
+          "type": "ingredient_item",
+          "settings": {
+            "title": "Rosehip Oil"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
+
