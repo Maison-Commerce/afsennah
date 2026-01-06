@@ -912,13 +912,8 @@ video-section-play-button {
 }
 
 .tiered-rewards-bar__marker-price {
-    color: #767676;
-    font-weight: 400;
-    font-size: 16px;
     transition: 0.3s all;
-    margin-top: 6px;
-    cursor: pointer;
-    line-height: 20px;
+    margin-top: 8px;
 }
 .tiered-rewards-bar__marker-image svg,
 .tiered-rewards-bar__marker-image img {
