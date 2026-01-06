@@ -140,7 +140,7 @@
             <span class="tiered-rewards-bar__marker-icon">
                 {% render 'icon', icon: 'truck', size: 'small' %}
             </span>
-            <span class="tiered-rewards-bar__marker-price" data-price-dollars="{{ free_shipping_threshold }}">{{ free_shipping_cents | money }}</span>
+            <span class="tiered-rewards-bar__marker-price" data-price-dollars="{{ free_shipping_threshold }}">{{ free_shipping_cents | money_without_currency }}</span>
             </span>
         </div>
         
