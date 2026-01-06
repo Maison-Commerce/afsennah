@@ -171,8 +171,20 @@
         {% endfor %}
       </div>
 
-      <!-- Pagination -->
-      <div class="swiper-pagination maison_commerce_maison_you_may_also_like__pagination"></div>
+      <!-- Pagination with Mobile Navigation -->
+      <div class="maison_commerce_maison_you_may_also_like__pagination-wrapper">
+        <button class="maison_commerce_maison_you_may_also_like__nav-button maison_commerce_maison_you_may_also_like__nav-button--prev-mobile" aria-label="Previous">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <path d="M6 8L2 12M2 12L6 16M2 12H22" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        <div class="swiper-pagination maison_commerce_maison_you_may_also_like__pagination"></div>
+        <button class="maison_commerce_maison_you_may_also_like__nav-button maison_commerce_maison_you_may_also_like__nav-button--next-mobile" aria-label="Next">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <path d="M18 8L22 12M22 12L18 16M22 12H2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      </div>
     </div>
 
     <!-- Mobile Quiz CTA -->
@@ -634,11 +646,10 @@
   /* Pagination */
   .maison_commerce_maison_you_may_also_like__pagination {
     position: static;
-    margin-top: {{ section.settings.pagination_margin_top }}px;
     display: flex;
     justify-content: center;
     gap: {{ section.settings.pagination_gap }}px;
-    margin-top: 24px;
+    margin: 0;
   }
 
   .maison_commerce_maison_you_may_also_like__pagination .swiper-pagination-bullet {
@@ -734,6 +745,8 @@
     const container = swiperContainer.closest('.maison_commerce_maison_you_may_also_like__container');
     const prevButton = container ? container.querySelector('.maison_commerce_maison_you_may_also_like__nav-button--prev') : null;
     const nextButton = container ? container.querySelector('.maison_commerce_maison_you_may_also_like__nav-button--next') : null;
+    const prevButtonMobile = container ? container.querySelector('.maison_commerce_maison_you_may_also_like__nav-button--prev-mobile') : null;
+    const nextButtonMobile = container ? container.querySelector('.maison_commerce_maison_you_may_also_like__nav-button--next-mobile') : null;
     const paginationEl = swiperContainer.querySelector('.maison_commerce_maison_you_may_also_like__pagination');
     
     const swiperConfig = {
@@ -757,10 +770,22 @@
       },
     };
 
-    if (prevButton && nextButton) {
+    // Use mobile buttons if available, otherwise use desktop buttons
+    // Swiper will handle visibility based on CSS media queries
+    if (prevButtonMobile && nextButtonMobile) {
+      swiperConfig.navigation = {
+        nextEl: nextButtonMobile,
+        prevEl: prevButtonMobile,
+      };
+    } else if (prevButton && nextButton) {
       swiperConfig.navigation = {
         nextEl: nextButton,
         prevEl: prevButton,
+      };
+    } else if (prevButtonMobile && nextButtonMobile) {
+      swiperConfig.navigation = {
+        nextEl: nextButtonMobile,
+        prevEl: prevButtonMobile,
       };
     }
 
@@ -1866,7 +1891,80 @@
       "step": 4,
       "unit": "px",
       "label": "Pagination Margin Top",
-      "default": 0
+      "default": 24
+    },
+    {
+      "type": "header",
+      "content": "Mobile Navigation Settings"
+    },
+    {
+      "type": "range",
+      "id": "mobile_nav_gap",
+      "min": 8,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "label": "Mobile Navigation Gap",
+      "default": 16,
+      "info": "Gap between navigation buttons and pagination"
+    },
+    {
+      "type": "range",
+      "id": "mobile_nav_button_size",
+      "min": 32,
+      "max": 64,
+      "step": 2,
+      "unit": "px",
+      "label": "Mobile Navigation Button Size",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "mobile_nav_button_padding",
+      "min": 8,
+      "max": 24,
+      "step": 2,
+      "unit": "px",
+      "label": "Mobile Navigation Button Padding",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "mobile_nav_button_border_width",
+      "min": 1,
+      "max": 3,
+      "step": 0.5,
+      "unit": "px",
+      "label": "Mobile Navigation Button Border Width",
+      "default": 1.5
+    },
+    {
+      "type": "color",
+      "id": "mobile_nav_button_border_color",
+      "label": "Mobile Navigation Button Border Color",
+      "default": "#E9EBE9"
+    },
+    {
+      "type": "color",
+      "id": "mobile_nav_button_color",
+      "label": "Mobile Navigation Button Color",
+      "default": "#2E432F"
+    },
+    {
+      "type": "color",
+      "id": "mobile_nav_button_hover_bg",
+      "label": "Mobile Navigation Button Hover Background",
+      "default": "rgba(233, 235, 233, 0.1)"
+    },
+    {
+      "type": "range",
+      "id": "mobile_nav_icon_size",
+      "min": 16,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "label": "Mobile Navigation Icon Size",
+      "default": 20
     },
     {
       "type": "range",
