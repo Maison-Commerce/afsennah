@@ -916,7 +916,8 @@
         "quote_author_padding_vertical": 4,
         "quote_author_padding_horizontal": 12,
         "quote_author_font_size": 12,
-        "quote_author_color": "#2c2926"
+        "quote_author_color": "#2c2926",
+        "quote_author_box_color": "#f1f1f9"
       }
     },
     "maison_instagram_scroll_CpxWXq": {
