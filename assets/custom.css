@@ -512,9 +512,9 @@ video-section-play-button {
 .tiered-rewards-bar__banner {
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 8px;
     padding: 12px 16px;
-    background: #F0E8FF;
     border-radius: 8px;
     margin-bottom: 20px;
     font-size: 14px;
