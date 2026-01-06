@@ -1,0 +1,1632 @@
+{%- liquid
+  assign section_id = section.id
+-%}
+
+<section 
+  class="maison_commerce_maison_comparison_table" 
+  x-data="maison_commerce_maison_comparison_table_init()"
+  style="background: linear-gradient(to bottom, {{ section.settings.bg_gradient_start }}, {{ section.settings.bg_gradient_end }}); padding-top: {{ section.settings.padding_top_desktop }}px; padding-bottom: {{ section.settings.padding_bottom_desktop }}px; padding-left: {{ section.settings.padding_left_desktop }}px; padding-right: {{ section.settings.padding_right_desktop }}px;"
+>
+  <div class="maison_commerce_maison_comparison_table__container">
+    <!-- Trustpilot Rating -->
+    {% if section.settings.show_trustpilot %}
+      <div class="maison_commerce_maison_comparison_table__trustpilot">
+        <div class="maison_commerce_maison_comparison_table__trustpilot-content">
+          <div class="maison_commerce_maison_comparison_table__trustpilot-brand">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M7 0L8.5 5H14L9.75 8L11.25 13L7 10L2.75 13L4.25 8L0 5H5.5L7 0Z" fill="currentColor"/>
+            </svg>
+            <span>{{ section.settings.trustpilot_text }}</span>
+          </div>
+          <div class="maison_commerce_maison_comparison_table__stars">
+            {% for i in (1..5) %}
+              <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M9 0L11.0206 6.21885H17.5595L12.2694 10.0623L14.2901 16.2812L9 12.4377L3.70993 16.2812L5.73056 10.0623L0.440492 6.21885H6.97937L9 0Z" fill="{{ section.settings.star_color }}"/>
+              </svg>
+            {% endfor %}
+          </div>
+          <div class="maison_commerce_maison_comparison_table__trustpilot-rating">
+            {{ section.settings.trustpilot_rating }}
+          </div>
+        </div>
+      </div>
+    {% endif %}
+
+    <!-- Heading -->
+    {% if section.settings.heading != blank %}
+      <h2 class="maison_commerce_maison_comparison_table__heading">
+        {{ section.settings.heading }}
+      </h2>
+    {% endif %}
+
+    <!-- Mobile Tabs -->
+    <div class="maison_commerce_maison_comparison_table__mobile-tabs">
+      <button 
+        class="maison_commerce_maison_comparison_table__tab"
+        :class="{ 'maison_commerce_maison_comparison_table__tab--active': activeTab === 'generic' }"
+        @click="activeTab = 'generic'"
+      >
+        {{ section.settings.column_2_title }}
+      </button>
+      <button 
+        class="maison_commerce_maison_comparison_table__tab"
+        :class="{ 'maison_commerce_maison_comparison_table__tab--active': activeTab === 'medical' }"
+        @click="activeTab = 'medical'"
+      >
+        {{ section.settings.column_3_title }}
+      </button>
+    </div>
+
+    <!-- Comparison Table -->
+    <div class="maison_commerce_maison_comparison_table__table-wrapper">
+      <table class="maison_commerce_maison_comparison_table__table">
+        <!-- Header Row -->
+        <thead>
+          <tr class="maison_commerce_maison_comparison_table__header-row">
+            <th class="maison_commerce_maison_comparison_table__header-cell maison_commerce_maison_comparison_table__header-cell--label"></th>
+            <th class="maison_commerce_maison_comparison_table__header-cell maison_commerce_maison_comparison_table__header-cell--primary">
+              {% if section.settings.column_1_image != blank %}
+                <div class="maison_commerce_maison_comparison_table__column-image">
+                  <img 
+                    src="{{ section.settings.column_1_image | image_url: width: 200 }}" 
+                    alt="{{ section.settings.column_1_image.alt | default: section.settings.column_1_title | escape }}"
+                    width="{{ section.settings.column_1_image.width }}"
+                    height="{{ section.settings.column_1_image.height }}"
+                    loading="lazy"
+                  />
+                </div>
+              {% endif %}
+              <span>{{ section.settings.column_1_title }}</span>
+            </th>
+            <th class="maison_commerce_maison_comparison_table__header-cell maison_commerce_maison_comparison_table__header-cell--secondary maison_commerce_maison_comparison_table__header-cell--generic" x-show="activeTab === 'generic'">
+              {{ section.settings.column_2_title }}
+            </th>
+            <th class="maison_commerce_maison_comparison_table__header-cell maison_commerce_maison_comparison_table__header-cell--secondary maison_commerce_maison_comparison_table__header-cell--medical" x-show="activeTab === 'medical'">
+              {{ section.settings.column_3_title }}
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for block in section.blocks %}
+            {% case block.type %}
+              {% when 'comparison_row' %}
+                <tr class="maison_commerce_maison_comparison_table__row" {{ block.shopify_attributes }}>
+                  <td class="maison_commerce_maison_comparison_table__label-cell">
+                    {{ block.settings.row_label }}
+                  </td>
+                  <td class="maison_commerce_maison_comparison_table__value-cell maison_commerce_maison_comparison_table__value-cell--primary">
+                    {% case block.settings.column_1_value_type %}
+                      {% when 'checkmark' %}
+                        <div class="maison_commerce_maison_comparison_table__icon-wrapper">
+                          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="12" cy="12" r="12" fill="white" fill-opacity="0.2"/>
+                            <path d="M8 12L11 15L16 9" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                          </svg>
+                        </div>
+                      {% when 'x' %}
+                        <div class="maison_commerce_maison_comparison_table__icon-wrapper">
+                          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="12" cy="12" r="12" fill="white" fill-opacity="0.2"/>
+                            <path d="M8 8L16 16M16 8L8 16" stroke="white" stroke-width="2" stroke-linecap="round"/>
+                          </svg>
+                        </div>
+                      {% when 'text' %}
+                        <span class="maison_commerce_maison_comparison_table__text-value">
+                          {{ block.settings.column_1_text }}
+                        </span>
+                    {% endcase %}
+                  </td>
+                  <td class="maison_commerce_maison_comparison_table__value-cell maison_commerce_maison_comparison_table__value-cell--generic" x-show="activeTab === 'generic'">
+                    {% case block.settings.column_2_value_type %}
+                      {% when 'checkmark' %}
+                        <div class="maison_commerce_maison_comparison_table__icon-wrapper">
+                          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="12" cy="12" r="12" fill="{{ section.settings.icon_bg_color }}"/>
+                            <path d="M8 12L11 15L16 9" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                          </svg>
+                        </div>
+                      {% when 'x' %}
+                        <div class="maison_commerce_maison_comparison_table__icon-wrapper">
+                          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="12" cy="12" r="12" fill="{{ section.settings.icon_bg_color }}"/>
+                            <path d="M8 8L16 16M16 8L8 16" stroke="{{ section.settings.icon_color }}" stroke-width="2" stroke-linecap="round"/>
+                          </svg>
+                        </div>
+                      {% when 'text' %}
+                        <span class="maison_commerce_maison_comparison_table__text-value">
+                          {{ block.settings.column_2_text }}
+                        </span>
+                    {% endcase %}
+                  </td>
+                  <td class="maison_commerce_maison_comparison_table__value-cell maison_commerce_maison_comparison_table__value-cell--medical" x-show="activeTab === 'medical'">
+                    {% case block.settings.column_3_value_type %}
+                      {% when 'checkmark' %}
+                        <div class="maison_commerce_maison_comparison_table__icon-wrapper">
+                          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="12" cy="12" r="12" fill="{{ section.settings.icon_bg_color }}"/>
+                            <path d="M8 12L11 15L16 9" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                          </svg>
+                        </div>
+                      {% when 'x' %}
+                        <div class="maison_commerce_maison_comparison_table__icon-wrapper">
+                          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="12" cy="12" r="12" fill="{{ section.settings.icon_bg_color }}"/>
+                            <path d="M8 8L16 16M16 8L8 16" stroke="{{ section.settings.icon_color }}" stroke-width="2" stroke-linecap="round"/>
+                          </svg>
+                        </div>
+                      {% when 'text' %}
+                        <span class="maison_commerce_maison_comparison_table__text-value">
+                          {{ block.settings.column_3_text }}
+                        </span>
+                    {% endcase %}
+                  </td>
+                </tr>
+            {% endcase %}
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <!-- CTA Button -->
+    {% if section.settings.cta_text != blank and section.settings.cta_link != blank %}
+      <div class="maison_commerce_maison_comparison_table__cta">
+        <a href="{{ section.settings.cta_link }}" class="maison_commerce_maison_comparison_table__cta-button">
+          <span>{{ section.settings.cta_text }}</span>
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+      </div>
+    {% endif %}
+
+    <!-- Badges -->
+    {% if section.blocks.size > 0 %}
+      {% assign badge_blocks = section.blocks | where: 'type', 'badge' %}
+      {% if badge_blocks.size > 0 %}
+        <div class="maison_commerce_maison_comparison_table__badges">
+          {% for block in badge_blocks %}
+            <div class="maison_commerce_maison_comparison_table__badge" {{ block.shopify_attributes }}>
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="8" cy="8" r="8" fill="currentColor"/>
+                <path d="M5 8L7 10L11 6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <span>{{ block.settings.badge_text }}</span>
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endif %}
+  </div>
+</section>
+
+<style>
+  /* Section Container */
+  .maison_commerce_maison_comparison_table {
+    background: linear-gradient(to bottom, {{ section.settings.bg_gradient_start }}, {{ section.settings.bg_gradient_end }});
+    padding-top: {{ section.settings.padding_top_desktop }}px;
+    padding-bottom: {{ section.settings.padding_bottom_desktop }}px;
+    padding-left: {{ section.settings.padding_left_desktop }}px;
+    padding-right: {{ section.settings.padding_right_desktop }}px;
+  }
+
+  @media (max-width: 768px) {
+    .maison_commerce_maison_comparison_table {
+      padding-top: {{ section.settings.padding_top_mobile }}px;
+      padding-bottom: {{ section.settings.padding_bottom_mobile }}px;
+      padding-left: {{ section.settings.padding_left_mobile }}px;
+      padding-right: {{ section.settings.padding_right_mobile }}px;
+    }
+  }
+
+  /* Container */
+  .maison_commerce_maison_comparison_table__container {
+    max-width: {{ section.settings.max_width_desktop }}px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: {{ section.settings.content_gap_desktop }}px;
+    align-items: center;
+  }
+
+  @media (max-width: 768px) {
+    .maison_commerce_maison_comparison_table__container {
+      gap: {{ section.settings.content_gap_mobile }}px;
+    }
+  }
+
+  /* Trustpilot Rating */
+  .maison_commerce_maison_comparison_table__trustpilot {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: {{ section.settings.trustpilot_gap }}px;
+  }
+
+  .maison_commerce_maison_comparison_table__trustpilot-content {
+    display: flex;
+    align-items: center;
+    gap: {{ section.settings.trustpilot_inner_gap }}px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .maison_commerce_maison_comparison_table__trustpilot-brand {
+    display: flex;
+    align-items: center;
+    gap: {{ section.settings.trustpilot_brand_gap }}px;
+    font-family: 'Avenir Next', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-size: {{ section.settings.trustpilot_font_size_desktop }}px;
+    font-weight: 500;
+    color: {{ section.settings.trustpilot_text_color }};
+  }
+
+  @media (max-width: 768px) {
+    .maison_commerce_maison_comparison_table__trustpilot-brand {
+      font-size: {{ section.settings.trustpilot_font_size_mobile }}px;
+    }
+  }
+
+  .maison_commerce_maison_comparison_table__stars {
+    display: flex;
+    align-items: center;
+    gap: {{ section.settings.star_gap }}px;
+  }
+
+  .maison_commerce_maison_comparison_table__trustpilot-rating {
+    font-family: 'Avenir Next', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-size: {{ section.settings.trustpilot_font_size_desktop }}px;
+    font-weight: 400;
+    color: {{ section.settings.trustpilot_text_color }};
+  }
+
+  @media (max-width: 768px) {
+    .maison_commerce_maison_comparison_table__trustpilot-rating {
+      font-size: {{ section.settings.trustpilot_font_size_mobile }}px;
+    }
+  }
+
+  .maison_commerce_maison_comparison_table__trustpilot-rating strong {
+    font-weight: 700;
+  }
+
+  /* Heading */
+  .maison_commerce_maison_comparison_table__heading {
+    font-family: 'Vanilla Ravioli', serif;
+    font-size: {{ section.settings.heading_font_size_desktop }}px;
+    font-weight: 400;
+    line-height: 1.3;
+    color: {{ section.settings.heading_color }};
+    text-align: center;
+    margin: 0;
+    max-width: {{ section.settings.heading_max_width_desktop }}px;
+  }
+
+  @media (max-width: 768px) {
+    .maison_commerce_maison_comparison_table__heading {
+      font-size: {{ section.settings.heading_font_size_mobile }}px;
+      max-width: {{ section.settings.heading_max_width_mobile }}px;
+    }
+  }
+
+  /* Mobile Tabs */
+  .maison_commerce_maison_comparison_table__mobile-tabs {
+    display: none;
+    background: white;
+    padding: {{ section.settings.tab_padding }}px;
+    border-radius: {{ section.settings.tab_border_radius }}px;
+    gap: {{ section.settings.tab_gap }}px;
+    width: 100%;
+  }
+
+  @media (max-width: 768px) {
+    .maison_commerce_maison_comparison_table__mobile-tabs {
+      display: flex;
+    }
+  }
+
+  .maison_commerce_maison_comparison_table__tab {
+    flex: 1 1 auto;
+    padding: {{ section.settings.tab_button_padding_vertical }}px {{ section.settings.tab_button_padding_horizontal }}px;
+    border: none;
+    background: transparent;
+    border-radius: {{ section.settings.tab_border_radius }}px;
+    font-family: 'Gotham', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-size: {{ section.settings.tab_font_size }}px;
+    font-weight: 500;
+    color: {{ section.settings.tab_text_color }};
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .maison_commerce_maison_comparison_table__tab--active {
+    background: {{ section.settings.tab_active_bg_color }};
+    color: {{ section.settings.tab_active_text_color }};
+  }
+
+  /* Table Wrapper */
+  .maison_commerce_maison_comparison_table__table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+  }
+
+  /* Table */
+  .maison_commerce_maison_comparison_table__table {
+    width: 100%;
+    border-collapse: collapse;
+    border-radius: {{ section.settings.table_border_radius }}px;
+    overflow: hidden;
+  }
+
+  /* Header Row */
+  .maison_commerce_maison_comparison_table__header-row {
+    background: transparent;
+  }
+
+  .maison_commerce_maison_comparison_table__header-cell {
+    padding: {{ section.settings.header_padding_vertical }}px {{ section.settings.header_padding_horizontal }}px;
+    text-align: center;
+    font-family: 'Gotham', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-size: {{ section.settings.header_font_size_desktop }}px;
+    font-weight: 500;
+    color: {{ section.settings.header_text_color }};
+    vertical-align: bottom;
+    height: {{ section.settings.header_height }}px;
+    position: relative;
+  }
+
+  @media (max-width: 768px) {
+    .maison_commerce_maison_comparison_table__header-cell {
+      font-size: {{ section.settings.header_font_size_mobile }}px;
+    }
+  }
+
+  .maison_commerce_maison_comparison_table__header-cell--label {
+    width: {{ section.settings.label_column_width }}px;
+    background: transparent;
+    text-align: left;
+    padding-left: {{ section.settings.label_padding_horizontal }}px;
+  }
+
+  .maison_commerce_maison_comparison_table__header-cell--primary {
+    background: {{ section.settings.primary_column_bg_color }};
+    color: {{ section.settings.primary_column_text_color }};
+    border: {{ section.settings.table_border_width }}px solid {{ section.settings.primary_column_border_color }};
+    border-radius: {{ section.settings.table_border_radius }}px {{ section.settings.table_border_radius }}px 0 0;
+  }
+
+  .maison_commerce_maison_comparison_table__header-cell--secondary {
+    background: white;
+    border-bottom: {{ section.settings.table_border_width }}px solid {{ section.settings.table_border_color }};
+  }
+
+  @media (max-width: 768px) {
+    .maison_commerce_maison_comparison_table__header-cell--generic,
+    .maison_commerce_maison_comparison_table__header-cell--medical {
+      display: table-cell;
+    }
+  }
+
+  .maison_commerce_maison_comparison_table__column-image {
+    position: absolute;
+    top: {{ section.settings.column_image_top_offset }}px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: {{ section.settings.column_image_width }}px;
+    height: {{ section.settings.column_image_height }}px;
+  }
+
+  .maison_commerce_maison_comparison_table__column-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  /* Table Rows */
+  .maison_commerce_maison_comparison_table__row {
+    border-bottom: {{ section.settings.table_border_width }}px solid {{ section.settings.table_border_color }};
+  }
+
+  .maison_commerce_maison_comparison_table__row:last-child {
+    border-bottom: none;
+  }
+
+  /* Label Cell */
+  .maison_commerce_maison_comparison_table__label-cell {
+    padding: {{ section.settings.cell_padding_vertical }}px {{ section.settings.label_padding_horizontal }}px;
+    background: white;
+    font-family: 'Gotham', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-size: {{ section.settings.label_font_size_desktop }}px;
+    font-weight: 400;
+    color: {{ section.settings.label_text_color }};
+    text-align: left;
+    width: {{ section.settings.label_column_width }}px;
+  }
+
+  @media (max-width: 768px) {
+    .maison_commerce_maison_comparison_table__label-cell {
+      font-size: {{ section.settings.label_font_size_mobile }}px;
+    }
+  }
+
+  /* Value Cell */
+  .maison_commerce_maison_comparison_table__value-cell {
+    padding: {{ section.settings.cell_padding_vertical }}px {{ section.settings.cell_padding_horizontal }}px;
+    text-align: center;
+    height: {{ section.settings.cell_height }}px;
+    vertical-align: middle;
+  }
+
+  .maison_commerce_maison_comparison_table__value-cell--primary {
+    background: {{ section.settings.primary_column_bg_color }};
+    border-right: {{ section.settings.table_border_width }}px solid {{ section.settings.primary_column_border_color }};
+    border-left: {{ section.settings.table_border_width }}px solid {{ section.settings.primary_column_border_color }};
+  }
+
+  .maison_commerce_maison_comparison_table__value-cell--generic,
+  .maison_commerce_maison_comparison_table__value-cell--medical {
+    background: white;
+    border-right: {{ section.settings.table_border_width }}px solid {{ section.settings.table_border_color }};
+  }
+
+  @media (max-width: 768px) {
+    .maison_commerce_maison_comparison_table__value-cell--generic,
+    .maison_commerce_maison_comparison_table__value-cell--medical {
+      display: table-cell;
+    }
+  }
+
+  /* Icon Wrapper */
+  .maison_commerce_maison_comparison_table__icon-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: {{ section.settings.icon_size }}px;
+    height: {{ section.settings.icon_size }}px;
+    margin: 0 auto;
+  }
+
+  .maison_commerce_maison_comparison_table__icon-wrapper svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  /* Text Value */
+  .maison_commerce_maison_comparison_table__text-value {
+    font-family: 'Gotham', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-size: {{ section.settings.value_font_size_desktop }}px;
+    font-weight: 500;
+    color: {{ section.settings.primary_column_text_color }};
+    text-align: right;
+    display: block;
+  }
+
+  .maison_commerce_maison_comparison_table__value-cell--generic .maison_commerce_maison_comparison_table__text-value,
+  .maison_commerce_maison_comparison_table__value-cell--medical .maison_commerce_maison_comparison_table__text-value {
+    color: {{ section.settings.secondary_column_text_color }};
+  }
+
+  @media (max-width: 768px) {
+    .maison_commerce_maison_comparison_table__text-value {
+      font-size: {{ section.settings.value_font_size_mobile }}px;
+    }
+  }
+
+  /* CTA */
+  .maison_commerce_maison_comparison_table__cta {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: {{ section.settings.cta_badges_gap }}px;
+    width: 100%;
+    max-width: {{ section.settings.cta_max_width }}px;
+  }
+
+  .maison_commerce_maison_comparison_table__cta-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: {{ section.settings.cta_icon_gap }}px;
+    padding: {{ section.settings.cta_padding_vertical }}px {{ section.settings.cta_padding_horizontal }}px;
+    background: {{ section.settings.cta_bg_color }};
+    border-radius: {{ section.settings.cta_border_radius }}px;
+    font-family: 'Gotham', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-size: {{ section.settings.cta_font_size_desktop }}px;
+    font-weight: 500;
+    color: {{ section.settings.cta_text_color }};
+    text-decoration: none;
+    width: 100%;
+    transition: opacity 0.2s ease;
+  }
+
+  .maison_commerce_maison_comparison_table__cta-button:hover {
+    opacity: 0.9;
+  }
+
+  @media (max-width: 768px) {
+    .maison_commerce_maison_comparison_table__cta-button {
+      font-size: {{ section.settings.cta_font_size_mobile }}px;
+    }
+  }
+
+  .maison_commerce_maison_comparison_table__cta-button svg {
+    width: {{ section.settings.cta_icon_size }}px;
+    height: {{ section.settings.cta_icon_size }}px;
+    flex-shrink: 0;
+  }
+
+  /* Badges */
+  .maison_commerce_maison_comparison_table__badges {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: {{ section.settings.badge_gap_horizontal }}px {{ section.settings.badge_gap_vertical }}px;
+  }
+
+  .maison_commerce_maison_comparison_table__badge {
+    display: flex;
+    align-items: center;
+    gap: {{ section.settings.badge_icon_gap }}px;
+    font-family: 'Gotham', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-size: {{ section.settings.badge_font_size }}px;
+    font-weight: 400;
+    color: {{ section.settings.badge_text_color }};
+  }
+
+  .maison_commerce_maison_comparison_table__badge svg {
+    width: {{ section.settings.badge_icon_size }}px;
+    height: {{ section.settings.badge_icon_size }}px;
+    flex-shrink: 0;
+    color: {{ section.settings.badge_icon_color }};
+  }
+</style>
+
+<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+<script>
+  function maison_commerce_maison_comparison_table_init() {
+    return {
+      activeTab: 'generic',
+    };
+  }
+</script>
+
+{% schema %}
+{
+  "name": "Comparison Table",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section Settings"
+    },
+    {
+      "type": "color",
+      "id": "bg_gradient_start",
+      "label": "Background Gradient Start",
+      "default": "#F1F1F9"
+    },
+    {
+      "type": "color",
+      "id": "bg_gradient_end",
+      "label": "Background Gradient End",
+      "default": "#FFFEF3"
+    },
+    {
+      "type": "range",
+      "id": "max_width_desktop",
+      "min": 600,
+      "max": 1400,
+      "step": 20,
+      "unit": "px",
+      "label": "Max Width (Desktop)",
+      "default": 800
+    },
+    {
+      "type": "range",
+      "id": "padding_top_desktop",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Top (Desktop)",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_desktop",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Bottom (Desktop)",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "padding_left_desktop",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Left (Desktop)",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_right_desktop",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Right (Desktop)",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Top (Mobile)",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Bottom (Mobile)",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "padding_left_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Left (Mobile)",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "padding_right_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Right (Mobile)",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "content_gap_desktop",
+      "min": 20,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "label": "Content Gap (Desktop)",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "content_gap_mobile",
+      "min": 16,
+      "max": 40,
+      "step": 4,
+      "unit": "px",
+      "label": "Content Gap (Mobile)",
+      "default": 20
+    },
+    {
+      "type": "header",
+      "content": "Trustpilot Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_trustpilot",
+      "label": "Show Trustpilot Rating",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "trustpilot_text",
+      "label": "Trustpilot Text",
+      "default": "Trustpilot"
+    },
+    {
+      "type": "richtext",
+      "id": "trustpilot_rating",
+      "label": "Trustpilot Rating",
+      "default": "<p>Rated <strong>4.2/5</strong> based on <strong>1,500+</strong> reviews.</p>"
+    },
+    {
+      "type": "color",
+      "id": "star_color",
+      "label": "Star Color",
+      "default": "#00B67A"
+    },
+    {
+      "type": "range",
+      "id": "trustpilot_gap",
+      "min": 8,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "label": "Trustpilot Gap",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "trustpilot_inner_gap",
+      "min": 4,
+      "max": 16,
+      "step": 2,
+      "unit": "px",
+      "label": "Trustpilot Inner Gap",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "trustpilot_brand_gap",
+      "min": 2,
+      "max": 12,
+      "step": 1,
+      "unit": "px",
+      "label": "Trustpilot Brand Gap",
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "star_gap",
+      "min": 1,
+      "max": 8,
+      "step": 1,
+      "unit": "px",
+      "label": "Star Gap",
+      "default": 2
+    },
+    {
+      "type": "range",
+      "id": "trustpilot_font_size_desktop",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Trustpilot Font Size (Desktop)",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "trustpilot_font_size_mobile",
+      "min": 10,
+      "max": 16,
+      "step": 1,
+      "unit": "px",
+      "label": "Trustpilot Font Size (Mobile)",
+      "default": 12
+    },
+    {
+      "type": "color",
+      "id": "trustpilot_text_color",
+      "label": "Trustpilot Text Color",
+      "default": "#2F3936"
+    },
+    {
+      "type": "header",
+      "content": "Heading Settings"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Not All Hair Solutions Are Created Equal"
+    },
+    {
+      "type": "range",
+      "id": "heading_font_size_desktop",
+      "min": 24,
+      "max": 48,
+      "step": 2,
+      "unit": "px",
+      "label": "Heading Font Size (Desktop)",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "heading_font_size_mobile",
+      "min": 20,
+      "max": 36,
+      "step": 2,
+      "unit": "px",
+      "label": "Heading Font Size (Mobile)",
+      "default": 24
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading Color",
+      "default": "#2F3936"
+    },
+    {
+      "type": "range",
+      "id": "heading_max_width_desktop",
+      "min": 450,
+      "max": 550,
+      "step": 1,
+      "unit": "px",
+      "label": "Heading Max Width (Desktop)",
+      "default": 542
+    },
+    {
+      "type": "range",
+      "id": "heading_max_width_mobile",
+      "min": 280,
+      "max": 400,
+      "step": 20,
+      "unit": "px",
+      "label": "Heading Max Width (Mobile)",
+      "default": 320
+    },
+    {
+      "type": "header",
+      "content": "Table Column Settings"
+    },
+    {
+      "type": "text",
+      "id": "column_1_title",
+      "label": "Column 1 Title",
+      "default": "Afsennah"
+    },
+    {
+      "type": "image_picker",
+      "id": "column_1_image",
+      "label": "Column 1 Image"
+    },
+    {
+      "type": "range",
+      "id": "column_image_width",
+      "min": 60,
+      "max": 150,
+      "step": 1,
+      "unit": "px",
+      "label": "Column Image Width",
+      "default": 118
+    },
+    {
+      "type": "range",
+      "id": "column_image_height",
+      "min": 60,
+      "max": 150,
+      "step": 1,
+      "unit": "px",
+      "label": "Column Image Height",
+      "default": 114
+    },
+    {
+      "type": "range",
+      "id": "column_image_top_offset",
+      "min": -60,
+      "max": -20,
+      "step": 2,
+      "unit": "px",
+      "label": "Column Image Top Offset",
+      "default": -32
+    },
+    {
+      "type": "text",
+      "id": "column_2_title",
+      "label": "Column 2 Title",
+      "default": "Generic Products"
+    },
+    {
+      "type": "text",
+      "id": "column_3_title",
+      "label": "Column 3 Title",
+      "default": "Medical Rx"
+    },
+    {
+      "type": "header",
+      "content": "Table Styling"
+    },
+    {
+      "type": "range",
+      "id": "table_border_radius",
+      "min": 0,
+      "max": 16,
+      "step": 2,
+      "unit": "px",
+      "label": "Table Border Radius",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "table_border_width",
+      "min": 0,
+      "max": 2,
+      "step": 1,
+      "unit": "px",
+      "label": "Table Border Width",
+      "default": 1
+    },
+    {
+      "type": "color",
+      "id": "table_border_color",
+      "label": "Table Border Color",
+      "default": "rgba(26, 54, 93, 0.07)"
+    },
+    {
+      "type": "range",
+      "id": "label_column_width",
+      "min": 180,
+      "max": 300,
+      "step": 10,
+      "unit": "px",
+      "label": "Label Column Width",
+      "default": 240
+    },
+    {
+      "type": "range",
+      "id": "label_padding_horizontal",
+      "min": 8,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "label": "Label Padding Horizontal",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "header_height",
+      "min": 80,
+      "max": 150,
+      "step": 1,
+      "unit": "px",
+      "label": "Header Height",
+      "default": 123
+    },
+    {
+      "type": "range",
+      "id": "header_padding_vertical",
+      "min": 8,
+      "max": 24,
+      "step": 2,
+      "unit": "px",
+      "label": "Header Padding Vertical",
+      "default": 18
+    },
+    {
+      "type": "range",
+      "id": "header_padding_horizontal",
+      "min": 8,
+      "max": 24,
+      "step": 2,
+      "unit": "px",
+      "label": "Header Padding Horizontal",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "header_font_size_desktop",
+      "min": 14,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Header Font Size (Desktop)",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "header_font_size_mobile",
+      "min": 12,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "label": "Header Font Size (Mobile)",
+      "default": 14
+    },
+    {
+      "type": "color",
+      "id": "header_text_color",
+      "label": "Header Text Color",
+      "default": "#2F3936"
+    },
+    {
+      "type": "color",
+      "id": "primary_column_bg_color",
+      "label": "Primary Column Background Color",
+      "default": "#1A365D"
+    },
+    {
+      "type": "color",
+      "id": "primary_column_text_color",
+      "label": "Primary Column Text Color",
+      "default": "#FFFFFE"
+    },
+    {
+      "type": "color",
+      "id": "primary_column_border_color",
+      "label": "Primary Column Border Color",
+      "default": "rgba(255, 255, 255, 0.15)"
+    },
+    {
+      "type": "color",
+      "id": "secondary_column_text_color",
+      "label": "Secondary Column Text Color",
+      "default": "#1A365D"
+    },
+    {
+      "type": "range",
+      "id": "cell_height",
+      "min": 50,
+      "max": 80,
+      "step": 1,
+      "unit": "px",
+      "label": "Cell Height",
+      "default": 65
+    },
+    {
+      "type": "range",
+      "id": "cell_padding_vertical",
+      "min": 4,
+      "max": 16,
+      "step": 2,
+      "unit": "px",
+      "label": "Cell Padding Vertical",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "cell_padding_horizontal",
+      "min": 4,
+      "max": 16,
+      "step": 2,
+      "unit": "px",
+      "label": "Cell Padding Horizontal",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "label_font_size_desktop",
+      "min": 14,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Label Font Size (Desktop)",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "label_font_size_mobile",
+      "min": 12,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "label": "Label Font Size (Mobile)",
+      "default": 14
+    },
+    {
+      "type": "color",
+      "id": "label_text_color",
+      "label": "Label Text Color",
+      "default": "#2F3936"
+    },
+    {
+      "type": "range",
+      "id": "value_font_size_desktop",
+      "min": 14,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Value Font Size (Desktop)",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "value_font_size_mobile",
+      "min": 12,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "label": "Value Font Size (Mobile)",
+      "default": 14
+    },
+    {
+      "type": "header",
+      "content": "Icon Settings"
+    },
+    {
+      "type": "range",
+      "id": "icon_size",
+      "min": 16,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "label": "Icon Size",
+      "default": 24
+    },
+    {
+      "type": "color",
+      "id": "icon_color",
+      "label": "Icon Color",
+      "default": "#1A365D"
+    },
+    {
+      "type": "color",
+      "id": "icon_bg_color",
+      "label": "Icon Background Color",
+      "default": "#E7EAEE"
+    },
+    {
+      "type": "header",
+      "content": "Mobile Tab Settings"
+    },
+    {
+      "type": "range",
+      "id": "tab_padding",
+      "min": 2,
+      "max": 8,
+      "step": 1,
+      "unit": "px",
+      "label": "Tab Container Padding",
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "tab_gap",
+      "min": 0,
+      "max": 8,
+      "step": 1,
+      "unit": "px",
+      "label": "Tab Gap",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "tab_border_radius",
+      "min": 899,
+      "max": 999,
+      "step": 1,
+      "unit": "px",
+      "label": "Tab Border Radius",
+      "default": 999
+    },
+    {
+      "type": "range",
+      "id": "tab_button_padding_vertical",
+      "min": 6,
+      "max": 16,
+      "step": 1,
+      "unit": "px",
+      "label": "Tab Button Padding Vertical",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "tab_button_padding_horizontal",
+      "min": 8,
+      "max": 24,
+      "step": 2,
+      "unit": "px",
+      "label": "Tab Button Padding Horizontal",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "tab_font_size",
+      "min": 12,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "label": "Tab Font Size",
+      "default": 14
+    },
+    {
+      "type": "color",
+      "id": "tab_text_color",
+      "label": "Tab Text Color",
+      "default": "#2F3936"
+    },
+    {
+      "type": "color",
+      "id": "tab_active_bg_color",
+      "label": "Tab Active Background Color",
+      "default": "#FBF7BD"
+    },
+    {
+      "type": "color",
+      "id": "tab_active_text_color",
+      "label": "Tab Active Text Color",
+      "default": "#1A365D"
+    },
+    {
+      "type": "header",
+      "content": "CTA Button Settings"
+    },
+    {
+      "type": "text",
+      "id": "cta_text",
+      "label": "CTA Button Text",
+      "default": "Take hair quiz"
+    },
+    {
+      "type": "url",
+      "id": "cta_link",
+      "label": "CTA Button Link"
+    },
+    {
+      "type": "range",
+      "id": "cta_max_width",
+      "min": 300,
+      "max": 600,
+      "step": 20,
+      "unit": "px",
+      "label": "CTA Max Width",
+      "default": 480
+    },
+    {
+      "type": "range",
+      "id": "cta_padding_vertical",
+      "min": 12,
+      "max": 24,
+      "step": 2,
+      "unit": "px",
+      "label": "CTA Padding Vertical",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "cta_padding_horizontal",
+      "min": 24,
+      "max": 48,
+      "step": 4,
+      "unit": "px",
+      "label": "CTA Padding Horizontal",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "cta_border_radius",
+      "min": 8,
+      "max": 16,
+      "step": 2,
+      "unit": "px",
+      "label": "CTA Border Radius",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "cta_font_size_desktop",
+      "min": 14,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "CTA Font Size (Desktop)",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "cta_font_size_mobile",
+      "min": 12,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "label": "CTA Font Size (Mobile)",
+      "default": 14
+    },
+    {
+      "type": "color",
+      "id": "cta_bg_color",
+      "label": "CTA Background Color",
+      "default": "#FBF7BD"
+    },
+    {
+      "type": "color",
+      "id": "cta_text_color",
+      "label": "CTA Text Color",
+      "default": "#1A365D"
+    },
+    {
+      "type": "range",
+      "id": "cta_icon_size",
+      "min": 16,
+      "max": 28,
+      "step": 2,
+      "unit": "px",
+      "label": "CTA Icon Size",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "cta_icon_gap",
+      "min": 8,
+      "max": 16,
+      "step": 2,
+      "unit": "px",
+      "label": "CTA Icon Gap",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "cta_badges_gap",
+      "min": 12,
+      "max": 24,
+      "step": 2,
+      "unit": "px",
+      "label": "CTA to Badges Gap",
+      "default": 16
+    },
+    {
+      "type": "header",
+      "content": "Badge Settings"
+    },
+    {
+      "type": "range",
+      "id": "badge_gap_horizontal",
+      "min": 8,
+      "max": 24,
+      "step": 2,
+      "unit": "px",
+      "label": "Badge Gap Horizontal",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "badge_gap_vertical",
+      "min": 24,
+      "max": 48,
+      "step": 4,
+      "unit": "px",
+      "label": "Badge Gap Vertical",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "badge_icon_gap",
+      "min": 2,
+      "max": 8,
+      "step": 1,
+      "unit": "px",
+      "label": "Badge Icon Gap",
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "badge_font_size",
+      "min": 10,
+      "max": 16,
+      "step": 1,
+      "unit": "px",
+      "label": "Badge Font Size",
+      "default": 12
+    },
+    {
+      "type": "color",
+      "id": "badge_text_color",
+      "label": "Badge Text Color",
+      "default": "#232323"
+    },
+    {
+      "type": "range",
+      "id": "badge_icon_size",
+      "min": 12,
+      "max": 20,
+      "step": 2,
+      "unit": "px",
+      "label": "Badge Icon Size",
+      "default": 16
+    },
+    {
+      "type": "color",
+      "id": "badge_icon_color",
+      "label": "Badge Icon Color",
+      "default": "#232323"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "comparison_row",
+      "name": "Comparison Row",
+      "settings": [
+        {
+          "type": "text",
+          "id": "row_label",
+          "label": "Row Label",
+          "default": "Customization"
+        },
+        {
+          "type": "header",
+          "content": "Column 1 (Primary)"
+        },
+        {
+          "type": "select",
+          "id": "column_1_value_type",
+          "label": "Value Type",
+          "options": [
+            {
+              "value": "checkmark",
+              "label": "Checkmark"
+            },
+            {
+              "value": "x",
+              "label": "X"
+            },
+            {
+              "value": "text",
+              "label": "Text"
+            }
+          ],
+          "default": "checkmark"
+        },
+        {
+          "type": "text",
+          "id": "column_1_text",
+          "label": "Text Value",
+          "default": "$75.00"
+        },
+        {
+          "type": "header",
+          "content": "Column 2 (Generic Products)"
+        },
+        {
+          "type": "select",
+          "id": "column_2_value_type",
+          "label": "Value Type",
+          "options": [
+            {
+              "value": "checkmark",
+              "label": "Checkmark"
+            },
+            {
+              "value": "x",
+              "label": "X"
+            },
+            {
+              "value": "text",
+              "label": "Text"
+            }
+          ],
+          "default": "x"
+        },
+        {
+          "type": "text",
+          "id": "column_2_text",
+          "label": "Text Value",
+          "default": "$45"
+        },
+        {
+          "type": "header",
+          "content": "Column 3 (Medical Rx)"
+        },
+        {
+          "type": "select",
+          "id": "column_3_value_type",
+          "label": "Value Type",
+          "options": [
+            {
+              "value": "checkmark",
+              "label": "Checkmark"
+            },
+            {
+              "value": "x",
+              "label": "X"
+            },
+            {
+              "value": "text",
+              "label": "Text"
+            }
+          ],
+          "default": "x"
+        },
+        {
+          "type": "text",
+          "id": "column_3_text",
+          "label": "Text Value",
+          "default": "$1200+"
+        }
+      ]
+    },
+    {
+      "type": "badge",
+      "name": "Badge",
+      "settings": [
+        {
+          "type": "text",
+          "id": "badge_text",
+          "label": "Badge Text",
+          "default": "Trichologist-Developed"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Comparison Table",
+      "blocks": [
+        {
+          "type": "comparison_row",
+          "settings": {
+            "row_label": "Customization",
+            "column_1_value_type": "checkmark",
+            "column_2_value_type": "x",
+            "column_3_value_type": "x"
+          }
+        },
+        {
+          "type": "comparison_row",
+          "settings": {
+            "row_label": "Expert-Developed",
+            "column_1_value_type": "checkmark",
+            "column_2_value_type": "x",
+            "column_3_value_type": "checkmark"
+          }
+        },
+        {
+          "type": "comparison_row",
+          "settings": {
+            "row_label": "Natural Ingredients",
+            "column_1_value_type": "checkmark",
+            "column_2_value_type": "text",
+            "column_2_text": "Some",
+            "column_3_value_type": "x"
+          }
+        },
+        {
+          "type": "comparison_row",
+          "settings": {
+            "row_label": "Sensitive Scalp Safe",
+            "column_1_value_type": "checkmark",
+            "column_2_value_type": "x",
+            "column_3_value_type": "x"
+          }
+        },
+        {
+          "type": "comparison_row",
+          "settings": {
+            "row_label": "Price Point",
+            "column_1_value_type": "text",
+            "column_1_text": "$75.00",
+            "column_2_value_type": "text",
+            "column_2_text": "$45",
+            "column_3_value_type": "text",
+            "column_3_text": "$1200+"
+          }
+        },
+        {
+          "type": "comparison_row",
+          "settings": {
+            "row_label": "Results Timeline",
+            "column_1_value_type": "text",
+            "column_1_text": "8-12 weeks",
+            "column_2_value_type": "text",
+            "column_2_text": "Unclear",
+            "column_3_value_type": "x"
+          }
+        },
+        {
+          "type": "badge",
+          "settings": {
+            "badge_text": "Trichologist-Developed"
+          }
+        },
+        {
+          "type": "badge",
+          "settings": {
+            "badge_text": "Clean Ingredients"
+          }
+        },
+        {
+          "type": "badge",
+          "settings": {
+            "badge_text": "Cruelty-Free"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
+
