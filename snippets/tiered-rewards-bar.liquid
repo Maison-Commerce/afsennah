@@ -134,12 +134,14 @@
         {%- liquid
           assign free_shipping_cents = free_shipping_threshold | times: 100
         -%}
-        <span class="tiered-rewards-bar__marker-image" data-index="0">
-          <span class="tiered-rewards-bar__marker-icon">
-            {% render 'icon', icon: 'truck', size: 'small' %}
-          </span>
-          <span class="tiered-rewards-bar__marker-price" data-price-dollars="{{ free_shipping_threshold }}">{{ free_shipping_cents | money_without_trailing_zeros }}</span>
-        </span>
+        <div class="marker-wrapper">
+            <span class="tiered-rewards-bar__marker-image" data-index="0">
+            <span class="tiered-rewards-bar__marker-icon">
+                {% render 'icon', icon: 'truck', size: 'small' %}
+            </span>
+            <span class="tiered-rewards-bar__marker-price" data-price-dollars="{{ free_shipping_threshold }}">{{ free_shipping_cents | money_without_trailing_zeros }}</span>
+            </span>
+        </div>
         
         {%- comment -%} Tier 1 Marker {%- endcomment -%}
         {%- if section.settings.gift_tier_1_label != blank -%}
