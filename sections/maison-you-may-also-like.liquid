@@ -708,7 +708,7 @@
       const prevButton = swiperContainer.closest('.maison_commerce_maison_you_may_also_like__container').querySelector('.maison_commerce_maison_you_may_also_like__nav-button--prev');
       const nextButton = swiperContainer.closest('.maison_commerce_maison_you_may_also_like__container').querySelector('.maison_commerce_maison_you_may_also_like__nav-button--next');
       
-      const swiper = new Swiper(swiperContainer, {
+      const swiperMay = new Swiper(swiperContainer, {
         slidesPerView: 'auto',
         spaceBetween: {{ section.settings.slide_gap_desktop }}px,
         loop: {{ section.settings.enable_loop }},
