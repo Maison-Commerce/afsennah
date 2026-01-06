@@ -30,7 +30,7 @@
   assign next_tier_label = false
   if cart_total_dollars < free_shipping_threshold
     assign next_tier_amount = free_shipping_threshold | minus: cart_total_dollars
-    assign next_tier_label = 'Free shipping'
+    assign next_tier_label = section.settings.free_shipping_label | default: 'Free shipping'
   elsif cart_total_dollars < tier_1_threshold
     assign next_tier_amount = tier_1_threshold | minus: cart_total_dollars
     assign next_tier_label = section.settings.gift_tier_1_label
@@ -137,7 +137,7 @@
                 {% render 'icon', icon: 'truck', size: 'small' %}
             </span>
             <span class="tiered-rewards-bar__marker-price" data-price-dollars="{{ free_shipping_threshold }}">
-                Free shipping</span>
+                {{ section.settings.free_shipping_label | default: 'Free shipping' }}</span>
             </span>
         </div>
         
