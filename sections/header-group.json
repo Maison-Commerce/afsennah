@@ -1,1 +1,173 @@
-{"type":"header","name":"Header Group","sections":{"announcement-bar":{"type":"announcement-bar","blocks":{"e33df8e3-c667-49c7-9da7-a23fac96c44d":{"type":"announcement","settings":{"text":"WINTERSALE STARTED | 25% SALE SITEWIDE!","show_countdown":false,"hide_on_end":false,"end_date":"","end_time":"","number_font":"base","countdown_separator":"box","use_custom_colors":false,"bg_color":"#d9daf4","bg_gradient":"","text_color":"#102b26"}}},"block_order":["e33df8e3-c667-49c7-9da7-a23fac96c44d"],"custom_css":[],"settings":{"message_font_size":12,"announcement_bar_col":"#d9daf4","announcement_bar_gradient":"","announcement_text_col":"#102b26","show_social_icons":false,"menu":"","enable_country_selector":true,"enable_language_selector":true}},"header":{"type":"header","settings":{"logo":"shopify:\/\/shop_images\/Afsennah_Logo.png","logo_img_width_int":120,"mobile_logo_img_width_int":135,"logo_h1":true,"enable_sticky":true,"enable_transparent":false,"transparent_logo":"shopify:\/\/shop_images\/Afsennah_Logo_White.png","transparent_color":"#ffffff","transparent_fade":"#000000","transparent_fade_strength":25,"menu_linklist":"main-menu","menu_layout":"inline-menu-left","nav_featured_link":"Sale","menu_linklist_mobile":"main-menu","mobile_expand_with_entire_link":true,"enable_mobile_promo_carousel":true,"enable_nav_mob_products":true,"nav_mob_products_title":"Best Sellers","nav_mob_products_collection":"best-sellers","enable_search":true,"search_recommendations_title":"Explore","search_recommendations_menu":"search-menu","icon_strategy":"icons_only","cart_icon":"bag"}},"store-messages":{"type":"store-messages","blocks":{"message_ey38Gx":{"type":"message","settings":{"heading":"Store message","subheading":"Add important information here","link_url":""}}},"block_order":["message_ey38Gx"],"disabled":true,"settings":{"head_not_home_only":false,"head_not_col_bg":"#f4f6f8","head_not_col_txt1":"#171717","head_not_col_txt2":"#4c4c4b","head_not_mob_show":false,"head_not_mob_text":"Free shipping on orders over $50","head_not_mob_url":""}}},"order":["announcement-bar","header","store-messages"]}
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "type": "header",
+  "name": "Header Group",
+  "sections": {
+    "announcement-bar": {
+      "type": "announcement-bar",
+      "blocks": {
+        "e33df8e3-c667-49c7-9da7-a23fac96c44d": {
+          "type": "announcement",
+          "settings": {
+            "text": "WINTERSALE STARTED | 25% SALE SITEWIDE!",
+            "show_countdown": false,
+            "hide_on_end": false,
+            "end_date": "",
+            "end_time": "",
+            "number_font": "base",
+            "countdown_separator": "box",
+            "use_custom_colors": false,
+            "bg_color": "#d9daf4",
+            "bg_gradient": "",
+            "text_color": "#102b26"
+          }
+        }
+      },
+      "block_order": [
+        "e33df8e3-c667-49c7-9da7-a23fac96c44d"
+      ],
+      "custom_css": [],
+      "settings": {
+        "message_font_size": 12,
+        "announcement_bar_col": "#d9daf4",
+        "announcement_bar_gradient": "",
+        "announcement_text_col": "#102b26",
+        "show_social_icons": false,
+        "menu": "",
+        "enable_country_selector": true,
+        "enable_language_selector": true
+      }
+    },
+    "header": {
+      "type": "header",
+      "settings": {
+        "logo": "shopify://shop_images/Afsennah_Logo.png",
+        "logo_img_width_int": 120,
+        "mobile_logo_img_width_int": 135,
+        "logo_h1": true,
+        "enable_sticky": true,
+        "enable_transparent": false,
+        "transparent_logo": "shopify://shop_images/Afsennah_Logo_White.png",
+        "transparent_color": "#ffffff",
+        "transparent_fade": "#000000",
+        "transparent_fade_strength": 25,
+        "menu_linklist": "main-menu",
+        "menu_layout": "inline-menu-left",
+        "nav_featured_link": "Sale",
+        "menu_linklist_mobile": "main-menu",
+        "mobile_expand_with_entire_link": true,
+        "enable_mobile_promo_carousel": true,
+        "enable_nav_mob_products": true,
+        "nav_mob_products_title": "Best Sellers",
+        "nav_mob_products_collection": "best-sellers",
+        "enable_search": true,
+        "search_recommendations_title": "Explore",
+        "search_recommendations_menu": "search-menu",
+        "icon_strategy": "icons_only",
+        "cart_icon": "bag"
+      }
+    },
+    "maison_header_announcement_bar_RXLh4F": {
+      "type": "maison-header-announcement-bar",
+      "blocks": {
+        "announcement_ffTUfA": {
+          "type": "announcement",
+          "settings": {
+            "text": "Carbon neutral"
+          }
+        },
+        "announcement_KipELF": {
+          "type": "announcement",
+          "settings": {
+            "text": "Mineral oils cruelty-free"
+          }
+        },
+        "announcement_etEh4w": {
+          "type": "announcement",
+          "settings": {
+            "text": "Phthalate free"
+          }
+        },
+        "announcement_dNBiqK": {
+          "type": "announcement",
+          "settings": {
+            "text": "Sulfate free"
+          }
+        }
+      },
+      "block_order": [
+        "announcement_ffTUfA",
+        "announcement_KipELF",
+        "announcement_etEh4w",
+        "announcement_dNBiqK"
+      ],
+      "name": "Maison Announcement Bar",
+      "settings": {
+        "bg_color": "#EBEBF6",
+        "border_color": "#E0E0F1",
+        "max_width": 1600,
+        "alignment": "space-between",
+        "padding_top_desktop": 4,
+        "padding_bottom_desktop": 4,
+        "padding_left_desktop": 80,
+        "padding_right_desktop": 80,
+        "padding_top_mobile": 4,
+        "padding_bottom_mobile": 4,
+        "padding_left_mobile": 20,
+        "padding_right_mobile": 20,
+        "item_gap_desktop": 0,
+        "icon_text_gap": 8,
+        "icon_bg_color": "#FFFFFF",
+        "icon_border_radius": 90,
+        "icon_size": 16,
+        "icon_inner_size": 10,
+        "text_font_size_desktop": 14,
+        "text_font_size_mobile": 14,
+        "text_color": "#1A365D",
+        "divider_width": 1,
+        "divider_height": 13,
+        "divider_color": "#CCCCE8"
+      }
+    },
+    "store-messages": {
+      "type": "store-messages",
+      "blocks": {
+        "message_ey38Gx": {
+          "type": "message",
+          "settings": {
+            "heading": "Store message",
+            "subheading": "Add important information here",
+            "link_url": ""
+          }
+        }
+      },
+      "block_order": [
+        "message_ey38Gx"
+      ],
+      "disabled": true,
+      "settings": {
+        "head_not_home_only": false,
+        "head_not_col_bg": "#f4f6f8",
+        "head_not_col_txt1": "#171717",
+        "head_not_col_txt2": "#4c4c4b",
+        "head_not_mob_show": false,
+        "head_not_mob_text": "Free shipping on orders over $50",
+        "head_not_mob_url": ""
+      }
+    }
+  },
+  "order": [
+    "announcement-bar",
+    "header",
+    "maison_header_announcement_bar_RXLh4F",
+    "store-messages"
+  ]
+}
