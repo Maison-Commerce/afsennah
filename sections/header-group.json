@@ -142,7 +142,7 @@
         "nav_padding_horizontal": 12,
         "nav_border_radius": 16,
         "shop_all_text": "Shop All",
-        "shop_all_link": "",
+        "shop_all_link": "shopify://collections",
         "quiz_button_text": "Hair Quiz",
         "quiz_button_url": "#",
         "quiz_button_bg_color": "#fffbc0",
