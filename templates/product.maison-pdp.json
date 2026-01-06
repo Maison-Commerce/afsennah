@@ -920,6 +920,206 @@
         "quote_author_box_color": "#f1f1f9"
       }
     },
+    "maison_comparison_table_a69XPw": {
+      "type": "maison-comparison-table",
+      "blocks": {
+        "comparison_row_XU3gTn": {
+          "type": "comparison_row",
+          "settings": {
+            "row_label": "Customization",
+            "column_1_value_type": "checkmark",
+            "column_1_text": "$75.00",
+            "column_2_value_type": "x",
+            "column_2_text": "$45",
+            "column_3_value_type": "x",
+            "column_3_text": "$1200+"
+          }
+        },
+        "comparison_row_4RbNLe": {
+          "type": "comparison_row",
+          "settings": {
+            "row_label": "Expert-Developed",
+            "column_1_value_type": "checkmark",
+            "column_1_text": "$75.00",
+            "column_2_value_type": "x",
+            "column_2_text": "$45",
+            "column_3_value_type": "checkmark",
+            "column_3_text": "$1200+"
+          }
+        },
+        "comparison_row_mU8z9K": {
+          "type": "comparison_row",
+          "settings": {
+            "row_label": "Natural Ingredients",
+            "column_1_value_type": "checkmark",
+            "column_1_text": "$75.00",
+            "column_2_value_type": "text",
+            "column_2_text": "Some",
+            "column_3_value_type": "x",
+            "column_3_text": "$1200+"
+          }
+        },
+        "comparison_row_CHmPRP": {
+          "type": "comparison_row",
+          "settings": {
+            "row_label": "Sensitive Scalp Safe",
+            "column_1_value_type": "checkmark",
+            "column_1_text": "$75.00",
+            "column_2_value_type": "x",
+            "column_2_text": "$45",
+            "column_3_value_type": "x",
+            "column_3_text": "$1200+"
+          }
+        },
+        "comparison_row_PwQAzz": {
+          "type": "comparison_row",
+          "settings": {
+            "row_label": "Price Point",
+            "column_1_value_type": "text",
+            "column_1_text": "$75.00",
+            "column_2_value_type": "text",
+            "column_2_text": "$45",
+            "column_3_value_type": "text",
+            "column_3_text": "$1200+"
+          }
+        },
+        "comparison_row_igKxjB": {
+          "type": "comparison_row",
+          "settings": {
+            "row_label": "Results Timeline",
+            "column_1_value_type": "text",
+            "column_1_text": "8-12 weeks",
+            "column_2_value_type": "text",
+            "column_2_text": "Unclear",
+            "column_3_value_type": "x",
+            "column_3_text": "$1200+"
+          }
+        },
+        "badge_RPW7nw": {
+          "type": "badge",
+          "settings": {
+            "badge_text": "Trichologist-Developed"
+          }
+        },
+        "badge_yWf7HR": {
+          "type": "badge",
+          "settings": {
+            "badge_text": "Clean Ingredients"
+          }
+        },
+        "badge_DKjAUm": {
+          "type": "badge",
+          "settings": {
+            "badge_text": "Cruelty-Free"
+          }
+        }
+      },
+      "block_order": [
+        "comparison_row_XU3gTn",
+        "comparison_row_4RbNLe",
+        "comparison_row_mU8z9K",
+        "comparison_row_CHmPRP",
+        "comparison_row_PwQAzz",
+        "comparison_row_igKxjB",
+        "badge_RPW7nw",
+        "badge_yWf7HR",
+        "badge_DKjAUm"
+      ],
+      "name": "Comparison Table",
+      "settings": {
+        "bg_gradient_start": "#F1F1F9",
+        "bg_gradient_end": "#FFFEF3",
+        "max_width_desktop": 800,
+        "padding_top_desktop": 60,
+        "padding_bottom_desktop": 60,
+        "padding_left_desktop": 40,
+        "padding_right_desktop": 40,
+        "padding_top_mobile": 32,
+        "padding_bottom_mobile": 32,
+        "padding_left_mobile": 20,
+        "padding_right_mobile": 20,
+        "content_gap_desktop": 40,
+        "content_gap_mobile": 20,
+        "show_trustpilot": true,
+        "trustpilot_text": "Trustpilot",
+        "trustpilot_rating": "<p>Rated <strong>4.2/5</strong> based on <strong>1,500+</strong> reviews.</p>",
+        "star_color": "#00B67A",
+        "trustpilot_gap": 16,
+        "trustpilot_inner_gap": 8,
+        "trustpilot_brand_gap": 4,
+        "star_gap": 2,
+        "trustpilot_font_size_desktop": 14,
+        "trustpilot_font_size_mobile": 12,
+        "trustpilot_text_color": "#2F3936",
+        "heading": "Not All Hair Solutions Are Created Equal",
+        "heading_font_size_desktop": 32,
+        "heading_font_size_mobile": 24,
+        "heading_color": "#2F3936",
+        "heading_max_width_desktop": 542,
+        "heading_max_width_mobile": 320,
+        "column_1_title": "Afsennah",
+        "column_image_width": 118,
+        "column_image_height": 114,
+        "column_image_top_offset": -32,
+        "column_2_title": "Generic Products",
+        "column_3_title": "Medical Rx",
+        "table_border_radius": 8,
+        "table_border_width": 1,
+        "table_border_color": "rgba(26, 54, 93, 0.07)",
+        "label_column_width": 240,
+        "label_padding_horizontal": 24,
+        "header_height": 123,
+        "header_padding_vertical": 18,
+        "header_padding_horizontal": 16,
+        "header_font_size_desktop": 16,
+        "header_font_size_mobile": 14,
+        "header_text_color": "#2F3936",
+        "primary_column_bg_color": "#1A365D",
+        "primary_column_text_color": "#FFFFFE",
+        "primary_column_border_color": "rgba(255, 255, 255, 0.15)",
+        "secondary_column_text_color": "#1A365D",
+        "cell_height": 65,
+        "cell_padding_vertical": 8,
+        "cell_padding_horizontal": 8,
+        "label_font_size_desktop": 16,
+        "label_font_size_mobile": 14,
+        "label_text_color": "#2F3936",
+        "value_font_size_desktop": 16,
+        "value_font_size_mobile": 14,
+        "icon_size": 24,
+        "icon_color": "#1A365D",
+        "icon_bg_color": "#E7EAEE",
+        "tab_padding": 4,
+        "tab_gap": 0,
+        "tab_border_radius": 999,
+        "tab_button_padding_vertical": 8,
+        "tab_button_padding_horizontal": 12,
+        "tab_font_size": 14,
+        "tab_text_color": "#2F3936",
+        "tab_active_bg_color": "#FBF7BD",
+        "tab_active_text_color": "#1A365D",
+        "cta_text": "Take hair quiz",
+        "cta_link": "",
+        "cta_max_width": 480,
+        "cta_padding_vertical": 16,
+        "cta_padding_horizontal": 32,
+        "cta_border_radius": 12,
+        "cta_font_size_desktop": 16,
+        "cta_font_size_mobile": 14,
+        "cta_bg_color": "#FBF7BD",
+        "cta_text_color": "#1A365D",
+        "cta_icon_size": 24,
+        "cta_icon_gap": 12,
+        "cta_badges_gap": 16,
+        "badge_gap_horizontal": 12,
+        "badge_gap_vertical": 32,
+        "badge_icon_gap": 4,
+        "badge_font_size": 12,
+        "badge_text_color": "#232323",
+        "badge_icon_size": 16,
+        "badge_icon_color": "#232323"
+      }
+    },
     "maison_you_may_also_like_qdari9": {
       "type": "maison-you-may-also-like",
       "name": "You May Also Like",
@@ -1269,6 +1469,7 @@
     "maison_testimonials_cwniN7",
     "maison_how_to_use_AcH7wL",
     "maison_content_blocks_8T9hwn",
+    "maison_comparison_table_a69XPw",
     "maison_you_may_also_like_qdari9",
     "maison_instagram_scroll_CpxWXq",
     "maison_faq_gfc3hN",
