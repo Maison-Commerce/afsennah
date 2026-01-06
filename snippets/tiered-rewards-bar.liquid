@@ -148,20 +148,22 @@
           {%- liquid
             assign tier_1_cents = tier_1_threshold | times: 100
           -%}
-          <span class="tiered-rewards-bar__marker-image{% if tier_1_achieved %} active{% endif %}" data-index="1">
-            {%- if section.settings.gift_tier_1_image != blank -%}
-              {%- liquid
-                assign icon_sizes = '40px'
-                assign icon_widths = '40, 80'
-                render 'image', image: section.settings.gift_tier_1_image, sizes: icon_sizes, widths: icon_widths
-              -%}
-            {%- else -%}
-              <span class="tiered-rewards-bar__marker-icon">
-                {% render 'icon', icon: 'gift', size: 'small' %}
-              </span>
-            {%- endif -%}
-            <span class="tiered-rewards-bar__marker-price" data-price-dollars="{{ tier_1_threshold }}">{{ tier_1_cents | money_without_trailing_zeros }}</span>
-          </span>
+          <div class="marker-wrapper">
+            <span class="tiered-rewards-bar__marker-image{% if tier_1_achieved %} active{% endif %}" data-index="1">
+                {%- if section.settings.gift_tier_1_image != blank -%}
+                {%- liquid
+                    assign icon_sizes = '40px'
+                    assign icon_widths = '40, 80'
+                    render 'image', image: section.settings.gift_tier_1_image, sizes: icon_sizes, widths: icon_widths
+                -%}
+                {%- else -%}
+                <span class="tiered-rewards-bar__marker-icon">
+                    {% render 'icon', icon: 'gift', size: 'small' %}
+                </span>
+                {%- endif -%}
+                <span class="tiered-rewards-bar__marker-price" data-price-dollars="{{ tier_1_threshold }}">{{ tier_1_cents | money_without_trailing_zeros }}</span>
+            </span>
+            </div>
         {%- endif -%}
         
         {%- comment -%} Tier 2 Marker {%- endcomment -%}
@@ -169,6 +171,7 @@
           {%- liquid
             assign tier_2_cents = tier_2_threshold | times: 100
           -%}
+          <div class="marker-wrapper">
           <span class="tiered-rewards-bar__marker-image{% if tier_2_achieved %} active{% endif %}" data-index="2">
             {%- if section.settings.gift_tier_2_image != blank -%}
               {%- liquid
@@ -183,6 +186,7 @@
             {%- endif -%}
             <span class="tiered-rewards-bar__marker-price" data-price-dollars="{{ tier_2_threshold }}">{{ tier_2_cents | money_without_trailing_zeros }}</span>
           </span>
+        </div>
         {%- endif -%}
         
         {%- comment -%} Tier 3 Marker {%- endcomment -%}
@@ -190,6 +194,7 @@
           {%- liquid
             assign tier_3_cents = tier_3_threshold | times: 100
           -%}
+          <div class="marker-wrapper">
           <span class="tiered-rewards-bar__marker-image{% if tier_3_achieved %} active{% endif %}" data-index="3">
             {%- if section.settings.gift_tier_3_image != blank -%}
               {%- liquid
@@ -204,6 +209,7 @@
             {%- endif -%}
             <span class="tiered-rewards-bar__marker-price" data-price-dollars="{{ tier_3_threshold }}">{{ tier_3_cents | money_without_trailing_zeros }}</span>
           </span>
+          </div>
         {%- endif -%}
       </div>
     </div>
