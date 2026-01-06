@@ -1,0 +1,434 @@
+<div class="maison_commerce_maison_header_announcement_bar">
+  <div class="maison_commerce_maison_header_announcement_bar__container">
+    {% for block in section.blocks %}
+      {% if block.type == 'announcement' %}
+        <div class="maison_commerce_maison_header_announcement_bar__item" {{ block.shopify_attributes }}>
+          <div class="maison_commerce_maison_header_announcement_bar__icon-wrapper">
+            <svg class="maison_commerce_maison_header_announcement_bar__icon" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M3 8L6 11L13 4" stroke="#1A365D" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          {% if block.settings.text != blank %}
+            <p class="maison_commerce_maison_header_announcement_bar__text">
+              {{ block.settings.text }}
+            </p>
+          {% endif %}
+        </div>
+        {% unless forloop.last %}
+          <div class="maison_commerce_maison_header_announcement_bar__divider"></div>
+        {% endunless %}
+      {% endif %}
+    {% endfor %}
+  </div>
+</div>
+
+<style>
+  #shopify-section-{{ section.id }} {
+    padding: 0;
+  }
+
+  /* Announcement Bar Container */
+  .maison_commerce_maison_header_announcement_bar {
+    background-color: {{ section.settings.bg_color }};
+    border-bottom: 1px solid {{ section.settings.border_color }};
+    padding-top: {{ section.settings.padding_top_desktop }}px;
+    padding-bottom: {{ section.settings.padding_bottom_desktop }}px;
+    padding-left: {{ section.settings.padding_left_desktop }}px;
+    padding-right: {{ section.settings.padding_right_desktop }}px;
+  }
+
+  @media (max-width: 768px) {
+    .maison_commerce_maison_header_announcement_bar {
+      padding-top: {{ section.settings.padding_top_mobile }}px;
+      padding-bottom: {{ section.settings.padding_bottom_mobile }}px;
+      padding-left: {{ section.settings.padding_left_mobile }}px;
+      padding-right: {{ section.settings.padding_right_mobile }}px;
+    }
+  }
+
+  /* Container */
+  .maison_commerce_maison_header_announcement_bar__container {
+    max-width: {{ section.settings.max_width }}px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: {{ section.settings.alignment }};
+    gap: {{ section.settings.item_gap_desktop }}px;
+    flex-wrap: wrap;
+  }
+
+  @media (max-width: 768px) {
+    .maison_commerce_maison_header_announcement_bar__container {
+      justify-content: center;
+      gap: 0;
+    }
+  }
+
+  /* Announcement Item */
+  .maison_commerce_maison_header_announcement_bar__item {
+    display: flex;
+    align-items: center;
+    gap: {{ section.settings.icon_text_gap }}px;
+    flex-shrink: 0;
+  }
+
+  @media (max-width: 768px) {
+    .maison_commerce_maison_header_announcement_bar__item:not(:first-child) {
+      display: none;
+    }
+  }
+
+  /* Icon Wrapper */
+  .maison_commerce_maison_header_announcement_bar__icon-wrapper {
+    background-color: {{ section.settings.icon_bg_color }};
+    border-radius: {{ section.settings.icon_border_radius }}px;
+    width: {{ section.settings.icon_size }}px;
+    height: {{ section.settings.icon_size }}px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  /* Icon */
+  .maison_commerce_maison_header_announcement_bar__icon {
+    width: {{ section.settings.icon_inner_size }}px;
+    height: {{ section.settings.icon_inner_size }}px;
+    flex-shrink: 0;
+  }
+
+  /* Text */
+  .maison_commerce_maison_header_announcement_bar__text {
+    font-family: 'Gotham', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    font-size: {{ section.settings.text_font_size_desktop }}px;
+    font-weight: 400;
+    line-height: 1.5;
+    color: {{ section.settings.text_color }};
+    margin: 0;
+    white-space: nowrap;
+  }
+
+  @media (max-width: 768px) {
+    .maison_commerce_maison_header_announcement_bar__text {
+      font-size: {{ section.settings.text_font_size_mobile }}px;
+    }
+  }
+
+  /* Divider */
+  .maison_commerce_maison_header_announcement_bar__divider {
+    width: {{ section.settings.divider_width }}px;
+    height: {{ section.settings.divider_height }}px;
+    background-color: {{ section.settings.divider_color }};
+    flex-shrink: 0;
+  }
+
+  @media (max-width: 768px) {
+    .maison_commerce_maison_header_announcement_bar__divider {
+      display: none;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Maison Announcement Bar",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section Settings"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#EBEBF6"
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Border Color",
+      "default": "#E0E0F1"
+    },
+    {
+      "type": "range",
+      "id": "max_width",
+      "min": 800,
+      "max": 1600,
+      "step": 20,
+      "unit": "px",
+      "label": "Max Width",
+      "default": 1600
+    },
+    {
+      "type": "select",
+      "id": "alignment",
+      "label": "Alignment",
+      "options": [
+        {
+          "value": "flex-start",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "flex-end",
+          "label": "Right"
+        },
+        {
+          "value": "space-between",
+          "label": "Space Between"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "range",
+      "id": "padding_top_desktop",
+      "min": 0,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Top (Desktop)",
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_desktop",
+      "min": 0,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Bottom (Desktop)",
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "padding_left_desktop",
+      "min": 0,
+      "max": 200,
+      "step": 5,
+      "unit": "px",
+      "label": "Padding Left (Desktop)",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_right_desktop",
+      "min": 0,
+      "max": 200,
+      "step": 5,
+      "unit": "px",
+      "label": "Padding Right (Desktop)",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "min": 0,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Top (Mobile)",
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "min": 0,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Bottom (Mobile)",
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "padding_left_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Padding Left (Mobile)",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "padding_right_mobile",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Padding Right (Mobile)",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "item_gap_desktop",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Gap Between Items (Desktop)",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "icon_text_gap",
+      "min": 4,
+      "max": 16,
+      "step": 1,
+      "unit": "px",
+      "label": "Gap Between Icon and Text",
+      "default": 8
+    },
+    {
+      "type": "header",
+      "content": "Icon Settings"
+    },
+    {
+      "type": "color",
+      "id": "icon_bg_color",
+      "label": "Icon Background Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "range",
+      "id": "icon_border_radius",
+      "min": 20,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "label": "Icon Border Radius",
+      "default": 90
+    },
+    {
+      "type": "range",
+      "id": "icon_size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Icon Size",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "icon_inner_size",
+      "min": 8,
+      "max": 16,
+      "step": 1,
+      "unit": "px",
+      "label": "Icon Inner Size (Checkmark)",
+      "default": 10
+    },
+    {
+      "type": "header",
+      "content": "Text Settings"
+    },
+    {
+      "type": "range",
+      "id": "text_font_size_desktop",
+      "min": 12,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "label": "Text Font Size (Desktop)",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "text_font_size_mobile",
+      "min": 12,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "label": "Text Font Size (Mobile)",
+      "default": 14
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#1A365D"
+    },
+    {
+      "type": "header",
+      "content": "Divider Settings"
+    },
+    {
+      "type": "range",
+      "id": "divider_width",
+      "min": 0,
+      "max": 2,
+      "step": 0.5,
+      "unit": "px",
+      "label": "Divider Width",
+      "default": 1
+    },
+    {
+      "type": "range",
+      "id": "divider_height",
+      "min": 8,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Divider Height",
+      "default": 13
+    },
+    {
+      "type": "color",
+      "id": "divider_color",
+      "label": "Divider Color",
+      "default": "#CCCCE8"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "announcement",
+      "name": "Announcement",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text",
+          "default": "Carbon neutral"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Maison Announcement Bar",
+      "blocks": [
+        {
+          "type": "announcement",
+          "settings": {
+            "text": "Carbon neutral"
+          }
+        },
+        {
+          "type": "announcement",
+          "settings": {
+            "text": "Mineral oils cruelty-free"
+          }
+        },
+        {
+          "type": "announcement",
+          "settings": {
+            "text": "Phthalate free"
+          }
+        },
+        {
+          "type": "announcement",
+          "settings": {
+            "text": "Sulfate free"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
+
