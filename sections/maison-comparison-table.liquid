@@ -86,10 +86,11 @@
           </div>
         </div>
         <!-- Body Rows -->
-        {% for block in section.blocks %}
-          {% case block.type %}
-            {% when 'comparison_row' %}
-              <div class="maison_commerce_maison_comparison_table__row {% if forloop.first %}maison_commerce_maison_comparison_table__label-cell-first{% endif %} {% if forloop.last %}maison_commerce_maison_comparison_table__label-cell-last{% endif %}" {{ block.shopify_attributes }}>
+        {%- liquid
+          assign comparison_rows = section.blocks | where: 'type', 'comparison_row'
+        -%}
+        {% for block in comparison_rows %}
+          <div class="maison_commerce_maison_comparison_table__row {% if forloop.first %}maison_commerce_maison_comparison_table__label-cell-first{% endif %} {% if forloop.last %}maison_commerce_maison_comparison_table__label-cell-last{% endif %}" {{ block.shopify_attributes }}>
                 <div class="maison_commerce_maison_comparison_table__label-cell">
                   {{ block.settings.row_label }}
                 </div>
@@ -161,7 +162,6 @@
                   {% endcase %}
                 </div>
               </div>
-          {% endcase %}
         {% endfor %}
       </div>
     </div>
