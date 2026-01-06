@@ -30,7 +30,7 @@
             {% unless link.title == shop_all_text %}
               <a 
                 href="{{ link.url }}" 
-                class="maison_commerce_maison_header__nav-link{% if link.links != blank %} maison_commerce_maison_header__nav-link--has-dropdown{% endif %}{% if link.active %} maison_commerce_maison_header__nav-link--active{% endif %}"
+                class="maison_commerce_maison_header__nav-link{% if link.links != blank %} maison_commerce_maison_header__nav-link--has-dropdown{% endif %}"
                 {% if link.links != blank %}
                   @mouseenter="openMegaMenu('{{ forloop.index }}')"
                   @mouseleave="closeMegaMenu()"
