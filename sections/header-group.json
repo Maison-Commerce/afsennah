@@ -207,7 +207,7 @@
         "mega_menu_card_content_gap": 15,
         "mega_menu_card_title_font_size": 20,
         "mega_menu_card_title_color": "#1a365d",
-        "menu_linklist_mobile": "",
+        "menu_linklist_mobile": "maison-main-menu-mobile",
         "mobile_header_gap": 8,
         "mobile_right_gap": 8,
         "mobile_drawer_width": 375,
