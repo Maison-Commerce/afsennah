@@ -933,9 +933,12 @@ video-section-play-button {
 .tiered-rewards-bar__marker-image.active svg path {
     fill: #ffffff;
 }
+.tiered-rewards-bar__marker-image .tiered-rewards-bar__marker-price {
+    color: rgba(35, 35, 35, 0.75);
+}
 .tiered-rewards-bar__marker-image.active .tiered-rewards-bar__marker-price {
-    color: #1E3A8A;
-    font-weight: 700;
+ 
+ 
 }
 
 .tiered-rewards-bar__marker-image.active .tiered-rewards-bar__marker-icon {
