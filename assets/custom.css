@@ -820,7 +820,6 @@ video-section-play-button {
 .tiered-rewards-bar__segment-wrap {
     position: relative;
     flex: 1 1 auto;
-    padding-right: 20px;
 }
 
 .tiered-rewards-bar__segment-wrap:last-child {
