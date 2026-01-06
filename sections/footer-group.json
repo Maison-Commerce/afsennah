@@ -341,7 +341,7 @@
         "credits_gap": 0,
         "credits_gap_mobile": 16,
         "show_payment_icons": true,
-        "payment_icon_size": 35,
+        "payment_icon_size": 30,
         "payment_icon_gap": 8,
         "payment_icon_bg_color": "#ffffff",
         "payment_icon_border_color": "#d9d9d9",
