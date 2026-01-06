@@ -579,7 +579,7 @@
 
       <div class="maison_commerce_maison_header__mega-menu-cards">
         {% for link in linklists[mobile_linklist].links %}
-        {% if link.links != blank %}
+        {% if link.links == blank %}
             <div class="maison_commerce_maison_header__mega-menu-card-wrapper" x-show="activeMegaMenu === '{{ forloop.index }}'">
             {% for child_link in link.links %}
                 {% if child_link.links == blank %}
