@@ -155,12 +155,100 @@
             "menu_title": "Help",
             "menu": "footer"
           }
+        },
+        "payment_icon_qDxk4V": {
+          "type": "payment_icon",
+          "settings": {
+            "payment_name": "Visa",
+            "payment_icon": "shopify://shop_images/Payment_Method.png"
+          }
+        },
+        "payment_icon_TXURJf": {
+          "type": "payment_icon",
+          "settings": {
+            "payment_name": "Visa",
+            "payment_icon": "shopify://shop_images/awdf12fw.png"
+          }
+        },
+        "payment_icon_PfjN86": {
+          "type": "payment_icon",
+          "settings": {
+            "payment_name": "Visa",
+            "payment_icon": "shopify://shop_images/gwegesg.png"
+          }
+        },
+        "payment_icon_gNrdU4": {
+          "type": "payment_icon",
+          "settings": {
+            "payment_name": "Visa",
+            "payment_icon": "shopify://shop_images/awga2qg3.png"
+          }
+        },
+        "payment_icon_DDbyKf": {
+          "type": "payment_icon",
+          "settings": {
+            "payment_name": "Visa",
+            "payment_icon": "shopify://shop_images/egbasejkg_e.png"
+          }
+        },
+        "payment_icon_6ztfRL": {
+          "type": "payment_icon",
+          "settings": {
+            "payment_name": "Visa",
+            "payment_icon": "shopify://shop_images/aubefu34gerg.png"
+          }
+        },
+        "payment_icon_dfNWCX": {
+          "type": "payment_icon",
+          "settings": {
+            "payment_name": "Visa",
+            "payment_icon": "shopify://shop_images/abufgabhgb_e.png"
+          }
+        },
+        "payment_icon_cPepTX": {
+          "type": "payment_icon",
+          "settings": {
+            "payment_name": "Visa",
+            "payment_icon": "shopify://shop_images/ahbfhawbgw.png"
+          }
+        },
+        "payment_icon_yCPNa4": {
+          "type": "payment_icon",
+          "settings": {
+            "payment_name": "Visa",
+            "payment_icon": "shopify://shop_images/8gbubesghbsejg.png"
+          }
+        },
+        "payment_icon_MQidAA": {
+          "type": "payment_icon",
+          "settings": {
+            "payment_name": "Visa",
+            "payment_icon": "shopify://shop_images/abghjabgkebg.png"
+          }
+        },
+        "payment_icon_F8A4NN": {
+          "type": "payment_icon",
+          "settings": {
+            "payment_name": "Visa",
+            "payment_icon": "shopify://shop_images/auebghaeb_g.png"
+          }
         }
       },
       "block_order": [
         "1601374621546",
         "menu_aNMxGJ",
-        "menu_fCyMVV"
+        "menu_fCyMVV",
+        "payment_icon_qDxk4V",
+        "payment_icon_TXURJf",
+        "payment_icon_PfjN86",
+        "payment_icon_gNrdU4",
+        "payment_icon_DDbyKf",
+        "payment_icon_6ztfRL",
+        "payment_icon_dfNWCX",
+        "payment_icon_cPepTX",
+        "payment_icon_yCPNa4",
+        "payment_icon_MQidAA",
+        "payment_icon_F8A4NN"
       ],
       "custom_css": [],
       "settings": {
