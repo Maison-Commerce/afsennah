@@ -1378,6 +1378,12 @@
             });
             
             updateCartDisplay();
+            
+            // Update gift tiers after cart changes (when removing items)
+            updateGiftTiers();
+            
+            // Update button visibility for all product cards after cart changes
+            updateProductCardButtons();
         } else {
             // When adding/updating: Remove only non-gift, non-BOGO items with this variantId (preserve gifts and BOGO free items)
             // When switching purchase options (subscription <-> one-time), remove the old option
