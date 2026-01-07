@@ -1142,6 +1142,9 @@ video-section-play-button {
 .cart-item-upsells carousel-slider {
     background: #F7F7FC;
 }
+.cart-item-upsells .slider-nav {
+    width: max-content
+}
 .cart-item-upsells .no-wrap.slider-nav .slider-nav__btn {
     width: 32px;
     height: 32px;
