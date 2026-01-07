@@ -142,7 +142,7 @@
         "logo_color": "#15130e",
         "bg_color": "#ffffff",
         "border_color": "#e5e5e5",
-        "max_width": 1600,
+        "max_width": 1440,
         "enable_sticky": false,
         "padding_top_desktop": 12,
         "padding_bottom_desktop": 12,
