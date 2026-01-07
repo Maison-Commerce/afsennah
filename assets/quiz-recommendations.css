@@ -194,7 +194,6 @@
 
     .gift-progress-bar[style*="100%"]::after,
     .gift-progress-bar[style*="width: 100"]::after {
-        content: '✓';
         font-size: 10px;
         color: #fff;
         font-weight: 700;
