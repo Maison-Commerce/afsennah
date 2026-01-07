@@ -1332,6 +1332,7 @@ height: 100%;
 .cart-drawer__footer {
     box-shadow: 0px -8px 30px 0px #2D262212;
     border-radius: 24px;
+    padding: 16px;
     border: none;
 }
 
