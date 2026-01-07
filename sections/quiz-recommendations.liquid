@@ -220,7 +220,7 @@
     </div>
 </div>
 
-{{ 'quiz-recommendations.css' | asset_url }}
+{{ 'quiz-recommendations.css' | asset_url | stylesheet_tag: preload: true }}
 
 <script src="{{ 'quiz-recommendations.js' | asset_url }}" defer></script>
 
