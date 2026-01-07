@@ -1055,7 +1055,7 @@ video-section-play-button {
     justify-content: space-between;
     align-items: flex-start
 }
-
+.subscription-content span,
 .subscription-content h3 {
     font-family: "Gotham";
     font-weight: 500;
@@ -1063,5 +1063,5 @@ video-section-play-button {
     font-size: 12px;
     line-height: 150%;
     letter-spacing: 0%;
-
+    color: #2F3936;
 }
