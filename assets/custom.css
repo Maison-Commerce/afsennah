@@ -1111,3 +1111,24 @@ video-section-play-button {
     letter-spacing: 0%;
     color: rgba(35, 35, 35, 0.75)
 }
+
+.cart-item__column.cart-item__price .theme-money {
+    font-family: "Gotham";
+    font-weight: 500;
+    font-style: Medium;
+    font-size: 16px;
+    leading-trim: NONE;
+    line-height: 150%;
+    letter-spacing: 0%;
+    color: #1A365D;
+}
+.cart-item__column.cart-item__price .struck-out-price .theme-money {
+    font-family: "Gotham";
+    font-weight: 300;
+    font-style: Light;
+    font-size: 14px;
+    line-height: 150%;
+    letter-spacing: 0%;
+    text-decoration: line-through;
+    color: #98A2B3;
+}
