@@ -1132,3 +1132,8 @@ video-section-play-button {
     text-decoration: line-through;
     color: #98A2B3;
 }
+
+.cart-item-upsells .no-wrap.slider-nav {
+    position: relative;
+    transform: none;
+}
