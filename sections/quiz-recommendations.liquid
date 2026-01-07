@@ -25,6 +25,10 @@
     #shopify-section-{{ section.id }}.quiz-section {
     background: {{ section.settings.background_color }};
     }
+
+    #shopify-section-{{ section.id }}{
+        padding: 0;
+    }
 {%- endstyle -%}
 
 <div class="quiz-recommendations quiz-section quiz-recommendations-{{ section.id }}" data-recommendations style="display: none;" data-product-sort-order="{% if section.settings.product_sort_order != blank %}{{ section.settings.product_sort_order | map: 'handle' | join: ',' }}{% endif %}" data-bogo-enabled="{{ section.settings.bogo_enabled }}" data-bogo-products="{% if section.settings.bogo_products != blank %}{{ section.settings.bogo_products | map: 'handle' | join: ',' }}{% endif %}" data-bogo-badge-text="{{ section.settings.bogo_badge_text }}" data-bogo-cart-text="{{ section.settings.bogo_cart_text }}">
