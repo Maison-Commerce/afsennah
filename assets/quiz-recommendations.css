@@ -285,7 +285,7 @@
         gap: 4px;
     }
 
-    .section-products .recommended-product-card::last-child{
+    .section-products .recommended-product-card:last-child{
         margin-bottom: 0!important;
     }
 
