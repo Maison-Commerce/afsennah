@@ -66,6 +66,15 @@
     </div>
 
     <div class="quiz-intro-content">
+      <div class="quiz-intro-breadcrumbs">
+        <a href="{{ routes.root_url }}" class="quiz-intro-breadcrumb-link">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" class="quiz-intro-breadcrumb-icon">
+            <path d="M12.5 5L7.5 10L12.5 15" stroke="rgba(35, 35, 35, 0.45)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span class="quiz-intro-breadcrumb-text">Home</span>
+        </a>
+      </div>
+
       {% if section.settings.title != blank %}
         <h1 class="quiz-intro-title">{{ section.settings.title }}</h1>
       {% endif %}
@@ -154,6 +163,44 @@
         text-align: left;
         max-width: none;
         margin: 0;
+    }
+
+    #shopify-section-{{ section.id }} .quiz-intro-breadcrumbs {
+        display: flex;
+        align-items: center;
+        padding: 20px 0;
+        width: 100%;
+    }
+
+    #shopify-section-{{ section.id }} .quiz-intro-breadcrumb-link {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        text-decoration: none;
+        color: rgba(35, 35, 35, 0.45);
+        font-family: 'Gotham', sans-serif;
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 1.5;
+        transition: color 0.2s;
+    }
+
+    #shopify-section-{{ section.id }} .quiz-intro-breadcrumb-link:hover {
+        color: rgba(35, 35, 35, 0.7);
+    }
+
+    #shopify-section-{{ section.id }} .quiz-intro-breadcrumb-icon {
+        width: 20px;
+        height: 20px;
+        flex-shrink: 0;
+        transform: rotate(180deg) scaleY(-1);
+    }
+
+    #shopify-section-{{ section.id }} .quiz-intro-breadcrumb-text {
+        font-family: 'Gotham', sans-serif;
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 1.5;
     }
 
     #shopify-section-{{ section.id }} .quiz-intro-title {
