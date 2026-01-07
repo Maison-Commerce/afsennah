@@ -925,6 +925,12 @@
         margin-bottom: 24px;
     }
 
+    .cart-item-group {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
     .cart-subscription-group-header {
         font-size: 13px;
         font-weight: 600;

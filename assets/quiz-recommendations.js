@@ -1379,6 +1379,10 @@
                 const productImage = tier.product.featured_image || '';
                 const imageHTML = productImage ? `<img src="${productImage}" alt="${tier.product.title}" class="cart-item-image">` : '';
 
+                // Create a group container for gift items
+                const itemGroup = document.createElement('div');
+                itemGroup.className = 'cart-item-group';
+
                 const cartItem = document.createElement('div');
                 cartItem.className = 'cart-item cart-gift-item';
                 cartItem.dataset.giftTier = tier.tier;
@@ -1395,12 +1399,17 @@
                         </div>
                     </div>
                 `;
-                cartItemsContainer.appendChild(cartItem);
+                itemGroup.appendChild(cartItem);
+                cartItemsContainer.appendChild(itemGroup);
             });
         }
 
         // Legacy gift items from cartItems (for old single gift system)
         giftItems.forEach(item => {
+            // Create a group container for gift items
+            const itemGroup = document.createElement('div');
+            itemGroup.className = 'cart-item-group';
+
             // Get product image
             const productImage = item.product.featured_image || '';
             const imageHTML = productImage ? `<img src="${productImage}" alt="${item.product.title}" class="cart-item-image">` : '';
@@ -1420,7 +1429,8 @@
                     <div class="cart-item-price"><strong>FREE</strong></div>
                 </div>
             `;
-            cartItemsContainer.appendChild(cartItem);
+            itemGroup.appendChild(cartItem);
+            cartItemsContainer.appendChild(itemGroup);
         });
 
         Object.keys(subscriptionGroups).forEach(planName => {
@@ -1503,7 +1513,8 @@
                         </svg>
                     </button>
                 `;
-                cartItemsContainer.appendChild(cartItem);
+                itemGroup.appendChild(cartItem);
+                cartItemsContainer.appendChild(itemGroup);
             });
         });
 
@@ -1548,6 +1559,15 @@
                 priceHTML = `<div class="cart-item-price">${formatMoney(itemTotal)}</div>`;
             }
 
+            // Check if this item has a matching BOGO free item
+            const matchingBogoItem = bogoItems.find(bogoItem =>
+                parseInt(bogoItem.variantId) === parseInt(item.variantId)
+            );
+
+            // Create a group container for related items
+            const itemGroup = document.createElement('div');
+            itemGroup.className = 'cart-item-group';
+
             // Get product image
             const productImage = item.product.featured_image || '';
             const imageHTML = productImage ? `<img src="${productImage}" alt="${productName}" class="cart-item-image">` : '';
@@ -1570,13 +1590,9 @@
                     </button>
                 </div>
             `;
-            cartItemsContainer.appendChild(cartItem);
+            itemGroup.appendChild(cartItem);
 
-            // Check if this item has a matching BOGO free item and render it right after
-            const matchingBogoItem = bogoItems.find(bogoItem =>
-                parseInt(bogoItem.variantId) === parseInt(item.variantId)
-            );
-
+            // Add BOGO item to the same group if it exists
             if (matchingBogoItem) {
                 let bogoProductName = matchingBogoItem.product.title;
                 if (matchingBogoItem.product.variants.length > 1) {
@@ -1604,8 +1620,10 @@
                         <div class="cart-item-price"><strong>FREE</strong></div>
                     </div>
                 `;
-                cartItemsContainer.appendChild(bogoCartItem);
+                itemGroup.appendChild(bogoCartItem);
             }
+
+            cartItemsContainer.appendChild(itemGroup);
         });
 
         // Update totals section
