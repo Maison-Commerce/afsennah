@@ -753,7 +753,6 @@
 
             purchaseOptionsHTML = `
                 <div class="product-price-row">
-                    ${quantityHTML}
                     <div class="product-price-only">
                         ${hasDiscount ? `<span class="option-price-original">${formatMoney(defaultVariant.compare_at_price)}</span>` : ''}
                         <span class="option-price-current">${formatMoney(defaultVariant.price)}</span>
