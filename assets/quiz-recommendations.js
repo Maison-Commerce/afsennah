@@ -1625,6 +1625,19 @@
             cartItemsContainer.appendChild(itemGroup);
         });
 
+        // Add dividers between cart item groups (except after the last one)
+        const allGroups = cartItemsContainer.querySelectorAll('.cart-item-group');
+        allGroups.forEach((group, index) => {
+            if (index < allGroups.length - 1) {
+                // Check if divider already exists
+                if (!group.nextElementSibling || !group.nextElementSibling.classList.contains('cart-item-group-divider')) {
+                    const divider = document.createElement('div');
+                    divider.className = 'cart-item-group-divider';
+                    group.parentNode.insertBefore(divider, group.nextSibling);
+                }
+            }
+        });
+
         // Update totals section
         const subtotalEl = document.querySelector('[data-subtotal]');
         const discountRowEl = document.querySelector('[data-discount-row]');
