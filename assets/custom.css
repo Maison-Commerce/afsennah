@@ -1019,7 +1019,9 @@ video-section-play-button {
 .cart-item-list.cart-drawer__content-item {
     padding: 10px;
 }
-
+.cart-drawer__content-item {
+    padding: 0 20px !important;
+}
 .cart-drawer .cart-item-list__body {
     display: flex;
     flex-direction: column;
