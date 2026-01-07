@@ -27,138 +27,224 @@
     }
 {%- endstyle -%}
 
-<div class="quiz-recommendations quiz-section quiz-recommendations-{{ section.id }}" data-recommendations style="display: none;" data-product-sort-order="{% if section.settings.product_sort_order != blank %}{{ section.settings.product_sort_order | map: 'handle' | join: ',' }}{% endif %}" data-bogo-enabled="{{ section.settings.bogo_enabled }}" data-bogo-products="{% if section.settings.bogo_products != blank %}{{ section.settings.bogo_products | map: 'handle' | join: ',' }}{% endif %}" data-bogo-badge-text="{{ section.settings.bogo_badge_text }}" data-bogo-cart-text="{{ section.settings.bogo_cart_text }}">
+<div class="quiz-recommendations quiz-section quiz-recommendations-{{ section.id }}" data-recommendations style="display: none;" data-product-sort-order="{% if section.settings.product_sort_order != blank %}{{ section.settings.product_sort_order | map: 'handle' | join: ',' }}{% endif %}" data-bogo-enabled="{{ section.settings.bogo_enabled }}" data-bogo-products="{% if section.settings.bogo_products != blank %}{{ section.settings.bogo_products | map: 'handle' | join: ',' }}{% endif %}" data-bogo-badge-text="{{ section.settings.bogo_badge_text }}" data-bogo-cart-text="{{ section.settings.bogo_cart_text }}" data-countdown-hours="{{ section.settings.countdown_hours | default: 0 }}" data-countdown-minutes="{{ section.settings.countdown_minutes | default: 9 }}" data-countdown-seconds="{{ section.settings.countdown_seconds | default: 57 }}">
     <div class="quiz-recommendations-wrapper">
-        <!-- Left Column: Products Content -->
-        <div class="quiz-recommendations-content-column">
-            {% if section.settings.gift_tiers_enabled %}
-                {%- comment -%} Tiered Gift System {%- endcomment -%}
-                <div class="gift-tiers-container"
-                    data-gift-tiers-enabled="true"
-                    data-tier1-threshold="{{ section.settings.tier1_threshold | default: 100 }}"
-                    data-tier1-female="{{ section.settings.tier1_gift_female.handle | default: '' }}"
-                    data-tier1-variant-female="{{ section.settings.tier1_variant_female | default: '' }}"
-                    data-tier1-male="{{ section.settings.tier1_gift_male.handle | default: '' }}"
-                    data-tier1-variant-male="{{ section.settings.tier1_variant_male | default: '' }}"
-                    data-tier1-banner="{{ section.settings.tier1_banner_text | default: 'FREE GIFT UNLOCKED!' }}"
-                    data-tier1-description="{{ section.settings.tier1_description | default: '' }}"
-                    data-tier2-threshold="{{ section.settings.tier2_threshold | default: 0 }}"
-                    data-tier2-female="{{ section.settings.tier2_gift_female.handle | default: '' }}"
-                    data-tier2-variant-female="{{ section.settings.tier2_variant_female | default: '' }}"
-                    data-tier2-male="{{ section.settings.tier2_gift_male.handle | default: '' }}"
-                    data-tier2-variant-male="{{ section.settings.tier2_variant_male | default: '' }}"
-                    data-tier2-banner="{{ section.settings.tier2_banner_text | default: 'BONUS GIFT UNLOCKED!' }}"
-                    data-tier2-description="{{ section.settings.tier2_description | default: '' }}"
-                    data-tier3-threshold="{{ section.settings.tier3_threshold | default: 0 }}"
-                    data-tier3-female="{{ section.settings.tier3_gift_female.handle | default: '' }}"
-                    data-tier3-variant-female="{{ section.settings.tier3_variant_female | default: '' }}"
-                    data-tier3-male="{{ section.settings.tier3_gift_male.handle | default: '' }}"
-                    data-tier3-variant-male="{{ section.settings.tier3_variant_male | default: '' }}"
-                    data-tier3-banner="{{ section.settings.tier3_banner_text | default: 'VIP GIFT UNLOCKED!' }}"
-                    data-tier3-description="{{ section.settings.tier3_description | default: '' }}"
-                    data-progress-text="{{ section.settings.gift_progress_text | default: 'Add [[remaining]] more to unlock your next gift!' }}"
-                    data-complete-text="{{ section.settings.gift_complete_text | default: 'You have unlocked all free gifts!' }}"
-                >
-                    {%- comment -%} Progress Bar Section {%- endcomment -%}
-                    <div class="gift-progress-section" data-gift-progress-section>
-                        <div class="gift-progress-header">
-                            <span class="gift-progress-label" data-gift-progress-label>{{ section.settings.gift_progress_text | default: 'Add items to unlock gifts!' }}</span>
-                            <button class="gift-toggle-btn" data-gift-toggle aria-label="Toggle gifts" aria-expanded="false">
-                                <svg class="gift-toggle-arrow" width="20" height="20" viewBox="0 0 20 20" fill="none">
-                                    <path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <!-- Header Section -->
+        <div class="quiz-recommendations-header">
+            <!-- Feature Bar -->
+            {% if section.settings.show_feature_bar %}
+                <div class="recommendations-feature-bar">
+                    {% for block in section.blocks %}
+                        {% if block.type == 'feature_item' %}
+                            <div class="feature-item" {{ block.shopify_attributes }}>
+                                {% if block.settings.feature_icon != blank %}
+                                    <img src="{{ block.settings.feature_icon | image_url: width: 24 }}" alt="{{ block.settings.feature_text }}" class="feature-icon">
+                                {% endif %}
+                                <span class="feature-text">{{ block.settings.feature_text }}</span>
+                                <svg class="feature-checkmark" width="16" height="16" viewBox="0 0 16 16" fill="none">
+                                    <path d="M13.3333 4L6 11.3333L2.66667 8" stroke="#1a365d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                                 </svg>
-                            </button>
-                        </div>
-                        <div class="gift-progress-bar-container">
-                            <div class="gift-progress-bar" data-gift-progress-bar style="width: 0%"></div>
-                            <div class="gift-progress-milestones" data-gift-milestones>
-                                {%- comment -%} Milestones will be dynamically added by JS {%- endcomment -%}
                             </div>
-                        </div>
-                    </div>
-
-                    {%- comment -%} Gift Cards Container - gifts will be added dynamically {%- endcomment -%}
-                    <div class="gift-cards-container" data-gift-cards-container>
-                        {%- comment -%} Gift cards are inserted here by JavaScript {%- endcomment -%}
-                    </div>
-                </div>
-            {% elsif section.settings.gift_product != blank %}
-                {%- comment -%} Legacy single gift product {%- endcomment -%}
-                <div class="gift-product-card" data-gift-product="{{ section.settings.gift_product.handle }}">
-                    <div class="gift-card-body">
-                        {% if section.settings.gift_banner_text != blank %}
-                            <div class="gift-banner-top">{{ section.settings.gift_banner_text }}</div>
                         {% endif %}
-                        <div class="gift-card-main">
-                            <div class="gift-card-image">
-                                {% if section.settings.gift_product.featured_image %}
-                                    <img src="{{ section.settings.gift_product.featured_image | image_url: width: 600 }}" alt="{{ section.settings.gift_product.title }}">
-                                {% endif %}
-                                <h3 class="gift-product-title gift-product-title-mobile">{{ section.settings.gift_product.title }}</h3>
-                            </div>
-                            <div class="gift-card-content">
-                                <h3 class="gift-product-title gift-product-title-desktop">
-                                    {{ section.settings.gift_product.title }}
-                                </h3>
-                                {% if section.settings.gift_description != blank %}
-                                    <p class="gift-product-description">{{ section.settings.gift_description }}</p>
-                                {% endif %}
-                            </div>
-                        </div>
-                    </div>
+                    {% endfor %}
                 </div>
             {% endif %}
 
-            {% if section.settings.title != blank %}
-                <h2 class="recommendations-title">{{ section.settings.title }}</h2>
+            <!-- Sale Banner -->
+            {% if section.settings.sale_banner_text != blank %}
+                <h1 class="recommendations-sale-banner">{{ section.settings.sale_banner_text }}</h1>
             {% endif %}
 
-            {% if section.settings.subtitle != blank %}
-                <div class="recommendations-subtitle">{{ section.settings.subtitle }}</div>
+            <!-- Intro Text -->
+            {% if section.settings.intro_text != blank %}
+                <div class="recommendations-intro-text">{{ section.settings.intro_text }}</div>
             {% endif %}
 
-            <div class="recommended-products-list" data-recommended-list>
-                <!-- Section 1: Top 3 Picks (Auto-added to cart) -->
-                <div class="recommendations-section" data-section="top-picks">
-                    {% if section.settings.section1_title != blank %}
-                        <h3 class="section-title">{{ section.settings.section1_title }}</h3>
-                    {% endif %}
-                    {% if section.settings.section1_description != blank %}
-                        <div class="section-description">{{ section.settings.section1_description }}</div>
-                    {% endif %}
-                    <div class="section-products" data-section-products="top-picks"></div>
-                </div>
-
-                <hr class="section-divider">
-
-                <!-- Section 2: Additional Recommendations (Not auto-added) -->
-                <div class="recommendations-section" data-section="additional">
-                    {% if section.settings.section2_title != blank %}
-                        <h3 class="section-title">{{ section.settings.section2_title }}</h3>
-                    {% endif %}
-                    {% if section.settings.section2_description != blank %}
-                        <div class="section-description">{{ section.settings.section2_description }}</div>
-                    {% endif %}
-                    <div class="section-products" data-section-products="additional"></div>
-                </div>
-
-                <hr class="section-divider">
-
-                <!-- Section 3: Accessories (Manual products, not auto-added) -->
-                <div class="recommendations-section" data-section="accessories">
-                    {% if section.settings.section3_title != blank %}
-                        <h3 class="section-title">{{ section.settings.section3_title }}</h3>
-                    {% endif %}
-                    {% if section.settings.section3_description != blank %}
-                        <div class="section-description">{{ section.settings.section3_description }}</div>
-                    {% endif %}
-                    <div class="section-products" data-section-products="accessories"></div>
-                </div>
-            </div>
+            <!-- CTA Button -->
+            {% if section.settings.cta_button_text != blank %}
+                <button class="recommendations-cta-button" data-recommendations-cta>
+                    {{ section.settings.cta_button_text }}
+                </button>
+            {% endif %}
         </div>
 
-        <!-- Right Column: Cart Summary (Desktop) -->
+        <!-- Content Layout (Products + Right Column) -->
+        <div class="quiz-recommendations-content-layout">
+            <!-- Left Column: Products Content -->
+            <div class="quiz-recommendations-content-column">
+                {% if section.settings.gift_tiers_enabled %}
+                    {%- comment -%} Tiered Gift System {%- endcomment -%}
+                    <div class="gift-tiers-container"
+                        data-gift-tiers-enabled="true"
+                        data-tier1-threshold="{{ section.settings.tier1_threshold | default: 100 }}"
+                        data-tier1-female="{{ section.settings.tier1_gift_female.handle | default: '' }}"
+                        data-tier1-variant-female="{{ section.settings.tier1_variant_female | default: '' }}"
+                        data-tier1-male="{{ section.settings.tier1_gift_male.handle | default: '' }}"
+                        data-tier1-variant-male="{{ section.settings.tier1_variant_male | default: '' }}"
+                        data-tier1-banner="{{ section.settings.tier1_banner_text | default: 'FREE GIFT UNLOCKED!' }}"
+                        data-tier1-description="{{ section.settings.tier1_description | default: '' }}"
+                        data-tier2-threshold="{{ section.settings.tier2_threshold | default: 0 }}"
+                        data-tier2-female="{{ section.settings.tier2_gift_female.handle | default: '' }}"
+                        data-tier2-variant-female="{{ section.settings.tier2_variant_female | default: '' }}"
+                        data-tier2-male="{{ section.settings.tier2_gift_male.handle | default: '' }}"
+                        data-tier2-variant-male="{{ section.settings.tier2_variant_male | default: '' }}"
+                        data-tier2-banner="{{ section.settings.tier2_banner_text | default: 'BONUS GIFT UNLOCKED!' }}"
+                        data-tier2-description="{{ section.settings.tier2_description | default: '' }}"
+                        data-tier3-threshold="{{ section.settings.tier3_threshold | default: 0 }}"
+                        data-tier3-female="{{ section.settings.tier3_gift_female.handle | default: '' }}"
+                        data-tier3-variant-female="{{ section.settings.tier3_variant_female | default: '' }}"
+                        data-tier3-male="{{ section.settings.tier3_gift_male.handle | default: '' }}"
+                        data-tier3-variant-male="{{ section.settings.tier3_variant_male | default: '' }}"
+                        data-tier3-banner="{{ section.settings.tier3_banner_text | default: 'VIP GIFT UNLOCKED!' }}"
+                        data-tier3-description="{{ section.settings.tier3_description | default: '' }}"
+                        data-progress-text="{{ section.settings.gift_progress_text | default: 'Add [[remaining]] more to unlock your next gift!' }}"
+                        data-complete-text="{{ section.settings.gift_complete_text | default: 'You have unlocked all free gifts!' }}"
+                    >
+                        {%- comment -%} Progress Bar Section {%- endcomment -%}
+                        <div class="gift-progress-section" data-gift-progress-section>
+                            <div class="gift-progress-header">
+                                <span class="gift-progress-label" data-gift-progress-label>{{ section.settings.gift_progress_text | default: 'Add items to unlock gifts!' }}</span>
+                                <button class="gift-toggle-btn" data-gift-toggle aria-label="Toggle gifts" aria-expanded="false">
+                                    <svg class="gift-toggle-arrow" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                        <path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                </button>
+                            </div>
+                            <div class="gift-progress-bar-container">
+                                <div class="gift-progress-bar" data-gift-progress-bar style="width: 0%"></div>
+                                <div class="gift-progress-milestones" data-gift-milestones>
+                                    {%- comment -%} Milestones will be dynamically added by JS {%- endcomment -%}
+                                </div>
+                            </div>
+                        </div>
+
+                        {%- comment -%} Gift Cards Container - gifts will be added dynamically {%- endcomment -%}
+                        <div class="gift-cards-container" data-gift-cards-container>
+                            {%- comment -%} Gift cards are inserted here by JavaScript {%- endcomment -%}
+                        </div>
+                    </div>
+                {% elsif section.settings.gift_product != blank %}
+                    {%- comment -%} Legacy single gift product {%- endcomment -%}
+                    <div class="gift-product-card" data-gift-product="{{ section.settings.gift_product.handle }}">
+                        <div class="gift-card-body">
+                            {% if section.settings.gift_banner_text != blank %}
+                                <div class="gift-banner-top">{{ section.settings.gift_banner_text }}</div>
+                            {% endif %}
+                            <div class="gift-card-main">
+                                <div class="gift-card-image">
+                                    {% if section.settings.gift_product.featured_image %}
+                                        <img src="{{ section.settings.gift_product.featured_image | image_url: width: 600 }}" alt="{{ section.settings.gift_product.title }}">
+                                    {% endif %}
+                                    <h3 class="gift-product-title gift-product-title-mobile">{{ section.settings.gift_product.title }}</h3>
+                                </div>
+                                <div class="gift-card-content">
+                                    <h3 class="gift-product-title gift-product-title-desktop">
+                                        {{ section.settings.gift_product.title }}
+                                    </h3>
+                                    {% if section.settings.gift_description != blank %}
+                                        <p class="gift-product-description">{{ section.settings.gift_description }}</p>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+
+                {% if section.settings.title != blank %}
+                    <h2 class="recommendations-title">{{ section.settings.title }}</h2>
+                {% endif %}
+
+                {% if section.settings.subtitle != blank %}
+                    <div class="recommendations-subtitle">{{ section.settings.subtitle }}</div>
+                {% endif %}
+
+                <div class="recommended-products-list" data-recommended-list>
+                    <!-- Section 1: Top 3 Picks (Auto-added to cart) -->
+                    <div class="recommendations-section" data-section="top-picks">
+                        {% if section.settings.section1_title != blank %}
+                            <h3 class="section-title">{{ section.settings.section1_title }}</h3>
+                        {% endif %}
+                        {% if section.settings.section1_description != blank %}
+                            <div class="section-description">{{ section.settings.section1_description }}</div>
+                        {% endif %}
+                        <div class="section-products" data-section-products="top-picks"></div>
+                    </div>
+
+                    <hr class="section-divider">
+
+                    <!-- Section 2: Additional Recommendations (Not auto-added) -->
+                    <div class="recommendations-section" data-section="additional">
+                        {% if section.settings.section2_title != blank %}
+                            <h3 class="section-title">{{ section.settings.section2_title }}</h3>
+                        {% endif %}
+                        {% if section.settings.section2_description != blank %}
+                            <div class="section-description">{{ section.settings.section2_description }}</div>
+                        {% endif %}
+                        <div class="section-products" data-section-products="additional"></div>
+                    </div>
+
+                    <hr class="section-divider">
+
+                    <!-- Section 3: Accessories (Manual products, not auto-added) -->
+                    <div class="recommendations-section" data-section="accessories">
+                        {% if section.settings.section3_title != blank %}
+                            <h3 class="section-title">{{ section.settings.section3_title }}</h3>
+                        {% endif %}
+                        {% if section.settings.section3_description != blank %}
+                            <div class="section-description">{{ section.settings.section3_description }}</div>
+                        {% endif %}
+                        <div class="section-products" data-section-products="accessories"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column: Upsell & Cart Summary (Desktop) -->
         <div class="quiz-recommendations-cart-column">
+            <!-- Limited-Time Deal Banner -->
+            {% if section.settings.show_limited_deal %}
+                <div class="limited-deal-banner">
+                    <div class="limited-deal-content">
+                        <svg class="limited-deal-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <path d="M10 2L12.5 7.5L18 8.5L14 12.5L15 18L10 15L5 18L6 12.5L2 8.5L7.5 7.5L10 2Z" fill="currentColor"/>
+                        </svg>
+                        <span class="limited-deal-text">{{ section.settings.limited_deal_text | default: 'LIMITED-TIME CRAZY DEAL' }}</span>
+                    </div>
+                    <div class="limited-deal-timer" data-countdown-timer>
+                        <span class="timer-value" data-timer-hours>00</span>:<span class="timer-value" data-timer-minutes>00</span>:<span class="timer-value" data-timer-seconds>00</span>:<span class="timer-value" data-timer-milliseconds>00</span>
+                    </div>
+                </div>
+            {% endif %}
+
+            <!-- Ultimate Hair Care Package Upsell -->
+            {% if section.settings.upsell_product != blank %}
+                <div class="upsell-package-card">
+                    {% if section.settings.upsell_discount_percent > 0 %}
+                        <div class="upsell-discount-badge">SAVE {{ section.settings.upsell_discount_percent }}%</div>
+                    {% endif %}
+                    {% if section.settings.upsell_image != blank %}
+                        <div class="upsell-image">
+                            <img src="{{ section.settings.upsell_image | image_url: width: 600 }}" alt="{{ section.settings.upsell_title }}">
+                        </div>
+                    {% endif %}
+                    <div class="upsell-content">
+                        <h3 class="upsell-title">{{ section.settings.upsell_title | default: 'Ultimate Hair Care Package' }}</h3>
+                        {% if section.settings.upsell_description != blank %}
+                            <div class="upsell-description">{{ section.settings.upsell_description }}</div>
+                        {% endif %}
+                        <button class="upsell-button" data-upsell-button data-product-handle="{{ section.settings.upsell_product.handle }}">
+                            {{ section.settings.upsell_button_text | default: 'Claim Ultimate Package' }} — <span data-upsell-price>{{ section.settings.upsell_product.selected_or_first_available_variant.price | money }}</span>
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path d="M7.5 5L12.5 10L7.5 15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </button>
+                        {% if section.settings.upsell_fine_print != blank %}
+                            <div class="upsell-fine-print">{{ section.settings.upsell_fine_print }}</div>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endif %}
+
+            <!-- Cart Summary -->
             <div class="cart-summary">
                 <div class="cart-summary-header" data-cart-header>
                     <div class="cart-header-content">
@@ -222,18 +308,30 @@
     <!-- Mobile Sticky Cart Bar -->
     <div class="quiz-recommendations-mobile-sticky-bar">
         <div class="mobile-sticky-bar-content">
-            <div class="mobile-sticky-bar-left">
-                <span class="mobile-sticky-bar-label">Order Summary</span>
-                <span class="mobile-sticky-bar-count" data-mobile-item-count>(0)</span>
+            <div class="mobile-sticky-bar-price-section">
+                <div class="mobile-sticky-bar-price-label">
+                    <span>Total Price (with savings)</span>
+                    <button class="mobile-sticky-bar-dropdown-toggle" data-mobile-price-toggle aria-label="Toggle price details">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                            <path d="M4 6L8 10L12 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                </div>
+                <div class="mobile-sticky-bar-price-values">
+                    <span class="mobile-sticky-bar-original-price" data-mobile-original-price>$144.60</span>
+                    <span class="mobile-sticky-bar-total" data-mobile-total-price>$75.00</span>
+                </div>
             </div>
-            <div class="mobile-sticky-bar-right">
-                <span class="mobile-sticky-bar-total" data-mobile-total-price>$0.00</span>
-                <button class="mobile-sticky-bar-toggle" data-mobile-cart-toggle aria-label="Toggle cart">
-                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                        <path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                </button>
-            </div>
+            <button class="mobile-sticky-bar-checkout" data-mobile-checkout-btn>
+                Checkout
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <path d="M3.33331 10H16.6666M16.6666 10L11.6666 5M16.6666 10L11.6666 15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M3.33331 3.33331L3.33331 16.6666" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </button>
+            {% if section.settings.checkout_subtext != blank %}
+                <div class="mobile-sticky-bar-subtext">{{ section.settings.checkout_subtext }}</div>
+            {% endif %}
         </div>
     </div>
 </div>
@@ -249,7 +347,7 @@
         min-height: fit-content;
         height: auto;
         display: block;
-        background: #f1f1f9;
+        background: #f7f7fc;
     }
 
     #shopify-section-{{ section.id }} .quiz-recommendations[style*="display: none"] {
@@ -264,9 +362,112 @@
     /* Wrapper */
     #shopify-section-{{ section.id }} .quiz-recommendations-wrapper {
         display: flex;
-        align-items: flex-start;
+        flex-direction: column;
         min-height: calc(100vh - 136px);
-        background: #f1f1f9;
+        background: #f7f7fc;
+        width: 100%;
+    }
+
+    /* Header Section */
+    #shopify-section-{{ section.id }} .quiz-recommendations-header {
+        width: 100%;
+        padding: 40px 60px 0;
+        background: #f7f7fc;
+    }
+
+    /* Feature Bar */
+    #shopify-section-{{ section.id }} .recommendations-feature-bar {
+        display: flex;
+        gap: 24px;
+        margin-bottom: 24px;
+        flex-wrap: wrap;
+    }
+
+    #shopify-section-{{ section.id }} .feature-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    #shopify-section-{{ section.id }} .feature-icon {
+        width: 24px;
+        height: 24px;
+        object-fit: contain;
+    }
+
+    #shopify-section-{{ section.id }} .feature-text {
+        font-family: 'Gotham', sans-serif;
+        font-size: 14px;
+        font-weight: 400;
+        color: #102B26;
+    }
+
+    #shopify-section-{{ section.id }} .feature-checkmark {
+        width: 16px;
+        height: 16px;
+        flex-shrink: 0;
+    }
+
+    /* Sale Banner */
+    #shopify-section-{{ section.id }} .recommendations-sale-banner {
+        font-family: 'Vanilla Ravioli', sans-serif;
+        font-size: 48px;
+        font-weight: 400;
+        line-height: 1.2;
+        color: #102B26;
+        margin: 0 0 24px 0;
+        text-align: center;
+    }
+
+    /* Intro Text */
+    #shopify-section-{{ section.id }} .recommendations-intro-text {
+        font-family: 'Gotham', sans-serif;
+        font-size: 16px;
+        font-weight: 400;
+        line-height: 1.6;
+        color: #102B26;
+        margin-bottom: 32px;
+        text-align: center;
+        max-width: 800px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    #shopify-section-{{ section.id }} .recommendations-intro-text p {
+        margin: 0 0 16px 0;
+    }
+
+    #shopify-section-{{ section.id }} .recommendations-intro-text p:last-child {
+        margin-bottom: 0;
+    }
+
+    /* CTA Button */
+    #shopify-section-{{ section.id }} .recommendations-cta-button {
+        display: block;
+        margin: 0 auto 60px;
+        padding: 16px 32px;
+        background: #E98C36;
+        color: white;
+        border: none;
+        border-radius: 999px;
+        font-family: 'Gotham', sans-serif;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: opacity 0.2s;
+    }
+
+    #shopify-section-{{ section.id }} .recommendations-cta-button:hover {
+        opacity: 0.9;
+    }
+
+    /* Content Layout */
+    #shopify-section-{{ section.id }} .quiz-recommendations-content-layout {
+        display: flex;
+        align-items: flex-start;
+        gap: 40px;
+        padding: 0 60px 80px;
+        background: #f7f7fc;
     }
 
     /* Left Column - Content */
@@ -274,32 +475,21 @@
         flex: 1;
         display: flex;
         flex-direction: column;
-        padding: 80px 60px;
-        background: #f1f1f9;
-        border-left: 1px solid white;
-        min-height: calc(100vh - 136px);
+        max-width: 800px;
     }
 
-    /* Right Column - Cart Summary (Desktop) */
+    /* Right Column - Upsell & Cart Summary (Desktop) */
     #shopify-section-{{ section.id }} .quiz-recommendations-cart-column {
         width: 380px;
         flex-shrink: 0;
         display: flex;
         flex-direction: column;
-        padding: 80px 40px 80px 60px;
-        background: #f1f1f9;
+        gap: 24px;
     }
 
     /* Mobile Sticky Bar */
     #shopify-section-{{ section.id }} .quiz-recommendations-mobile-sticky-bar {
         display: none;
-    }
-
-    /* Desktop Only - Show cart column */
-    @media (min-width: 1025px) {
-        #shopify-section-{{ section.id }} .quiz-recommendations-cart-column {
-            display: flex;
-        }
     }
 
     .gift-product-card {
@@ -668,29 +858,33 @@
         }
     }
 
-    .recommendations-title {
+    #shopify-section-{{ section.id }} .recommendations-title {
+        font-family: 'Gotham', sans-serif;
         font-size: 24px;
         font-weight: 600;
-        color: var(--text-color, #111827);
+        color: #102B26;
         margin: 0 0 6px 0;
-        text-align: center;
+        text-align: left;
     }
 
-    .recommendations-subtitle {
+    #shopify-section-{{ section.id }} .recommendations-subtitle {
+        font-family: 'Gotham', sans-serif;
         font-size: 14px;
         color: #102B26;
         line-height: 1.5;
         margin-bottom: 20px;
-        & p:last-of-type {
-            margin-bottom: 0;
-        }
     }
 
-    .recommendations-section {
+    #shopify-section-{{ section.id }} .recommendations-subtitle p:last-of-type {
+        margin-bottom: 0;
+    }
+
+    #shopify-section-{{ section.id }} .recommendations-section {
         margin-top: 10px;
     }
 
-    .section-title {
+    #shopify-section-{{ section.id }} .section-title {
+        font-family: 'Gotham', sans-serif;
         font-size: 22px;
         font-weight: 600;
         color: #102B26;
@@ -1120,11 +1314,12 @@
 
     #shopify-section-{{ section.id }} .cart-summary {
         background: #fff;
-        border-radius: 8px;
+        border-radius: 12px;
         position: sticky;
         top: 20px;
         border: 1px solid #e5e7eb;
-        padding: 16px;
+        padding: 20px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
     }
 
     .cart-summary-header {
@@ -1146,14 +1341,16 @@
         gap: 8px;
     }
 
-    .cart-summary-title {
+    #shopify-section-{{ section.id }} .cart-summary-title {
+        font-family: 'Gotham', sans-serif;
         font-size: 18px;
         font-weight: 600;
         color: #102B26;
         margin: 0;
     }
 
-    .cart-item-count {
+    #shopify-section-{{ section.id }} .cart-item-count {
+        font-family: 'Gotham', sans-serif;
         font-size: 14px;
         color: #6b7280;
         font-weight: 400;
@@ -1446,15 +1643,86 @@
             min-height: auto;
         }
 
+        #shopify-section-{{ section.id }} .quiz-recommendations-header {
+            padding: 20px 16px 0;
+        }
+
+        #shopify-section-{{ section.id }} .recommendations-feature-bar {
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        #shopify-section-{{ section.id }} .feature-item {
+            gap: 6px;
+        }
+
+        #shopify-section-{{ section.id }} .feature-icon {
+            width: 20px;
+            height: 20px;
+        }
+
+        #shopify-section-{{ section.id }} .feature-text {
+            font-size: 12px;
+        }
+
+        #shopify-section-{{ section.id }} .recommendations-sale-banner {
+            font-size: 32px;
+            margin-bottom: 20px;
+        }
+
+        #shopify-section-{{ section.id }} .recommendations-intro-text {
+            font-size: 14px;
+            margin-bottom: 24px;
+            padding: 0;
+        }
+
+        #shopify-section-{{ section.id }} .recommendations-cta-button {
+            margin-bottom: 40px;
+            padding: 14px 28px;
+            font-size: 14px;
+        }
+
+        #shopify-section-{{ section.id }} .quiz-recommendations-content-layout {
+            flex-direction: column;
+            padding: 0 16px 100px;
+            gap: 24px;
+        }
+
         #shopify-section-{{ section.id }} .quiz-recommendations-content-column {
-            padding: 20px;
-            border-left: none;
-            min-height: auto;
-            padding-bottom: 100px; /* Space for sticky bar */
+            max-width: 100%;
         }
 
         #shopify-section-{{ section.id }} .quiz-recommendations-cart-column {
             display: none; /* Hide desktop cart on mobile */
+        }
+
+        #shopify-section-{{ section.id }} .limited-deal-banner {
+            flex-direction: column;
+            gap: 12px;
+            align-items: flex-start;
+            padding: 10px 12px;
+        }
+
+        #shopify-section-{{ section.id }} .limited-deal-timer {
+            width: 100%;
+            text-align: center;
+        }
+
+        #shopify-section-{{ section.id }} .upsell-package-card {
+            padding: 16px;
+        }
+
+        #shopify-section-{{ section.id }} .upsell-title {
+            font-size: 18px;
+        }
+
+        #shopify-section-{{ section.id }} .upsell-description {
+            font-size: 13px;
+        }
+
+        #shopify-section-{{ section.id }} .upsell-button {
+            padding: 12px 18px;
+            font-size: 14px;
         }
 
         /* Mobile Sticky Bar */
@@ -1473,63 +1741,102 @@
 
         #shopify-section-{{ section.id }} .mobile-sticky-bar-content {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
+            flex-direction: column;
+            gap: 12px;
             max-width: 100%;
         }
 
-        #shopify-section-{{ section.id }} .mobile-sticky-bar-left {
+        #shopify-section-{{ section.id }} .mobile-sticky-bar-price-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            width: 100%;
+        }
+
+        #shopify-section-{{ section.id }} .mobile-sticky-bar-price-label {
             display: flex;
             align-items: center;
             gap: 8px;
         }
 
-        #shopify-section-{{ section.id }} .mobile-sticky-bar-label {
+        #shopify-section-{{ section.id }} .mobile-sticky-bar-price-label > span {
             font-family: 'Gotham', sans-serif;
             font-size: 14px;
-            font-weight: 600;
-            color: #102B26;
-        }
-
-        #shopify-section-{{ section.id }} .mobile-sticky-bar-count {
-            font-family: 'Gotham', sans-serif;
-            font-size: 14px;
-            color: #6b7280;
             font-weight: 400;
-        }
-
-        #shopify-section-{{ section.id }} .mobile-sticky-bar-right {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        #shopify-section-{{ section.id }} .mobile-sticky-bar-total {
-            font-family: 'Gotham', sans-serif;
-            font-size: 18px;
-            font-weight: 600;
             color: #102B26;
         }
 
-        #shopify-section-{{ section.id }} .mobile-sticky-bar-toggle {
+        #shopify-section-{{ section.id }} .mobile-sticky-bar-dropdown-toggle {
             background: none;
             border: none;
-            padding: 4px;
+            padding: 0;
             cursor: pointer;
-            color: #6b7280;
+            color: #102B26;
             display: flex;
             align-items: center;
             justify-content: center;
             transition: transform 0.3s ease;
         }
 
-        #shopify-section-{{ section.id }} .mobile-sticky-bar-toggle svg {
-            transition: transform 0.3s ease;
+        #shopify-section-{{ section.id }} .mobile-sticky-bar-dropdown-toggle.expanded svg {
+            transform: rotate(180deg);
         }
 
-        #shopify-section-{{ section.id }} .cart-summary.expanded ~ .mobile-sticky-bar-toggle svg,
-        #shopify-section-{{ section.id }} .quiz-recommendations-cart-column:not(.collapsed) ~ .mobile-sticky-bar-toggle svg {
-            transform: rotate(180deg);
+        #shopify-section-{{ section.id }} .mobile-sticky-bar-price-values {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        #shopify-section-{{ section.id }} .mobile-sticky-bar-original-price {
+            font-family: 'Gotham', sans-serif;
+            font-size: 13px;
+            color: #9ca3af;
+            text-decoration: line-through;
+            font-weight: 400;
+        }
+
+        #shopify-section-{{ section.id }} .mobile-sticky-bar-total {
+            font-family: 'Gotham', sans-serif;
+            font-size: 18px;
+            font-weight: 600;
+            color: #1a365d;
+        }
+
+        #shopify-section-{{ section.id }} .mobile-sticky-bar-checkout {
+            width: 100%;
+            padding: 14px 24px;
+            background: #1a365d;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-family: 'Gotham', sans-serif;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: opacity 0.2s;
+        }
+
+        #shopify-section-{{ section.id }} .mobile-sticky-bar-checkout:hover {
+            opacity: 0.9;
+        }
+
+        #shopify-section-{{ section.id }} .mobile-sticky-bar-checkout svg {
+            width: 20px;
+            height: 20px;
+            flex-shrink: 0;
+        }
+
+        #shopify-section-{{ section.id }} .mobile-sticky-bar-subtext {
+            font-family: 'Gotham', sans-serif;
+            font-size: 12px;
+            color: #102B26;
+            text-align: center;
+            font-weight: 700;
         }
 
         /* Mobile Cart Summary (Full Screen Overlay) */
@@ -3189,12 +3496,14 @@
         }
 
         // Update mobile sticky bar
-        const mobileItemCountEl = document.querySelector('[data-mobile-item-count]');
+        const mobileOriginalPriceEl = document.querySelector('[data-mobile-original-price]');
         const mobileTotalPriceEl = document.querySelector('[data-mobile-total-price]');
-        if (mobileItemCountEl) {
-            mobileItemCountEl.textContent = `(${itemCount})`;
+        if (mobileOriginalPriceEl) {
+            // Show original subtotal (before discounts)
+            mobileOriginalPriceEl.textContent = formatMoney(subtotal);
         }
         if (mobileTotalPriceEl) {
+            // Show final total (after discounts)
             mobileTotalPriceEl.textContent = totalFormatted;
         }
 
@@ -3230,9 +3539,8 @@
     const cartHeader = document.querySelector('[data-cart-header]');
     const mobileCartColumn = document.querySelector('.quiz-recommendations-cart-column');
     const mobileStickyBar = document.querySelector('.quiz-recommendations-mobile-sticky-bar');
-    const mobileStickyToggle = document.querySelector('[data-mobile-cart-toggle]');
-    const mobileItemCount = document.querySelector('[data-mobile-item-count]');
-    const mobileTotalPrice = document.querySelector('[data-mobile-total-price]');
+    const mobilePriceToggle = document.querySelector('[data-mobile-price-toggle]');
+    const mobileCheckoutBtn = document.querySelector('[data-mobile-checkout-btn]');
 
     function initCartState() {
         // Desktop: cart is always visible
@@ -3275,13 +3583,121 @@
         }
     }
 
-    // Mobile sticky bar toggle
-    if (mobileStickyToggle && mobileCartColumn) {
-        mobileStickyToggle.addEventListener('click', (e) => {
+    // Mobile sticky bar price dropdown toggle
+    if (mobilePriceToggle) {
+        mobilePriceToggle.addEventListener('click', (e) => {
             e.preventDefault();
             e.stopPropagation();
-            mobileCartColumn.classList.toggle('mobile-expanded');
+            mobilePriceToggle.classList.toggle('expanded');
+            // Toggle cart column visibility
+            if (mobileCartColumn) {
+                mobileCartColumn.classList.toggle('mobile-expanded');
+            }
         });
+    }
+
+    // Mobile checkout button
+    if (mobileCheckoutBtn) {
+        mobileCheckoutBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            checkout();
+        });
+    }
+
+    // Countdown Timer
+    function initCountdownTimer() {
+        const timerEl = document.querySelector('[data-countdown-timer]');
+        if (!timerEl) return;
+
+        const hoursEl = timerEl.querySelector('[data-timer-hours]');
+        const minutesEl = timerEl.querySelector('[data-timer-minutes]');
+        const secondsEl = timerEl.querySelector('[data-timer-seconds]');
+        const millisecondsEl = timerEl.querySelector('[data-timer-milliseconds]');
+
+        if (!hoursEl || !minutesEl || !secondsEl || !millisecondsEl) return;
+
+        const recommendationsSection = document.querySelector('[data-recommendations]');
+        const hours = parseInt(recommendationsSection?.dataset.countdownHours || '0') || 0;
+        const minutes = parseInt(recommendationsSection?.dataset.countdownMinutes || '9') || 9;
+        const seconds = parseInt(recommendationsSection?.dataset.countdownSeconds || '57') || 57;
+
+        let totalMilliseconds = (hours * 3600 + minutes * 60 + seconds) * 1000;
+
+        function updateTimer() {
+            if (totalMilliseconds <= 0) {
+                hoursEl.textContent = '00';
+                minutesEl.textContent = '00';
+                secondsEl.textContent = '00';
+                millisecondsEl.textContent = '00';
+                return;
+            }
+
+            const h = Math.floor(totalMilliseconds / 3600000);
+            const m = Math.floor((totalMilliseconds % 3600000) / 60000);
+            const s = Math.floor((totalMilliseconds % 60000) / 1000);
+            const ms = Math.floor((totalMilliseconds % 1000) / 10);
+
+            hoursEl.textContent = String(h).padStart(2, '0');
+            minutesEl.textContent = String(m).padStart(2, '0');
+            secondsEl.textContent = String(s).padStart(2, '0');
+            millisecondsEl.textContent = String(ms).padStart(2, '0');
+
+            totalMilliseconds -= 100;
+        }
+
+        updateTimer();
+        const timerInterval = setInterval(() => {
+            updateTimer();
+            if (totalMilliseconds <= 0) {
+                clearInterval(timerInterval);
+            }
+        }, 100);
+    }
+
+    // Upsell Button Handler
+    function initUpsellButton() {
+        const upsellButton = document.querySelector('[data-upsell-button]');
+        if (!upsellButton) return;
+
+        upsellButton.addEventListener('click', async (e) => {
+            e.preventDefault();
+            const productHandle = upsellButton.dataset.productHandle;
+            if (!productHandle) return;
+
+            try {
+                const productResponse = await fetch(`/products/${productHandle}.js`);
+                const product = await productResponse.json();
+                
+                if (product && product.variants && product.variants.length > 0) {
+                    const variantId = product.variants[0].id;
+                    addToCart(variantId, 1, product, null);
+                    
+                    // Scroll to top of products
+                    window.scrollTo({
+                        top: 0,
+                        behavior: 'smooth'
+                    });
+                }
+            } catch (err) {
+                console.error('Error adding upsell product:', err);
+            }
+        });
+    }
+
+    // Initialize countdown and upsell when recommendations are shown
+    const recommendationsSection = document.querySelector('[data-recommendations]');
+    if (recommendationsSection) {
+        const observer = new MutationObserver(function(mutations) {
+            mutations.forEach(function(mutation) {
+                if (mutation.attributeName === 'style') {
+                    if (recommendationsSection.style.display !== 'none') {
+                        initCountdownTimer();
+                        initUpsellButton();
+                    }
+                }
+            });
+        });
+        observer.observe(recommendationsSection, { attributes: true });
     }
 
 
@@ -3536,15 +3952,32 @@
     "class": "quiz-section",
     "settings": [
         {
+            "type": "header",
+            "content": "Header Section"
+        },
+        {
+            "type": "checkbox",
+            "id": "show_feature_bar",
+            "label": "Show Feature Bar",
+            "default": true
+        },
+        {
             "type": "text",
-            "id": "title",
-            "label": "Title",
-            "default": "Your Personalized Recommendations"
+            "id": "sale_banner_text",
+            "label": "Sale Banner Text",
+            "default": "WINTER SALE 25% OFF SITEWIDE!"
         },
         {
             "type": "richtext",
-            "id": "subtitle",
-            "label": "Subtitle"
+            "id": "intro_text",
+            "label": "Introductory Text",
+            "default": "<p>Your hair story is about to change. These products were chosen to help you grow, heal, and fall in love with your hair again. They're already waiting in your basket. All that's left is to begin.</p>"
+        },
+        {
+            "type": "text",
+            "id": "cta_button_text",
+            "label": "CTA Button Text",
+            "default": "Your Top 3 Products +25% OFF"
         },
         {
             "type": "header",
@@ -3941,7 +4374,108 @@
             "id": "checkout_subtext",
             "label": "Checkout Subtext",
             "info": "Text displayed under the main checkout button.",
-            "default": "if you don’t like your first order it will be on us"
+            "default": "if you don't like your first order it will be on us"
+        },
+        {
+            "type": "header",
+            "content": "Limited-Time Deal Banner"
+        },
+        {
+            "type": "checkbox",
+            "id": "show_limited_deal",
+            "label": "Show Limited-Time Deal Banner",
+            "default": true
+        },
+        {
+            "type": "text",
+            "id": "limited_deal_text",
+            "label": "Limited Deal Text",
+            "default": "LIMITED-TIME CRAZY DEAL"
+        },
+        {
+            "type": "number",
+            "id": "countdown_hours",
+            "label": "Countdown Hours",
+            "default": 0,
+            "info": "Hours for countdown timer"
+        },
+        {
+            "type": "number",
+            "id": "countdown_minutes",
+            "label": "Countdown Minutes",
+            "default": 9,
+            "info": "Minutes for countdown timer"
+        },
+        {
+            "type": "number",
+            "id": "countdown_seconds",
+            "label": "Countdown Seconds",
+            "default": 57,
+            "info": "Seconds for countdown timer"
+        },
+        {
+            "type": "header",
+            "content": "Ultimate Hair Care Package Upsell"
+        },
+        {
+            "type": "product",
+            "id": "upsell_product",
+            "label": "Upsell Product"
+        },
+        {
+            "type": "image_picker",
+            "id": "upsell_image",
+            "label": "Upsell Package Image"
+        },
+        {
+            "type": "text",
+            "id": "upsell_title",
+            "label": "Upsell Title",
+            "default": "Ultimate Hair Care Package"
+        },
+        {
+            "type": "richtext",
+            "id": "upsell_description",
+            "label": "Upsell Description",
+            "default": "<p>Get all 7 products — more than our top 3 bestsellers — with <strong>50% off</strong>. This is a one-time purchase with no subscription. A limited time offer we may not keep for long</p>"
+        },
+        {
+            "type": "text",
+            "id": "upsell_button_text",
+            "label": "Upsell Button Text",
+            "default": "Claim Ultimate Package"
+        },
+        {
+            "type": "text",
+            "id": "upsell_fine_print",
+            "label": "Upsell Fine Print",
+            "default": "no subscription • One-time payment • Limited availability"
+        },
+        {
+            "type": "number",
+            "id": "upsell_discount_percent",
+            "label": "Discount Percentage",
+            "default": 50,
+            "info": "Percentage shown in discount badge (e.g., 50 for 50%)"
+        }
+    ],
+    "blocks": [
+        {
+            "type": "feature_item",
+            "name": "Feature Item",
+            "settings": [
+                {
+                    "type": "image_picker",
+                    "id": "feature_icon",
+                    "label": "Feature Icon"
+                },
+                {
+                    "type": "text",
+                    "id": "feature_text",
+                    "label": "Feature Text",
+                    "default": "Free shipping"
+                }
+            ]
         }
     ],
     "presets": [
