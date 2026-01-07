@@ -1048,6 +1048,7 @@ video-section-play-button {
     padding: 8px;
     display: flex;
     flex-direction: column;
+    margin-top: 16px;
 }
 .subscription-description .content-heading {
     display: flex;
