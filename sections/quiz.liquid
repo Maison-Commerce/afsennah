@@ -821,47 +821,6 @@
   }
 </style>
 
-<script>
-  (function() {
-    // Update image based on gender selection
-    function updateQuizImage() {
-      const quizSteps = document.querySelectorAll('[data-quiz-step]');
-      const imageContainers = document.querySelectorAll('[data-quiz-image]');
-      
-      if (!window.QuizManager || !window.QuizManager.answers) return;
-      
-      const genderAnswer = window.QuizManager.answers['gender'];
-      const isMale = genderAnswer && genderAnswer.value === 'male';
-      
-      imageContainers.forEach(container => {
-        const femaleImg = container.querySelector('[data-image-female]');
-        const maleImg = container.querySelector('[data-image-male]');
-        
-        if (isMale && maleImg) {
-          femaleImg.style.display = 'none';
-          maleImg.style.display = 'block';
-        } else if (!isMale && femaleImg) {
-          femaleImg.style.display = 'block';
-          if (maleImg) maleImg.style.display = 'none';
-        }
-      });
-    }
-
-    // Listen for quiz answer changes
-    document.addEventListener('quizAnswerChanged', function(e) {
-      if (e.detail && e.detail.questionId === 'gender') {
-        updateQuizImage();
-      }
-    });
-
-    // Initial update
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', updateQuizImage);
-    } else {
-      updateQuizImage();
-    }
-  })();
-</script>
 
 {% schema %}
 {

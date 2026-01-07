@@ -214,6 +214,37 @@
             });
         },
 
+        updateQuizImages() {
+            // Update images based on gender selection
+            const genderAnswer = this.answers['gender'];
+            const isMale = genderAnswer && genderAnswer.value === 'male';
+            
+            // Find all quiz steps with images
+            const allSteps = document.querySelectorAll('[data-quiz-step]');
+            
+            allSteps.forEach(step => {
+                const imageContainer = step.querySelector('[data-quiz-image]');
+                if (!imageContainer) return;
+                
+                const femaleImg = imageContainer.querySelector('[data-image-female]');
+                const maleImg = imageContainer.querySelector('[data-image-male]');
+                
+                if (isMale && maleImg) {
+                    // Show male image, hide female
+                    if (femaleImg) femaleImg.style.display = 'none';
+                    maleImg.style.display = 'block';
+                } else if (!isMale && femaleImg) {
+                    // Show female image, hide male
+                    femaleImg.style.display = 'block';
+                    if (maleImg) maleImg.style.display = 'none';
+                } else {
+                    // Default: show female if available
+                    if (femaleImg) femaleImg.style.display = 'block';
+                    if (maleImg) maleImg.style.display = 'none';
+                }
+            });
+        },
+
         handleAnswerChange(step) {
             console.log('handleAnswerChange called for step:', step.dataset.questionId);
 
@@ -224,6 +255,11 @@
             const nextBtns = step.querySelectorAll('[data-next-btn]');
 
             console.log('Question ID:', questionId, 'Is Free Text:', isFreeText, 'Is Multiple:', isMultiple, 'Order Note Position:', orderNotePosition);
+
+            // Update images if gender question was answered
+            if (questionId === 'gender') {
+                this.updateQuizImages();
+            }
 
             if (isFreeText) {
                 // Handle free text fields
@@ -352,6 +388,9 @@
 
             // Update all checkbox states when showing a step
             this.updateAllAnswerCheckboxStates(step);
+
+            // Update images based on gender selection
+            this.updateQuizImages();
 
             this.updateProgress();
             this.scrollToTop();
@@ -914,6 +953,9 @@
 
                     // Show current step
                     this.showCurrentStep();
+                    
+                    // Update images based on saved gender selection
+                    this.updateQuizImages();
                 } else {
                     console.log('No saved progress found');
                     this.showCurrentStep();
