@@ -281,11 +281,28 @@
             
             if (slideSpan <= 0) return null;
 
-            const slideGap = slideSpan - firstSlide.clientWidth;
-            const slidesPerPage = Math.max(1, Math.round((gridWidth + slideGap) / slideSpan));
-            const totalPages = Math.max(1, slides.length - slidesPerPage + 1);
+            // Check if mobile or desktop based on grid classes
+            const isMobile = window.innerWidth < 768;
+            
+            // Calculate visible slides per page
+            // Desktop: 3 slides, Mobile: 1.5 slides (partial view)
+            let slidesPerPage;
+            let totalPages;
+            
+            if (isMobile) {
+              // Mobile: 1.5 slides visible (calculate based on actual width)
+              slidesPerPage = (gridWidth + (slideSpan - firstSlide.clientWidth)) / slideSpan;
+              // For mobile with 1.5 slides per view: totalPages = slides.length
+              // Each slide can be a starting point (showing 1 full + 0.5 next)
+              totalPages = Math.max(1, slides.length);
+            } else {
+              // Desktop: 3 slides per page
+              slidesPerPage = 3;
+              // For desktop: totalPages = ceil(slides.length / 3)
+              totalPages = Math.max(1, Math.ceil(slides.length / slidesPerPage));
+            }
 
-            return { slidesPerPage, totalPages, slideSpan };
+            return { slidesPerPage, totalPages, slideSpan, isMobile };
           }
 
           let carouselInfo = getCarouselInfo();
@@ -297,7 +314,7 @@
             return;
           }
 
-          let { slidesPerPage, totalPages, slideSpan } = carouselInfo;
+          let { slidesPerPage, totalPages, slideSpan, isMobile } = carouselInfo;
           let currentPage = 0;
 
           // Create dots
@@ -328,9 +345,18 @@
             if (pageIndex < 0 || pageIndex >= totalPages) return;
             
             // Calculate which slide index corresponds to this page
-            const targetSlideIndex = Math.min(pageIndex * slidesPerPage, slides.length - 1);
-            const targetSlide = slides[targetSlideIndex];
+            // For mobile (1.5 slides): page 0 = slide 0, page 1 = slide 1, etc.
+            // For desktop (3 slides): page 0 = slide 0, page 1 = slide 3, etc.
+            let targetSlideIndex;
+            if (isMobile) {
+              // Mobile: each page shows 1.5 slides, so we scroll by 1 slide per page
+              targetSlideIndex = Math.min(pageIndex, slides.length - 1);
+            } else {
+              // Desktop: each page shows 3 slides
+              targetSlideIndex = Math.min(pageIndex * Math.floor(slidesPerPage), slides.length - 1);
+            }
             
+            const targetSlide = slides[targetSlideIndex];
             if (!targetSlide) return;
 
             // Use carousel's scrollToElement method if available
@@ -348,7 +374,14 @@
 
           // Update dots based on current slide index
           function updateDotsFromIndex(slideIndex) {
-            const newPage = Math.floor(slideIndex / slidesPerPage);
+            let newPage;
+            if (isMobile) {
+              // Mobile: each page corresponds to one slide (with 1.5 visible)
+              newPage = Math.min(slideIndex, totalPages - 1);
+            } else {
+              // Desktop: 3 slides per page
+              newPage = Math.floor(slideIndex / Math.floor(slidesPerPage));
+            }
             
             if (newPage !== currentPage && newPage >= 0 && newPage < totalPages) {
               currentPage = newPage;
@@ -375,6 +408,7 @@
             slidesPerPage = carouselInfo.slidesPerPage;
             totalPages = carouselInfo.totalPages;
             slideSpan = carouselInfo.slideSpan;
+            isMobile = carouselInfo.isMobile;
             
             createDots();
             
@@ -393,6 +427,7 @@
                 slidesPerPage = carouselInfo.slidesPerPage;
                 totalPages = carouselInfo.totalPages;
                 slideSpan = carouselInfo.slideSpan;
+                isMobile = carouselInfo.isMobile;
                 createDots();
                 const currentIndex = Math.round(Math.abs(slider.scrollLeft) / slideSpan) || 0;
                 updateDotsFromIndex(currentIndex);
