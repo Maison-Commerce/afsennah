@@ -462,7 +462,20 @@
         const accessoryHandles = window.quizRecommendationsConfig?.accessoryHandles || [];
         console.log('Accessory handles (Section 3):', accessoryHandles);
         
-        if (accessoryHandles && accessoryHandles.length > 0) {
+        // Get the accessories section element and divider
+        const accessoriesSection = document.querySelector('[data-section="accessories"]');
+        const accessoriesDivider = accessoriesSection?.previousElementSibling;
+        const isDivider = accessoriesDivider?.classList.contains('section-divider');
+        
+        // Hide section and divider initially if no accessory handles
+        if (!accessoryHandles || accessoryHandles.length === 0) {
+            if (accessoriesSection) {
+                accessoriesSection.style.display = 'none';
+            }
+            if (isDivider && accessoriesDivider) {
+                accessoriesDivider.style.display = 'none';
+            }
+        } else {
             const accessoryPromises = accessoryHandles.map(item => {
                 // Handle both string handles and product objects
                 const handle = typeof item === 'string' ? item : (item?.handle || null);
@@ -476,13 +489,31 @@
 
             Promise.all(accessoryPromises).then(accessories => {
                 console.log('Fetched accessories:', accessories);
-                accessories.forEach((product) => {
-                    if (!product) return;
+                const validAccessories = accessories.filter(product => product !== null);
+                
+                validAccessories.forEach((product) => {
                     productStates[product.id] = { removed: false, quantity: 1 };
                     const productCard = createProductCard(product, 'accessories');
                     accessoriesContainer.appendChild(productCard);
                     // NOT auto-added to cart
                 });
+
+                // Hide section and divider if no valid accessories were loaded
+                if (validAccessories.length === 0) {
+                    if (accessoriesSection) {
+                        accessoriesSection.style.display = 'none';
+                    }
+                    if (isDivider && accessoriesDivider) {
+                        accessoriesDivider.style.display = 'none';
+                    }
+                } else {
+                    if (accessoriesSection) {
+                        accessoriesSection.style.display = '';
+                    }
+                    if (isDivider && accessoriesDivider) {
+                        accessoriesDivider.style.display = '';
+                    }
+                }
 
                 // Trigger currency converter after accessories are loaded
                 setTimeout(() => {
