@@ -125,7 +125,10 @@
             <cc-cart-cross-sell{% if cross_sell_auto %} data-from="{{ routes.product_recommendations_url }}?section_id=mini-related-products&limit=8&product_id={{ cart.items.first.product.id }}"{% endif %}>
               <carousel-slider class="carousel block collection-slider cart-drawer__content-item use-color-scheme use-color-scheme--{{ section.settings.croll_sell_color_scheme }}" data-dispatch-events="false">
                 <div class="opposing-items opposing-items--valign-base very-lightly-spaced-row">
-                  <div class="opposing-items__left product-info-label">{{ section.settings.cross_sell_title | escape }}</div>
+                  <div class="opposing-items__left product-info-label">
+                    <h2>{{ section.settings.cross_sell_title | escape }}</h2>
+                    <p>{{ section.settings.cross_sell_subtitle }}</p>
+                  </div>
                   <div class="no-wrap slider-nav">
                     <button name="prev" class="slider-nav__btn has-ltr-icon">
                       <span class="visually-hidden">{{ 'general.slider.previous' | t }}</span>
