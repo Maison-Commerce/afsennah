@@ -29,49 +29,48 @@
 
 <div class="quiz-recommendations quiz-section quiz-recommendations-{{ section.id }}" data-recommendations style="display: none;" data-product-sort-order="{% if section.settings.product_sort_order != blank %}{{ section.settings.product_sort_order | map: 'handle' | join: ',' }}{% endif %}" data-bogo-enabled="{{ section.settings.bogo_enabled }}" data-bogo-products="{% if section.settings.bogo_products != blank %}{{ section.settings.bogo_products | map: 'handle' | join: ',' }}{% endif %}" data-bogo-badge-text="{{ section.settings.bogo_badge_text }}" data-bogo-cart-text="{{ section.settings.bogo_cart_text }}" data-countdown-hours="{{ section.settings.countdown_hours | default: 0 }}" data-countdown-minutes="{{ section.settings.countdown_minutes | default: 9 }}" data-countdown-seconds="{{ section.settings.countdown_seconds | default: 57 }}">
     <div class="quiz-recommendations-wrapper">
-        <!-- Header Section -->
-        <div class="quiz-recommendations-header">
-            <!-- Feature Bar -->
-            {% if section.settings.show_feature_bar %}
-                <div class="recommendations-feature-bar">
-                    {% for block in section.blocks %}
-                        {% if block.type == 'feature_item' %}
-                            <div class="feature-item" {{ block.shopify_attributes }}>
-                                {% if block.settings.feature_icon != blank %}
-                                    <img src="{{ block.settings.feature_icon | image_url: width: 24 }}" alt="{{ block.settings.feature_text }}" class="feature-icon">
-                                {% endif %}
-                                <span class="feature-text">{{ block.settings.feature_text }}</span>
-                                <svg class="feature-checkmark" width="16" height="16" viewBox="0 0 16 16" fill="none">
-                                    <path d="M13.3333 4L6 11.3333L2.66667 8" stroke="#1a365d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                </svg>
-                            </div>
-                        {% endif %}
-                    {% endfor %}
-                </div>
-            {% endif %}
-
-            <!-- Sale Banner -->
-            {% if section.settings.sale_banner_text != blank %}
-                <h1 class="recommendations-sale-banner">{{ section.settings.sale_banner_text }}</h1>
-            {% endif %}
-
-            <!-- Intro Text -->
-            {% if section.settings.intro_text != blank %}
-                <div class="recommendations-intro-text">{{ section.settings.intro_text }}</div>
-            {% endif %}
-
-            <!-- CTA Button -->
-            {% if section.settings.cta_button_text != blank %}
-                <button class="recommendations-cta-button" data-recommendations-cta>
-                    {{ section.settings.cta_button_text }}
-                </button>
-            {% endif %}
-        </div>
-
         <!-- Content Layout (Products + Right Column) -->
         <div class="quiz-recommendations-content-layout">
             <!-- Left Column: Products Content -->
             <div class="quiz-recommendations-content-column">
+                <!-- Header Section -->
+                <div class="quiz-recommendations-header">
+                    <!-- Feature Bar -->
+                    {% if section.settings.show_feature_bar %}
+                        <div class="recommendations-feature-bar">
+                            {% for block in section.blocks %}
+                                {% if block.type == 'feature_item' %}
+                                    <div class="feature-item" {{ block.shopify_attributes }}>
+                                        {% if block.settings.feature_icon != blank %}
+                                            <img src="{{ block.settings.feature_icon | image_url: width: 24 }}" alt="{{ block.settings.feature_text }}" class="feature-icon">
+                                        {% endif %}
+                                        <span class="feature-text">{{ block.settings.feature_text }}</span>
+                                        <svg class="feature-checkmark" width="16" height="16" viewBox="0 0 16 16" fill="none">
+                                            <path d="M13.3333 4L6 11.3333L2.66667 8" stroke="#1a365d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        </svg>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+
+                    <!-- Sale Banner -->
+                    {% if section.settings.sale_banner_text != blank %}
+                        <h1 class="recommendations-sale-banner">{{ section.settings.sale_banner_text }}</h1>
+                    {% endif %}
+
+                    <!-- Intro Text -->
+                    {% if section.settings.intro_text != blank %}
+                        <div class="recommendations-intro-text">{{ section.settings.intro_text }}</div>
+                    {% endif %}
+
+                    <!-- CTA Button -->
+                    {% if section.settings.cta_button_text != blank %}
+                        <button class="recommendations-cta-button" data-recommendations-cta>
+                            {{ section.settings.cta_button_text }}
+                        </button>
+                    {% endif %}
+                </div>
                 {% if section.settings.gift_tiers_enabled %}
                     {%- comment -%} Tiered Gift System {%- endcomment -%}
                     <div class="gift-tiers-container"
