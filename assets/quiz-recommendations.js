@@ -385,6 +385,9 @@
         Promise.all(fetchPromises).then(products => {
             console.log('Fetched products:', products);
             
+            // Store all products globally for access in updateProductCardButtons
+            window.quizRecommendationsProducts = products.filter(p => p !== null);
+            
             // Section 1: Top 3 picks (auto-added to cart)
             const topPicks = products.slice(0, 3).filter(p => p !== null);
             console.log('Top picks (Section 1):', topPicks.length, 'products');
@@ -1271,11 +1274,43 @@
                     productStates[productId].removed = false;
                 }
             } else {
-                // Product is not in cart - show add button, hide remove button (for non-top-picks)
-                if (card.closest('[data-section-products]')?.dataset.sectionProducts !== 'top-picks') {
+                // Product is not in cart - show add button, hide remove button
+                const isTopPicks = card.closest('[data-section-products]')?.dataset.sectionProducts === 'top-picks';
+                
+                if (isTopPicks) {
+                    // For top-picks, if add button doesn't exist, create it
+                    if (!addBtn) {
+                        const addButton = document.createElement('button');
+                        addButton.className = 'product-add-btn product-add-btn-corner';
+                        addButton.setAttribute('data-add-btn', '');
+                        addButton.textContent = 'Add';
+                        card.appendChild(addButton);
+                        
+                        // Add click handler for the new add button
+                        addButton.addEventListener('click', () => {
+                            // Find product from stored products or cartItems
+                            const product = (window.quizRecommendationsProducts || []).find(p => p.id === parseInt(productId)) ||
+                                          cartItems.find(item => item.product.id === parseInt(productId))?.product;
+                            
+                            if (product) {
+                                const currentQty = productStates[productId]?.quantity || 1;
+                                const selectedOption = card.querySelector('input[type="radio"]:checked');
+                                const sellingPlanId = selectedOption?.dataset.sellingPlan || null;
+                                const selectedVariantId = parseInt(card.dataset.variantId);
+                                addToCart(selectedVariantId, currentQty, product, sellingPlanId);
+                                
+                                setTimeout(() => {
+                                    updateProductCardButtons();
+                                }, 100);
+                            }
+                        });
+                    }
                     if (addBtn) addBtn.style.display = 'inline-flex';
-                    if (removeBtn) removeBtn.style.display = 'none';
+                } else {
+                    if (addBtn) addBtn.style.display = 'inline-flex';
                 }
+                
+                if (removeBtn) removeBtn.style.display = 'none';
                 card.classList.add('removed');
                 if (productStates[productId]) {
                     productStates[productId].removed = true;
