@@ -187,8 +187,8 @@
     <style>
       /* Custom styles for cart-item-upsells slider */
       .cart-item-upsells .product-grid--carousel {
-        --product-columns-desktop: 2.8;
-        grid-auto-columns: calc((100% - var(--gutter) * 1.8) / 2.8);
+        --product-columns-desktop: 2.65;
+        grid-auto-columns: calc((100% - var(--gutter) * 1.65) / 2.65);
       }
 
       .cart-item-upsells .product-grid--carousel .slider__item {
@@ -326,17 +326,15 @@
               // Each slide can be a starting point (showing 1 full + 0.5 next)
               totalPages = Math.max(1, slides.length);
             } else {
-              // Desktop: 2.8 slides per page (2 full + 1 at 80%)
-              slidesPerPage = 2.8;
-              // For desktop: calculate pages based on 2.8 slides per page
-              // Each page shows 2 full slides + 0.8 of next, so we scroll by 2 slides per page
+              // Desktop: 2.65 slides per page (2 full + 1 at 65%)
+              slidesPerPage = 2.65;
+              // For desktop: calculate pages based on 2.65 slides per page
+              // Each page shows 2 full slides + 0.65 of next, so we scroll by 2 slides per page
               // Pages start at indices: 0, 2, 4, 6, etc.
-              // Formula: ceil((slides.length - 2) / 2) + 1, but simpler: ceil(slides.length / 2)
-              // However, we need to account for the fact that last page might show less
               if (slides.length <= 2) {
                 totalPages = 1;
               } else {
-                // For 7 slides: pages at 0, 2, 4 = 3 pages (showing 0-1.8, 2-3.8, 4-5.8, and last shows 6)
+                // For 7 slides: pages at 0, 2, 4 = 3 pages (showing 0-1.65, 2-3.65, 4-5.65, and last shows 6)
                 totalPages = Math.ceil((slides.length - 2) / 2) + 1;
               }
             }
