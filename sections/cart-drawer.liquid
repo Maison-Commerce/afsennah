@@ -123,7 +123,7 @@
         {%- if cross_sell_product_list or cross_sell_auto -%}
           <div class="cart-item-upsells">
             <cc-cart-cross-sell{% if cross_sell_auto %} data-from="{{ routes.product_recommendations_url }}?section_id=mini-related-products&limit=8&product_id={{ cart.items.first.product.id }}"{% endif %}>
-              <carousel-slider class="carousel block collection-slider cart-drawer__content-item use-color-scheme use-color-scheme--{{ section.settings.croll_sell_color_scheme }}">
+              <carousel-slider class="carousel block collection-slider cart-drawer__content-item use-color-scheme use-color-scheme--{{ section.settings.croll_sell_color_scheme }}" data-dispatch-events="true">
                 <div class="opposing-items opposing-items--valign-base very-lightly-spaced-row">
                   <div class="opposing-items__left product-info-label">{{ section.settings.cross_sell_title | escape }}</div>
                   <div class="no-wrap slider-nav">
@@ -176,12 +176,239 @@
                     {%- endif -%}
                   </ul>
                 </div>
+                <div class="cart-item-upsells__dots"></div>
               </carousel-slider>
             </cc-cart-cross-sell>
           </div>
         {%- endif -%}
       </div>
     </div>
+
+    <style>
+      .cart-item-upsells__dots {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 8px;
+        margin-top: 16px;
+        padding: 0 16px;
+      }
+
+      .cart-item-upsells__dot {
+        width: 40px;
+        height: 4px;
+        border-radius: 2px;
+        background: rgba(var(--body-text-color), 0.2);
+        border: none;
+        cursor: pointer;
+        padding: 0;
+        transition: all 0.3s ease;
+        flex-shrink: 0;
+      }
+
+      .cart-item-upsells__dot:hover {
+        background: rgba(var(--body-text-color), 0.4);
+      }
+
+      .cart-item-upsells__dot.active {
+        background: rgba(var(--body-text-color), 0.8);
+        width: 48px;
+      }
+
+      .cart-item-upsells .opposing-items {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .cart-item-upsells .opposing-items__left {
+        flex: 1;
+      }
+
+      .cart-item-upsells .slider-nav {
+        display: flex;
+        gap: 8px;
+        margin-left: auto;
+      }
+    </style>
+
+    <script>
+      (function() {
+        function initCartUpsellsDots() {
+          const cartUpsells = document.querySelector('.cart-item-upsells');
+          if (!cartUpsells) return;
+
+          const carousel = cartUpsells.querySelector('carousel-slider');
+          if (!carousel) return;
+
+          const dotsContainer = cartUpsells.querySelector('.cart-item-upsells__dots');
+          if (!dotsContainer) return;
+
+          const slider = carousel.querySelector('.slider');
+          const slides = carousel.querySelectorAll('.slider__item:not([hidden])');
+          
+          if (slides.length < 2) {
+            dotsContainer.style.display = 'none';
+            return;
+          }
+
+          // Calculate pages based on visible slides
+          function calculatePages() {
+            const grid = carousel.querySelector('.slider__grid');
+            if (!grid || slides.length < 2) return 0;
+            
+            const gridWidth = grid.clientWidth;
+            const firstSlide = slides[0];
+            const secondSlide = slides[1];
+            
+            if (!firstSlide || !secondSlide) return 0;
+            
+            const firstRect = firstSlide.getBoundingClientRect();
+            const secondRect = secondSlide.getBoundingClientRect();
+            const slideSpan = secondRect.left - firstRect.left;
+            
+            if (slideSpan <= 0) return 0;
+            
+            const slideGap = slideSpan - firstSlide.clientWidth;
+            const slidesPerPage = Math.max(1, Math.round((gridWidth + slideGap) / slideSpan));
+            
+            return Math.max(1, slides.length - slidesPerPage + 1);
+          }
+
+          let totalPages = calculatePages();
+          let currentPage = 0;
+
+          // Create dots
+          function createDots() {
+            dotsContainer.innerHTML = '';
+            for (let i = 0; i < totalPages; i++) {
+              const dot = document.createElement('button');
+              dot.className = 'cart-item-upsells__dot';
+              if (i === 0) dot.classList.add('active');
+              dot.setAttribute('aria-label', `Go to page ${i + 1}`);
+              dot.addEventListener('click', () => {
+                goToPage(i);
+              });
+              dotsContainer.appendChild(dot);
+            }
+          }
+
+          // Go to specific page
+          function goToPage(pageIndex) {
+            if (pageIndex < 0 || pageIndex >= totalPages) return;
+            
+            const firstSlide = slides[0];
+            const secondSlide = slides[1];
+            
+            if (!firstSlide || !secondSlide) return;
+            
+            const firstRect = firstSlide.getBoundingClientRect();
+            const secondRect = secondSlide.getBoundingClientRect();
+            const slideSpan = secondRect.left - firstRect.left;
+            
+            if (slideSpan <= 0) return;
+            
+            const targetScroll = pageIndex * slideSpan;
+            
+            slider.scrollTo({
+              left: targetScroll,
+              behavior: 'smooth'
+            });
+          }
+
+          // Update dots based on scroll position
+          function updateDots() {
+            const firstSlide = slides[0];
+            const secondSlide = slides[1];
+            
+            if (!firstSlide || !secondSlide) return;
+            
+            const firstRect = firstSlide.getBoundingClientRect();
+            const secondRect = secondSlide.getBoundingClientRect();
+            const slideSpan = secondRect.left - firstRect.left;
+            
+            if (slideSpan <= 0) return;
+            
+            const scrollLeft = slider.scrollLeft;
+            const newPage = Math.round(scrollLeft / slideSpan);
+            
+            if (newPage !== currentPage && newPage >= 0 && newPage < totalPages) {
+              currentPage = newPage;
+              const dots = dotsContainer.querySelectorAll('.cart-item-upsells__dot');
+              dots.forEach((dot, index) => {
+                dot.classList.toggle('active', index === currentPage);
+              });
+            }
+          }
+
+          // Listen to carousel events
+          carousel.addEventListener('on:carousel-slider:select', (e) => {
+            const index = e.detail.index;
+            const firstSlide = slides[0];
+            const secondSlide = slides[1];
+            
+            if (!firstSlide || !secondSlide) return;
+            
+            const firstRect = firstSlide.getBoundingClientRect();
+            const secondRect = secondSlide.getBoundingClientRect();
+            const slideSpan = secondRect.left - firstRect.left;
+            
+            if (slideSpan <= 0) return;
+            
+            const grid = carousel.querySelector('.slider__grid');
+            const gridWidth = grid ? grid.clientWidth : 0;
+            const slideGap = slideSpan - firstSlide.clientWidth;
+            const slidesPerPage = Math.max(1, Math.round((gridWidth + slideGap) / slideSpan));
+            const newPage = Math.floor(index / slidesPerPage);
+            
+            if (newPage !== currentPage && newPage >= 0 && newPage < totalPages) {
+              currentPage = newPage;
+              const dots = dotsContainer.querySelectorAll('.cart-item-upsells__dot');
+              dots.forEach((dot, idx) => {
+                dot.classList.toggle('active', idx === currentPage);
+              });
+            }
+          });
+
+          // Listen to scroll events
+          slider.addEventListener('scroll', () => {
+            updateDots();
+          });
+
+          // Recalculate on resize
+          let resizeTimeout;
+          window.addEventListener('resize', () => {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(() => {
+              totalPages = calculatePages();
+              createDots();
+              currentPage = 0;
+            }, 250);
+          });
+
+          // Initial setup
+          createDots();
+        }
+
+        // Initialize when DOM is ready
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', initCartUpsellsDots);
+        } else {
+          initCartUpsellsDots();
+        }
+
+        // Re-initialize when cart drawer content updates
+        document.addEventListener('DOMContentLoaded', () => {
+          const cartDrawer = document.querySelector('cart-drawer');
+          if (cartDrawer) {
+            const observer = new MutationObserver(() => {
+              setTimeout(initCartUpsellsDots, 100);
+            });
+            observer.observe(cartDrawer, { childList: true, subtree: true });
+          }
+        });
+      })();
+    </script>
 
     <div class="cart-drawer__footer{% if cart.items == empty %} cart-drawer__footer--hidden{% endif %}" data-merge-attributes="footer-container">
       {%- if section.settings.announcement_position == 'above-subtotal' -%}
