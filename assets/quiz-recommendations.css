@@ -753,11 +753,11 @@
     }
 
     .purchase-option:hover {
-        border-color: #d1d5db;
+        outline-color: #d1d5db;
     }
 
     .purchase-option.selected {
-        border-color: #B4B4DE;
+        outline-color: #B4B4DE;
         background: #F1F1F9;
     }
 
