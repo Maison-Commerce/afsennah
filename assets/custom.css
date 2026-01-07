@@ -995,3 +995,8 @@ video-section-play-button {
     width: 100%;
     justify-content: flex-end;
 }
+
+.cart__line-item {
+    padding: 12px;
+    border-radius: 16px;
+}
