@@ -1,4 +1,5 @@
 <style>
+<style>
     .quiz-recommendations {
         padding: 40px 20px;
     }
@@ -942,6 +943,23 @@
         font-weight: 400;
     }
 
+    .cart-subscription-item .cart-item-info {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .cart-subscription-item .cart-item-price {
+        text-align: left;
+        align-items: flex-start;
+        margin-top: 4px;
+    }
+
+    .cart-subscription-item .cart-item-remove {
+        align-self: flex-start;
+        margin-top: 0;
+    }
+
     .cart-item {
         display: flex;
         align-items: flex-start;
@@ -1273,4 +1291,5 @@
         text-align: center;
         margin-top: 12px;
     }
+</style>
 </style>
