@@ -730,6 +730,7 @@
         text-transform: uppercase;
         letter-spacing: 0.5px;
         margin-bottom: 12px;
+        position: relative;
     }
 
     .product-purchase-options {
