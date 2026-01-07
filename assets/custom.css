@@ -1171,5 +1171,14 @@ video-section-play-button {
     color: #2C2926;
 }
 .opposing-items__left.product-info-label p {
+    font-family: "Neue Haas Grotesk Display Pro";
+    font-weight: 500;
+    font-style: 55 Roman;
+    font-size: 14px;
+    leading-trim: NONE;
+    line-height: 150%;
+    letter-spacing: 0%;
+    text-align: center;
 
+    color: rgba(46, 67, 47, 0.5);
 }
