@@ -656,11 +656,6 @@
     margin: 0 auto;
 }
 
-.recommendations-left {
-    flex: 1;
-    max-width: 600px;
-}
-
 .gift-product-card {
     background: #fff;
     border: 2px solid #e5e7eb;
@@ -790,11 +785,6 @@
 
 .remove-product-btn:hover {
     background: #e5e7eb;
-}
-
-.recommendations-right {
-    width: 400px;
-    flex-shrink: 0;
 }
 
 .cart-summary {
