@@ -230,29 +230,18 @@
           return;
         }
         
-        // Update cart drawer by calling refresh on cart-form
-        const cartDrawer = document.querySelector('cart-drawer');
-        if (cartDrawer) {
-          const cartForm = cartDrawer.querySelector('cart-form');
-          if (cartForm && typeof cartForm.refresh === 'function') {
-            cartForm.refresh();
-          } else {
-            // Fallback: dispatch refresh event
-            document.dispatchEvent(new CustomEvent('dispatch:cart-drawer:refresh', { bubbles: true }));
-          }
-        }
-        
-        // Dispatch cart change event - UpCart and other apps will listen to this
-        // UpCart will handle its own refresh through event listeners
-        document.dispatchEvent(new CustomEvent('on:cart:change', { bubbles: true, cancelable: false }));
-        
-        // Dispatch cart add event for compatibility
+        // Dispatch cart add event first (for compatibility)
         document.dispatchEvent(new CustomEvent('on:cart:add', {
           bubbles: true,
           detail: {
             variantId: data.variant_id || variantId
           }
         }));
+        
+        // Dispatch cart change event - CartForm listens to this and will automatically refresh
+        // This is the same pattern used in main.js ProductForm
+        // UpCart and other apps will also listen to this event
+        document.dispatchEvent(new CustomEvent('on:cart:change', { bubbles: true, cancelable: false }));
         
         // Re-enable button
         addBtn.classList.remove('loading');
