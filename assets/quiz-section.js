@@ -92,6 +92,14 @@
                     freshAnswers.forEach(input => {
                         input.addEventListener('change', (e) => {
                             console.log('Answer changed:', input.dataset.answerValue);
+                            
+                            // For radio buttons, update all checkboxes in the group
+                            if (input.type === 'radio') {
+                                this.updateAllAnswerCheckboxStates(step);
+                            } else {
+                                this.updateAnswerCheckboxState(input);
+                            }
+                            
                             this.handleAnswerChange(step);
 
                             // Auto-advance for single radio selection (not multiple choice)
@@ -101,6 +109,9 @@
                                 }, 300);
                             }
                         });
+                        
+                        // Update initial state
+                        this.updateAnswerCheckboxState(input);
                     });
                 }
 
@@ -164,6 +175,41 @@
             this.loadSavedResults();
 
             console.log('Quiz initialized with', this.steps.length, 'steps');
+        },
+
+        updateAnswerCheckboxState(input) {
+            // Find the answer label containing this input
+            const answerLabel = input.closest('.quiz-answer');
+            if (!answerLabel) return;
+
+            const checkbox = answerLabel.querySelector('.quiz-answer-checkbox');
+            const checkboxInnerChecked = answerLabel.querySelector('.quiz-answer-checkbox-inner-checked');
+
+            if (input.checked) {
+                // Show SVG and remove border
+                if (checkbox) {
+                    checkbox.style.border = 'none';
+                }
+                if (checkboxInnerChecked) {
+                    checkboxInnerChecked.style.display = 'block';
+                }
+            } else {
+                // Hide SVG and restore border
+                if (checkbox) {
+                    checkbox.style.border = '1px solid rgba(0, 0, 0, 0.15)';
+                }
+                if (checkboxInnerChecked) {
+                    checkboxInnerChecked.style.display = 'none';
+                }
+            }
+        },
+
+        updateAllAnswerCheckboxStates(step) {
+            // Update all answer checkboxes in the step
+            const inputs = step.querySelectorAll('input[type="radio"], input[type="checkbox"]');
+            inputs.forEach(input => {
+                this.updateAnswerCheckboxState(input);
+            });
         },
 
         handleAnswerChange(step) {
@@ -301,6 +347,9 @@
             if (stepIndicator) {
                 stepIndicator.textContent = 'Question ' + (this.currentStepIndex + 1) + ' of ' + visibleSteps.length;
             }
+
+            // Update all checkbox states when showing a step
+            this.updateAllAnswerCheckboxStates(step);
 
             this.updateProgress();
             this.scrollToTop();
@@ -839,12 +888,18 @@
                             // Multiple choice - check all selected answers
                             answer.forEach(a => {
                                 const input = step.querySelector(`input[value="${a.value}"]`);
-                                if (input) input.checked = true;
+                                if (input) {
+                                    input.checked = true;
+                                    this.updateAnswerCheckboxState(input);
+                                }
                             });
                         } else {
                             // Single choice - check the selected answer
                             const input = step.querySelector(`input[value="${answer.value}"]`);
-                            if (input) input.checked = true;
+                            if (input) {
+                                input.checked = true;
+                                this.updateAnswerCheckboxState(input);
+                            }
                         }
 
                         // Enable next button if answer exists
