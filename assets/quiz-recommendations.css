@@ -323,7 +323,7 @@
     .cart-gift-price {
         display: flex;
         align-items: flex-start;
-        gap: 2px!important;
+        gap: 8px!important;
     }
 
     .cart-gift-original-price {
