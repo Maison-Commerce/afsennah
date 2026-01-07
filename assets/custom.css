@@ -1064,6 +1064,12 @@ video-section-play-button {
     line-height: 150%;
     letter-spacing: 0%;
     color: #2F3936;
+    padding: 0;
+    margin: 0;
+}
+
+.subscription-content .content-heading {
+    margin-bottom: 4px;
 }
 .subscription-content svg {
     margin-right: 4px;
