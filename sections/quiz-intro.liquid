@@ -19,68 +19,86 @@
 {%- endstyle -%}
 
 <div class="quiz-intro quiz-intro-{{ section.id }}" data-quiz-intro>
-  <div class="container">
-    <div class="quiz-container">
-      <!-- Resume Quiz Banner -->
-      <div class="quiz-resume-banner" data-resume-banner style="display: none;">
-        <div class="resume-banner-content">
-          <div class="resume-banner-text">
-            <strong>{{ section.settings.resume_title }}</strong>
-            <span>{{ section.settings.resume_message }}</span>
-          </div>
-          <div class="resume-banner-actions">
-            <button type="button" class="quiz-btn-resume" data-resume-btn>
-              {{ section.settings.resume_button_text }}
-            </button>
-            <button type="button" class="quiz-btn-restart-banner" data-restart-banner-btn>
-              {{ section.settings.restart_button_text }}
-            </button>
-          </div>
+  <div class="quiz-intro-wrapper">
+    {% if section.settings.desktop_image != blank %}
+      <div class="quiz-intro-image">
+        {%- liquid
+          assign image_width = section.settings.desktop_image.width
+          assign image_height = section.settings.desktop_image.height
+        -%}
+        <img
+          srcset="
+            {%- if image_width >= 720 -%}{{ section.settings.desktop_image | image_url: width: 720 }} 720w,{%- endif -%}
+            {%- if image_width >= 1440 -%}{{ section.settings.desktop_image | image_url: width: 1440 }} 1440w,{%- endif -%}
+            {{ section.settings.desktop_image | image_url }} {{ image_width }}w
+          "
+          src="{{ section.settings.desktop_image | image_url: width: 720 }}"
+          sizes="720px"
+          alt="{{ section.settings.desktop_image.alt | escape }}"
+          loading="lazy"
+          width="{{ image_width }}"
+          height="{{ image_height }}"
+        >
+      </div>
+    {% endif %}
+
+    <!-- Resume Quiz Banner -->
+    <div class="quiz-resume-banner" data-resume-banner style="display: none;">
+      <div class="resume-banner-content">
+        <div class="resume-banner-text">
+          <strong>{{ section.settings.resume_title }}</strong>
+          <span>{{ section.settings.resume_message }}</span>
+        </div>
+        <div class="resume-banner-actions">
+          <button type="button" class="quiz-btn-resume" data-resume-btn>
+            {{ section.settings.resume_button_text }}
+          </button>
+          <button type="button" class="quiz-btn-restart-banner" data-restart-banner-btn>
+            {{ section.settings.restart_button_text }}
+          </button>
         </div>
       </div>
+    </div>
 
-      <div class="quiz-intro-content">
-        {% if section.settings.title != blank %}
-          <h1 class="quiz-intro-title">{{ section.settings.title }}</h1>
-        {% endif %}
+    <div class="quiz-intro-content">
+      {% if section.settings.title != blank %}
+        <h1 class="quiz-intro-title">{{ section.settings.title }}</h1>
+      {% endif %}
 
-        {% if section.settings.subtitle != blank %}
-          <div class="quiz-intro-subtitle">{{ section.settings.subtitle }}</div>
-        {% endif %}
+      {% if section.settings.subtitle != blank %}
+        <div class="quiz-intro-subtitle">{{ section.settings.subtitle }}</div>
+      {% endif %}
 
-        {% if section.settings.description != blank %}
-          <div class="quiz-intro-description">
-            {{ section.settings.description }}
-          </div>
-        {% endif %}
+      {% if section.settings.description != blank %}
+        <div class="quiz-intro-description">
+          {{ section.settings.description }}
+        </div>
+      {% endif %}
 
-        {% if section.blocks.size > 0 %}
-          <div class="quiz-intro-fields" data-intro-fields>
-            {% for block in section.blocks %}
-              {% if block.type == 'free_text_field' %}
-                <div class="quiz-intro-field" data-intro-field data-field-id="{{ block.settings.field_id }}" data-block-id="{{ block.id }}" {{ block.shopify_attributes }}>
-                  <label class="intro-field-label">{{ block.settings.field_label }}</label>
-                  <input
-                      type="{% if block.settings.field_id == 'email' %}email{% else %}text{% endif %}"
-                      class="intro-field-input"
-                      data-field-id="{{ block.settings.field_id }}"
-                      data-block-id="{{ block.id }}"
-                      data-error-message="{{ block.settings.error_message }}"
-                      placeholder="{{ block.settings.field_placeholder }}"
-                      {% if block.settings.field_id == 'email' %}required{% endif %}
-                  >
-                  <span class="intro-field-error-message" data-error-message-for="{{ block.id }}" style="display: none;">{{ block.settings.error_message }}</span>
-                </div>
-              {% endif %}
-            {% endfor %}
-          </div>
-        {% endif %}
+      {% if section.blocks.size > 0 %}
+        <div class="quiz-intro-fields" data-intro-fields>
+          {% for block in section.blocks %}
+            {% if block.type == 'free_text_field' %}
+              <div class="quiz-intro-field" data-intro-field data-field-id="{{ block.settings.field_id }}" data-block-id="{{ block.id }}" {{ block.shopify_attributes }}>
+                <input
+                    type="{% if block.settings.field_id == 'email' %}email{% else %}text{% endif %}"
+                    class="intro-field-input"
+                    data-field-id="{{ block.settings.field_id }}"
+                    data-block-id="{{ block.id }}"
+                    data-error-message="{{ block.settings.error_message }}"
+                    placeholder="{{ block.settings.field_placeholder }}"
+                    {% if block.settings.field_id == 'email' %}required{% endif %}
+                >
+                <span class="intro-field-error-message" data-error-message-for="{{ block.id }}" style="display: none;">{{ block.settings.error_message }}</span>
+              </div>
+            {% endif %}
+          {% endfor %}
+        </div>
+      {% endif %}
 
+      <div class="quiz-intro-button-wrapper">
         <button type="button" class="quiz-btn quiz-btn-start" data-start-btn>
           {{ section.settings.button_text }}
-          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-            <path d="M7.5 15L12.5 10L7.5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
         </button>
       </div>
     </div>
@@ -88,47 +106,116 @@
 </div>
 
 <style>
+    .quiz-intro-wrapper {
+        display: flex;
+        align-items: center;
+        min-height: 100vh;
+        width: 100%;
+    }
+
+    .quiz-intro-image {
+        width: 720px;
+        height: 100vh;
+        flex-shrink: 0;
+        overflow: hidden;
+        position: relative;
+    }
+
+    .quiz-intro-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
+    }
+
+    .quiz-intro-content {
+        background: #f1f1f9;
+        border-left: 1px solid white;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 44px;
+        padding: 20px 60px 80px 60px;
+        width: 720px;
+        flex-shrink: 0;
+        position: relative;
+    }
+
+    .quiz-intro-title {
+        font-family: 'Vanilla Ravioli', sans-serif;
+        font-size: 32px;
+        font-weight: 400;
+        line-height: 1.3;
+        color: #232323;
+        text-align: center;
+        text-transform: capitalize;
+        margin: 0;
+        width: 100%;
+    }
+
+    .quiz-intro-subtitle {
+        font-family: 'Gotham', sans-serif;
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 1.5;
+        color: #272727;
+        text-align: center;
+        max-width: 480px;
+        margin: 0;
+    }
+
+    .quiz-intro-description {
+        font-family: 'Gotham', sans-serif;
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 1.5;
+        color: #272727;
+        text-align: center;
+        margin: 0;
+    }
+
     .quiz-intro-fields {
         display: flex;
         flex-direction: column;
-        gap: 20px;
-        margin: 32px 0;
+        gap: 8px;
         width: 100%;
+        margin-top: -20px;
+    }
+
+    .quiz-intro-content > .quiz-intro-subtitle + .quiz-intro-fields,
+    .quiz-intro-content > .quiz-intro-description + .quiz-intro-fields {
+        margin-top: 24px;
     }
 
     .quiz-intro-field {
         display: flex;
         flex-direction: column;
-        gap: 8px;
-        text-align: left;
         width: 100%;
-    }
-
-    .intro-field-label {
-        font-size: 15px;
-        font-weight: 500;
-        color: var(--text-color, #111827);
     }
 
     .intro-field-input {
         width: 100%;
-        padding: 12px 14px;
-        border: 2px solid #e5e7eb;
-        border-radius: 8px;
-        font-size: 15px;
-        font-family: inherit;
-        color: #111827;
+        height: 60px;
+        padding: 8px 16px;
+        border: 1px solid #e0e0f1;
+        border-radius: 12px 8px 12px 12px;
+        font-family: 'Gotham', sans-serif;
+        font-size: 16px;
+        font-weight: 400;
+        line-height: 1.5;
+        color: rgba(35, 35, 35, 0.75);
         background: #fff;
         transition: border-color 0.2s;
+        box-sizing: border-box;
     }
 
     .intro-field-input:focus {
         outline: none;
-        border-color: var(--primary-color, #000);
+        border-color: var(--primary-color, #1a365d);
     }
 
     .intro-field-input::placeholder {
-        color: #9ca3af;
+        color: rgba(35, 35, 35, 0.75);
     }
 
     .intro-field-input.error {
@@ -145,7 +232,39 @@
     .intro-field-error-message {
         color: #ef4444;
         font-size: 13px;
-        margin-top: -4px;
+        margin-top: 4px;
+        font-family: 'Gotham', sans-serif;
+    }
+
+    .quiz-intro-button-wrapper {
+        display: flex;
+        gap: 12px;
+        justify-content: flex-end;
+        width: 100%;
+    }
+
+    .quiz-btn-start {
+        background: #1a365d;
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        height: 60px;
+        padding: 12px 24px;
+        font-family: 'Gotham', sans-serif;
+        font-size: 14px;
+        font-weight: 500;
+        line-height: 1.5;
+        cursor: pointer;
+        transition: opacity 0.2s;
+        white-space: nowrap;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex: 0 1 auto;
+    }
+
+    .quiz-btn-start:hover {
+        opacity: 0.9;
     }
 
     .quiz-resume-banner {
@@ -154,6 +273,11 @@
         border-radius: 6px;
         padding: 12px 16px;
         margin-bottom: 24px;
+        position: absolute;
+        top: 20px;
+        left: 60px;
+        right: 60px;
+        z-index: 10;
     }
 
     .resume-banner-content {
@@ -171,6 +295,7 @@
         font-size: 14px;
         color: var(--text-color, #111827);
         flex-wrap: wrap;
+        font-family: 'Gotham', sans-serif;
     }
 
     .resume-banner-text strong {
@@ -197,6 +322,7 @@
         cursor: pointer;
         transition: all 0.2s;
         white-space: nowrap;
+        font-family: 'Gotham', sans-serif;
     }
 
     .quiz-btn-resume {
@@ -216,6 +342,48 @@
 
     .quiz-btn-restart-banner:hover {
         background: color-mix(in srgb, var(--primary-color, #000) 10%, white);
+    }
+
+    @media (max-width: 1024px) {
+        .quiz-intro-wrapper {
+            flex-direction: column;
+        }
+
+        .quiz-intro-image {
+            display: none;
+        }
+
+        .quiz-intro-content {
+            width: 100%;
+            padding: 20px;
+            border-left: none;
+            gap: 24px;
+        }
+
+        .quiz-resume-banner {
+            position: static;
+            left: auto;
+            right: auto;
+            margin-bottom: 24px;
+        }
+
+        .quiz-intro-title {
+            font-size: 24px;
+            line-height: 1.4;
+        }
+
+        .quiz-intro-subtitle {
+            font-size: 12px;
+            max-width: 100%;
+        }
+
+        .intro-field-input {
+            height: 52px;
+        }
+
+        .quiz-btn-start {
+            height: 44px;
+        }
     }
 
     @media (max-width: 640px) {
@@ -590,6 +758,16 @@
       "id": "background_color",
       "label": "Background Color",
       "default": "#f0f0ff"
+    },
+    {
+      "type": "header",
+      "content": "Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "desktop_image",
+      "label": "Desktop Image",
+      "info": "Image displayed on the left side on desktop (720px width). Hidden on mobile."
     }
   ],
   "blocks": [
