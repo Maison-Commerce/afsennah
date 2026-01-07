@@ -766,7 +766,6 @@
         const isBogo = isBogoEligible(product);
 
         card.innerHTML = `
-            ${number ? `<div class="product-number-badge">${number}</div>` : ''}
             <div class="product-card-image">
                 ${isBogo ? `<div class="product-bogo-badge">${bogoBadgeText}</div>` : ''}
                 <img src="${product.featured_image || ''}" alt="${product.title}">
