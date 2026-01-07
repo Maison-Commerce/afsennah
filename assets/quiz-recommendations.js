@@ -151,14 +151,82 @@
         // Filter out tiers without products for positioning calculation
         const tiersWithProducts = giftTiers.filter(tier => tier.product);
 
+        // Update unlocked status first (needed for progress bar calculation)
+        giftTiers.forEach(tier => {
+            tier.unlocked = cartTotal >= tier.threshold;
+        });
+
         // Find the next tier to unlock and max threshold
         const maxThreshold = giftTiers.length > 0 ? giftTiers[giftTiers.length - 1].threshold : 1;
         const nextTier = giftTiers.find(t => !t.unlocked);
         const allUnlocked = !nextTier;
 
-        // Update progress bar
-        const progressPercent = Math.min((cartTotal / maxThreshold) * 100, 100);
-        progressBar.style.width = `${progressPercent}%`;
+        // Calculate positions for milestones first (needed for progress bar calculation)
+        const productCount = tiersWithProducts.length;
+        const edgeMargin = 10; // Percentage margin from edges
+        const availableWidth = 100 - (edgeMargin * 2); // Available width between margins
+        
+        // Create a map of tier to position
+        const tierPositionMap = new Map();
+        tiersWithProducts.forEach((tier, index) => {
+            let position;
+            if (productCount === 1) {
+                position = 50; // Center if only one product
+            } else {
+                // Distribute evenly with margins
+                // First product at edgeMargin, last product at 100 - edgeMargin
+                position = edgeMargin + (availableWidth / (productCount - 1)) * index;
+                position = Math.min(position, 100 - edgeMargin); // Ensure last doesn't exceed right margin
+            }
+            tierPositionMap.set(tier.tier, position);
+        });
+
+        // Update progress bar based on milestone positions
+        let progressBarWidth = 0;
+        
+        if (allUnlocked) {
+            // All tiers unlocked - fill to 100%
+            progressBarWidth = 100;
+        } else if (tiersWithProducts.length === 0) {
+            // No products configured
+            progressBarWidth = 0;
+        } else {
+            // Find last unlocked tier with product
+            const unlockedTiersWithProducts = tiersWithProducts.filter(t => t.unlocked);
+            
+            if (unlockedTiersWithProducts.length === 0) {
+                // No tiers unlocked yet - progress from 0% to first milestone
+                const firstTier = tiersWithProducts[0];
+                const firstPosition = tierPositionMap.get(firstTier.tier);
+                const progressToFirst = Math.min((cartTotal / firstTier.threshold) * firstPosition, firstPosition);
+                progressBarWidth = progressToFirst;
+            } else {
+                // At least one tier unlocked
+                const lastUnlockedTier = unlockedTiersWithProducts[unlockedTiersWithProducts.length - 1];
+                const lastUnlockedPosition = tierPositionMap.get(lastUnlockedTier.tier);
+                
+                // Find next tier to unlock
+                const nextTierWithProduct = tiersWithProducts.find(t => !t.unlocked && t.threshold > lastUnlockedTier.threshold);
+                
+                if (!nextTierWithProduct) {
+                    // No more tiers to unlock - fill to 100%
+                    progressBarWidth = 100;
+                } else {
+                    // Interpolate between last unlocked position and next milestone position
+                    // But don't exceed the next milestone position until it's actually unlocked
+                    const nextPosition = tierPositionMap.get(nextTierWithProduct.tier);
+                    const progressRange = nextPosition - lastUnlockedPosition;
+                    const thresholdRange = nextTierWithProduct.threshold - lastUnlockedTier.threshold;
+                    const progressAmount = cartTotal - lastUnlockedTier.threshold;
+                    const progressRatio = Math.min(Math.max(progressAmount / thresholdRange, 0), 0.99); // Cap at 0.99 to never reach next milestone until unlocked
+                    progressBarWidth = lastUnlockedPosition + (progressRange * progressRatio);
+                    // Ensure we never exceed the next milestone position
+                    progressBarWidth = Math.min(progressBarWidth, nextPosition - 0.1); // Leave small gap before next milestone
+                }
+            }
+        }
+        
+        progressBar.style.width = `${Math.min(Math.max(progressBarWidth, 0), 100)}%`;
 
         // Helper to format currency
         const formatCurrency = (amountInBaseCurrency) => {
@@ -212,31 +280,6 @@
             }
         }
 
-        // Update unlocked status
-        giftTiers.forEach(tier => {
-            tier.unlocked = cartTotal >= tier.threshold;
-        });
-
-        // Calculate positions for milestones based on number of products
-        // First and last should have margins from edges
-        const productCount = tiersWithProducts.length;
-        const edgeMargin = 10; // Percentage margin from edges
-        const availableWidth = 100 - (edgeMargin * 2); // Available width between margins
-        
-        // Create a map of tier to position
-        const tierPositionMap = new Map();
-        tiersWithProducts.forEach((tier, index) => {
-            let position;
-            if (productCount === 1) {
-                position = 50; // Center if only one product
-            } else {
-                // Distribute evenly with margins
-                // First product at edgeMargin, last product at 100 - edgeMargin
-                position = edgeMargin + (availableWidth / (productCount - 1)) * index;
-                position = Math.min(position, 100 - edgeMargin); // Ensure last doesn't exceed right margin
-            }
-            tierPositionMap.set(tier.tier, position);
-        });
 
         // Render milestones with product images
         if (milestonesContainer) {
