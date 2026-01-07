@@ -1703,15 +1703,23 @@
                 e.stopPropagation();
                 const cartItemEl = button.closest('.cart-item');
                 const variantId = parseInt(cartItemEl.dataset.variantId);
+                const sellingPlanId = cartItemEl.dataset.sellingPlanId ? parseInt(cartItemEl.dataset.sellingPlanId) : null;
 
                 // Find the cart item to get the product reference
-                const cartItem = cartItems.find(item => parseInt(item.variantId) === variantId);
+                // For subscription items, we need to match both variantId and sellingPlanId
+                const cartItem = cartItems.find(item => {
+                    const itemVariantId = parseInt(item.variantId);
+                    const itemSellingPlanId = item.sellingPlanId ? parseInt(item.sellingPlanId) : null;
+                    return itemVariantId === variantId && itemSellingPlanId === sellingPlanId;
+                });
+                
                 if (cartItem && !cartItem.isGift) {
-                    // Use the same function as the product card remove button
-                    removeProductFromCart(cartItem.product, variantId);
+                    // For subscription items, we need to pass sellingPlanId to remove the correct item
+                    // For one-time items, sellingPlanId will be null
+                    updateCartItem(variantId, 0, cartItem.product, sellingPlanId);
                 } else if (cartItem && cartItem.isGift) {
                     // For gift items, just remove from cart (no product card to update)
-                    updateCartItem(variantId, 0, cartItem.product, null);
+                    updateCartItem(variantId, 0, cartItem.product, sellingPlanId);
                 }
             });
         });
