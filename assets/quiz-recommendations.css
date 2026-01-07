@@ -10,10 +10,12 @@
 
     .recommendations-left {
         width: 60%;
+        padding: 44px 60px;
     }
 
     .recommendations-right {
         width: 40%;
+        padding: 44px 60px;
     }
 
     .gift-product-card {
