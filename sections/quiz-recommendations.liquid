@@ -163,6 +163,59 @@
                         <div class="section-products" data-section-products="top-picks"></div>
                     </div>
                 </div>
+
+                <!-- Upsell Package Blocks -->
+                {% for block in section.blocks %}
+                    {% if block.type == 'upsell_package' %}
+                        <div class="upsell-package-block" {{ block.shopify_attributes }}>
+                            <!-- Header -->
+                            <div class="upsell-package-header">
+                                <div class="upsell-package-header-left">
+                                    <svg class="upsell-package-flame-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                        <path d="M10 2L12.5 7.5L18 8.5L14 12.5L15 18L10 15L5 18L6 12.5L2 8.5L7.5 7.5L10 2Z" fill="#E98C36"/>
+                                    </svg>
+                                    <span class="upsell-package-header-text">{{ block.settings.header_text | default: 'LIMITED-TIME CRAZY DEAL' }}</span>
+                                </div>
+                                <div class="upsell-package-timer" data-upsell-countdown>
+                                    <span class="timer-value" data-timer-hours>00</span>:<span class="timer-value" data-timer-minutes>00</span>:<span class="timer-value" data-timer-seconds>00</span>:<span class="timer-value" data-timer-milliseconds>00</span>
+                                </div>
+                            </div>
+
+                            <!-- Main Content -->
+                            <div class="upsell-package-content">
+                                {% if block.settings.product_image != blank %}
+                                    <div class="upsell-package-image">
+                                        <img src="{{ block.settings.product_image | image_url: width: 800 }}" alt="{{ block.settings.title }}">
+                                    </div>
+                                {% endif %}
+
+                                {% if block.settings.discount_percent > 0 %}
+                                    <div class="upsell-package-discount-badge">SAVE {{ block.settings.discount_percent }}%</div>
+                                {% endif %}
+
+                                <div class="upsell-package-text-content">
+                                    <h3 class="upsell-package-title">{{ block.settings.title | default: 'Ultimate Hair Care Package' }}</h3>
+                                    {% if block.settings.description != blank %}
+                                        <div class="upsell-package-description">{{ block.settings.description }}</div>
+                                    {% endif %}
+                                </div>
+
+                                {% if block.settings.product != blank %}
+                                    <button class="upsell-package-button" data-upsell-package-button data-product-handle="{{ block.settings.product.handle }}">
+                                        {{ block.settings.button_text | default: 'Claim Ultimate Package' }} — <span data-upsell-package-price>{{ block.settings.product.selected_or_first_available_variant.price | money }}</span>
+                                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                            <path d="M7.5 5L12.5 10L7.5 15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        </svg>
+                                    </button>
+                                {% endif %}
+
+                                {% if block.settings.footer_text != blank %}
+                                    <div class="upsell-package-footer">{{ block.settings.footer_text }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
             </div>
 
             <!-- Right Column: Upsell & Cart Summary (Desktop) -->
@@ -1796,6 +1849,200 @@
         #shopify-section-{{ section.id }} .upsell-button {
             padding: 12px 18px;
             font-size: 14px;
+        }
+
+        /* Upsell Package Block */
+        .upsell-package-block {
+            margin-top: 40px;
+            border-radius: 12px;
+            overflow: hidden;
+            background: #fffbc0;
+        }
+
+        .upsell-package-header {
+            background: #1a365d;
+            color: white;
+            padding: 12px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .upsell-package-header-left {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .upsell-package-flame-icon {
+            width: 20px;
+            height: 20px;
+            flex-shrink: 0;
+        }
+
+        .upsell-package-header-text {
+            font-family: 'Gotham', sans-serif;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .upsell-package-timer {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 6px;
+            padding: 6px 12px;
+            font-family: 'Gotham', sans-serif;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+
+        .upsell-package-content {
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .upsell-package-image {
+            width: 100%;
+            margin-bottom: 8px;
+        }
+
+        .upsell-package-image img {
+            width: 100%;
+            height: auto;
+            object-fit: contain;
+        }
+
+        .upsell-package-discount-badge {
+            background: #E98C36;
+            color: white;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-family: 'Gotham', sans-serif;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            display: inline-block;
+            align-self: center;
+            margin-bottom: 8px;
+        }
+
+        .upsell-package-text-content {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .upsell-package-title {
+            font-family: 'Vanilla Ravioli', serif;
+            font-size: 28px;
+            font-weight: 400;
+            color: #102B26;
+            margin: 0;
+            line-height: 1.2;
+        }
+
+        .upsell-package-description {
+            font-family: 'Gotham', sans-serif;
+            font-size: 14px;
+            color: #102B26;
+            line-height: 1.6;
+        }
+
+        .upsell-package-description p {
+            margin: 0 0 8px 0;
+        }
+
+        .upsell-package-description p:last-child {
+            margin-bottom: 0;
+        }
+
+        .upsell-package-description strong {
+            font-weight: 700;
+        }
+
+        .upsell-package-button {
+            background: white;
+            color: #1a365d;
+            border: none;
+            padding: 16px 24px;
+            border-radius: 8px;
+            font-family: 'Gotham', sans-serif;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.2s;
+            margin-top: 8px;
+        }
+
+        .upsell-package-button:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+
+        .upsell-package-button svg {
+            width: 20px;
+            height: 20px;
+            flex-shrink: 0;
+        }
+
+        .upsell-package-footer {
+            font-family: 'Gotham', sans-serif;
+            font-size: 12px;
+            color: #6b7280;
+            text-align: center;
+            margin-top: 8px;
+        }
+
+        @media (max-width: 767px) {
+            .upsell-package-block {
+                margin-top: 24px;
+            }
+
+            .upsell-package-header {
+                padding: 10px 16px;
+                flex-wrap: wrap;
+                gap: 8px;
+            }
+
+            .upsell-package-header-text {
+                font-size: 11px;
+            }
+
+            .upsell-package-timer {
+                padding: 4px 8px;
+                font-size: 11px;
+            }
+
+            .upsell-package-content {
+                padding: 20px 16px;
+            }
+
+            .upsell-package-title {
+                font-size: 22px;
+            }
+
+            .upsell-package-description {
+                font-size: 13px;
+            }
+
+            .upsell-package-button {
+                padding: 14px 20px;
+                font-size: 14px;
+            }
+
+            .upsell-package-footer {
+                font-size: 11px;
+            }
         }
 
         /* Mobile Sticky Bar */
@@ -3911,6 +4158,75 @@
         });
     }
 
+    // Upsell Package Block Buttons
+    function initUpsellPackageBlocks() {
+        const upsellPackageButtons = document.querySelectorAll('[data-upsell-package-button]');
+        upsellPackageButtons.forEach(button => {
+            button.addEventListener('click', async (e) => {
+                e.preventDefault();
+                const productHandle = button.dataset.productHandle;
+                if (!productHandle) return;
+
+                try {
+                    const productResponse = await fetch(`/products/${productHandle}.js`);
+                    const product = await productResponse.json();
+                    
+                    if (product && product.variants && product.variants.length > 0) {
+                        const variantId = product.variants[0].id;
+                        addToCart(variantId, 1, product, null);
+                        updateCartDisplay();
+                    }
+                } catch (error) {
+                    console.error('Error adding upsell package to cart:', error);
+                }
+            });
+        });
+
+        // Upsell Package Countdown Timers
+        const upsellPackageTimers = document.querySelectorAll('[data-upsell-countdown]');
+        upsellPackageTimers.forEach(timer => {
+            const hoursEl = timer.querySelector('[data-timer-hours]');
+            const minutesEl = timer.querySelector('[data-timer-minutes]');
+            const secondsEl = timer.querySelector('[data-timer-seconds]');
+            const millisecondsEl = timer.querySelector('[data-timer-milliseconds]');
+            
+            if (!hoursEl || !minutesEl || !secondsEl || !millisecondsEl) return;
+            
+            // Get countdown values from section settings
+            const recommendationsSection = document.querySelector('[data-recommendations]');
+            const hours = parseInt(recommendationsSection?.dataset.countdownHours || '0');
+            const minutes = parseInt(recommendationsSection?.dataset.countdownMinutes || '9');
+            const seconds = parseInt(recommendationsSection?.dataset.countdownSeconds || '57');
+            
+            let totalMilliseconds = (hours * 3600 + minutes * 60 + seconds) * 1000;
+            
+            const updateTimer = () => {
+                if (totalMilliseconds <= 0) {
+                    hoursEl.textContent = '00';
+                    minutesEl.textContent = '00';
+                    secondsEl.textContent = '00';
+                    millisecondsEl.textContent = '00';
+                    return;
+                }
+                
+                const h = Math.floor(totalMilliseconds / 3600000);
+                const m = Math.floor((totalMilliseconds % 3600000) / 60000);
+                const s = Math.floor((totalMilliseconds % 60000) / 1000);
+                const ms = Math.floor((totalMilliseconds % 1000) / 10);
+                
+                hoursEl.textContent = String(h).padStart(2, '0');
+                minutesEl.textContent = String(m).padStart(2, '0');
+                secondsEl.textContent = String(s).padStart(2, '0');
+                millisecondsEl.textContent = String(ms).padStart(2, '0');
+                
+                totalMilliseconds -= 10;
+            };
+            
+            updateTimer();
+            const interval = setInterval(updateTimer, 10);
+        });
+    }
+
     // Initialize countdown and upsell when recommendations are shown
     const recommendationsSectionForTimer = document.querySelector('[data-recommendations]');
     if (recommendationsSectionForTimer) {
@@ -3920,6 +4236,7 @@
                     if (recommendationsSectionForTimer.style.display !== 'none') {
                         initCountdownTimer();
                         initUpsellButton();
+                        initUpsellPackageBlocks();
                     }
                 }
             });
@@ -4709,6 +5026,62 @@
                     "id": "feature_text",
                     "label": "Feature Text",
                     "default": "Free shipping"
+                }
+            ]
+        },
+        {
+            "type": "upsell_package",
+            "name": "Upsell Package",
+            "settings": [
+                {
+                    "type": "image_picker",
+                    "id": "product_image",
+                    "label": "Product Image"
+                },
+                {
+                    "type": "text",
+                    "id": "header_text",
+                    "label": "Header Text",
+                    "default": "LIMITED-TIME CRAZY DEAL"
+                },
+                {
+                    "type": "text",
+                    "id": "title",
+                    "label": "Title",
+                    "default": "Ultimate Hair Care Package"
+                },
+                {
+                    "type": "richtext",
+                    "id": "description",
+                    "label": "Description",
+                    "default": "<p>Get all 7 products — more than our top 3 bestsellers — with <strong>50% off</strong>. This is a one-time purchase with no subscription. A limited-time offer we may not keep for long.</p>"
+                },
+                {
+                    "type": "range",
+                    "id": "discount_percent",
+                    "min": 0,
+                    "max": 100,
+                    "step": 5,
+                    "unit": "%",
+                    "label": "Discount Percent",
+                    "default": 50
+                },
+                {
+                    "type": "product",
+                    "id": "product",
+                    "label": "Product"
+                },
+                {
+                    "type": "text",
+                    "id": "button_text",
+                    "label": "Button Text",
+                    "default": "Claim Ultimate Package"
+                },
+                {
+                    "type": "text",
+                    "id": "footer_text",
+                    "label": "Footer Text",
+                    "default": "No subscription • One-time payment • Limited availability"
                 }
             ]
         }
