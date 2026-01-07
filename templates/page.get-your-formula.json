@@ -2051,17 +2051,15 @@
         "review_R7kkyE": {
           "type": "review",
           "settings": {
-            "review_text": "“I’ve tried everything, but this is the only formula that truly delivers results for my hair.”",
-            "author_name": "Sarah M.",
-            "author_image": "shopify://shop_images/Untitled_design.png"
+            "review_text": "<p>“I’ve tried everything, but this is the only formula that truly delivers results for my hair.”</p>",
+            "author_name": "Sarah M."
           }
         },
         "review_q4ieGP": {
           "type": "review",
           "settings": {
-            "review_text": "“My hair has never felt healthier, fuller, and stronger it’s truly transformed. Thank you afsennah!”",
-            "author_name": "Jessica L.",
-            "author_image": "shopify://shop_images/random_foto.png"
+            "review_text": "<p>“My hair has never felt healthier, fuller, and stronger it’s truly transformed. Thank you afsennah!”</p>",
+            "author_name": "Jessica L."
           }
         }
       },
@@ -2077,6 +2075,12 @@
         "title": "Your answers are analyzed. Click ''See My Results'' to continue",
         "subtitle": "See what others with your concern are saying about our custom formulas!",
         "button_text": "See My Results",
+        "show_products": true,
+        "product_image_1": "shopify://shop_images/7d4f04558e15d02e109b47df6e5af1c3655d8bad.png",
+        "product_image_2": "shopify://shop_images/a9d301c2d0f28caa25e1573825fc8eedc4be2fdb.png",
+        "product_image_3": "shopify://shop_images/5fb06fb44832e77703863d81616cb051f52a890b.png",
+        "product_image_4": "shopify://shop_images/01f4a92d0eb8b334aed324bafb23c6c819fa2934.png",
+        "product_image_5": "shopify://shop_images/8491c141445ceb906456066909852c7904db38a3.png",
         "primary_color": "#a6a8de",
         "text_color": "#000000",
         "button_color": "#89fe95",
