@@ -1365,67 +1365,7 @@
             }
         });
 
-        // Render unlocked gift tiers (visual only - not in cartItems)
-        if (giftTiersEnabled && giftTiers.length > 0) {
-            giftTiers.forEach(tier => {
-                if (!tier.unlocked || !tier.product) return;
-
-                const variant = tier.variantId ? tier.product.variants.find(v => v.id === tier.variantId) : tier.product.variants[0];
-                const variantTitle = variant && variant.title !== 'Default Title' ? ` - ${variant.title}` : '';
-                const variantPrice = variant ? variant.price : tier.product.variants[0].price;
-                const formattedOriginalPrice = formatMoney(variantPrice);
-
-                // Get product image
-                const productImage = tier.product.featured_image || '';
-                const imageHTML = productImage ? `<img src="${productImage}" alt="${tier.product.title}" class="cart-item-image">` : '';
-
-                // Create a group container for gift items
-                const itemGroup = document.createElement('div');
-                itemGroup.className = 'cart-item-group';
-
-                const cartItem = document.createElement('div');
-                cartItem.className = 'cart-item cart-gift-item';
-                cartItem.dataset.giftTier = tier.tier;
-                cartItem.innerHTML = `
-                    ${imageHTML}
-                    <div class="cart-item-info">
-                        <span class="cart-item-name">${tier.product.title}${variantTitle}</span>
-                        <div class="cart-item-price cart-gift-price">
-                            <span class="cart-gift-original-price">${formattedOriginalPrice}</span>
-                            <strong class="cart-gift-free-price">FREE</strong>
-                        </div>
-                    </div>
-                `;
-                itemGroup.appendChild(cartItem);
-                cartItemsContainer.appendChild(itemGroup);
-            });
-        }
-
-        // Legacy gift items from cartItems (for old single gift system)
-        giftItems.forEach(item => {
-            // Create a group container for gift items
-            const itemGroup = document.createElement('div');
-            itemGroup.className = 'cart-item-group';
-
-            // Get product image
-            const productImage = item.product.featured_image || '';
-            const imageHTML = productImage ? `<img src="${productImage}" alt="${item.product.title}" class="cart-item-image">` : '';
-            const variantTitle = item.variantTitle ? ` - ${item.variantTitle}` : '';
-
-            const cartItem = document.createElement('div');
-            cartItem.className = 'cart-item';
-            cartItem.dataset.variantId = item.variantId;
-            cartItem.dataset.sellingPlanId = item.sellingPlanId || '';
-            cartItem.innerHTML = `
-                ${imageHTML}
-                <div class="cart-item-info">
-                    <span class="cart-item-name">${item.product.title}${variantTitle}</span>
-                    <div class="cart-item-price"><strong>FREE</strong></div>
-                </div>
-            `;
-            itemGroup.appendChild(cartItem);
-            cartItemsContainer.appendChild(itemGroup);
-        });
+        // Free products (gifts and BOGO) are not shown in cart items
 
         Object.keys(subscriptionGroups).forEach(planName => {
             const group = subscriptionGroups[planName];
@@ -1552,11 +1492,6 @@
                 priceHTML = `<div class="cart-item-price">${formatMoney(itemTotal)}</div>`;
             }
 
-            // Check if this item has a matching BOGO free item
-            const matchingBogoItem = bogoItems.find(bogoItem =>
-                parseInt(bogoItem.variantId) === parseInt(item.variantId)
-            );
-
             // Create a group container for related items
             const itemGroup = document.createElement('div');
             itemGroup.className = 'cart-item-group';
@@ -1582,36 +1517,6 @@
                 </button>
             `;
             itemGroup.appendChild(cartItem);
-
-            // Add BOGO item to the same group if it exists
-            if (matchingBogoItem) {
-                let bogoProductName = matchingBogoItem.product.title;
-                if (matchingBogoItem.product.variants.length > 1) {
-                    const bogoVariant = matchingBogoItem.product.variants.find(v => v.id === parseInt(matchingBogoItem.variantId));
-                    if (bogoVariant && bogoVariant.title !== 'Default Title') {
-                        bogoProductName += ` - ${bogoVariant.title}`;
-                    }
-                }
-
-                // Get product image
-                const bogoProductImage = matchingBogoItem.product.featured_image || '';
-                const bogoImageHTML = bogoProductImage ? `<img src="${bogoProductImage}" alt="${bogoProductName}" class="cart-item-image">` : '';
-
-                const bogoCartItem = document.createElement('div');
-                bogoCartItem.className = 'cart-item cart-item-bogo';
-                bogoCartItem.dataset.variantId = matchingBogoItem.variantId;
-                bogoCartItem.dataset.sellingPlanId = matchingBogoItem.sellingPlanId || '';
-                bogoCartItem.innerHTML = `
-                    ${bogoImageHTML}
-                    <div class="cart-item-info">
-                        <span class="cart-item-name">${bogoProductName}</span>
-                        <span class="cart-item-bogo-label">${bogoCartText}</span>
-                        <div class="cart-item-price"><strong>FREE</strong></div>
-                    </div>
-                `;
-                itemGroup.appendChild(bogoCartItem);
-            }
-
             cartItemsContainer.appendChild(itemGroup);
         });
 
