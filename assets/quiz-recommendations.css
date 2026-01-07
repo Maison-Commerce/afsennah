@@ -399,10 +399,6 @@
         }
     }
 
-    .recommendations-section {
-        margin-top: 10px;
-    }
-
     .section-title {
         width: fit-content;
         color: var(--White, #FFF);
