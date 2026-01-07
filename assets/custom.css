@@ -1083,5 +1083,7 @@ video-section-play-button {
     letter-spacing: 0%;
     text-align: left;
     vertical-align: middle;
+    margin: 0;
+    padding: 0;
     color rgba(35, 35, 35, 0.75);
 }
