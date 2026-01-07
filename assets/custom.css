@@ -1072,7 +1072,7 @@ video-section-play-button {
     font-size: 12px;
     line-height: 150%;
     letter-spacing: 0%;
-    text-align: center;
+    text-align: left;
     vertical-align: middle;
     color rgba(35, 35, 35, 0.75);
 }
