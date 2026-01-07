@@ -1303,6 +1303,7 @@ height: 100%;
 .cart-upsell-product__image-link {
     padding: fit-content;
     padding: 8px;
+    background: white;
 }
 .cart-upsell-product__image .bg-image {
     height: 80px;
@@ -1312,6 +1313,7 @@ height: 100%;
     background-size: cover !important;
     margin: 0 auto;
     border-radius: 8px;
+    overflow: hidden;
 }
 .cart-upsell-product__image-link {
     height: 96px;
