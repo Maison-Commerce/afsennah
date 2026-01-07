@@ -152,6 +152,10 @@
         line-height: 1.4;
     }
 
+    .gift-progress-subtitle p{
+        margin: 0;
+    }
+
     .gift-progress-bar-container {
         position: relative;
         padding: 16px 20px 40px 20px;
