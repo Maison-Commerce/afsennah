@@ -1148,4 +1148,6 @@ video-section-play-button {
     display: flex;
     align-items: center;
     justify-content: center;
+    border: 1px solid rgba(138, 150, 139, 0.3);
+    border-radius: 999px
 }
