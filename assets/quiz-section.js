@@ -189,6 +189,7 @@
                 // Show SVG and remove border
                 if (checkbox) {
                     checkbox.style.border = 'none';
+                    checkbox.style.background = 'transparent';
                 }
                 if (checkboxInnerChecked) {
                     checkboxInnerChecked.style.display = 'block';
