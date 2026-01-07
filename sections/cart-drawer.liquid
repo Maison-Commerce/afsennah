@@ -170,7 +170,7 @@
 
                       {%- for product in section.settings.cross_sell_products -%}
                         <li class="slider__item">
-                          {%- render 'product-block', product: product, manual_loading: true, no_quick_buy: false, no_swiping: false, custom_aspect_ratio: chosen_aspect_ratio -%}
+                          {%- render 'cart-upsell-product', product: product, custom_aspect_ratio: chosen_aspect_ratio -%}
                         </li>
                       {%- endfor -%}
                     {%- endif -%}
@@ -194,16 +194,6 @@
       .cart-item-upsells .product-grid--carousel .slider__item {
         display: flex;
         flex-direction: column;
-      }
-
-      .cart-item-upsells .product-grid--carousel .product-block {
-        display: flex;
-        flex-direction: column;
-        flex-grow: 1;
-      }
-
-      .cart-item-upsells .product-grid--carousel .block-inner {
-        flex-grow: 1;
       }
 
       /* Mobile styles - keep original behavior */
@@ -254,6 +244,16 @@
         display: flex;
         gap: 8px;
         margin-left: auto;
+      }
+
+      /* Ensure cart-upsell-product works well in slider */
+      .cart-item-upsells .slider__item {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .cart-item-upsells .cart-upsell-product {
+        height: 100%;
       }
     </style>
 
