@@ -1302,8 +1302,13 @@ height: 100%;
 }
 
 .cart-upsell-product__image .bg-image {
-    height: 96px;
-    width: 96px;
+    height: 80px;
+    width: 80px;
+    display: flex;
+    background-position: center center !important;
+    background-size: cover !important;
+    margin: 0 auto;
+    border-radius: 8px;
 }
 .cart-upsell-product__image-link {
     height: 96px;
