@@ -147,7 +147,7 @@
         const milestonesContainer = document.querySelector('[data-gift-milestones]');
         const cardsContainer = document.querySelector('[data-gift-cards-container]');
 
-        if (!progressBar || !progressLabel || !cardsContainer) return;
+        if (!progressBar || !progressLabel || !milestonesContainer || !cardsContainer) return;
 
         // Find the next tier to unlock and max threshold
         const maxThreshold = giftTiers.length > 0 ? giftTiers[giftTiers.length - 1].threshold : 1;
