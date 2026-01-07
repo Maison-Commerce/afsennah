@@ -147,6 +147,9 @@
         const milestonesContainer = document.querySelector('[data-gift-milestones]');
 
         if (!progressBar || !progressLabel || !milestonesContainer) return;
+        
+        // Filter out tiers without products for positioning calculation
+        const tiersWithProducts = giftTiers.filter(tier => tier.product);
 
         // Find the next tier to unlock and max threshold
         const maxThreshold = giftTiers.length > 0 ? giftTiers[giftTiers.length - 1].threshold : 1;
@@ -214,26 +217,37 @@
             tier.unlocked = cartTotal >= tier.threshold;
         });
 
-        // Calculate positions for milestones and cards
-        const totalWidth = 100; // Percentage
-        const firstPosition = 0;
-        const lastPosition = totalWidth;
-        const positions = giftTiers.map((tier, index) => {
-            if (index === 0) return firstPosition;
-            if (index === giftTiers.length - 1) return lastPosition;
-            return (tier.threshold / maxThreshold) * 100;
+        // Calculate positions for milestones based on number of products
+        // First and last should have margins from edges
+        const productCount = tiersWithProducts.length;
+        const edgeMargin = 10; // Percentage margin from edges
+        const availableWidth = 100 - (edgeMargin * 2); // Available width between margins
+        
+        // Create a map of tier to position
+        const tierPositionMap = new Map();
+        tiersWithProducts.forEach((tier, index) => {
+            let position;
+            if (productCount === 1) {
+                position = 50; // Center if only one product
+            } else {
+                // Distribute evenly with margins
+                // First product at edgeMargin, last product at 100 - edgeMargin
+                position = edgeMargin + (availableWidth / (productCount - 1)) * index;
+                position = Math.min(position, 100 - edgeMargin); // Ensure last doesn't exceed right margin
+            }
+            tierPositionMap.set(tier.tier, position);
         });
 
         // Render milestones with product images
         if (milestonesContainer) {
             milestonesContainer.innerHTML = '';
-            giftTiers.forEach((tier, index) => {
-                if (!tier.product) return;
+            tiersWithProducts.forEach((tier) => {
+                const position = tierPositionMap.get(tier.tier);
                 
                 const milestone = document.createElement('div');
                 milestone.className = `gift-milestone ${tier.unlocked ? 'reached' : ''}`;
                 milestone.dataset.tier = tier.tier;
-                milestone.style.left = `${positions[index]}%`;
+                milestone.style.left = `${position}%`;
                 
                 const variant = tier.variantId ? tier.product.variants.find(v => v.id === tier.variantId) : tier.product.variants[0];
                 const imageUrl = variant?.featured_image?.src || tier.product.featured_image?.src || tier.product.featured_image || '';
