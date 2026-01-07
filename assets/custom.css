@@ -1036,6 +1036,6 @@ video-section-play-button {
     padding: 0;
 }
 .cart-item__image .theme-img {
-    max-height: 80px;
-    width: auto;
+    height: 80px;
+    width: 80px;
 }
