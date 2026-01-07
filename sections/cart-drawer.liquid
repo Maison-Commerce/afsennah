@@ -457,11 +457,16 @@
               // Pages are: 0 (slides 0-1.65), 1 (slides 2-3.65), 2 (slides 4-5.65), etc.
               // Each page starts at even slide index: 0, 2, 4, 6, etc.
               
+              // Check if we're at the end of the slider
+              const maxScrollLeft = slider.scrollWidth - slider.clientWidth;
+              const isAtEnd = Math.abs(slider.scrollLeft - maxScrollLeft) < 10; // 10px tolerance
+              
               // Check if we're in the last page
               // Last page shows slides starting from (totalPages - 1) * 2
               const lastPageStartIndex = (totalPages - 1) * 2;
-              if (slideIndex >= lastPageStartIndex) {
-                // We're in the last page
+              
+              if (isAtEnd || slideIndex >= lastPageStartIndex || slideIndex >= slides.length - 2) {
+                // We're in the last page (either by index or by scroll position)
                 newPage = totalPages - 1;
               } else {
                 // Calculate page based on slide index: page = floor(slideIndex / 2)
@@ -491,8 +496,15 @@
           
           // Also listen to scroll events to catch cases where select event doesn't fire
           const scrollHandler = debounce(() => {
+            // Calculate current slide index based on scroll position
             const currentIndex = Math.round(Math.abs(slider.scrollLeft) / slideSpan) || 0;
-            updateDotsFromIndex(currentIndex);
+            // Also check if we're at the end
+            const maxScrollLeft = slider.scrollWidth - slider.clientWidth;
+            const isAtEnd = Math.abs(slider.scrollLeft - maxScrollLeft) < 10;
+            
+            // If at end, use last slide index to ensure last page is detected
+            const slideIndexToUse = isAtEnd ? Math.max(currentIndex, slides.length - 1) : currentIndex;
+            updateDotsFromIndex(slideIndexToUse);
           }, 150);
           
           slider.addEventListener('scroll', scrollHandler);
