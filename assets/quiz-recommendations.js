@@ -9,6 +9,277 @@
     let bogoBadgeText = 'BUY 1 GET 1 FREE';
     let bogoCartText = 'Buy 1 Get 1 Free';
 
+    // Tiered Gift System configuration
+    let giftTiersEnabled = false;
+    let giftTiers = []; // Array of { tier, threshold, femaleHandle, maleHandle, bannerText, description, product: null, unlocked: false, variantId: null }
+    let giftProgressText = '';
+    let giftCompleteText = '';
+    let userGender = 'female'; // Default to female, will be set from quiz answers
+
+    function initGiftTiers() {
+        const container = document.querySelector('[data-gift-tiers-enabled]');
+        if (!container || container.dataset.giftTiersEnabled !== 'true') {
+            giftTiersEnabled = false;
+            return;
+        }
+
+        giftTiersEnabled = true;
+        giftProgressText = container.dataset.progressText || 'Spend [[remaining]] more to unlock your next gift!';
+        giftCompleteText = container.dataset.completeText || 'You have unlocked all free gifts!';
+
+        // Get user gender from QuizManager
+        if (window.QuizManager && window.QuizManager.answers && window.QuizManager.answers.gender) {
+            userGender = window.QuizManager.answers.gender.value === 'male' ? 'male' : 'female';
+        }
+
+        // Parse tier configurations
+        giftTiers = [];
+        for (let i = 1; i <= 3; i++) {
+            const threshold = parseInt(container.dataset[`tier${i}Threshold`]) || 0;
+            const femaleHandle = container.dataset[`tier${i}Female`] || '';
+            const femaleVariantId = container.dataset[`tier${i}VariantFemale`] || '';
+            const maleHandle = container.dataset[`tier${i}Male`] || '';
+            const maleVariantId = container.dataset[`tier${i}VariantMale`] || '';
+            const bannerText = container.dataset[`tier${i}Banner`] || `Tier ${i} Gift`;
+            const description = container.dataset[`tier${i}Description`] || '';
+
+            // Only add tier if threshold > 0 and at least one product is set
+            if (threshold > 0 && (femaleHandle || maleHandle)) {
+                giftTiers.push({
+                    tier: i,
+                    threshold,
+                    femaleHandle,
+                    femaleVariantId: femaleVariantId ? parseInt(femaleVariantId) : null,
+                    maleHandle,
+                    maleVariantId: maleVariantId ? parseInt(maleVariantId) : null,
+                    bannerText,
+                    description,
+                    product: null,
+                    variantId: null,
+                    unlocked: false
+                });
+            }
+        }
+
+        // Sort by threshold ascending
+        giftTiers.sort((a, b) => a.threshold - b.threshold);
+
+        // Fetch gift products
+        giftTiers.forEach(tier => {
+            const isMale = userGender === 'male' && tier.maleHandle;
+            const handle = isMale ? tier.maleHandle : tier.femaleHandle;
+            const specifiedVariantId = isMale ? tier.maleVariantId : tier.femaleVariantId;
+
+            if (handle) {
+                fetch(`/products/${handle}.js`)
+                    .then(res => res.ok ? res.json() : null)
+                    .then(product => {
+                        if (product) {
+                            tier.product = product;
+                            if (specifiedVariantId) {
+                                const variant = product.variants.find(v => v.id === specifiedVariantId);
+                                tier.variantId = variant ? variant.id : product.variants[0].id;
+                            } else {
+                                tier.variantId = product.variants[0].id;
+                            }
+                            renderGiftTiers();
+                        }
+                    })
+                    .catch(err => console.error(`Error fetching gift product ${handle}:`, err));
+            }
+        });
+
+        // Initial render
+        renderGiftTiers();
+    }
+
+    function getCartTotalForGifts() {
+        // Calculate cart total for non-gift, non-bogo-free items
+        // Returns total in shop's BASE currency (EUR) for threshold comparison
+        let total = 0;
+        cartItems.forEach(item => {
+            if (item.isGift || item.isBogoFree) return;
+
+            let variantPrice;
+            if (item.product.selectedVariant) {
+                variantPrice = item.product.selectedVariant.price;
+            } else {
+                const variant = item.product.variants.find(v => v.id === parseInt(item.variantId));
+                variantPrice = variant ? variant.price : item.product.variants[0].price;
+            }
+
+            // Apply subscription discount if applicable
+            if (item.sellingPlanId && item.product.selling_plan_groups) {
+                const sellingPlanGroup = item.product.selling_plan_groups[0];
+                const sellingPlan = sellingPlanGroup?.selling_plans?.find(sp => sp.id == item.sellingPlanId);
+                if (sellingPlan) {
+                    variantPrice = calculateSubscriptionPrice(variantPrice, sellingPlan);
+                }
+            }
+
+            total += variantPrice * item.quantity;
+        });
+
+        let totalInCurrency = total / 100;
+
+        // Convert back to base currency (EUR) if user is viewing in a different currency
+        if (typeof Shopify !== 'undefined' && Shopify.currency && Shopify.currency.rate) {
+            const rate = parseFloat(Shopify.currency.rate);
+            if (rate && rate !== 1) {
+                totalInCurrency = totalInCurrency / rate;
+            }
+        }
+
+        return totalInCurrency;
+    }
+
+    function updateGiftTiers() {
+        if (!giftTiersEnabled || giftTiers.length === 0) return;
+        renderGiftTiers();
+    }
+
+    function renderGiftTiers() {
+        if (!giftTiersEnabled) return;
+
+        const cartTotal = getCartTotalForGifts();
+        const progressBar = document.querySelector('[data-gift-progress-bar]');
+        const progressLabel = document.querySelector('[data-gift-progress-label]');
+        const milestonesContainer = document.querySelector('[data-gift-milestones]');
+        const cardsContainer = document.querySelector('[data-gift-cards-container]');
+
+        if (!progressBar || !progressLabel || !cardsContainer) return;
+
+        // Find the next tier to unlock and max threshold
+        const maxThreshold = giftTiers.length > 0 ? giftTiers[giftTiers.length - 1].threshold : 1;
+        const nextTier = giftTiers.find(t => !t.unlocked);
+        const allUnlocked = !nextTier;
+
+        // Update progress bar
+        const progressPercent = Math.min((cartTotal / maxThreshold) * 100, 100);
+        progressBar.style.width = `${progressPercent}%`;
+        cardsContainer.style.setProperty('--progress-percent', `${progressPercent}%`);
+
+        // Helper to format currency
+        const formatCurrency = (amountInBaseCurrency) => {
+            let cents = Math.round(amountInBaseCurrency * 100);
+            if (typeof Shopify !== 'undefined' && Shopify.currency && Shopify.currency.rate) {
+                const rate = parseFloat(Shopify.currency.rate);
+                if (rate && rate !== 1) {
+                    cents = Math.round(cents * rate);
+                }
+            }
+            const formatted = formatMoney(cents);
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = formatted;
+            return tempDiv.textContent || tempDiv.innerText || formatted;
+        };
+
+        // Update progress label
+        if (allUnlocked) {
+            progressLabel.textContent = giftCompleteText;
+        } else if (nextTier) {
+            const remaining = nextTier.threshold - cartTotal;
+            const lastUnlockedTier = giftTiers.filter(t => t.unlocked).pop();
+            let headerText = '';
+            
+            if (lastUnlockedTier && lastUnlockedTier.product) {
+                const variant = lastUnlockedTier.variantId ? lastUnlockedTier.product.variants.find(v => v.id === lastUnlockedTier.variantId) : lastUnlockedTier.product.variants[0];
+                const variantTitle = variant && variant.title !== 'Default Title' ? ` (${variant.title})` : '';
+                headerText = `🎁 ${lastUnlockedTier.product.title}${variantTitle} added! `;
+            }
+            
+            if (nextTier && nextTier.product) {
+                headerText += `Spend ${formatCurrency(remaining)} more to get Free ${nextTier.product.title}`;
+            } else {
+                headerText += giftProgressText
+                    .replace('[[remaining]]', formatCurrency(remaining))
+                    .replace('[[current]]', formatCurrency(cartTotal))
+                    .replace('[[next_tier]]', formatCurrency(nextTier.threshold));
+            }
+            
+            progressLabel.textContent = headerText;
+        } else {
+            const firstTier = giftTiers[0];
+            if (firstTier && firstTier.product) {
+                const remaining = firstTier.threshold - cartTotal;
+                progressLabel.textContent = `Spend ${formatCurrency(remaining)} more to get Free ${firstTier.product.title}`;
+            } else {
+                progressLabel.textContent = giftProgressText
+                    .replace('[[remaining]]', formatCurrency(firstTier ? firstTier.threshold - cartTotal : 0))
+                    .replace('[[current]]', formatCurrency(cartTotal))
+                    .replace('[[next_tier]]', formatCurrency(firstTier ? firstTier.threshold : 0));
+            }
+        }
+
+        // Update unlocked status
+        giftTiers.forEach(tier => {
+            tier.unlocked = cartTotal >= tier.threshold;
+        });
+
+        // Calculate positions for milestones and cards
+        const totalWidth = 100; // Percentage
+        const firstPosition = 0;
+        const lastPosition = totalWidth;
+        const positions = giftTiers.map((tier, index) => {
+            if (index === 0) return firstPosition;
+            if (index === giftTiers.length - 1) return lastPosition;
+            return (tier.threshold / maxThreshold) * 100;
+        });
+
+        // Render milestones with product images
+        if (milestonesContainer) {
+            milestonesContainer.innerHTML = '';
+            giftTiers.forEach((tier, index) => {
+                if (!tier.product) return;
+                
+                const milestone = document.createElement('div');
+                milestone.className = `gift-milestone ${tier.unlocked ? 'reached' : ''}`;
+                milestone.dataset.tier = tier.tier;
+                milestone.style.left = `${positions[index]}%`;
+                
+                const variant = tier.variantId ? tier.product.variants.find(v => v.id === tier.variantId) : tier.product.variants[0];
+                const imageUrl = variant?.featured_image?.src || tier.product.featured_image?.src || tier.product.featured_image || '';
+                
+                if (imageUrl) {
+                    const img = document.createElement('img');
+                    img.src = imageUrl;
+                    img.alt = tier.product.title;
+                    img.className = 'gift-milestone-image';
+                    milestone.appendChild(img);
+                }
+                
+                milestonesContainer.appendChild(milestone);
+            });
+        }
+
+        // Render gift cards
+        cardsContainer.innerHTML = '';
+        giftTiers.forEach((tier, index) => {
+            if (!tier.product) return;
+
+            const card = document.createElement('div');
+            card.className = `gift-tier-card ${tier.unlocked ? 'unlocked' : 'locked'}`;
+            card.dataset.tier = tier.tier;
+
+            const variant = tier.variantId ? tier.product.variants.find(v => v.id === tier.variantId) : tier.product.variants[0];
+            const variantTitle = variant && variant.title !== 'Default Title' ? variant.title : '';
+            const imageUrl = variant?.featured_image?.src || tier.product.featured_image?.src || tier.product.featured_image || '';
+
+            card.innerHTML = `
+                <div class="gift-card-image">
+                    ${imageUrl ? `<img src="${imageUrl}" alt="${tier.product.title}">` : ''}
+                </div>
+                <div class="gift-card-content">
+                    <h3 class="gift-product-title">${tier.product.title}${variantTitle ? ` (${variantTitle})` : ''}</h3>
+                </div>
+            `;
+
+            cardsContainer.appendChild(card);
+        });
+
+        // Update connecting line progress
+        cardsContainer.style.setProperty('--progress-percent', `${progressPercent}%`);
+    }
 
     function initRecommendations() {
         if (initialized) return;
@@ -33,6 +304,8 @@
         bogoCartText = recommendationsSection?.dataset.bogoCartText || 'Buy 1 Get 1 Free';
         console.log('BOGO settings loaded:', { bogoEnabled, bogoProductHandles, bogoBadgeText, bogoCartText });
 
+        // Initialize tiered gift system
+        initGiftTiers();
 
         if (sortOrder && sortOrder.trim() !== '') {
             const sortOrderHandles = sortOrder.split(',').map(h => h.trim()).filter(h => h);
@@ -917,9 +1190,10 @@
 
         console.log('Cart updated. Current cart items:', cartItems.length);
 
-        // Update tiered gift system BEFORE updating cart display (only for non-gift items)
-
         updateCartDisplay();
+        
+        // Update gift tiers after cart changes
+        updateGiftTiers();
         
         // Update button visibility for all product cards after cart changes
         updateProductCardButtons();

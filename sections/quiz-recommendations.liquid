@@ -104,6 +104,58 @@
                     <h3 class="cart-summary-title">Order Summary</h3>
                 </div>
                 <div class="cart-summary-body">
+                    {%- comment -%} Gift Progress Section {%- endcomment -%}
+                    {% if section.settings.gift_tiers_enabled %}
+                        <div class="gift-progress-section" 
+                            data-gift-progress-section
+                            data-gift-tiers-enabled="true"
+                            data-tier1-threshold="{{ section.settings.tier1_threshold | default: 100 }}"
+                            data-tier1-female="{{ section.settings.tier1_gift_female.handle | default: '' }}"
+                            data-tier1-variant-female="{{ section.settings.tier1_variant_female | default: '' }}"
+                            data-tier1-male="{{ section.settings.tier1_gift_male.handle | default: '' }}"
+                            data-tier1-variant-male="{{ section.settings.tier1_variant_male | default: '' }}"
+                            data-tier1-banner="{{ section.settings.tier1_banner_text | default: 'FREE GIFT UNLOCKED!' }}"
+                            data-tier1-description="{{ section.settings.tier1_description | default: '' }}"
+                            data-tier2-threshold="{{ section.settings.tier2_threshold | default: 0 }}"
+                            data-tier2-female="{{ section.settings.tier2_gift_female.handle | default: '' }}"
+                            data-tier2-variant-female="{{ section.settings.tier2_variant_female | default: '' }}"
+                            data-tier2-male="{{ section.settings.tier2_gift_male.handle | default: '' }}"
+                            data-tier2-variant-male="{{ section.settings.tier2_variant_male | default: '' }}"
+                            data-tier2-banner="{{ section.settings.tier2_banner_text | default: 'BONUS GIFT UNLOCKED!' }}"
+                            data-tier2-description="{{ section.settings.tier2_description | default: '' }}"
+                            data-tier3-threshold="{{ section.settings.tier3_threshold | default: 0 }}"
+                            data-tier3-female="{{ section.settings.tier3_gift_female.handle | default: '' }}"
+                            data-tier3-variant-female="{{ section.settings.tier3_variant_female | default: '' }}"
+                            data-tier3-male="{{ section.settings.tier3_gift_male.handle | default: '' }}"
+                            data-tier3-variant-male="{{ section.settings.tier3_variant_male | default: '' }}"
+                            data-tier3-banner="{{ section.settings.tier3_banner_text | default: 'VIP GIFT UNLOCKED!' }}"
+                            data-tier3-description="{{ section.settings.tier3_description | default: '' }}"
+                            data-progress-text="{{ section.settings.gift_progress_text | default: 'Add [[remaining]] more to unlock your next gift!' }}"
+                            data-complete-text="{{ section.settings.gift_complete_text | default: 'You have unlocked all free gifts!' }}"
+                        >
+                            <div class="gift-progress-header">
+                                <div class="gift-progress-header-content">
+                                    <h3 class="gift-progress-title">Unlock your free gift!</h3>
+                                    <p class="gift-progress-subtitle" data-gift-progress-label>{{ section.settings.gift_progress_text | default: 'Add items to unlock gifts!' }}</p>
+                                </div>
+                            </div>
+                            <div class="gift-progress-bar-container">
+                                <div class="gift-progress-bar" data-gift-progress-bar style="width: 0%"></div>
+                                <div class="gift-progress-milestones" data-gift-milestones>
+                                    {%- comment -%} Milestones will be dynamically added by JS {%- endcomment -%}
+                                </div>
+                            </div>
+                            <div class="gift-cards-container" data-gift-cards-container>
+                                {%- comment -%} Gift cards are inserted here by JavaScript {%- endcomment -%}
+                            </div>
+                            <div class="gift-progress-footer">
+                                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                                    <path d="M13.3333 4L6 11.3333L2.66667 8" stroke="#1A365D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                                <span>Free shipping</span>
+                            </div>
+                        </div>
+                    {% endif %}
                     <div class="cart-items" data-cart-items>
                         <!-- Cart items will be added here dynamically -->
                     </div>
