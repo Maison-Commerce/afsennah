@@ -226,9 +226,11 @@
   </div>
 </div>
 {% if item.selling_plan_allocation %}
+
+  {% assign sellingOption = item.selling_plan_allocation.selling_plan.options | first %}
+
   {% if section.settings.description_subscription != blank %}
     <div class="subscription-description">
-      {% comment %} {{ item.selling_plan_allocation.selling_plan.name | escape_once }} {% endcomment %}
       <div class="subscription-content">
         <div class="content-heading">
           <h3>{{ sellingOption.name }}</h3><span>{{ sellingOption.value }}</span>
@@ -240,9 +242,7 @@
           </p>
         </div>
       </div>
-      <div class="subscription-value">
-        
-      </div>
     </div>
   {% endif %}
 {% endif %}
+{% comment %} {% if %} {% endcomment %}
