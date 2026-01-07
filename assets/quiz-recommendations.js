@@ -1383,27 +1383,38 @@
     function updateCartItem(variantId, quantity, product, sellingPlanId = null) {
         // Ensure variantId is numeric
         const numericVariantId = parseInt(variantId);
-
-        // Remove only non-gift, non-BOGO items with this variantId (preserve gifts and BOGO free items)
-        // When switching purchase options (subscription <-> one-time), remove the old option
         const numericSellingPlanId = sellingPlanId ? parseInt(sellingPlanId) : null;
-        cartItems = cartItems.filter(item => {
-            // Keep items with different variantId
-            if (parseInt(item.variantId) !== numericVariantId) return true;
-            // Keep gifts and BOGO items
-            if (item.isGift || item.isBogoFree) return true;
-            // Remove items with same variantId but different sellingPlanId (switching purchase options)
-            const itemSellingPlanId = item.sellingPlanId ? parseInt(item.sellingPlanId) : null;
-            // Only keep if sellingPlanId matches (same purchase option)
-            return itemSellingPlanId === numericSellingPlanId;
-        });
 
-        if (quantity > 0) {
-            addToCart(numericVariantId, quantity, product, sellingPlanId);
-        } else {
+        if (quantity === 0) {
+            // Remove item from cart: filter out items that match variantId and sellingPlanId (but keep gifts and BOGO items)
+            cartItems = cartItems.filter(item => {
+                // Keep items with different variantId
+                if (parseInt(item.variantId) !== numericVariantId) return true;
+                // Keep gifts and BOGO items
+                if (item.isGift || item.isBogoFree) return true;
+                // Remove items with matching variantId and sellingPlanId
+                const itemSellingPlanId = item.sellingPlanId ? parseInt(item.sellingPlanId) : null;
+                return itemSellingPlanId !== numericSellingPlanId;
+            });
+            
             // Update gift tiers BEFORE updating cart display when item is removed
             updateGiftTiers();
             updateCartDisplay();
+        } else {
+            // When adding/updating: Remove only non-gift, non-BOGO items with this variantId (preserve gifts and BOGO free items)
+            // When switching purchase options (subscription <-> one-time), remove the old option
+            cartItems = cartItems.filter(item => {
+                // Keep items with different variantId
+                if (parseInt(item.variantId) !== numericVariantId) return true;
+                // Keep gifts and BOGO items
+                if (item.isGift || item.isBogoFree) return true;
+                // Remove items with same variantId but different sellingPlanId (switching purchase options)
+                const itemSellingPlanId = item.sellingPlanId ? parseInt(item.sellingPlanId) : null;
+                // Only keep if sellingPlanId matches (same purchase option)
+                return itemSellingPlanId === numericSellingPlanId;
+            });
+
+            addToCart(numericVariantId, quantity, product, sellingPlanId);
         }
     }
 
