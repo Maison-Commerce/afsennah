@@ -1224,3 +1224,75 @@ video-section-play-button {
     align-items: center;
     justify-content: center;
 }
+
+
+/* Custom styles for cart-item-upsells slider */
+.cart-item-upsells .product-grid--carousel {
+--product-columns-desktop: 2.65;
+grid-auto-columns: calc((100% - var(--gutter) * 1.65) / 2.65);
+}
+
+.cart-item-upsells .product-grid--carousel .slider__item {
+display: flex;
+flex-direction: column;
+}
+
+/* Mobile styles - keep original behavior */
+@media (max-width: 767.98px) {
+.cart-item-upsells .product-grid--carousel {
+    --product-columns-desktop: 1.5;
+    grid-auto-columns: calc((100% - var(--gutter) * 0.5) / 1.5);
+}
+}
+
+/* Dots styles */
+.cart-item-upsells__dots {
+display: flex;
+justify-content: center;
+align-items: center;
+gap: 8px;
+margin-top: 16px;
+padding: 0 16px;
+}
+
+.cart-item-upsells__dot {
+width: 24px;
+height: 4px;
+border-radius: 42px;
+background: rgba(12, 28, 37, 0.1);
+border: none;
+cursor: pointer;
+padding: 0;
+transition: all 0.3s ease;
+flex-shrink: 0;
+}
+
+.cart-item-upsells__dot.active {
+background: #0C1C25;
+}
+
+.cart-item-upsells .opposing-items {
+display: flex;
+justify-content: space-between;
+align-items: center;
+}
+
+.cart-item-upsells .opposing-items__left {
+flex: 1;
+}
+
+.cart-item-upsells .slider-nav {
+display: flex;
+gap: 8px;
+margin-left: auto;
+}
+
+/* Ensure cart-upsell-product works well in slider */
+.cart-item-upsells .slider__item {
+display: flex;
+flex-direction: column;
+}
+
+.cart-item-upsells .cart-upsell-product {
+height: 100%;
+}
