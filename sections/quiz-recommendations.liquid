@@ -3028,6 +3028,8 @@
 
                     // Calculate discount badge for new variant
                     const hasVariantDiscount = selectedVariant.compare_at_price && selectedVariant.compare_at_price > selectedVariant.price;
+                    const variantOriginalPrice = hasVariantDiscount ? formatMoney(selectedVariant.compare_at_price) : '';
+                    const variantDiscountedPrice = formatMoney(selectedVariant.price);
                     const variantDiscountPercent = hasVariantDiscount ? Math.round(((selectedVariant.compare_at_price - selectedVariant.price) / selectedVariant.compare_at_price) * 100) : 0;
                     const variantDiscountBadge = hasVariantDiscount ? `<span class="product-discount-badge">${variantDiscountPercent}% OFF</span>` : '';
 
@@ -3035,12 +3037,6 @@
                     const priceWrapper = card.querySelector('.product-price-wrapper');
                     const subscriptionPriceWrapper = card.querySelector('[data-option="subscription"] .option-price-wrapper');
                     const onetimePriceWrapper = card.querySelector('[data-option="onetime"] .option-price-wrapper');
-                    
-                    const hasVariantDiscount = selectedVariant.compare_at_price && selectedVariant.compare_at_price > selectedVariant.price;
-                    const variantOriginalPrice = hasVariantDiscount ? formatMoney(selectedVariant.compare_at_price) : '';
-                    const variantDiscountedPrice = formatMoney(selectedVariant.price);
-                    const variantDiscountPercent = hasVariantDiscount ? Math.round(((selectedVariant.compare_at_price - selectedVariant.price) / selectedVariant.compare_at_price) * 100) : 0;
-                    const variantDiscountBadge = hasVariantDiscount ? `<span class="product-discount-badge">${variantDiscountPercent}% OFF</span>` : '';
 
                     if (priceWrapper && !hasSubscription) {
                         priceWrapper.innerHTML = `
