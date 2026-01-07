@@ -1065,6 +1065,9 @@ video-section-play-button {
     letter-spacing: 0%;
     color: #2F3936;
 }
+.subscription-content svg {
+    margin-right: 4px;
+}
 .subscription-content p {
     font-family: "Gotham";
     font-weight: 300;
