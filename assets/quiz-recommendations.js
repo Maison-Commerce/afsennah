@@ -1298,11 +1298,8 @@
 
     function updateCartDisplay() {
         const cartItemsContainer = document.querySelector('[data-cart-items]');
-        const totalPriceEl = document.querySelector('[data-total-price]');
-        const totalPriceHeaderEl = document.querySelector('[data-total-price-header]');
-        const itemCountEl = document.querySelector('[data-item-count]');
 
-        if (!cartItemsContainer || !totalPriceEl) return;
+        if (!cartItemsContainer) return;
 
         cartItemsContainer.innerHTML = '';
         let subtotal = 0;
@@ -1378,17 +1375,24 @@
                 const variantPrice = variant ? variant.price : tier.product.variants[0].price;
                 const formattedOriginalPrice = formatMoney(variantPrice);
 
+                // Get product image
+                const productImage = tier.product.featured_image || '';
+                const imageHTML = productImage ? `<img src="${productImage}" alt="${tier.product.title}" class="cart-item-image">` : '';
+
                 const cartItem = document.createElement('div');
                 cartItem.className = 'cart-item cart-gift-item';
                 cartItem.dataset.giftTier = tier.tier;
                 cartItem.innerHTML = `
+                    ${imageHTML}
                     <div class="cart-item-info">
                         <span class="cart-item-name">${tier.product.title}${variantTitle}</span>
                         <div class="cart-item-meta">Free Gift</div>
                     </div>
-                    <div class="cart-item-price cart-gift-price">
-                        <span class="cart-gift-original-price">${formattedOriginalPrice}</span>
-                        <strong class="cart-gift-free-price">FREE</strong>
+                    <div class="cart-item-price-wrapper">
+                        <div class="cart-item-price cart-gift-price">
+                            <span class="cart-gift-original-price">${formattedOriginalPrice}</span>
+                            <strong class="cart-gift-free-price">FREE</strong>
+                        </div>
                     </div>
                 `;
                 cartItemsContainer.appendChild(cartItem);
@@ -1397,18 +1401,24 @@
 
         // Legacy gift items from cartItems (for old single gift system)
         giftItems.forEach(item => {
+            // Get product image
+            const productImage = item.product.featured_image || '';
+            const imageHTML = productImage ? `<img src="${productImage}" alt="${item.product.title}" class="cart-item-image">` : '';
+            const variantTitle = item.variantTitle ? ` - ${item.variantTitle}` : '';
+
             const cartItem = document.createElement('div');
             cartItem.className = 'cart-item';
             cartItem.dataset.variantId = item.variantId;
             cartItem.dataset.sellingPlanId = item.sellingPlanId || '';
-            // Include variant title if available
-            const variantTitle = item.variantTitle ? ` - ${item.variantTitle}` : '';
             cartItem.innerHTML = `
+                ${imageHTML}
                 <div class="cart-item-info">
                     <span class="cart-item-name">${item.product.title}${variantTitle}</span>
                     <div class="cart-item-meta">Free Gift</div>
                 </div>
-                <div class="cart-item-price"><strong>FREE</strong></div>
+                <div class="cart-item-price-wrapper">
+                    <div class="cart-item-price"><strong>FREE</strong></div>
+                </div>
             `;
             cartItemsContainer.appendChild(cartItem);
         });
@@ -1477,12 +1487,23 @@
                     priceHTML = `<div class="cart-item-price">${formatMoney(itemTotal)}</div>`;
                 }
 
+                // Get product image
+                const productImage = item.product.featured_image || '';
+                const imageHTML = productImage ? `<img src="${productImage}" alt="${productName}" class="cart-item-image">` : '';
+
                 cartItem.innerHTML = `
+                    ${imageHTML}
                     <div class="cart-item-info">
-                        <span class="cart-item-name">[${item.quantity}] ${productName}</span>
+                        <span class="cart-item-name">${productName}</span>
                     </div>
-                    ${priceHTML}
-                    <button class="cart-item-remove" data-cart-remove aria-label="Remove item">×</button>
+                    <div class="cart-item-price-wrapper">
+                        ${priceHTML}
+                        <button class="cart-item-remove" data-cart-remove aria-label="Remove item">
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path d="M2.5 4.99996H17.5M15.8333 4.99996V16.6666C15.8333 17.5 15 18.3333 14.1667 18.3333H5.83333C5 18.3333 4.16667 17.5 4.16667 16.6666V4.99996M6.66667 4.99996V3.33329C6.66667 2.49996 7.5 1.66663 8.33333 1.66663H11.6667C12.5 1.66663 13.3333 2.49996 13.3333 3.33329V4.99996M8.33333 9.16663V14.1666M11.6667 9.16663V14.1666" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </button>
+                    </div>
                 `;
                 cartItemsContainer.appendChild(cartItem);
             });
@@ -1529,16 +1550,27 @@
                 priceHTML = `<div class="cart-item-price">${formatMoney(itemTotal)}</div>`;
             }
 
+            // Get product image
+            const productImage = item.product.featured_image || '';
+            const imageHTML = productImage ? `<img src="${productImage}" alt="${productName}" class="cart-item-image">` : '';
+
             const cartItem = document.createElement('div');
             cartItem.className = 'cart-item';
             cartItem.dataset.variantId = item.variantId;
             cartItem.dataset.sellingPlanId = item.sellingPlanId || '';
             cartItem.innerHTML = `
+                ${imageHTML}
                 <div class="cart-item-info">
-                    <span class="cart-item-name">[${item.quantity}] ${productName}</span>
+                    <span class="cart-item-name">${productName}</span>
                 </div>
-                ${priceHTML}
-                <button class="cart-item-remove" data-cart-remove aria-label="Remove item">×</button>
+                <div class="cart-item-price-wrapper">
+                    ${priceHTML}
+                    <button class="cart-item-remove" data-cart-remove aria-label="Remove item">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <path d="M2.5 4.99996H17.5M15.8333 4.99996V16.6666C15.8333 17.5 15 18.3333 14.1667 18.3333H5.83333C5 18.3333 4.16667 17.5 4.16667 16.6666V4.99996M6.66667 4.99996V3.33329C6.66667 2.49996 7.5 1.66663 8.33333 1.66663H11.6667C12.5 1.66663 13.3333 2.49996 13.3333 3.33329V4.99996M8.33333 9.16663V14.1666M11.6667 9.16663V14.1666" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                </div>
             `;
             cartItemsContainer.appendChild(cartItem);
 
@@ -1556,77 +1588,58 @@
                     }
                 }
 
+                // Get product image
+                const bogoProductImage = matchingBogoItem.product.featured_image || '';
+                const bogoImageHTML = bogoProductImage ? `<img src="${bogoProductImage}" alt="${bogoProductName}" class="cart-item-image">` : '';
+
                 const bogoCartItem = document.createElement('div');
                 bogoCartItem.className = 'cart-item cart-item-bogo';
                 bogoCartItem.dataset.variantId = matchingBogoItem.variantId;
                 bogoCartItem.dataset.sellingPlanId = matchingBogoItem.sellingPlanId || '';
                 bogoCartItem.innerHTML = `
+                    ${bogoImageHTML}
                     <div class="cart-item-info">
-                        <span class="cart-item-name">[${matchingBogoItem.quantity}] ${bogoProductName}</span>
+                        <span class="cart-item-name">${bogoProductName}</span>
                         <span class="cart-item-bogo-label">${bogoCartText}</span>
                     </div>
-                    <div class="cart-item-price"><strong>FREE</strong></div>
+                    <div class="cart-item-price-wrapper">
+                        <div class="cart-item-price"><strong>FREE</strong></div>
+                    </div>
                 `;
                 cartItemsContainer.appendChild(bogoCartItem);
             }
         });
 
-        const divider = document.createElement('div');
-        divider.className = 'cart-summary-divider';
-        cartItemsContainer.appendChild(divider);
+        // Update totals section
+        const subtotalEl = document.querySelector('[data-subtotal]');
+        const discountRowEl = document.querySelector('[data-discount-row]');
+        const discountEl = document.querySelector('[data-discount]');
+        const totalOriginalEl = document.querySelector('[data-total-original]');
+        const totalCurrentEl = document.querySelector('[data-total-current]');
 
-        const subtotalRow = document.createElement('div');
-        subtotalRow.className = 'cart-summary-row';
-        subtotalRow.innerHTML = `
-            <span>Subtotal:</span>
-            <span>${formatMoney(subtotal)}</span>
-        `;
-        cartItemsContainer.appendChild(subtotalRow);
-
-        if (totalDiscount > 0) {
-            const discountRow = document.createElement('div');
-            discountRow.className = 'cart-summary-row';
-            discountRow.innerHTML = `
-                <span>Discount:</span>
-                <span>-${formatMoney(totalDiscount)}</span>
-            `;
-            cartItemsContainer.appendChild(discountRow);
+        if (subtotalEl) {
+            subtotalEl.innerHTML = formatMoney(subtotal);
         }
-
-        const vatRow = document.createElement('div');
-        vatRow.className = 'cart-summary-row';
-        vatRow.innerHTML = `
-            <span>VAT:</span>
-            <span>Calculated at checkout</span>
-        `;
-        cartItemsContainer.appendChild(vatRow);
-
-        const shippingRow = document.createElement('div');
-        shippingRow.className = 'cart-summary-row';
-        shippingRow.innerHTML = `
-            <span>Shipping:</span>
-            <span style="font-weight: bold;">Free</span>
-        `;
-        cartItemsContainer.appendChild(shippingRow);
 
         const total = subtotal - totalDiscount;
-        const totalRow = document.createElement('div');
-        totalRow.className = 'cart-summary-row total';
-        totalRow.innerHTML = `
-            <span>Total:</span>
-            <span>${formatMoney(total)}</span>
-        `;
-        cartItemsContainer.appendChild(totalRow);
-
-        const totalFormatted = formatMoney(total);
-        totalPriceEl.innerHTML = totalFormatted;
-
-        if (totalPriceHeaderEl) {
-            totalPriceHeaderEl.innerHTML = totalFormatted;
+        if (totalDiscount > 0) {
+            if (discountRowEl) discountRowEl.style.display = 'flex';
+            if (discountEl) discountEl.innerHTML = `- ${formatMoney(totalDiscount)}`;
+        } else {
+            if (discountRowEl) discountRowEl.style.display = 'none';
         }
 
-        if (itemCountEl) {
-            itemCountEl.textContent = `(${itemCount})`;
+        // Update total price section
+        if (totalCurrentEl) {
+            totalCurrentEl.innerHTML = formatMoney(total);
+        }
+
+        // Show original total if there's a discount
+        if (subtotal > total && totalOriginalEl) {
+            totalOriginalEl.style.display = 'inline';
+            totalOriginalEl.innerHTML = formatMoney(subtotal);
+        } else if (totalOriginalEl) {
+            totalOriginalEl.style.display = 'none';
         }
 
         // Add click handlers for cart item remove buttons
