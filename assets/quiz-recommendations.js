@@ -1391,8 +1391,6 @@
                     <div class="cart-item-info">
                         <span class="cart-item-name">${tier.product.title}${variantTitle}</span>
                         <div class="cart-item-meta">Free Gift</div>
-                    </div>
-                    <div class="cart-item-price-wrapper">
                         <div class="cart-item-price cart-gift-price">
                             <span class="cart-gift-original-price">${formattedOriginalPrice}</span>
                             <strong class="cart-gift-free-price">FREE</strong>
@@ -1424,8 +1422,6 @@
                 <div class="cart-item-info">
                     <span class="cart-item-name">${item.product.title}${variantTitle}</span>
                     <div class="cart-item-meta">Free Gift</div>
-                </div>
-                <div class="cart-item-price-wrapper">
                     <div class="cart-item-price"><strong>FREE</strong></div>
                 </div>
             `;
@@ -1579,15 +1575,13 @@
                 ${imageHTML}
                 <div class="cart-item-info">
                     <span class="cart-item-name">${productName}</span>
-                </div>
-                <div class="cart-item-price-wrapper">
                     ${priceHTML}
-                    <button class="cart-item-remove" data-cart-remove aria-label="Remove item">
-                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                            <path d="M2.5 4.99996H17.5M15.8333 4.99996V16.6666C15.8333 17.5 15 18.3333 14.1667 18.3333H5.83333C5 18.3333 4.16667 17.5 4.16667 16.6666V4.99996M6.66667 4.99996V3.33329C6.66667 2.49996 7.5 1.66663 8.33333 1.66663H11.6667C12.5 1.66663 13.3333 2.49996 13.3333 3.33329V4.99996M8.33333 9.16663V14.1666M11.6667 9.16663V14.1666" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                    </button>
                 </div>
+                <button class="cart-item-remove" data-cart-remove aria-label="Remove item">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                        <path d="M2.5 4.99996H17.5M15.8333 4.99996V16.6666C15.8333 17.5 15 18.3333 14.1667 18.3333H5.83333C5 18.3333 4.16667 17.5 4.16667 16.6666V4.99996M6.66667 4.99996V3.33329C6.66667 2.49996 7.5 1.66663 8.33333 1.66663H11.6667C12.5 1.66663 13.3333 2.49996 13.3333 3.33329V4.99996M8.33333 9.16663V14.1666M11.6667 9.16663V14.1666" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
             `;
             itemGroup.appendChild(cartItem);
 
@@ -1614,8 +1608,6 @@
                     <div class="cart-item-info">
                         <span class="cart-item-name">${bogoProductName}</span>
                         <span class="cart-item-bogo-label">${bogoCartText}</span>
-                    </div>
-                    <div class="cart-item-price-wrapper">
                         <div class="cart-item-price"><strong>FREE</strong></div>
                     </div>
                 `;
