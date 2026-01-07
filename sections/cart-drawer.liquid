@@ -86,7 +86,7 @@
         <div class="cart-item-list cart-drawer__content-item">
           <div class="cart-item-list__body" data-merge-list="cart-items">
             {% for item in cart.items %}
-              <div data-merge-list-item="item-key:{{ item.key }}|{{ item.final_price }}{% for discount_allocation in item.line_level_discount_allocations %}|{{ discount_allocation.discount_application.title | escape }}{% endfor %}"
+              <div class="cart__line-item" data-merge-list-item="item-key:{{ item.key }}|{{ item.final_price }}{% for discount_allocation in item.line_level_discount_allocations %}|{{ discount_allocation.discount_application.title | escape }}{% endfor %}"
                   {% comment %} Discount items are difficult to predict - BOGOFs appear as a separate item with the same key as an existing item - simpler to always refresh {% endcomment %}
                   {%- if item.line_level_discount_allocations == empty -%}
                   data-merge-cache="{{ item.key }}|{{ item.quantity }}|{{ item.final_line_price }}|{% if item.selling_plan_allocation %}{{ item.selling_plan_allocation.selling_plan.id }}{% endif %}"
