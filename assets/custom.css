@@ -1010,7 +1010,8 @@ video-section-play-button {
     height: 100%;
 }
 .cart-item__column.cart-item__price .cart-item__remove {
-    display: block !important;
+    display: flex !important;
+    justify-content: flex-end;
 }
 .cart-drawer .cart-item {
     padding: 0 !important;
@@ -1093,4 +1094,10 @@ video-section-play-button {
     display: flex;
     justify-content: space-between;
     flex-direction: column;
+}
+
+.cart-item__price-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
