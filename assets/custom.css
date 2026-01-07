@@ -1308,3 +1308,7 @@ height: 100%;
 .cart-upsell-product__image .img-ar.img-ar--contain {
     height: 80px;
 }
+.cart-upsell-product__image {
+    height: 80px !important;
+    padding: 0 !important
+}
