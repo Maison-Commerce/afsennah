@@ -14,8 +14,8 @@
     "cart-drawer": {
       "type": "cart-drawer",
       "settings": {
-        "show_order_note": true,
-        "show_tax_and_shipping": true,
+        "show_order_note": false,
+        "show_tax_and_shipping": false,
         "enable_direct_cart": false,
         "cart_terms_page": "",
         "show_backorder_text": true,
@@ -25,6 +25,7 @@
         "enable_tiered_rewards": true,
         "free_shipping_threshold": 100,
         "free_shipping_label": "Free shipping",
+        "description_subscription": "Easily Edit, Delay, Pause, and Cancel Anytime",
         "banner_icon": "gift",
         "banner_text": "Spend [AMOUNT] more to get Free [LABEL]!",
         "banner_text_achieved": "🎁 Free shipping added! Spend [AMOUNT] more to get Free [LABEL]!",
@@ -57,6 +58,7 @@
         "empty_color_text": "#171717",
         "enable_cross_sells": true,
         "cross_sell_title": "You may also like",
+        "cross_sell_subtitle": "No consultation required*",
         "cross_sell_products": [],
         "enable_automatic_cross_sells": true,
         "croll_sell_color_scheme": "default"
