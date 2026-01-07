@@ -812,14 +812,17 @@
     }
 
     .subscription-discount-badge {
-        color: #fff;
         padding: 4px 8px;
         border-radius: var(--48, 48px);
         background: var(--orange-500, #EC9F57);
-        font-size: 10px;
+        color: var(--White, #FFF);
+        leading-trim: both;
+        text-edge: cap;
+        font-family: 'Gotham', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        font-size: 12px;
+        font-style: normal;
         font-weight: 700;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
+        line-height: 150%;
         white-space: nowrap;
         position: absolute;
         top: -24px;
