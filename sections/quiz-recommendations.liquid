@@ -160,9 +160,9 @@
                 <div class="recommended-products-list" data-recommended-list>
                     <!-- Section 1: Top 3 Picks (Auto-added to cart) -->
                     <div class="recommendations-section" data-section="top-picks">
-                        {% if section.settings.section1_title != blank %}
+                        {% comment %} {% if section.settings.section1_title != blank %}
                             <h3 class="section-title">{{ section.settings.section1_title }}</h3>
-                        {% endif %}
+                        {% endif %} {% endcomment %}
                         {% if section.settings.section1_description != blank %}
                             <div class="section-description">{{ section.settings.section1_description }}</div>
                         {% endif %}
