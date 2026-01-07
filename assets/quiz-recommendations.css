@@ -820,6 +820,8 @@
         letter-spacing: 0.5px;
         white-space: nowrap;
         position: absolute;
+        top: -24px;
+        right: 2px;
     }
 
     .product-price-row {
