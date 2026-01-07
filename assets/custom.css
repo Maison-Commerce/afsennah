@@ -1137,3 +1137,7 @@ video-section-play-button {
     position: relative;
     transform: none;
 }
+
+.cart-item-upsells carousel-slider {
+    background: #F7F7FC;
+}
