@@ -505,8 +505,18 @@
     }
   {% endif %}
 
-  @media (max-width: 1024px) {
-  
+  @media (max-width: 1300px) {
+    {% if section.settings.answers_layout == 'two_columns' %}
+      #shopify-section-{{ section.id }} .quiz-answers {
+        display: grid !important;
+        grid-template-columns: repeat(1, 1fr) !important;
+      }
+    {% else %}
+      #shopify-section-{{ section.id }} .quiz-answers {
+        display: flex !important;
+        flex-direction: column !important;
+      }
+    {% endif %}
   }
 
   @media (max-width: 1024px) {
