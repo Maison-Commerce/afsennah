@@ -1,6 +1,6 @@
 {%- if recommendations.performed and recommendations.products_count > 0 -%}
   <div class="related-products">
-    <ul class="product-grid">
+    <ul class="slider__grid product-grid product-grid--carousel product-grid--per-row-3 product-grid--per-row-mob-3">
       {%- liquid
         if settings.prod_thumb_shape == 'portrait-23'
           assign chosen_aspect_ratio = 0.67
@@ -30,7 +30,7 @@
       -%}
       {%- for product in recommendations.products -%}
         <li class="slider__item">
-          {%- render 'product-block', product: product, no_quick_buy: true, no_swiping: true, custom_aspect_ratio: chosen_aspect_ratio -%}
+          {%- render 'cart-upsell-product', product: product, custom_aspect_ratio: chosen_aspect_ratio -%}
         </li>
       {%- endfor -%}
     </ul>
