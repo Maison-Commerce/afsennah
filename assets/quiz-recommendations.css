@@ -706,7 +706,6 @@
         background-repeat: no-repeat;
         background-position: right 10px center;
         padding-right: 32px;
-        min-height: 38px;
     }
 
     .frequency-dropdown:hover {
