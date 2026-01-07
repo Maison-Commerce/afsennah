@@ -2312,15 +2312,35 @@
     }
 
     function initRecommendations() {
-        if (initialized) return;
+        console.log('=== initRecommendations called ===');
+        console.log('Initialized:', initialized);
+        console.log('QuizManager exists:', !!window.QuizManager);
+        console.log('Recommended products:', window.QuizManager?.recommendedProducts);
 
-        if (!window.QuizManager || !window.QuizManager.recommendedProducts) {
-            console.log('No recommended products found');
+        if (initialized) {
+            console.log('Already initialized, skipping');
+            return;
+        }
+
+        if (!window.QuizManager) {
+            console.warn('QuizManager not found, retrying in 500ms...');
+            setTimeout(initRecommendations, 500);
+            return;
+        }
+
+        if (!window.QuizManager.recommendedProducts || window.QuizManager.recommendedProducts.length === 0) {
+            console.warn('No recommended products found, retrying in 500ms...');
+            console.log('QuizManager state:', {
+                answers: window.QuizManager.answers,
+                recommendedProducts: window.QuizManager.recommendedProducts
+            });
+            setTimeout(initRecommendations, 500);
             return;
         }
 
         let productHandles = window.QuizManager.recommendedProducts;
         console.log('Product handles from QuizManager:', productHandles);
+        console.log('Number of products:', productHandles.length);
 
         // Get custom sort order from data attribute
         const recommendationsSection = document.querySelector('[data-recommendations]');
@@ -2367,16 +2387,29 @@
         const accessoriesContainer = document.querySelector('[data-section-products="accessories"]');
         const giftProductHandle = document.querySelector('[data-gift-product]')?.dataset.giftProduct;
 
+        console.log('Containers found:', {
+            topPicks: !!topPicksContainer,
+            additional: !!additionalContainer,
+            accessories: !!accessoriesContainer
+        });
+
         if (!topPicksContainer || !additionalContainer || !accessoriesContainer) {
-            console.error('Section containers not found');
+            console.error('Section containers not found!', {
+                topPicks: topPicksContainer,
+                additional: additionalContainer,
+                accessories: accessoriesContainer
+            });
+            // Retry after a short delay
+            setTimeout(initRecommendations, 500);
             return;
         }
 
         if (productHandles.length === 0) {
-            console.log('No product handles to fetch');
+            console.warn('No product handles to fetch');
             return;
         }
 
+        console.log('Starting product fetch for', productHandles.length, 'products');
         initialized = true;
 
         // Fetch quiz recommended products
@@ -2390,14 +2423,35 @@
 
         Promise.all(fetchPromises).then(products => {
             console.log('Fetched products:', products);
+            console.log('Valid products (not null):', products.filter(p => p !== null).length);
+            
+            // Filter out null products
+            const validProducts = products.filter(p => p !== null);
+            
+            if (validProducts.length === 0) {
+                console.error('No valid products fetched!');
+                return;
+            }
             
             // Section 1: Top 3 picks (auto-added to cart)
-            const topPicks = products.slice(0, 3).filter(p => p !== null);
+            const topPicks = validProducts.slice(0, 3);
             console.log('Top picks (Section 1):', topPicks.length, 'products');
             
             topPicks.forEach((product, index) => {
+                if (!product || !product.id) {
+                    console.error('Invalid product at index', index, product);
+                    return;
+                }
+                
+                console.log('Creating product card for:', product.title, product.id);
                 productStates[product.id] = { removed: false, quantity: 1 };
                 const productCard = createProductCard(product, 'top-picks', index + 1);
+                
+                if (!productCard) {
+                    console.error('Failed to create product card for:', product.title);
+                    return;
+                }
+                
                 topPicksContainer.appendChild(productCard);
 
                 const hasSubscription = product.selling_plan_groups && product.selling_plan_groups.length > 0;
@@ -2417,15 +2471,31 @@
             });
 
             // Section 2: Additional recommendations (not auto-added)
-            const additionalProducts = products.slice(3).filter(p => p !== null);
+            const additionalProducts = validProducts.slice(3);
             console.log('Additional products (Section 2):', additionalProducts.length, 'products');
             
             additionalProducts.forEach((product) => {
+                if (!product || !product.id) {
+                    console.error('Invalid additional product:', product);
+                    return;
+                }
+                
+                console.log('Creating additional product card for:', product.title);
                 productStates[product.id] = { removed: false, quantity: 1 };
                 const productCard = createProductCard(product, 'additional');
+                
+                if (!productCard) {
+                    console.error('Failed to create additional product card for:', product.title);
+                    return;
+                }
+                
                 additionalContainer.appendChild(productCard);
                 // NOT auto-added to cart
             });
+            
+            // Update cart display after products are added
+            console.log('Updating cart display...');
+            updateCartDisplay();
 
             // Add legacy gift product if exists (only if tiered gifts are NOT enabled)
             if (giftProductHandle && !giftTiersEnabled) {
@@ -3921,27 +3991,89 @@
         });
     });
 
+    // Make initRecommendations globally accessible
+    window.initRecommendations = initRecommendations;
+
+    // Initialize recommendations when section becomes visible
     const recommendationsSection = document.querySelector('[data-recommendations]');
     if (recommendationsSection) {
+        // Check if section is already visible
+        const checkVisibility = () => {
+            const style = window.getComputedStyle(recommendationsSection);
+            const isVisible = recommendationsSection.style.display !== 'none' && 
+                             style.display !== 'none' &&
+                             recommendationsSection.offsetParent !== null;
+            
+            console.log('Checking visibility:', {
+                inlineStyle: recommendationsSection.style.display,
+                computedStyle: style.display,
+                offsetParent: recommendationsSection.offsetParent !== null,
+                isVisible: isVisible,
+                initialized: initialized
+            });
+            
+            if (isVisible && !initialized) {
+                console.log('Recommendations section is visible, initializing...');
+                // Wait a bit to ensure QuizManager is ready
+                setTimeout(() => {
+                    initRecommendations();
+                }, 200);
+            }
+        };
+
+        // Listen for custom event from quiz-result section
+        document.addEventListener('recommendations-visible', function() {
+            console.log('Recommendations visible event received');
+            setTimeout(() => {
+                checkVisibility();
+            }, 100);
+        });
+
+        // MutationObserver for style changes
         const observer = new MutationObserver(function(mutations) {
             mutations.forEach(function(mutation) {
-                if (mutation.attributeName === 'style') {
-                    if (recommendationsSection.style.display !== 'none') {
-                        initRecommendations();
-                        observer.disconnect();
-                    }
+                if (mutation.attributeName === 'style' || mutation.attributeName === 'class') {
+                    console.log('Style/class changed:', mutation.attributeName);
+                    checkVisibility();
                 }
             });
         });
-        observer.observe(recommendationsSection, { attributes: true });
-    }
-
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', () => {
-            setTimeout(initRecommendations, 100);
+        observer.observe(recommendationsSection, { 
+            attributes: true, 
+            attributeFilter: ['style', 'class'],
+            childList: false,
+            subtree: false
         });
+
+        // Also check on DOM ready and periodically
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => {
+                checkVisibility();
+                // Also check periodically in case QuizManager loads later
+                const checkInterval = setInterval(() => {
+                    if (initialized) {
+                        clearInterval(checkInterval);
+                        return;
+                    }
+                    checkVisibility();
+                }, 500);
+                // Stop checking after 10 seconds
+                setTimeout(() => clearInterval(checkInterval), 10000);
+            });
+        } else {
+            checkVisibility();
+            // Also check periodically
+            const checkInterval = setInterval(() => {
+                if (initialized) {
+                    clearInterval(checkInterval);
+                    return;
+                }
+                checkVisibility();
+            }, 500);
+            setTimeout(() => clearInterval(checkInterval), 10000);
+        }
     } else {
-        setTimeout(initRecommendations, 100);
+        console.error('Recommendations section not found in DOM');
     }
 })();
 </script>
