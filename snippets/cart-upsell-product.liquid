@@ -201,31 +201,78 @@
       addBtn.classList.add('loading');
       addBtn.disabled = true;
       
-      // Add to cart
-      fetch('/cart/add.js', {
+      // Get cart drawer and section ID for updating
+      const cartDrawer = document.querySelector('cart-drawer');
+      const sectionsToUpdate = cartDrawer ? [cartDrawer] : [];
+      const sectionIds = sectionsToUpdate.map(el => el.dataset.sectionId).filter(id => id);
+      
+      // Prepare form data
+      const formData = new FormData();
+      formData.append('id', variantId);
+      formData.append('quantity', 1);
+      formData.append('sections_url', window.location.pathname);
+      if (sectionIds.length > 0) {
+        formData.append('sections', sectionIds.join(','));
+      }
+      
+      // Add to cart using theme.routes.cartAdd
+      fetch(theme.routes.cartAdd, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
+          'Accept': 'application/javascript',
+          'X-Requested-With': 'XMLHttpRequest'
         },
-        body: JSON.stringify({
-          id: variantId,
-          quantity: 1
-        })
+        body: formData
       })
-      .then(response => response.json())
+      .then(response => {
+        if (!response.ok) {
+          return response.json().then(data => {
+            throw new Error(data.description || data.message || `HTTP error! Status: ${response.status}`);
+          });
+        }
+        return response.json();
+      })
       .then(data => {
-        // Dispatch cart change event
-        document.dispatchEvent(new CustomEvent('on:cart:change', { bubbles: true }));
-        
-        // Update cart drawer if it exists
-        const cartDrawer = document.querySelector('cart-drawer');
-        if (cartDrawer && typeof cartDrawer.refresh === 'function') {
-          cartDrawer.refresh();
-        } else if (cartDrawer && cartDrawer.querySelector('cart-form')) {
-          const cartForm = cartDrawer.querySelector('cart-form');
-          if (cartForm && typeof cartForm.refresh === 'function') {
-            cartForm.refresh();
+        // Check for errors in response
+        let error = null;
+        if (data.status) {
+          error = typeof data.description === 'string' ? data.description : data.message;
+          if (data.errors && typeof data.errors === 'object') {
+            error = Object.entries(data.errors).map((item) => item[1].join(', ')).join('; ');
           }
+        }
+        
+        if (error) {
+          console.error('Error adding to cart:', error);
+          // Re-enable button on error
+          addBtn.classList.remove('loading');
+          addBtn.disabled = false;
+          return;
+        }
+        
+        // Update sections if available
+        if (data.sections && sectionsToUpdate.length === Object.keys(data.sections).length) {
+          sectionsToUpdate.forEach((el) => {
+            if (el.updateFromCartChange && data.sections[el.dataset.sectionId]) {
+              el.updateFromCartChange(data.sections[el.dataset.sectionId]);
+            }
+          });
+        } else {
+          // Fallback: dispatch cart change event if sections not available
+          document.dispatchEvent(new CustomEvent('on:cart:change', { bubbles: true, cancelable: false }));
+        }
+        
+        // Dispatch cart add event for compatibility
+        document.dispatchEvent(new CustomEvent('on:cart:add', {
+          bubbles: true,
+          detail: {
+            variantId: data.variant_id || variantId
+          }
+        }));
+        
+        // Open drawer if afterAddToCart setting is 'drawer'
+        if (theme.settings.afterAddToCart === 'drawer' && cartDrawer) {
+          cartDrawer.open(addBtn);
         }
         
         // Re-enable button
@@ -234,6 +281,7 @@
       })
       .catch(error => {
         console.error('Error adding to cart:', error);
+        // Re-enable button on error
         addBtn.classList.remove('loading');
         addBtn.disabled = false;
       });
