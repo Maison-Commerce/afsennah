@@ -135,7 +135,6 @@
                         >
                             <div class="gift-progress-header">
                                 <div class="gift-progress-header-content">
-                                    <h3 class="gift-progress-title">Unlock your free gift!</h3>
                                     <p class="gift-progress-subtitle" data-gift-progress-label>{{ section.settings.gift_progress_text | default: 'Add items to unlock gifts!' }}</p>
                                 </div>
                             </div>
@@ -307,10 +306,10 @@
             "info": "Enable to show tiered free gifts based on cart total"
         },
         {
-            "type": "text",
+            "type": "richtext",
             "id": "gift_progress_text",
             "label": "Progress Bar Text",
-            "default": "Spend [[remaining]] more to unlock your next gift!",
+            "default": "<p>🎁  <strong>Hair Growth oil (50ml)</strong> added! Spend [[remaining]] more to get Free Microneedle Scalp Roller</p>",
             "info": "Use [[remaining]] for amount needed, [[current]] for current total, [[next_tier]] for next tier threshold"
         },
         {
