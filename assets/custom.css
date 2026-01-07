@@ -1211,3 +1211,9 @@ video-section-play-button {
     line-height: 150%;
     letter-spacing: 0%;
 }
+
+.cart-upsell-product__image img {
+    width: 80px;
+    height: 80px;
+    border-radius: 8px;
+}
