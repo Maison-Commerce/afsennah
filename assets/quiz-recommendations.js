@@ -640,26 +640,29 @@
         let purchaseOptionsHTML = '';
         let sellingPlans = [];
 
-        // Variant selector HTML (if product has multiple variants)
+        // Variant selector HTML (if product has multiple variants) - Changed to buttons
         let variantSelectorHTML = '';
         if (hasMultipleVariants) {
             variantSelectorHTML = `
                 <div class="product-variant-selector">
-                    <span class="variant-label">Options</span>
-                    <select class="variant-dropdown" data-variant-select>
+                    <span class="variant-label">SIZE:</span>
+                    <div class="variant-buttons">
                         ${product.variants.map((variant, index) => `
-                            <option value="${variant.id}" data-variant-index="${index}" ${index === defaultVariantIndex ? 'selected' : ''} ${!variant.available ? 'disabled' : ''}>
-                                ${variant.title}${!variant.available ? ' (Out of stock)' : ''}
-                            </option>
+                            <button class="variant-button ${index === defaultVariantIndex ? 'selected' : ''}" 
+                                    data-variant-id="${variant.id}" 
+                                    data-variant-index="${index}"
+                                    ${!variant.available ? 'disabled' : ''}>
+                                ${variant.title}
+                            </button>
                         `).join('')}
-                    </select>
+                    </div>
                 </div>
             `;
         }
 
         const quantityHTML = `
             <div class="product-quantity-selector">
-                <span class="quantity-label">Qty</span>
+                <span class="quantity-label">QTY:</span>
                 <div class="quantity-controls">
                     <button class="quantity-btn quantity-decrease" data-quantity-decrease>−</button>
                     <span class="quantity-value" data-quantity-value>1</span>
@@ -672,50 +675,74 @@
             const sellingPlanGroup = product.selling_plan_groups[0];
             sellingPlans = sellingPlanGroup.selling_plans;
 
-            frequencyHTML = `
-                <div class="subscription-frequency-row">
-                    ${quantityHTML}
-                    <div class="subscription-frequency-selector">
-                        <div class="frequency-label">Delivery Frequency</div>
-                        <select class="frequency-dropdown" data-frequency-select>
-                            ${sellingPlans.map((plan, index) => `
-                                <option value="${plan.id}" data-plan-index="${index}" ${index === 0 ? 'selected' : ''}>
-                                    ${plan.name}
-                                </option>
-                            `).join('')}
-                        </select>
-                    </div>
-                </div>
-            `;
-
             const firstPlan = sellingPlans[0];
             const subscriptionPrice = calculateSubscriptionPrice(defaultVariant.price, firstPlan);
+            const subscriptionDiscount = getDiscountPercent(firstPlan);
 
             // Check for compare_at_price discount on the Buy Once option
-            const hasDiscount = defaultVariant.compare_at_price && defaultVariant.compare_at_price > defaultVariant.price;
-            const discountPercent = hasDiscount ? Math.round(((defaultVariant.compare_at_price - defaultVariant.price) / defaultVariant.compare_at_price) * 100) : 0;
-            const discountBadge = hasDiscount ? `<span class="product-discount-badge">${discountPercent}% OFF</span>` : '';
+            const hasCompareAtDiscount = defaultVariant.compare_at_price && defaultVariant.compare_at_price > defaultVariant.price;
+            const compareAtDiscountPercent = hasCompareAtDiscount ? Math.round(((defaultVariant.compare_at_price - defaultVariant.price) / defaultVariant.compare_at_price) * 100) : 0;
+            const compareAtDiscountBadge = hasCompareAtDiscount ? `<span class="product-discount-badge">${compareAtDiscountPercent}% OFF</span>` : '';
+
+            // Calculate subscription discount badge
+            const subscriptionDiscountBadge = subscriptionDiscount > 0 ? `<span class="subscription-discount-badge">SAVE ${subscriptionDiscount}%</span>` : '';
+
+            frequencyHTML = `
+                <div class="subscription-frequency-selector">
+                    <span class="frequency-label">Delivery Frequency:</span>
+                    <select class="frequency-dropdown" data-frequency-select>
+                        ${sellingPlans.map((plan, index) => `
+                            <option value="${plan.id}" data-plan-index="${index}" ${index === 0 ? 'selected' : ''}>
+                                ${plan.name}
+                            </option>
+                        `).join('')}
+                    </select>
+                </div>
+            `;
 
             // If BOGO is active, make "Buy Once" the default option, otherwise "Subscribe" is default
             const defaultToBuyOnce = bogoEnabled;
 
+            // Get original price for strikethrough
+            const originalPrice = defaultVariant.compare_at_price && defaultVariant.compare_at_price > defaultVariant.price 
+                ? defaultVariant.compare_at_price 
+                : defaultVariant.price;
+            const subscriptionOriginalPrice = defaultVariant.compare_at_price && defaultVariant.compare_at_price > subscriptionPrice
+                ? defaultVariant.compare_at_price
+                : defaultVariant.price;
+
             purchaseOptionsHTML = `
-                <div class="product-purchase-options">
-                    <label class="purchase-option${defaultToBuyOnce ? '' : ' selected'}" data-option="subscription">
-                        <input type="radio" name="purchase_${product.id}" value="subscription"
-                               data-selling-plan="${firstPlan.id}"${defaultToBuyOnce ? '' : ' checked'}>
-                        <div class="option-details">
-                            <span class="option-label">Subscribe</span>
-                        </div>
-                        <div class="option-price">${formatMoney(subscriptionPrice)}</div>
-                    </label>
-                    <label class="purchase-option${defaultToBuyOnce ? ' selected' : ''}" data-option="onetime">
-                        <input type="radio" name="purchase_${product.id}" value="onetime"${defaultToBuyOnce ? ' checked' : ''}>
-                        <div class="option-details">
-                            <span class="option-label">Buy Once</span>
-                        </div>
-                        <div class="option-price">${formatMoney(defaultVariant.price)}${discountBadge}</div>
-                    </label>
+                <div class="product-purchase-options-wrapper">
+                    <div class="purchase-options-header">SUBSCRIBE AND SAVE ${subscriptionDiscount}%</div>
+                    <div class="product-purchase-options">
+                        <label class="purchase-option${defaultToBuyOnce ? '' : ' selected'}" data-option="subscription">
+                            <input type="radio" name="purchase_${product.id}" value="subscription"
+                                   data-selling-plan="${firstPlan.id}"${defaultToBuyOnce ? '' : ' checked'}>
+                            <div class="option-details">
+                                <span class="option-label">Subscribe</span>
+                            </div>
+                            <div class="option-price-wrapper">
+                                <div class="option-price">
+                                    ${subscriptionOriginalPrice > subscriptionPrice ? `<span class="option-price-original">${formatMoney(subscriptionOriginalPrice)}</span>` : ''}
+                                    <span class="option-price-current">${formatMoney(subscriptionPrice)}</span>
+                                </div>
+                                ${subscriptionDiscountBadge}
+                            </div>
+                        </label>
+                        <label class="purchase-option${defaultToBuyOnce ? ' selected' : ''}" data-option="onetime">
+                            <input type="radio" name="purchase_${product.id}" value="onetime"${defaultToBuyOnce ? ' checked' : ''}>
+                            <div class="option-details">
+                                <span class="option-label">One-time purchase</span>
+                            </div>
+                            <div class="option-price-wrapper">
+                                <div class="option-price">
+                                    ${hasCompareAtDiscount ? `<span class="option-price-original">${formatMoney(originalPrice)}</span>` : ''}
+                                    <span class="option-price-current">${formatMoney(defaultVariant.price)}</span>
+                                </div>
+                                ${compareAtDiscountBadge}
+                            </div>
+                        </label>
+                    </div>
                 </div>
             `;
         } else {
@@ -727,7 +754,11 @@
             purchaseOptionsHTML = `
                 <div class="product-price-row">
                     ${quantityHTML}
-                    <div class="product-price-only">${formatMoney(defaultVariant.price)}${discountBadge}</div>
+                    <div class="product-price-only">
+                        ${hasDiscount ? `<span class="option-price-original">${formatMoney(defaultVariant.compare_at_price)}</span>` : ''}
+                        <span class="option-price-current">${formatMoney(defaultVariant.price)}</span>
+                        ${discountBadge}
+                    </div>
                 </div>
             `;
         }
@@ -739,25 +770,34 @@
             <div class="product-card-image">
                 ${isBogo ? `<div class="product-bogo-badge">${bogoBadgeText}</div>` : ''}
                 <img src="${product.featured_image || ''}" alt="${product.title}">
-                <h3 class="product-card-mobile-title">${product.title}</h3>
             </div>
             <div class="product-card-content">
                 <div class="product-card-header">
                     <div class="product-card-title-wrapper">
                         <h3 class="product-card-title product-card-title-desktop">${product.title}</h3>
+                        <h3 class="product-card-title product-card-title-mobile">${product.title}</h3>
                         ${description ? `<div class="product-card-description">${description}</div>` : ''}
                     </div>
+                    ${section === 'top-picks' ? `
+                        <button class="product-remove-btn" data-remove-btn aria-label="Remove product">
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path d="M5 5L15 15M15 5L5 15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </button>
+                    ` : ''}
                 </div>
-                ${variantSelectorHTML}
-                ${frequencyHTML}
+                <div class="product-options-group">
+                    ${quantityHTML}
+                    ${variantSelectorHTML}
+                    ${frequencyHTML}
+                </div>
                 ${purchaseOptionsHTML}
             </div>
-            <button class="product-remove-btn" data-remove-btn style="${section === 'top-picks' ? '' : 'display: none;'}">
-                Remove Product
-            </button>
-            <button class="product-add-btn product-add-btn-corner" data-add-btn style="${section === 'top-picks' ? 'display: none;' : ''}">
-                Add
-            </button>
+            ${section !== 'top-picks' ? `
+                <button class="product-add-btn product-add-btn-corner" data-add-btn>
+                    Add
+                </button>
+            ` : ''}
         `;
 
         card.dataset.sellingPlans = JSON.stringify(sellingPlans);
@@ -765,13 +805,20 @@
         card.dataset.selectedVariantPrice = defaultVariant.price;
         card.dataset.isBogo = isBogo;
 
-        // Variant selector event listener
+        // Variant selector event listener (buttons instead of dropdown)
         if (hasMultipleVariants) {
-            const variantSelect = card.querySelector('[data-variant-select]');
-            if (variantSelect) {
-                variantSelect.addEventListener('change', (e) => {
-                    const selectedVariantId = parseInt(e.target.value);
-                    const selectedVariantIndex = parseInt(e.target.options[e.target.selectedIndex].dataset.variantIndex);
+            const variantButtons = card.querySelectorAll('.variant-button');
+            variantButtons.forEach((button) => {
+                button.addEventListener('click', (e) => {
+                    if (button.disabled) return;
+                    
+                    // Remove selected class from all buttons
+                    variantButtons.forEach(btn => btn.classList.remove('selected'));
+                    // Add selected class to clicked button
+                    button.classList.add('selected');
+                    
+                    const selectedVariantId = parseInt(button.dataset.variantId);
+                    const selectedVariantIndex = parseInt(button.dataset.variantIndex);
                     const selectedVariant = product.variants[selectedVariantIndex];
 
                     // Update card's variant ID and store selected variant data
@@ -785,14 +832,15 @@
 
                     // Update prices based on new variant
                     const priceOnlyEl = card.querySelector('.product-price-only');
-                    const subscriptionPriceEl = card.querySelector('[data-option="subscription"] .option-price');
-                    const onetimePriceEl = card.querySelector('[data-option="onetime"] .option-price');
+                    const subscriptionOptionEl = card.querySelector('[data-option="subscription"]');
+                    const onetimeOptionEl = card.querySelector('[data-option="onetime"]');
 
                     if (priceOnlyEl) {
-                        priceOnlyEl.innerHTML = formatMoney(selectedVariant.price) + variantDiscountBadge;
+                        const originalPriceHTML = hasVariantDiscount ? `<span class="option-price-original">${formatMoney(selectedVariant.compare_at_price)}</span>` : '';
+                        priceOnlyEl.innerHTML = `${originalPriceHTML}<span class="option-price-current">${formatMoney(selectedVariant.price)}</span>${variantDiscountBadge}`;
                     }
 
-                    if (subscriptionPriceEl && onetimePriceEl && hasSubscription) {
+                    if (subscriptionOptionEl && onetimeOptionEl && hasSubscription) {
                         const sellingPlanGroup = product.selling_plan_groups[0];
                         const currentPlanSelect = card.querySelector('[data-frequency-select]');
                         let currentPlan = sellingPlanGroup.selling_plans[0];
@@ -803,8 +851,37 @@
                         }
 
                         const subscriptionPrice = calculateSubscriptionPrice(selectedVariant.price, currentPlan);
-                        subscriptionPriceEl.innerHTML = formatMoney(subscriptionPrice);
-                        onetimePriceEl.innerHTML = formatMoney(selectedVariant.price) + variantDiscountBadge;
+                        const subscriptionDiscount = getDiscountPercent(currentPlan);
+                        const subscriptionDiscountBadge = subscriptionDiscount > 0 ? `<span class="subscription-discount-badge">SAVE ${subscriptionDiscount}%</span>` : '';
+                        
+                        const subscriptionOriginalPrice = selectedVariant.compare_at_price && selectedVariant.compare_at_price > subscriptionPrice
+                            ? selectedVariant.compare_at_price
+                            : selectedVariant.price;
+                        const subscriptionOriginalHTML = subscriptionOriginalPrice > subscriptionPrice ? `<span class="option-price-original">${formatMoney(subscriptionOriginalPrice)}</span>` : '';
+                        
+                        const subscriptionPriceWrapper = subscriptionOptionEl.querySelector('.option-price-wrapper');
+                        if (subscriptionPriceWrapper) {
+                            subscriptionPriceWrapper.innerHTML = `
+                                <div class="option-price">
+                                    ${subscriptionOriginalHTML}
+                                    <span class="option-price-current">${formatMoney(subscriptionPrice)}</span>
+                                </div>
+                                ${subscriptionDiscountBadge}
+                            `;
+                        }
+
+                        const onetimeOriginalPrice = hasVariantDiscount ? selectedVariant.compare_at_price : selectedVariant.price;
+                        const onetimeOriginalHTML = hasVariantDiscount ? `<span class="option-price-original">${formatMoney(onetimeOriginalPrice)}</span>` : '';
+                        const onetimePriceWrapper = onetimeOptionEl.querySelector('.option-price-wrapper');
+                        if (onetimePriceWrapper) {
+                            onetimePriceWrapper.innerHTML = `
+                                <div class="option-price">
+                                    ${onetimeOriginalHTML}
+                                    <span class="option-price-current">${formatMoney(selectedVariant.price)}</span>
+                                </div>
+                                ${variantDiscountBadge}
+                            `;
+                        }
                     }
 
                     // Trigger currency converter update
@@ -830,7 +907,7 @@
                         addToCart(selectedVariantId, currentQty, updatedProduct, sellingPlanId);
                     }
                 });
-            }
+            });
         }
 
         const decreaseBtn = card.querySelector('[data-quantity-decrease]');
@@ -919,14 +996,31 @@
 
                 const subscriptionOption = card.querySelector('[data-option="subscription"]');
                 const subscriptionRadio = subscriptionOption.querySelector('input');
-                const subscriptionPrice = subscriptionOption.querySelector('.option-price');
+                const subscriptionPriceWrapper = subscriptionOption.querySelector('.option-price-wrapper');
 
                 subscriptionRadio.dataset.sellingPlan = planId;
 
                 // Get the current variant price
                 const currentVariantPrice = parseInt(card.dataset.selectedVariantPrice) || product.variants[0].price;
                 const newPrice = calculateSubscriptionPrice(currentVariantPrice, selectedPlan);
-                subscriptionPrice.innerHTML = formatMoney(newPrice);
+                const subscriptionDiscount = getDiscountPercent(selectedPlan);
+                const subscriptionDiscountBadge = subscriptionDiscount > 0 ? `<span class="subscription-discount-badge">SAVE ${subscriptionDiscount}%</span>` : '';
+                
+                const variant = product.variants.find(v => v.id === parseInt(card.dataset.variantId)) || product.variants[0];
+                const subscriptionOriginalPrice = variant.compare_at_price && variant.compare_at_price > newPrice
+                    ? variant.compare_at_price
+                    : currentVariantPrice;
+                const subscriptionOriginalHTML = subscriptionOriginalPrice > newPrice ? `<span class="option-price-original">${formatMoney(subscriptionOriginalPrice)}</span>` : '';
+                
+                if (subscriptionPriceWrapper) {
+                    subscriptionPriceWrapper.innerHTML = `
+                        <div class="option-price">
+                            ${subscriptionOriginalHTML}
+                            <span class="option-price-current">${formatMoney(newPrice)}</span>
+                        </div>
+                        ${subscriptionDiscountBadge}
+                    `;
+                }
 
                 // Trigger currency converter
                 updateCurrencyConverter();
