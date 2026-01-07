@@ -285,6 +285,10 @@
         gap: 4px;
     }
 
+    .section-products .recommended-product-card::last-child{
+        margin-bottom: 0!important;
+    }
+
     .gift-tier-card .gift-product-title {
         font-size: 16px;
         margin: 0;
