@@ -1348,6 +1348,7 @@ height: 100%;
 
 .cart-drawer__footer .checkout-buttons a {
     background: #1A365D;
+    border: 1px solid #1A365D;
     color: #FFFFFF;
     font-family: "Gotham";
     font-weight: 500;
@@ -1358,5 +1359,6 @@ height: 100%;
     text-transform: capitalize;
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 8px;
 }
