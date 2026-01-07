@@ -951,7 +951,6 @@
     .cart-subscription-item .cart-item-price {
         text-align: left;
         align-items: flex-start;
-        margin-top: 4px;
     }
 
     .cart-subscription-item .cart-item-remove {
