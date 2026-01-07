@@ -641,6 +641,7 @@
         border: 1px solid #e5e7eb;
         border-radius: 8px;
         overflow: hidden;
+        min-height: 38px;
     }
 
     .quantity-btn {
