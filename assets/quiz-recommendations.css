@@ -921,8 +921,11 @@
     .cart-items {
         display: flex;
         flex-direction: column;
-        gap: 16px;
+        gap: 12px;
         margin-bottom: 24px;
+        padding: 24px 18px;
+        border-radius: 8px;
+        background: var(--Color-Brand-2-200, #F7F7FC);
     }
 
     .cart-item-group {
