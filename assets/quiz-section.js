@@ -48,7 +48,26 @@
         },
 
         calculateQuizHeight() {
-            
+            const announcementBar = document.querySelector('announcement-bar');
+            const pageHeader = document.querySelector('page-header');
+
+            let totalHeaderHeight = 0;
+
+            if (announcementBar) {
+                totalHeaderHeight += announcementBar.offsetHeight;
+            }
+
+            if (pageHeader) {
+                totalHeaderHeight += pageHeader.offsetHeight;
+            }
+
+            const quizHeight = 'calc(100vh - ' + totalHeaderHeight + 'px)';
+
+            // Apply to all quiz sections
+            const quizSections = document.querySelectorAll('.quiz-step, .quiz-calculating, .quiz-results, .quiz-intro, .quiz-recommendations');
+            quizSections.forEach(section => {
+                section.style.minHeight = quizHeight;
+            });
         },
 
         setupEventListeners() {
@@ -589,15 +608,20 @@
             }
 
             // Hide calculating screen
-            const calculating = document.querySelector('[data-calculating]');
-            if (calculating) {
-                calculating.style.display = 'none';
+            const calculatingScreen = document.querySelector('[data-calculating]');
+            if (calculatingScreen) {
+                calculatingScreen.style.display = 'none';
             }
 
             const results = document.querySelector('[data-results]');
-            const content = results.querySelector('.results-content');
+            if (!results) {
+                console.error('Results section not found');
+                return;
+            }
 
-            let html = content.innerHTML;
+            // Find description element (new structure)
+            const descriptionEl = results.querySelector('.quiz-results-description');
+            let html = descriptionEl ? descriptionEl.innerHTML : '';
 
             // Collect all recommended products
             this.recommendedProducts = [];
@@ -707,12 +731,28 @@
 
             console.log('Recommended Products:', this.recommendedProducts);
 
-            content.innerHTML = html;
+            // Update description content if element exists
+            if (descriptionEl && html) {
+                descriptionEl.innerHTML = html;
+            }
 
             // Populate answers table
             this.populateAnswersTable();
 
+            // Hide all quiz steps
+            this.steps.forEach(step => {
+                step.style.display = 'none';
+            });
+
+            // Hide calculating screen if still visible
+            if (calculatingScreen) {
+                calculatingScreen.style.display = 'none';
+            }
+
+            // Show results section
             results.style.display = 'block';
+            results.style.opacity = '1';
+            results.style.transform = 'translateY(0)';
             setTimeout(() => results.classList.add('active'), 50);
 
             this.scrollToTop();

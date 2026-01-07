@@ -109,10 +109,16 @@
   #shopify-section-{{ section.id }} .quiz-results {
     min-height: fit-content;
     height: calc(100vh - 136px);
+    display: block;
   }
 
   #shopify-section-{{ section.id }} .quiz-results[style*="display: none"] {
     display: none !important;
+  }
+
+  #shopify-section-{{ section.id }} .quiz-results.active {
+    opacity: 1 !important;
+    transform: translateY(0) !important;
   }
 
   /* Left Column - Image (Desktop) */
