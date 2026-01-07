@@ -1145,6 +1145,9 @@ video-section-play-button {
 .cart-item-upsells .slider-nav {
     width: max-content
 }
+.cart-item-upsells {
+    padding-bottom: 115px;
+}
 .cart-item-upsells .product-grid .product-block__detail {
     margin: 0; 
 }
