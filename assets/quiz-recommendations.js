@@ -1442,6 +1442,10 @@
             cartItemsContainer.appendChild(groupHeader);
 
             group.forEach(({ item, price, originalPrice, discount }) => {
+                // Create a group container for subscription items
+                const itemGroup = document.createElement('div');
+                itemGroup.className = 'cart-item-group';
+
                 const itemTotal = price * item.quantity;
                 const originalTotal = originalPrice * item.quantity;
                 const hasSubscriptionDiscount = itemTotal < originalTotal;
