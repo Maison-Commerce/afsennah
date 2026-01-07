@@ -1353,7 +1353,14 @@
                 const sellingPlanGroup = item.product.selling_plan_groups[0];
                 const sellingPlan = sellingPlanGroup.selling_plans.find(sp => sp.id == item.sellingPlanId);
                 if (sellingPlan) {
-                    const originalPrice = variantPrice;
+                    // Check for compare_at_price (product discount)
+                    const variant = item.product.variants.find(v => v.id === parseInt(item.variantId));
+                    const compareAtPrice = variant && variant.compare_at_price && variant.compare_at_price > variantPrice 
+                        ? variant.compare_at_price 
+                        : null;
+                    
+                    // Use compare_at_price as original price if it exists, otherwise use variantPrice
+                    const originalPrice = compareAtPrice || variantPrice;
                     price = calculateSubscriptionPrice(variantPrice, sellingPlan);
                     planName = sellingPlan.name;
                     discount = getDiscountPercent(sellingPlan);
@@ -1368,12 +1375,30 @@
                         discount
                     });
 
+                    // Add original price (compare_at_price if exists, otherwise variantPrice) to subtotal
                     subtotal += originalPrice * item.quantity;
-                    totalDiscount += (originalPrice - price) * item.quantity;
+                    // Calculate total discount: product discount (if compare_at_price exists) + subscription discount
+                    const productDiscount = compareAtPrice ? (compareAtPrice - variantPrice) * item.quantity : 0;
+                    const subscriptionDiscount = (variantPrice - price) * item.quantity;
+                    totalDiscount += productDiscount + subscriptionDiscount;
                 }
             } else {
+                // For one-time items, check for compare_at_price (product discount)
+                const variant = item.product.variants.find(v => v.id === parseInt(item.variantId));
+                const compareAtPrice = variant && variant.compare_at_price && variant.compare_at_price > variantPrice 
+                    ? variant.compare_at_price 
+                    : null;
+                
+                if (compareAtPrice) {
+                    // If there's a product discount, add original price to subtotal and discount to totalDiscount
+                    subtotal += compareAtPrice * item.quantity;
+                    totalDiscount += (compareAtPrice - variantPrice) * item.quantity;
+                } else {
+                    // No discount, just add price to subtotal
+                    subtotal += variantPrice * item.quantity;
+                }
+                
                 onetimeItems.push(item);
-                subtotal += price * item.quantity;
             }
         });
 
