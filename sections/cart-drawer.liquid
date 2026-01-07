@@ -185,6 +185,36 @@
     </div>
 
     <style>
+      /* Custom styles for cart-item-upsells slider */
+      .cart-item-upsells .product-grid--carousel {
+        --product-columns-desktop: 2.8;
+        grid-auto-columns: calc((100% - var(--gutter) * 1.8) / 2.8);
+      }
+
+      .cart-item-upsells .product-grid--carousel .slider__item {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .cart-item-upsells .product-grid--carousel .product-block {
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+      }
+
+      .cart-item-upsells .product-grid--carousel .block-inner {
+        flex-grow: 1;
+      }
+
+      /* Mobile styles - keep original behavior */
+      @media (max-width: 767.98px) {
+        .cart-item-upsells .product-grid--carousel {
+          --product-columns-desktop: 1.5;
+          grid-auto-columns: calc((100% - var(--gutter) * 0.5) / 1.5);
+        }
+      }
+
+      /* Dots styles */
       .cart-item-upsells__dots {
         display: flex;
         justify-content: center;
@@ -285,7 +315,7 @@
             const isMobile = window.innerWidth < 768;
             
             // Calculate visible slides per page
-            // Desktop: 3 slides, Mobile: 1.5 slides (partial view)
+            // Desktop: 2.8 slides (2 full + 1 at 80%), Mobile: 1.5 slides (partial view)
             let slidesPerPage;
             let totalPages;
             
@@ -296,10 +326,19 @@
               // Each slide can be a starting point (showing 1 full + 0.5 next)
               totalPages = Math.max(1, slides.length);
             } else {
-              // Desktop: 3 slides per page
-              slidesPerPage = 3;
-              // For desktop: totalPages = ceil(slides.length / 3)
-              totalPages = Math.max(1, Math.ceil(slides.length / slidesPerPage));
+              // Desktop: 2.8 slides per page (2 full + 1 at 80%)
+              slidesPerPage = 2.8;
+              // For desktop: calculate pages based on 2.8 slides per page
+              // Each page shows 2 full slides + 0.8 of next, so we scroll by 2 slides per page
+              // Pages start at indices: 0, 2, 4, 6, etc.
+              // Formula: ceil((slides.length - 2) / 2) + 1, but simpler: ceil(slides.length / 2)
+              // However, we need to account for the fact that last page might show less
+              if (slides.length <= 2) {
+                totalPages = 1;
+              } else {
+                // For 7 slides: pages at 0, 2, 4 = 3 pages (showing 0-1.8, 2-3.8, 4-5.8, and last shows 6)
+                totalPages = Math.ceil((slides.length - 2) / 2) + 1;
+              }
             }
 
             return { slidesPerPage, totalPages, slideSpan, isMobile };
@@ -359,19 +398,20 @@
             
             // Calculate which slide index corresponds to this page
             // For mobile (1.5 slides): page 0 = slide 0, page 1 = slide 1, etc.
-            // For desktop (3 slides): page 0 = slide 0, page 1 = slide 3, etc.
+            // For desktop (2.8 slides): page 0 = slide 0, page 1 = slide 2, etc.
             let targetSlideIndex;
             if (isMobile) {
               // Mobile: each page shows 1.5 slides, so we scroll by 1 slide per page
               targetSlideIndex = Math.min(pageIndex, slides.length - 1);
             } else {
-              // Desktop: each page shows 3 slides
-              // For last page, go to the last slide that shows 3 slides
+              // Desktop: each page shows 2.8 slides (2 full + 0.8)
+              // We scroll by 2 slides per page to show: 2 full + next at 80%
               if (pageIndex === totalPages - 1) {
-                // Last page: show last 3 slides (or remaining slides)
-                targetSlideIndex = Math.max(0, slides.length - Math.floor(slidesPerPage));
+                // Last page: show last slides (2 full + 0.8 of next if available)
+                targetSlideIndex = Math.max(0, slides.length - 3);
               } else {
-                targetSlideIndex = pageIndex * Math.floor(slidesPerPage);
+                // Each page starts at slide index: 0, 2, 4, 6, etc.
+                targetSlideIndex = pageIndex * 2;
               }
             }
             
@@ -404,14 +444,17 @@
               // Mobile: each page corresponds to one slide (with 1.5 visible)
               newPage = Math.min(slideIndex, totalPages - 1);
             } else {
-              // Desktop: 3 slides per page
-              // For last page, check if we're showing the last slides
-              const slidesPerPageInt = Math.floor(slidesPerPage);
-              if (slideIndex >= slides.length - slidesPerPageInt) {
-                // We're in the last page
+              // Desktop: 2.8 slides per page (2 full + 0.8)
+              // Pages are: 0 (slides 0-1.8), 1 (slides 2-3.8), 2 (slides 4-5.8), etc.
+              // Each page starts at even slide index: 0, 2, 4, 6, etc.
+              if (slideIndex >= slides.length - 3) {
+                // We're in the last page (showing last 2-3 slides)
                 newPage = totalPages - 1;
               } else {
-                newPage = Math.floor(slideIndex / slidesPerPageInt);
+                // Calculate page based on slide index: page = floor(slideIndex / 2)
+                newPage = Math.floor(slideIndex / 2);
+                // Ensure we don't exceed total pages
+                newPage = Math.min(newPage, totalPages - 1);
               }
             }
             
