@@ -1022,7 +1022,7 @@ video-section-play-button {
 .cart-drawer .cart-item-list__body {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 10px;
 }
 
 .cart-item__column.cart-item__quantity .quantity {
