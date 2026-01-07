@@ -2974,7 +2974,6 @@
         const isBogo = isBogoEligible(product);
 
         card.innerHTML = `
-            ${number ? `<div class="product-number-badge">${number}</div>` : ''}
             <button class="product-remove-btn" data-remove-btn style="${section === 'top-picks' ? '' : 'display: none;'}" aria-label="Remove product">
                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
                     <path d="M5 5L15 15M15 5L5 15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
