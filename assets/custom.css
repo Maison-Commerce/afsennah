@@ -1300,3 +1300,6 @@ height: 100%;
 .cart-item-upsells .img-ar img {
     position: relative
 }
+.cart-upsell-product__image .img-ar.img-ar--contain {
+    height: 80px;
+}
