@@ -185,10 +185,45 @@
 
 <script>
   (function() {
+    console.log('[Cart Upsell] Script initialized at:', new Date().toISOString());
+    
+    // Check if buttons exist on page load
+    const checkButtons = () => {
+      const buttons = document.querySelectorAll('.cart-upsell-product__add-btn');
+      console.log('[Cart Upsell] Found buttons on page:', buttons.length);
+      buttons.forEach((btn, index) => {
+        console.log(`[Cart Upsell] Button ${index}:`, {
+          variantId: btn.dataset.variantId,
+          element: btn,
+          parent: btn.closest('.cart-upsell-product')
+        });
+      });
+    };
+    
+    // Check immediately
+    checkButtons();
+    
+    // Check after DOM is ready
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', checkButtons);
+    }
+    
     // Use event delegation to handle dynamically added products
     document.addEventListener('click', function(e) {
+      // Only log if it might be our button (to reduce noise)
+      const potentialBtn = e.target.closest('.cart-upsell-product__add-btn') || 
+                          e.target.closest('.cart-upsell-product');
+      if (potentialBtn) {
+        console.log('[Cart Upsell] Click event detected on:', e.target, 'closest:', potentialBtn);
+      }
+      
       const addBtn = e.target.closest('.cart-upsell-product__add-btn');
-      if (!addBtn) return;
+      
+      if (!addBtn) {
+        return;
+      }
+      
+      console.log('[Cart Upsell] ===== ADD BUTTON CLICKED =====');
       
       e.preventDefault();
       const productCard = addBtn.closest('.cart-upsell-product');
