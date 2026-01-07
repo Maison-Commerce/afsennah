@@ -2343,15 +2343,15 @@
         console.log('Number of products:', productHandles.length);
 
         // Get custom sort order from data attribute
-        const recommendationsSection = document.querySelector('[data-recommendations]');
-        const sortOrder = recommendationsSection?.dataset.productSortOrder;
+        const recommendationsSectionState = document.querySelector('[data-recommendations]');
+        const sortOrder = recommendationsSectionState?.dataset.productSortOrder;
 
         // Load BOGO settings
-        bogoEnabled = recommendationsSection?.dataset.bogoEnabled === 'true';
-        const bogoProductsData = recommendationsSection?.dataset.bogoProducts;
+        bogoEnabled = recommendationsSectionState?.dataset.bogoEnabled === 'true';
+        const bogoProductsData = recommendationsSectionState?.dataset.bogoProducts;
         bogoProductHandles = bogoProductsData ? bogoProductsData.split(',').map(h => h.trim()).filter(h => h) : [];
-        bogoBadgeText = recommendationsSection?.dataset.bogoBadgeText || 'BUY 1 GET 1 FREE';
-        bogoCartText = recommendationsSection?.dataset.bogoCartText || 'Buy 1 Get 1 Free';
+        bogoBadgeText = recommendationsSectionState?.dataset.bogoBadgeText || 'BUY 1 GET 1 FREE';
+        bogoCartText = recommendationsSectionState?.dataset.bogoCartText || 'Buy 1 Get 1 Free';
         console.log('BOGO settings loaded:', { bogoEnabled, bogoProductHandles, bogoBadgeText, bogoCartText });
 
         // Initialize tiered gift system
@@ -3686,10 +3686,10 @@
 
         if (!hoursEl || !minutesEl || !secondsEl || !millisecondsEl) return;
 
-        const recommendationsSection = document.querySelector('[data-recommendations]');
-        const hours = parseInt(recommendationsSection?.dataset.countdownHours || '0') || 0;
-        const minutes = parseInt(recommendationsSection?.dataset.countdownMinutes || '9') || 9;
-        const seconds = parseInt(recommendationsSection?.dataset.countdownSeconds || '57') || 57;
+        const recommendationsSectionState = document.querySelector('[data-recommendations]');
+        const hours = parseInt(recommendationsSectionState?.dataset.countdownHours || '0') || 0;
+        const minutes = parseInt(recommendationsSectionState?.dataset.countdownMinutes || '9') || 9;
+        const seconds = parseInt(recommendationsSectionState?.dataset.countdownSeconds || '57') || 57;
 
         let totalMilliseconds = (hours * 3600 + minutes * 60 + seconds) * 1000;
 
@@ -3755,19 +3755,19 @@
     }
 
     // Initialize countdown and upsell when recommendations are shown
-    const recommendationsSection = document.querySelector('[data-recommendations]');
-    if (recommendationsSection) {
+    const recommendationsSectionState = document.querySelector('[data-recommendations]');
+    if (recommendationsSectionState) {
         const observer = new MutationObserver(function(mutations) {
             mutations.forEach(function(mutation) {
                 if (mutation.attributeName === 'style') {
-                    if (recommendationsSection.style.display !== 'none') {
+                    if (recommendationsSectionState.style.display !== 'none') {
                         initCountdownTimer();
                         initUpsellButton();
                     }
                 }
             });
         });
-        observer.observe(recommendationsSection, { attributes: true });
+        observer.observe(recommendationsSectionState, { attributes: true });
     }
 
 
@@ -3995,19 +3995,19 @@
     window.initRecommendations = initRecommendations;
 
     // Initialize recommendations when section becomes visible
-    const recommendationsSection = document.querySelector('[data-recommendations]');
-    if (recommendationsSection) {
+    const recommendationsSectionState = document.querySelector('[data-recommendations]');
+    if (recommendationsSectionState) {
         // Check if section is already visible
         const checkVisibility = () => {
-            const style = window.getComputedStyle(recommendationsSection);
-            const isVisible = recommendationsSection.style.display !== 'none' && 
+            const style = window.getComputedStyle(recommendationsSectionState);
+            const isVisible = recommendationsSectionState.style.display !== 'none' && 
                              style.display !== 'none' &&
-                             recommendationsSection.offsetParent !== null;
+                             recommendationsSectionState.offsetParent !== null;
             
             console.log('Checking visibility:', {
-                inlineStyle: recommendationsSection.style.display,
+                inlineStyle: recommendationsSectionState.style.display,
                 computedStyle: style.display,
-                offsetParent: recommendationsSection.offsetParent !== null,
+                offsetParent: recommendationsSectionState.offsetParent !== null,
                 isVisible: isVisible,
                 initialized: initialized
             });
@@ -4038,7 +4038,7 @@
                 }
             });
         });
-        observer.observe(recommendationsSection, { 
+        observer.observe(recommendationsSectionState, { 
             attributes: true, 
             attributeFilter: ['style', 'class'],
             childList: false,
