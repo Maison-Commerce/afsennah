@@ -70,41 +70,43 @@
         <h1 class="quiz-intro-title">{{ section.settings.title }}</h1>
       {% endif %}
 
-      {% if section.settings.subtitle != blank %}
-        <div class="quiz-intro-subtitle">{{ section.settings.subtitle }}</div>
-      {% endif %}
+      <div class="quiz-intro-content-main">
+        {% if section.settings.subtitle != blank %}
+          <div class="quiz-intro-subtitle">{{ section.settings.subtitle }}</div>
+        {% endif %}
 
-      {% if section.settings.description != blank %}
-        <div class="quiz-intro-description">
-          {{ section.settings.description }}
+        {% if section.settings.description != blank %}
+          <div class="quiz-intro-description">
+            {{ section.settings.description }}
+          </div>
+        {% endif %}
+
+        {% if section.blocks.size > 0 %}
+          <div class="quiz-intro-fields" data-intro-fields>
+            {% for block in section.blocks %}
+              {% if block.type == 'free_text_field' %}
+                <div class="quiz-intro-field" data-intro-field data-field-id="{{ block.settings.field_id }}" data-block-id="{{ block.id }}" {{ block.shopify_attributes }}>
+                  <input
+                      type="{% if block.settings.field_id == 'email' %}email{% else %}text{% endif %}"
+                      class="intro-field-input"
+                      data-field-id="{{ block.settings.field_id }}"
+                      data-block-id="{{ block.id }}"
+                      data-error-message="{{ block.settings.error_message }}"
+                      placeholder="{{ block.settings.field_placeholder }}"
+                      {% if block.settings.field_id == 'email' %}required{% endif %}
+                  >
+                  <span class="intro-field-error-message" data-error-message-for="{{ block.id }}" style="display: none;">{{ block.settings.error_message }}</span>
+                </div>
+              {% endif %}
+            {% endfor %}
+          </div>
+        {% endif %}
+
+        <div class="quiz-intro-button-wrapper">
+          <button type="button" class="quiz-btn quiz-btn-start" data-start-btn>
+            {{ section.settings.button_text }}
+          </button>
         </div>
-      {% endif %}
-
-      {% if section.blocks.size > 0 %}
-        <div class="quiz-intro-fields" data-intro-fields>
-          {% for block in section.blocks %}
-            {% if block.type == 'free_text_field' %}
-              <div class="quiz-intro-field" data-intro-field data-field-id="{{ block.settings.field_id }}" data-block-id="{{ block.id }}" {{ block.shopify_attributes }}>
-                <input
-                    type="{% if block.settings.field_id == 'email' %}email{% else %}text{% endif %}"
-                    class="intro-field-input"
-                    data-field-id="{{ block.settings.field_id }}"
-                    data-block-id="{{ block.id }}"
-                    data-error-message="{{ block.settings.error_message }}"
-                    placeholder="{{ block.settings.field_placeholder }}"
-                    {% if block.settings.field_id == 'email' %}required{% endif %}
-                >
-                <span class="intro-field-error-message" data-error-message-for="{{ block.id }}" style="display: none;">{{ block.settings.error_message }}</span>
-              </div>
-            {% endif %}
-          {% endfor %}
-        </div>
-      {% endif %}
-
-      <div class="quiz-intro-button-wrapper">
-        <button type="button" class="quiz-btn quiz-btn-start" data-start-btn>
-          {{ section.settings.button_text }}
-        </button>
       </div>
     </div>
   </div>
