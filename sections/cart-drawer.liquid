@@ -317,6 +317,19 @@
           let { slidesPerPage, totalPages, slideSpan, isMobile } = carouselInfo;
           let currentPage = 0;
 
+          // Debounce helper
+          function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+              const later = () => {
+                clearTimeout(timeout);
+                func(...args);
+              };
+              clearTimeout(timeout);
+              timeout = setTimeout(later, wait);
+            };
+          }
+
           // Create dots
           function createDots() {
             dotsContainer.innerHTML = '';
@@ -353,7 +366,13 @@
               targetSlideIndex = Math.min(pageIndex, slides.length - 1);
             } else {
               // Desktop: each page shows 3 slides
-              targetSlideIndex = Math.min(pageIndex * Math.floor(slidesPerPage), slides.length - 1);
+              // For last page, go to the last slide that shows 3 slides
+              if (pageIndex === totalPages - 1) {
+                // Last page: show last 3 slides (or remaining slides)
+                targetSlideIndex = Math.max(0, slides.length - Math.floor(slidesPerPage));
+              } else {
+                targetSlideIndex = pageIndex * Math.floor(slidesPerPage);
+              }
             }
             
             const targetSlide = slides[targetSlideIndex];
@@ -370,6 +389,12 @@
                 behavior: 'smooth'
               });
             }
+            
+            // Manually update dots after a short delay to ensure scroll completes
+            setTimeout(() => {
+              const currentIndex = Math.round(Math.abs(slider.scrollLeft) / slideSpan) || 0;
+              updateDotsFromIndex(currentIndex);
+            }, 100);
           }
 
           // Update dots based on current slide index
@@ -380,10 +405,18 @@
               newPage = Math.min(slideIndex, totalPages - 1);
             } else {
               // Desktop: 3 slides per page
-              newPage = Math.floor(slideIndex / Math.floor(slidesPerPage));
+              // For last page, check if we're showing the last slides
+              const slidesPerPageInt = Math.floor(slidesPerPage);
+              if (slideIndex >= slides.length - slidesPerPageInt) {
+                // We're in the last page
+                newPage = totalPages - 1;
+              } else {
+                newPage = Math.floor(slideIndex / slidesPerPageInt);
+              }
             }
             
-            if (newPage !== currentPage && newPage >= 0 && newPage < totalPages) {
+            // Always update if page changed, even if it's the same to ensure UI is correct
+            if (newPage >= 0 && newPage < totalPages) {
               currentPage = newPage;
               const dots = dotsContainer.querySelectorAll('.cart-item-upsells__dot');
               dots.forEach((dot, idx) => {
@@ -399,6 +432,14 @@
           };
           
           carousel.addEventListener('on:carousel-slider:select', selectHandler);
+          
+          // Also listen to scroll events to catch cases where select event doesn't fire
+          const scrollHandler = debounce(() => {
+            const currentIndex = Math.round(Math.abs(slider.scrollLeft) / slideSpan) || 0;
+            updateDotsFromIndex(currentIndex);
+          }, 150);
+          
+          slider.addEventListener('scroll', scrollHandler);
 
           // Initialize dots
           function initDots() {
@@ -444,6 +485,7 @@
           // Cleanup function
           cleanupFn = () => {
             carousel.removeEventListener('on:carousel-slider:select', selectHandler);
+            slider.removeEventListener('scroll', scrollHandler);
             window.removeEventListener('resize', resizeHandler);
             carousel.dataset.dotsInitialized = 'false';
             isInitialized = false;
