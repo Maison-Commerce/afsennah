@@ -681,8 +681,6 @@
 
             // Check for compare_at_price discount on the Buy Once option
             const hasCompareAtDiscount = defaultVariant.compare_at_price && defaultVariant.compare_at_price > defaultVariant.price;
-            const compareAtDiscountPercent = hasCompareAtDiscount ? Math.round(((defaultVariant.compare_at_price - defaultVariant.price) / defaultVariant.compare_at_price) * 100) : 0;
-            const compareAtDiscountBadge = hasCompareAtDiscount ? `<span class="product-discount-badge">${compareAtDiscountPercent}% OFF</span>` : '';
 
             // Calculate subscription discount badge
             const subscriptionDiscountBadge = subscriptionDiscount > 0 ? `<span class="subscription-discount-badge">SAVE ${subscriptionDiscount}%</span>` : '';
@@ -739,7 +737,6 @@
                                     ${hasCompareAtDiscount ? `<span class="option-price-original">${formatMoney(originalPrice)}</span>` : ''}
                                     <span class="option-price-current">${formatMoney(defaultVariant.price)}</span>
                                 </div>
-                                ${compareAtDiscountBadge}
                             </div>
                         </label>
                     </div>
@@ -748,8 +745,6 @@
         } else {
             // Check for compare_at_price discount
             const hasDiscount = defaultVariant.compare_at_price && defaultVariant.compare_at_price > defaultVariant.price;
-            const discountPercent = hasDiscount ? Math.round(((defaultVariant.compare_at_price - defaultVariant.price) / defaultVariant.compare_at_price) * 100) : 0;
-            const discountBadge = hasDiscount ? `<span class="product-discount-badge">${discountPercent}% OFF</span>` : '';
             
             // Calculate total price (unit price × quantity, default quantity is 1)
             const initialQuantity = 1;
@@ -762,7 +757,6 @@
                     <div class="product-price-only">
                         ${compareAtTotal ? `<span class="option-price-original">${formatMoney(compareAtTotal)}</span>` : ''}
                         <span class="option-price-current">${formatMoney(totalPrice)}</span>
-                        ${discountBadge}
                     </div>
                 </div>
             `;
@@ -829,10 +823,8 @@
                     card.dataset.variantId = selectedVariantId;
                     card.dataset.selectedVariantPrice = selectedVariant.price;
 
-                    // Calculate discount badge for new variant
+                    // Check for discount on new variant
                     const hasVariantDiscount = selectedVariant.compare_at_price && selectedVariant.compare_at_price > selectedVariant.price;
-                    const variantDiscountPercent = hasVariantDiscount ? Math.round(((selectedVariant.compare_at_price - selectedVariant.price) / selectedVariant.compare_at_price) * 100) : 0;
-                    const variantDiscountBadge = hasVariantDiscount ? `<span class="product-discount-badge">${variantDiscountPercent}% OFF</span>` : '';
 
                     // Update prices based on new variant
                     const priceOnlyEl = card.querySelector('.product-price-only');
@@ -841,7 +833,7 @@
 
                     if (priceOnlyEl) {
                         const originalPriceHTML = hasVariantDiscount ? `<span class="option-price-original">${formatMoney(selectedVariant.compare_at_price)}</span>` : '';
-                        priceOnlyEl.innerHTML = `${originalPriceHTML}<span class="option-price-current">${formatMoney(selectedVariant.price)}</span>${variantDiscountBadge}`;
+                        priceOnlyEl.innerHTML = `${originalPriceHTML}<span class="option-price-current">${formatMoney(selectedVariant.price)}</span>`;
                     }
 
                     if (subscriptionOptionEl && onetimeOptionEl && hasSubscription) {
@@ -883,7 +875,6 @@
                                     ${onetimeOriginalHTML}
                                     <span class="option-price-current">${formatMoney(selectedVariant.price)}</span>
                                 </div>
-                                ${variantDiscountBadge}
                             `;
                         }
                     }
@@ -938,11 +929,9 @@
                         const totalPrice = unitPrice * currentQty;
                         const hasDiscount = variant.compare_at_price && variant.compare_at_price > variant.price;
                         const compareAtTotal = hasDiscount ? variant.compare_at_price * currentQty : null;
-                        const discountPercent = hasDiscount ? Math.round(((variant.compare_at_price - variant.price) / variant.compare_at_price) * 100) : 0;
-                        const discountBadge = hasDiscount ? `<span class="product-discount-badge">${discountPercent}% OFF</span>` : '';
                         
                         const originalPriceHTML = compareAtTotal ? `<span class="option-price-original">${formatMoney(compareAtTotal)}</span>` : '';
-                        priceOnlyEl.innerHTML = `${originalPriceHTML}<span class="option-price-current">${formatMoney(totalPrice)}</span>${discountBadge}`;
+                        priceOnlyEl.innerHTML = `${originalPriceHTML}<span class="option-price-current">${formatMoney(totalPrice)}</span>`;
                         
                         // Trigger currency converter update
                         updateCurrencyConverter();
@@ -979,11 +968,9 @@
                     const totalPrice = unitPrice * currentQty;
                     const hasDiscount = variant.compare_at_price && variant.compare_at_price > variant.price;
                     const compareAtTotal = hasDiscount ? variant.compare_at_price * currentQty : null;
-                    const discountPercent = hasDiscount ? Math.round(((variant.compare_at_price - variant.price) / variant.compare_at_price) * 100) : 0;
-                    const discountBadge = hasDiscount ? `<span class="product-discount-badge">${discountPercent}% OFF</span>` : '';
                     
                     const originalPriceHTML = compareAtTotal ? `<span class="option-price-original">${formatMoney(compareAtTotal)}</span>` : '';
-                    priceOnlyEl.innerHTML = `${originalPriceHTML}<span class="option-price-current">${formatMoney(totalPrice)}</span>${discountBadge}`;
+                    priceOnlyEl.innerHTML = `${originalPriceHTML}<span class="option-price-current">${formatMoney(totalPrice)}</span>`;
                     
                     // Trigger currency converter update
                     updateCurrencyConverter();
@@ -1504,14 +1491,14 @@
                         priceHTML = `
                             <div class="cart-item-price">
                                 <span class="cart-item-price-original">${formatMoney(compareAtTotal)}</span>
-                                <span class="cart-item-price-discounted">${formatMoney(itemTotal)}</span>
+                                <span>${formatMoney(itemTotal)}</span>
                             </div>
                         `;
                     } else {
                         priceHTML = `
                             <div class="cart-item-price">
                                 <span class="cart-item-price-original">${formatMoney(compareAtTotal)}</span>
-                                <span class="cart-item-price-discounted">${formatMoney(itemTotal)}</span>
+                                <span>${formatMoney(itemTotal)}</span>
                             </div>
                         `;
                     }
@@ -1520,7 +1507,7 @@
                     priceHTML = `
                         <div class="cart-item-price">
                             <span class="cart-item-price-original">${formatMoney(originalTotal)}</span>
-                            <span class="cart-item-price-discounted">${formatMoney(itemTotal)}</span>
+                            <span>${formatMoney(itemTotal)}</span>
                         </div>
                     `;
                 } else {
@@ -1572,7 +1559,7 @@
                 priceHTML = `
                     <div class="cart-item-price">
                         <span class="cart-item-price-original">${formatMoney(compareAtTotal)}</span>
-                        <span class="cart-item-price-discounted">${formatMoney(itemTotal)}</span>
+                        <span>${formatMoney(itemTotal)}</span>
                     </div>
                 `;
             } else {
