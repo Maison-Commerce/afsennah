@@ -1390,7 +1390,6 @@
                     ${imageHTML}
                     <div class="cart-item-info">
                         <span class="cart-item-name">${tier.product.title}${variantTitle}</span>
-                        <div class="cart-item-meta">Free Gift</div>
                         <div class="cart-item-price cart-gift-price">
                             <span class="cart-gift-original-price">${formattedOriginalPrice}</span>
                             <strong class="cart-gift-free-price">FREE</strong>
@@ -1421,7 +1420,6 @@
                 ${imageHTML}
                 <div class="cart-item-info">
                     <span class="cart-item-name">${item.product.title}${variantTitle}</span>
-                    <div class="cart-item-meta">Free Gift</div>
                     <div class="cart-item-price"><strong>FREE</strong></div>
                 </div>
             `;
