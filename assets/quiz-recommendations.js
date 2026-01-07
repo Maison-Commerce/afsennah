@@ -1484,8 +1484,8 @@
             if (hasCompareAtPrice) {
                 priceHTML = `
                     <div class="cart-item-price">
-                        <span class="cart-item-price-original">${formatMoney(compareAtTotal)}</span>
                         <span>${formatMoney(itemTotal)}</span>
+                        <span class="cart-item-price-original">${formatMoney(compareAtTotal)}</span>
                     </div>
                 `;
             } else {
