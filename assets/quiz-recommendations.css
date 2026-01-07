@@ -231,16 +231,21 @@
         overflow: hidden;
     }
 
-    .gift-milestone.reached {
-        border-color: #1A365D;
-        background: #1A365D;
-    }
-
     .gift-milestone-image {
         width: 100%;
         height: 100%;
         object-fit: cover;
         border-radius: 50%;
+        opacity: 0.5;
+    }
+
+    .gift-milestone.reached {
+        border-color: #1A365D;
+        background: #1A365D;
+    }
+
+    .gift-milestone.reached .gift-milestone-image{
+        opacity: 1;
     }
 
     .gift-milestone.reached::after {
