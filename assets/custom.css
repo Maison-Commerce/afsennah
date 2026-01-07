@@ -1217,3 +1217,10 @@ video-section-play-button {
     height: 80px !important;
     border-radius: 8px !important;
 }
+
+.cart-upsell-product__image  .img-ar.img-ar--contain {
+    background: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
