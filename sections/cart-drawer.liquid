@@ -234,12 +234,25 @@
 
     <script>
       (function() {
+        let isInitialized = false;
+        let cleanupFn = null;
+
         function initCartUpsellsDots() {
+          // Prevent multiple initializations
+          if (isInitialized) return;
+
           const cartUpsells = document.querySelector('.cart-item-upsells');
           if (!cartUpsells) return;
 
           const carousel = cartUpsells.querySelector('carousel-slider');
-          if (!carousel) return;
+          if (!carousel || !carousel.hasAttribute('loaded')) {
+            // Wait for carousel to initialize
+            setTimeout(initCartUpsellsDots, 100);
+            return;
+          }
+
+          // Check if already initialized for this carousel
+          if (carousel.dataset.dotsInitialized === 'true') return;
 
           const dotsContainer = cartUpsells.querySelector('.cart-item-upsells__dots');
           if (!dotsContainer) return;
@@ -252,42 +265,64 @@
             return;
           }
 
-          // Calculate pages based on visible slides
-          function calculatePages() {
+          dotsContainer.style.display = 'flex';
+          carousel.dataset.dotsInitialized = 'true';
+
+          // Wait for carousel to be fully initialized and get its properties
+          function getCarouselInfo() {
             const grid = carousel.querySelector('.slider__grid');
-            if (!grid || slides.length < 2) return 0;
-            
+            if (!grid) return null;
+
             const gridWidth = grid.clientWidth;
+            if (gridWidth === 0) return null;
+
             const firstSlide = slides[0];
             const secondSlide = slides[1];
-            
-            if (!firstSlide || !secondSlide) return 0;
-            
+            if (!firstSlide || !secondSlide) return null;
+
             const firstRect = firstSlide.getBoundingClientRect();
             const secondRect = secondSlide.getBoundingClientRect();
             const slideSpan = secondRect.left - firstRect.left;
             
-            if (slideSpan <= 0) return 0;
-            
+            if (slideSpan <= 0) return null;
+
             const slideGap = slideSpan - firstSlide.clientWidth;
             const slidesPerPage = Math.max(1, Math.round((gridWidth + slideGap) / slideSpan));
-            
-            return Math.max(1, slides.length - slidesPerPage + 1);
+            const totalPages = Math.max(1, slides.length - slidesPerPage + 1);
+
+            return { slidesPerPage, totalPages, slideSpan };
           }
 
-          let totalPages = calculatePages();
+          let carouselInfo = getCarouselInfo();
+          if (!carouselInfo) {
+            setTimeout(() => {
+              carouselInfo = getCarouselInfo();
+              if (carouselInfo) initDots();
+            }, 200);
+            return;
+          }
+
+          let { slidesPerPage, totalPages, slideSpan } = carouselInfo;
           let currentPage = 0;
 
           // Create dots
           function createDots() {
             dotsContainer.innerHTML = '';
+            if (totalPages <= 1) {
+              dotsContainer.style.display = 'none';
+              return;
+            }
+            dotsContainer.style.display = 'flex';
+            
             for (let i = 0; i < totalPages; i++) {
               const dot = document.createElement('button');
               dot.className = 'cart-item-upsells__dot';
               if (i === 0) dot.classList.add('active');
               dot.setAttribute('aria-label', `Go to page ${i + 1}`);
-              dot.addEventListener('click', () => {
-                goToPage(i);
+              dot.dataset.pageIndex = i;
+              dot.addEventListener('click', (e) => {
+                const pageIndex = parseInt(e.currentTarget.dataset.pageIndex);
+                goToPage(pageIndex);
               });
               dotsContainer.appendChild(dot);
             }
@@ -297,69 +332,28 @@
           function goToPage(pageIndex) {
             if (pageIndex < 0 || pageIndex >= totalPages) return;
             
-            const firstSlide = slides[0];
-            const secondSlide = slides[1];
+            // Calculate which slide index corresponds to this page
+            const targetSlideIndex = Math.min(pageIndex * slidesPerPage, slides.length - 1);
+            const targetSlide = slides[targetSlideIndex];
             
-            if (!firstSlide || !secondSlide) return;
-            
-            const firstRect = firstSlide.getBoundingClientRect();
-            const secondRect = secondSlide.getBoundingClientRect();
-            const slideSpan = secondRect.left - firstRect.left;
-            
-            if (slideSpan <= 0) return;
-            
-            const targetScroll = pageIndex * slideSpan;
-            
-            slider.scrollTo({
-              left: targetScroll,
-              behavior: 'smooth'
-            });
-          }
+            if (!targetSlide) return;
 
-          // Update dots based on scroll position
-          function updateDots() {
-            const firstSlide = slides[0];
-            const secondSlide = slides[1];
-            
-            if (!firstSlide || !secondSlide) return;
-            
-            const firstRect = firstSlide.getBoundingClientRect();
-            const secondRect = secondSlide.getBoundingClientRect();
-            const slideSpan = secondRect.left - firstRect.left;
-            
-            if (slideSpan <= 0) return;
-            
-            const scrollLeft = slider.scrollLeft;
-            const newPage = Math.round(scrollLeft / slideSpan);
-            
-            if (newPage !== currentPage && newPage >= 0 && newPage < totalPages) {
-              currentPage = newPage;
-              const dots = dotsContainer.querySelectorAll('.cart-item-upsells__dot');
-              dots.forEach((dot, index) => {
-                dot.classList.toggle('active', index === currentPage);
+            // Use carousel's scrollToElement method if available
+            if (typeof carousel.scrollToElement === 'function') {
+              carousel.scrollToElement(targetSlide, 'smooth');
+            } else {
+              // Fallback: direct scroll
+              const targetScroll = targetSlide.offsetLeft;
+              slider.scrollTo({
+                left: targetScroll,
+                behavior: 'smooth'
               });
             }
           }
 
-          // Listen to carousel events
-          carousel.addEventListener('on:carousel-slider:select', (e) => {
-            const index = e.detail.index;
-            const firstSlide = slides[0];
-            const secondSlide = slides[1];
-            
-            if (!firstSlide || !secondSlide) return;
-            
-            const firstRect = firstSlide.getBoundingClientRect();
-            const secondRect = secondSlide.getBoundingClientRect();
-            const slideSpan = secondRect.left - firstRect.left;
-            
-            if (slideSpan <= 0) return;
-            
-            const grid = carousel.querySelector('.slider__grid');
-            const gridWidth = grid ? grid.clientWidth : 0;
-            const slideGap = slideSpan - firstSlide.clientWidth;
-            const slidesPerPage = Math.max(1, Math.round((gridWidth + slideGap) / slideSpan));
-            const newPage = Math.floor(index / slidesPerPage);
+          // Update dots based on current slide index
+          function updateDotsFromIndex(slideIndex) {
+            const newPage = Math.floor(slideIndex / slidesPerPage);
             
             if (newPage !== currentPage && newPage >= 0 && newPage < totalPages) {
               currentPage = newPage;
@@ -368,43 +362,108 @@
                 dot.classList.toggle('active', idx === currentPage);
               });
             }
-          });
+          }
 
-          // Listen to scroll events
-          slider.addEventListener('scroll', () => {
-            updateDots();
-          });
+          // Listen to carousel select events
+          const selectHandler = (e) => {
+            const slideIndex = e.detail.index;
+            updateDotsFromIndex(slideIndex);
+          };
+          
+          carousel.addEventListener('on:carousel-slider:select', selectHandler);
+
+          // Initialize dots
+          function initDots() {
+            carouselInfo = getCarouselInfo();
+            if (!carouselInfo) return;
+            
+            slidesPerPage = carouselInfo.slidesPerPage;
+            totalPages = carouselInfo.totalPages;
+            slideSpan = carouselInfo.slideSpan;
+            
+            createDots();
+            
+            // Set initial active dot based on current scroll position
+            const currentIndex = Math.round(Math.abs(slider.scrollLeft) / slideSpan) || 0;
+            updateDotsFromIndex(currentIndex);
+          }
 
           // Recalculate on resize
           let resizeTimeout;
-          window.addEventListener('resize', () => {
+          const resizeHandler = () => {
             clearTimeout(resizeTimeout);
             resizeTimeout = setTimeout(() => {
-              totalPages = calculatePages();
-              createDots();
-              currentPage = 0;
+              carouselInfo = getCarouselInfo();
+              if (carouselInfo) {
+                slidesPerPage = carouselInfo.slidesPerPage;
+                totalPages = carouselInfo.totalPages;
+                slideSpan = carouselInfo.slideSpan;
+                createDots();
+                const currentIndex = Math.round(Math.abs(slider.scrollLeft) / slideSpan) || 0;
+                updateDotsFromIndex(currentIndex);
+              }
             }, 250);
-          });
+          };
+          
+          window.addEventListener('resize', resizeHandler);
 
           // Initial setup
-          createDots();
+          initDots();
+          isInitialized = true;
+
+          // Cleanup function
+          cleanupFn = () => {
+            carousel.removeEventListener('on:carousel-slider:select', selectHandler);
+            window.removeEventListener('resize', resizeHandler);
+            carousel.dataset.dotsInitialized = 'false';
+            isInitialized = false;
+          };
         }
 
         // Initialize when DOM is ready
-        if (document.readyState === 'loading') {
-          document.addEventListener('DOMContentLoaded', initCartUpsellsDots);
-        } else {
-          initCartUpsellsDots();
+        function startInit() {
+          setTimeout(() => {
+            if (!isInitialized) {
+              initCartUpsellsDots();
+            }
+          }, 300);
         }
 
-        // Re-initialize when cart drawer content updates
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', startInit);
+        } else {
+          startInit();
+        }
+
+        // Re-initialize when cart drawer opens or content updates
         document.addEventListener('DOMContentLoaded', () => {
           const cartDrawer = document.querySelector('cart-drawer');
           if (cartDrawer) {
-            const observer = new MutationObserver(() => {
-              setTimeout(initCartUpsellsDots, 100);
+            // Reset on drawer open
+            const observer = new MutationObserver((mutations) => {
+              const shouldReset = mutations.some(mutation => {
+                return Array.from(mutation.addedNodes).some(node => 
+                  node.nodeType === 1 && 
+                  (node.classList?.contains('cart-item-upsells') || 
+                   node.querySelector?.('.cart-item-upsells'))
+                );
+              });
+              
+              if (shouldReset && cleanupFn) {
+                cleanupFn();
+                cleanupFn = null;
+                setTimeout(() => {
+                  if (!isInitialized) {
+                    initCartUpsellsDots();
+                  }
+                }, 400);
+              }
             });
-            observer.observe(cartDrawer, { childList: true, subtree: true });
+            
+            observer.observe(cartDrawer, { 
+              childList: true, 
+              subtree: true 
+            });
           }
         });
       })();
