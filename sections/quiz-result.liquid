@@ -20,117 +20,500 @@
   #shopify-section-{{ section.id }}.quiz-section {
   background: {{ section.settings.background_color }};
   }
-
-  .quiz-results-{{ section.id }} .results-image {
-  background-image: url('{{ section.settings.results_image | image_url: width: 1200 }}');
-  }
 {%- endstyle -%}
 
-<style>
-  .continue-mobile-button {
-      display: none;
-      & button {
-          width: 100%;
-      }
-      @media (max-width: 767px) {
-          display: block;
-          order: 3;
-      }
-  }
-
-  .results-answers-table {
-      @media (max-width: 767px) {
-          margin-bottom: 24px!important;
-      }
-  }
-</style>
-
 <div class="quiz-results quiz-results-{{ section.id }}" data-results style="display: none;" data-visible-questions="{{ section.settings.visible_questions }}">
-  <div class="results-layout">
-    <div class="results-image"></div>
-    <div class="results-right">
-      <div class="results-content-wrapper">
-        <div class="results-content">
-          {{ section.settings.results_text }}
+  <div class="quiz-results-wrapper">
+    <!-- Left Column - Image (Desktop Only) -->
+    {% if section.settings.results_image != blank %}
+      <div class="quiz-results-image-column">
+        <div class="quiz-results-image-container">
+          <img 
+            src="{{ section.settings.results_image | image_url: width: 1440 }}" 
+            alt=""
+            class="quiz-results-image"
+            loading="lazy"
+          >
         </div>
+      </div>
+    {% endif %}
 
-        <div class="results-answers-table">
-          <h3>Your Answers</h3>
-          <table class="answers-table" data-answers-table>
-            <!-- Table will be populated by JavaScript -->
-          </table>
-        </div>
+    <!-- Right Column - Content -->
+    <div class="quiz-results-content-column">
+      <!-- Close Button (Desktop) -->
+      <button type="button" class="quiz-results-close" aria-label="Close">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+          <path d="M15 5L5 15M5 5L15 15" stroke="#2F3936" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
 
-        <div class="continue-mobile-button">
-          <button type="button" class="quiz-btn quiz-btn-next show-me-my-recs" data-next-results-btn>
-            {{ section.settings.next_button_text }}
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-              <path d="M7.5 15L12.5 10L7.5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </button>
-        </div>
+      <!-- Main Content -->
+      <div class="quiz-results-main-content">
+        <!-- Title -->
+        {% if section.settings.title != blank %}
+          <h2 class="quiz-results-title">{{ section.settings.title }}</h2>
+        {% endif %}
 
-        <div class="results-actions">
-          <div class="quiz-navigation results">
-            <button type="button" class="quiz-btn quiz-btn-back" data-restart-btn>
-              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                <path d="M2.5 10C2.5 5.85786 5.85786 2.5 10 2.5C14.1421 2.5 17.5 5.85786 17.5 10C17.5 14.1421 14.1421 17.5 10 17.5C7.5 17.5 5.32 16.18 4.16 14.16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M2.5 14.1667V14.1667C2.5 14.1667 2.5 11.6667 2.5 10.8333" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-              Retake Quiz
-            </button>
-            <button type="button" class="quiz-btn quiz-btn-next show-me-my-recs" data-next-results-btn>
-              {{ section.settings.next_button_text }}
-              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                <path d="M7.5 15L12.5 10L7.5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </button>
+        <!-- Description -->
+        {% if section.settings.description != blank %}
+          <div class="quiz-results-description">{{ section.settings.description }}</div>
+        {% endif %}
+
+        <!-- Your Answers Section -->
+        <div class="quiz-results-answers-section">
+          <div class="quiz-results-answers-header">
+            <h3 class="quiz-results-answers-title">Your Answers</h3>
+          </div>
+          <div class="quiz-results-answers-content">
+            <table class="quiz-results-answers-table" data-answers-table>
+              <!-- Table will be populated by JavaScript -->
+            </table>
           </div>
         </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="quiz-results-actions">
+        <button type="button" class="quiz-results-button quiz-results-button-primary" data-next-results-btn>
+          <span>{{ section.settings.next_button_text }}</span>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 20 20" fill="none">
+            <path d="M15.0003 6.66663L18.3337 9.99996M18.3337 9.99996L15.0003 13.3333M18.3337 9.99996H1.66699" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        <button type="button" class="quiz-results-button quiz-results-button-secondary" data-restart-btn>
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <path d="M5.00033 6.66663L1.66699 9.99996M1.66699 9.99996L5.00033 13.3333M1.66699 9.99996H18.3337" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span>Retake Quiz</span>
+        </button>
       </div>
     </div>
   </div>
 </div>
 
+<style>
+  /* Base Styles */
+  #shopify-section-{{ section.id }} .quiz-results-wrapper {
+    display: flex;
+    align-items: stretch;
+    min-height: calc(100vh - 136px);
+    height: calc(100vh - 136px);
+    background: #f1f1f9;
+  }
+
+  #shopify-section-{{ section.id }} {
+    padding: 0;
+  }
+
+  #shopify-section-{{ section.id }} .quiz-results {
+    min-height: fit-content;
+    height: calc(100vh - 136px);
+  }
+
+  /* Left Column - Image (Desktop) */
+  #shopify-section-{{ section.id }} .quiz-results-image-column {
+    width: 720px;
+    flex-shrink: 0;
+    display: none;
+    position: relative;
+    overflow: hidden;
+  }
+
+  #shopify-section-{{ section.id }} .quiz-results-image-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 720px;
+    height: 1016px;
+  }
+
+  #shopify-section-{{ section.id }} .quiz-results-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* Right Column - Content */
+  #shopify-section-{{ section.id }} .quiz-results-content-column {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 80px 60px;
+    background: #f1f1f9;
+    border-left: 1px solid white;
+    position: relative;
+    min-height: calc(100vh - 136px);
+    height: calc(100vh - 136px);
+    justify-content: space-between;
+  }
+
+  /* Close Button */
+  #shopify-section-{{ section.id }} .quiz-results-close {
+    position: absolute;
+    top: 25px;
+    right: 25px;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f7f7fc;
+    border: none;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+
+  #shopify-section-{{ section.id }} .quiz-results-close:hover {
+    background: #e8e8f0;
+  }
+
+  #shopify-section-{{ section.id }} .quiz-results-close svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  /* Main Content */
+  #shopify-section-{{ section.id }} .quiz-results-main-content {
+    display: flex;
+    flex-direction: column;
+    gap: 44px;
+    align-items: center;
+    justify-content: flex-start;
+    flex: 1;
+  }
+
+  /* Title */
+  #shopify-section-{{ section.id }} .quiz-results-title {
+    font-family: 'Vanilla Ravioli', sans-serif;
+    font-size: 32px;
+    font-weight: 400;
+    line-height: 1.3;
+    color: #232323;
+    text-transform: capitalize;
+    text-align: center;
+    margin: 0;
+    max-width: 474px;
+  }
+
+  /* Description */
+  #shopify-section-{{ section.id }} .quiz-results-description {
+    font-family: 'Gotham', sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #272727;
+    text-align: center;
+    max-width: 100%;
+  }
+
+  #shopify-section-{{ section.id }} .quiz-results-description p {
+    margin: 0 0 16px 0;
+  }
+
+  #shopify-section-{{ section.id }} .quiz-results-description p:last-child {
+    margin-bottom: 0;
+  }
+
+  #shopify-section-{{ section.id }} .quiz-results-description strong {
+    font-family: 'Gotham', sans-serif;
+    font-weight: 500;
+  }
+
+  #shopify-section-{{ section.id }} .quiz-results-description b {
+    font-family: 'Gotham', sans-serif;
+    font-weight: 700;
+  }
+
+  /* Your Answers Section */
+  #shopify-section-{{ section.id }} .quiz-results-answers-section {
+    width: 100%;
+    background: #fffbc0;
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  #shopify-section-{{ section.id }} .quiz-results-answers-header {
+    background: #fffbc0;
+    padding: 8px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  #shopify-section-{{ section.id }} .quiz-results-answers-title {
+    font-family: 'Gotham', sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 1.5;
+    color: #232323;
+    margin: 0;
+  }
+
+  #shopify-section-{{ section.id }} .quiz-results-answers-content {
+    background: white;
+    padding: 32px;
+    border-radius: 0 0 12px 12px;
+  }
+
+  #shopify-section-{{ section.id }} .quiz-results-answers-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  #shopify-section-{{ section.id }} .quiz-results-answers-table tr {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 0;
+  }
+
+  #shopify-section-{{ section.id }} .quiz-results-answers-table td {
+    font-family: 'Gotham', sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.5;
+    padding: 0;
+    border: none;
+  }
+
+  #shopify-section-{{ section.id }} .quiz-results-answers-table td:first-child {
+    color: #667085;
+    text-align: left;
+  }
+
+  #shopify-section-{{ section.id }} .quiz-results-answers-table td:last-child {
+    color: #232323;
+    text-align: right;
+  }
+
+  #shopify-section-{{ section.id }} .quiz-results-answers-table tr:not(:last-child) {
+    margin-bottom: 12px;
+    padding-bottom: 12px;
+    border-bottom: 0.75px solid rgba(16, 43, 38, 0.14);
+  }
+
+  /* Action Buttons */
+  #shopify-section-{{ section.id }} .quiz-results-actions {
+    display: flex;
+    gap: 20px;
+    padding-top: 44px;
+  }
+
+  #shopify-section-{{ section.id }} .quiz-results-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 16px 32px;
+    height: 56px;
+    border: none;
+    border-radius: 16px;
+    font-family: 'Gotham', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.5;
+    cursor: pointer;
+    transition: all 0.2s;
+    flex: 1;
+  }
+
+  #shopify-section-{{ section.id }} .quiz-results-button-primary {
+    background: #1a365d;
+    color: #fcfefe;
+    gap: 8px;
+  }
+
+  #shopify-section-{{ section.id }} .quiz-results-button-primary:hover {
+    background: #152a4a;
+  }
+
+  #shopify-section-{{ section.id }} .quiz-results-button-secondary {
+    background: white;
+    border: 1px solid #d4d9e1;
+    color: #272727;
+  }
+
+  #shopify-section-{{ section.id }} .quiz-results-button-secondary:hover {
+    background: #f7f7fc;
+  }
+
+  #shopify-section-{{ section.id }} .quiz-results-button svg {
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+  }
+
+  #shopify-section-{{ section.id }} .quiz-results-button-secondary svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  /* Mobile Styles */
+  @media (min-width: 1025px) {
+    #shopify-section-{{ section.id }} .quiz-results-image-column {
+      display: block;
+    }
+  }
+
+  @media (max-width: 1024px) {
+    #shopify-section-{{ section.id }} .quiz-results-wrapper {
+      flex-direction: column;
+      height: auto;
+    }
+
+    #shopify-section-{{ section.id }} .quiz-results {
+      height: auto;
+    }
+
+    #shopify-section-{{ section.id }} .quiz-results-image-column {
+      display: none;
+    }
+
+    #shopify-section-{{ section.id }} .quiz-results-content-column {
+      padding: 20px;
+      border-left: none;
+      min-height: auto;
+      height: auto;
+      gap: 32px;
+    }
+
+    #shopify-section-{{ section.id }} .quiz-results-close {
+      display: none;
+    }
+
+    #shopify-section-{{ section.id }} .quiz-results-main-content {
+      gap: 24px;
+      padding-top: 0;
+    }
+
+    #shopify-section-{{ section.id }} .quiz-results-title {
+      font-size: 24px;
+      line-height: 1.4;
+      max-width: 100%;
+    }
+
+    #shopify-section-{{ section.id }} .quiz-results-description {
+      font-size: 14px;
+    }
+
+    #shopify-section-{{ section.id }} .quiz-results-answers-header {
+      padding: 8px 0;
+    }
+
+    #shopify-section-{{ section.id }} .quiz-results-answers-title {
+      font-size: 14px;
+    }
+
+    #shopify-section-{{ section.id }} .quiz-results-answers-content {
+      padding: 18px;
+    }
+
+    #shopify-section-{{ section.id }} .quiz-results-answers-table td {
+      font-size: 12px;
+    }
+
+    #shopify-section-{{ section.id }} .quiz-results-answers-table td:first-child {
+      font-weight: 300;
+    }
+
+    #shopify-section-{{ section.id }} .quiz-results-answers-table tr:not(:last-child) {
+      margin-bottom: 8px;
+      padding-bottom: 8px;
+    }
+
+    #shopify-section-{{ section.id }} .quiz-results-actions {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: #f1f1f9;
+      padding: 20px;
+      flex-direction: column-reverse;
+      gap: 10px;
+      box-shadow: 0px -10px 38.3px rgba(0, 0, 0, 0.1);
+      z-index: 100;
+    }
+
+    #shopify-section-{{ section.id }} .quiz-results-button {
+      padding: 12px 24px;
+      height: auto;
+      border-radius: 12px;
+      gap: 12px;
+      width: 100%;
+    }
+
+    #shopify-section-{{ section.id }} .quiz-results-button-primary {
+      order: 1;
+    }
+
+    #shopify-section-{{ section.id }} .quiz-results-button-secondary {
+      order: 2;
+    }
+
+    #shopify-section-{{ section.id }} .quiz-results-button svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    /* Add padding to bottom of content to account for fixed buttons */
+    #shopify-section-{{ section.id }} .quiz-results-content-column {
+      padding-bottom: 180px;
+    }
+  }
+</style>
+
 <script>
-    (function() {
-        // Auto-save results when shown
+  (function() {
+    // Auto-save results when shown
+    const results = document.querySelector('[data-results]');
+    if (results) {
+      const observer = new MutationObserver(function(mutations) {
+        mutations.forEach(function(mutation) {
+          if (mutation.attributeName === 'style' && results.style.display !== 'none') {
+            if (window.QuizManager && window.QuizManager.answers) {
+              window.QuizManager.saveResults();
+            }
+          }
+        });
+      });
+      observer.observe(results, { attributes: true });
+    }
+
+    // Next button to show recommendations (attach to ALL buttons)
+    const nextBtns = document.querySelectorAll('[data-next-results-btn]');
+    nextBtns.forEach(nextBtn => {
+      if (nextBtn) {
+        nextBtn.addEventListener('click', function() {
+          const results = document.querySelector('[data-results]');
+          const recommendations = document.querySelector('[data-recommendations]');
+
+          if (results && recommendations) {
+            results.style.display = 'none';
+            recommendations.style.display = 'block';
+            setTimeout(() => recommendations.classList.add('active'), 50);
+
+            window.scrollTo({
+              top: 0,
+              behavior: 'smooth'
+            });
+          }
+        });
+      }
+    });
+
+    // Close button functionality
+    const closeBtn = document.querySelector('.quiz-results-close');
+    if (closeBtn) {
+      closeBtn.addEventListener('click', function() {
         const results = document.querySelector('[data-results]');
         if (results) {
-            const observer = new MutationObserver(function(mutations) {
-                mutations.forEach(function(mutation) {
-                    if (mutation.attributeName === 'style' && results.style.display !== 'none') {
-                        if (window.QuizManager && window.QuizManager.answers) {
-                            window.QuizManager.saveResults();
-                        }
-                    }
-                });
-            });
-            observer.observe(results, { attributes: true });
+          results.style.display = 'none';
         }
-
-        // Next button to show recommendations (attach to ALL buttons)
-        const nextBtns = document.querySelectorAll('[data-next-results-btn]');
-        nextBtns.forEach(nextBtn => {
-            if (nextBtn) {
-                nextBtn.addEventListener('click', function() {
-                    const results = document.querySelector('[data-results]');
-                    const recommendations = document.querySelector('[data-recommendations]');
-
-                    if (results && recommendations) {
-                        results.style.display = 'none';
-                        recommendations.style.display = 'block';
-                        setTimeout(() => recommendations.classList.add('active'), 50);
-
-                        window.scrollTo({
-                            top: 0,
-                            behavior: 'smooth'
-                        });
-                    }
-                });
-            }
-        });
-    })();
+      });
+    }
+  })();
 </script>
 
 <script src="{{ 'quiz-section.js' | asset_url }}" defer></script>
@@ -143,21 +526,27 @@
     {
       "type": "image_picker",
       "id": "results_image",
-      "label": "Results Image",
-      "info": "Image will display at 50% width, full height on the left side"
+      "label": "Results Image (Desktop)",
+      "info": "Image will display on the left side on desktop (720px width)"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Your answers are analyzed. Click 'See My Results' to continue"
     },
     {
       "type": "richtext",
-      "id": "results_text",
-      "label": "Results Template",
-      "info": "Use [[question_id]] to insert answers (e.g., [[thickness]], [[texture]], [[goals]]). Double brackets won't interfere with Shopify's Liquid syntax.",
-      "default": "<h2>[[customer_name]], your results are ready!</h2><p>You have [[thickness]] x [[texture]] hair and based on your answers, we've selected the products that will best help you achieve your hair transformation goals: [[goals]]</p><p>Once you select your products, Afsennah will personally review your consultation to ensure the right formulation is chosen for your unique hair and scalp needs.</p><p>If additional information is needed to finalize your custom formulation, Afsennah will reach out to you within 72 hours.</p>"
+      "id": "description",
+      "label": "Description",
+      "info": "Use <strong> or <b> tags for bold text. Use [[question_id]] to insert answers.",
+      "default": "<p>Click 'show me my recommendations' to see the top 3 products for your hair needs pre-added to your basket. Each targets your scalp and hair for visible results. Below is your hair diagnosis: <strong>Medium, Coily hair.</strong></p><p>We've selected products to help you achieve a Healthy and Balanced Scalp. Afsennah will review your consultation to ensure the perfect formulation. If needed, Afsennah will contact you within <b>72 hours.</b></p>"
     },
     {
       "type": "text",
       "id": "next_button_text",
       "label": "Next Button Text",
-      "default": "Show me my recommendations"
+      "default": "Show My Recommendations"
     },
     {
       "type": "header",
