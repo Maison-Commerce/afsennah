@@ -170,7 +170,7 @@
 
                       {%- for product in section.settings.cross_sell_products -%}
                         <li class="slider__item">
-                          {%- render 'product-block', product: product, manual_loading: true, no_quick_buy: true, no_swiping: true, custom_aspect_ratio: chosen_aspect_ratio -%}
+                          {%- render 'product-block', product: product, manual_loading: true, no_quick_buy: false, no_swiping: true, custom_aspect_ratio: chosen_aspect_ratio -%}
                         </li>
                       {%- endfor -%}
                     {%- endif -%}
