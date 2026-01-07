@@ -1040,3 +1040,9 @@ video-section-play-button {
     height: 80px;
     width: 80px;
 }
+
+.subscription-description {
+    border-radius:8px;
+    background: #F7F7FC;
+    padding: 8px;
+}
