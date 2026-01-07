@@ -95,6 +95,8 @@
         "question_subtitle": "",
         "question_description": "",
         "info_text": "",
+        "desktop_image_female": "shopify://shop_images/awfawfw.png",
+        "desktop_image_male": "shopify://shop_images/wgawgawgw.png",
         "free_text_mode": false,
         "allow_multiple": false,
         "conditional_parent": "",
