@@ -241,7 +241,7 @@
         // Dispatch cart change event - CartForm listens to this and will automatically refresh
         // This is the same pattern used in main.js ProductForm
         // UpCart and other apps will also listen to this event
-        document.dispatchEvent(new CustomEvent('on:cart:change', { bubbles: true, cancelable: false }));
+        document.dispatchEvent(new CustomEvent('dispatch:cart-drawer:refresh', { bubbles: true, cancelable: false }));
         
         // Re-enable button
         addBtn.classList.remove('loading');
