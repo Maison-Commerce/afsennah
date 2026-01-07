@@ -1344,3 +1344,8 @@ height: 100%;
     letter-spacing: 0%;
     color: #2F3936;
 }
+
+
+.cart-drawer__footer .checkout-buttons a {
+    background: #1A365D;
+}
