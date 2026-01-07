@@ -1234,10 +1234,22 @@
             if (!productId) return;
             
             const selectedVariantId = parseInt(card.dataset.variantId);
-            const selectedOption = card.querySelector('input[type="radio"]:checked');
-            const sellingPlanId = selectedOption?.dataset.sellingPlan || null;
-            const numericSellingPlanId = sellingPlanId ? parseInt(sellingPlanId) : null;
+            if (isNaN(selectedVariantId)) return;
             
+            // Get the selected purchase option (subscription or one-time)
+            const selectedOption = card.querySelector('input[type="radio"]:checked');
+            if (!selectedOption) return;
+            
+            // Determine sellingPlanId based on the selected option
+            let numericSellingPlanId = null;
+            if (selectedOption.value === 'subscription') {
+                const sellingPlanId = selectedOption.dataset.sellingPlan;
+                numericSellingPlanId = sellingPlanId ? parseInt(sellingPlanId) : null;
+            } else if (selectedOption.value === 'onetime') {
+                numericSellingPlanId = null; // One-time purchases don't have sellingPlanId
+            }
+            
+            // Check if the currently selected purchase option is in the cart
             const itemInCart = cartItems.find(item => {
                 const itemVariantId = parseInt(item.variantId);
                 const itemSellingPlanId = item.sellingPlanId ? parseInt(item.sellingPlanId) : null;
