@@ -66,7 +66,7 @@
             // Apply to all quiz sections
             const quizSections = document.querySelectorAll('.quiz-step, .quiz-calculating, .quiz-results, .quiz-intro, .quiz-recommendations');
             quizSections.forEach(section => {
-                section.style.minHeight = quizHeight;
+                // section.style.minHeight = quizHeight;
             });
         },
 
