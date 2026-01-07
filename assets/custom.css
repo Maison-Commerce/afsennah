@@ -1065,3 +1065,14 @@ video-section-play-button {
     letter-spacing: 0%;
     color: #2F3936;
 }
+.subscription-content p {
+    font-family: "Gotham";
+    font-weight: 300;
+    font-style: Light;
+    font-size: 12px;
+    line-height: 150%;
+    letter-spacing: 0%;
+    text-align: center;
+    vertical-align: middle;
+    color rgba(35, 35, 35, 0.75);
+}
