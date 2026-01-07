@@ -963,8 +963,8 @@
     }
 
     .product-card-image {
-        width: 100px;
-        height: 140px;
+        width: 120px;
+        height: 160px;
         background: #f9fafb;
         border-radius: 8px;
         overflow: hidden;
@@ -1031,23 +1031,32 @@
     }
 
     .product-remove-btn {
-        background: var(--remove-button-color, #ef4444);
-        color: var(--remove-button-text-color, white);
+        background: transparent;
+        color: #9ca3af;
         border: none;
         cursor: pointer;
-        padding: 6px 12px;
-        border-radius: 5rem;
-        font-size: 12px;
-        font-weight: 500;
-        transition: opacity 0.2s;
+        padding: 8px;
+        border-radius: 4px;
+        transition: all 0.2s;
         position: absolute;
-        top: 8px;
-        right: 8px;
+        top: 12px;
+        right: 12px;
         z-index: 10;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 32px;
+        height: 32px;
     }
 
     .product-remove-btn:hover {
-        opacity: 0.85;
+        background: #f3f4f6;
+        color: #6b7280;
+    }
+
+    .product-remove-btn svg {
+        width: 20px;
+        height: 20px;
     }
 
     .recommended-product-card.removed .product-remove-btn {
@@ -1067,11 +1076,17 @@
         color: #6b7280;
         text-transform: uppercase;
         letter-spacing: 0.5px;
+        margin-bottom: 6px;
     }
 
-    .variant-dropdown {
-        width: 100%;
-        padding: 8px 10px;
+    .variant-buttons {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+    }
+
+    .variant-button {
+        padding: 8px 16px;
         border: 1px solid #e5e7eb;
         border-radius: 8px;
         font-size: 13px;
@@ -1079,24 +1094,32 @@
         cursor: pointer;
         color: #102B26;
         font-family: inherit;
-        appearance: none;
-        background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%23374151' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-        background-repeat: no-repeat;
-        background-position: right 10px center;
-        padding-right: 32px;
+        font-weight: 400;
+        transition: all 0.2s;
+        min-width: 60px;
+        text-align: center;
     }
 
-    .variant-dropdown:hover {
+    .variant-button:hover:not(:disabled) {
         border-color: #d1d5db;
+        background: #f9fafb;
     }
 
-    .variant-dropdown:focus {
+    .variant-button.selected {
+        border-color: #a6a8de;
+        background: #fff;
+        color: #102B26;
+    }
+
+    .variant-button:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        color: #9ca3af;
+    }
+
+    .variant-button:focus {
         outline: none;
         border-color: var(--primary-color, #102B26);
-    }
-
-    .variant-dropdown option:disabled {
-        color: #9ca3af;
     }
 
     .product-quantity-selector {
@@ -1202,6 +1225,15 @@
         border-color: var(--primary-color, #102B26);
     }
 
+    .product-purchase-options-header {
+        font-size: 11px;
+        font-weight: 500;
+        color: #6b7280;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 8px;
+    }
+
     .product-purchase-options {
         display: flex;
         flex-direction: column;
@@ -1212,11 +1244,13 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding: 10px 12px;
+        padding: 12px 16px;
         border: 1px solid #e5e7eb;
         border-radius: 8px;
         cursor: pointer;
         background: #fff;
+        transition: all 0.2s;
+        position: relative;
     }
 
     .purchase-option:hover {
@@ -1224,15 +1258,45 @@
     }
 
     .purchase-option.selected {
-        border-color: var(--primary-color, #102B26);
-        background: #f9fafb;
+        border-color: #a6a8de;
+        background: #f1f1f9;
     }
 
     .purchase-option input[type="radio"] {
         width: 18px;
         height: 18px;
-        margin-right: 10px;
+        margin-right: 12px;
         cursor: pointer;
+        flex-shrink: 0;
+        appearance: none;
+        -webkit-appearance: none;
+        border: 2px solid #e5e7eb;
+        border-radius: 50%;
+        background: white;
+        position: relative;
+        transition: all 0.2s;
+    }
+
+    .purchase-option input[type="radio"]:checked {
+        border-color: #1a365d;
+        background: white;
+    }
+
+    .purchase-option input[type="radio"]:checked::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: #1a365d;
+    }
+
+    .purchase-option input[type="radio"]:focus {
+        outline: 2px solid #1a365d;
+        outline-offset: 2px;
     }
 
     .option-details {
@@ -1244,14 +1308,41 @@
 
     .option-label {
         font-weight: 500;
-        color: #111827;
+        color: #102B26;
         font-size: 14px;
     }
 
+    .option-price-wrapper {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+    }
+
+    .option-price-original {
+        font-size: 13px;
+        color: #9ca3af;
+        text-decoration: line-through;
+        font-weight: 400;
+    }
+
     .option-price {
-        font-size: 15px;
+        font-size: 16px;
         font-weight: 600;
-        color: #111827;
+        color: #102B26;
+        white-space: nowrap;
+    }
+
+    .product-discount-badge-subscribe {
+        background: #E98C36;
+        color: white;
+        padding: 4px 10px;
+        border-radius: 12px;
+        font-size: 11px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
         white-space: nowrap;
     }
 
@@ -1260,6 +1351,20 @@
         justify-content: space-between;
         align-items: flex-end;
         gap: 12px;
+    }
+
+    .product-price-wrapper {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-wrap: wrap;
+    }
+
+    .product-price-original {
+        font-size: 13px;
+        color: #9ca3af;
+        text-decoration: line-through;
+        font-weight: 400;
     }
 
     .product-price-only {
@@ -1272,12 +1377,13 @@
         display: inline-block;
         background: var(--highlight-color, #d4ff6a);
         color: #000;
-        padding: 3px 8px;
-        border-radius: 4px;
+        padding: 4px 10px;
+        border-radius: 12px;
         font-size: 11px;
         font-weight: 700;
-        margin-left: 6px;
-        vertical-align: middle;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        white-space: nowrap;
     }
 
     .product-add-btn {
@@ -1926,31 +2032,112 @@
         }
 
         .recommended-product-card {
-            flex-direction: column;
+            flex-direction: row;
+            gap: 12px;
+            padding: 12px;
         }
 
         .gift-card-main {
             flex-direction: column;
         }
 
-        .product-card-image,
+        .product-card-image {
+            width: 100px;
+            height: 140px;
+            flex-shrink: 0;
+        }
+
         .gift-card-image {
             width: 100%;
             height: 180px;
         }
 
+        .product-card-content {
+            flex: 1;
+            gap: 12px;
+            min-width: 0;
+        }
+
+        .product-card-title {
+            font-size: 16px;
+            margin-bottom: 8px;
+        }
+
+        .product-card-description {
+            font-size: 11px;
+            line-height: 1.4;
+        }
+
+        .variant-label,
+        .quantity-label,
+        .frequency-label {
+            font-size: 10px;
+        }
+
+        .variant-buttons {
+            gap: 6px;
+        }
+
+        .variant-button {
+            padding: 6px 12px;
+            font-size: 12px;
+            min-width: 50px;
+        }
+
+        .quantity-controls {
+            width: auto;
+        }
+
+        .quantity-btn {
+            width: 28px;
+            height: 28px;
+            font-size: 16px;
+        }
+
+        .quantity-value {
+            min-width: 28px;
+            font-size: 13px;
+        }
+
+        .frequency-dropdown {
+            font-size: 12px;
+            padding: 6px 8px;
+        }
+
+        .product-purchase-options-header {
+            font-size: 10px;
+            margin-bottom: 6px;
+        }
+
+        .purchase-option {
+            padding: 10px 12px;
+        }
+
+        .option-label {
+            font-size: 13px;
+        }
+
+        .option-price-original {
+            font-size: 11px;
+        }
+
+        .option-price {
+            font-size: 14px;
+        }
+
+        .product-discount-badge,
+        .product-discount-badge-subscribe {
+            font-size: 9px;
+            padding: 3px 6px;
+        }
+
         .product-card-mobile-title {
             display: block;
-            /*position: absolute;*/
-            top: 0;
-            left: 100%;
-            width: calc(100vw - 180px);
-            padding: 0 0 0 12px;
             font-size: 16px;
             font-weight: 600; 
             color: #102B26;
             line-height: 1.3;
-            margin-bottom: 0;
+            margin-bottom: 8px;
         }
 
         .product-card-title-desktop {
@@ -2663,19 +2850,22 @@
         let purchaseOptionsHTML = '';
         let sellingPlans = [];
 
-        // Variant selector HTML (if product has multiple variants)
+        // Variant selector HTML (if product has multiple variants) - Size buttons
         let variantSelectorHTML = '';
         if (hasMultipleVariants) {
             variantSelectorHTML = `
                 <div class="product-variant-selector">
-                    <span class="variant-label">Options</span>
-                    <select class="variant-dropdown" data-variant-select>
+                    <span class="variant-label">SIZE</span>
+                    <div class="variant-buttons">
                         ${product.variants.map((variant, index) => `
-                            <option value="${variant.id}" data-variant-index="${index}" ${index === defaultVariantIndex ? 'selected' : ''} ${!variant.available ? 'disabled' : ''}>
-                                ${variant.title}${!variant.available ? ' (Out of stock)' : ''}
-                            </option>
+                            <button class="variant-button ${index === defaultVariantIndex ? 'selected' : ''}" 
+                                    data-variant-id="${variant.id}" 
+                                    data-variant-index="${index}"
+                                    ${!variant.available ? 'disabled' : ''}>
+                                ${variant.title}
+                            </button>
                         `).join('')}
-                    </select>
+                    </div>
                 </div>
             `;
         }
@@ -2721,8 +2911,19 @@
 
             // If BOGO is active, make "Buy Once" the default option, otherwise "Subscribe" is default
             const defaultToBuyOnce = bogoEnabled;
+            
+            // Calculate subscription discount percentage
+            const subscriptionDiscountPercent = Math.round(((defaultVariant.price - subscriptionPrice) / defaultVariant.price) * 100);
+            const subscriptionDiscountBadge = subscriptionDiscountPercent > 0 ? `<span class="product-discount-badge product-discount-badge-subscribe">SAVE ${subscriptionDiscountPercent}%</span>` : '';
+            
+            // Format prices for display
+            const subscriptionOriginalPrice = formatMoney(defaultVariant.price);
+            const subscriptionDiscountedPrice = formatMoney(subscriptionPrice);
+            const onetimeOriginalPrice = hasDiscount ? formatMoney(defaultVariant.compare_at_price) : '';
+            const onetimeDiscountedPrice = formatMoney(defaultVariant.price);
 
             purchaseOptionsHTML = `
+                <div class="product-purchase-options-header">SUBSCRIBE AND SAVE 15%</div>
                 <div class="product-purchase-options">
                     <label class="purchase-option${defaultToBuyOnce ? '' : ' selected'}" data-option="subscription">
                         <input type="radio" name="purchase_${product.id}" value="subscription"
@@ -2730,14 +2931,22 @@
                         <div class="option-details">
                             <span class="option-label">Subscribe</span>
                         </div>
-                        <div class="option-price">${formatMoney(subscriptionPrice)}</div>
+                        <div class="option-price-wrapper">
+                            ${hasDiscount ? `<span class="option-price-original">${subscriptionOriginalPrice}</span>` : ''}
+                            <span class="option-price">${subscriptionDiscountedPrice}</span>
+                            ${subscriptionDiscountBadge}
+                        </div>
                     </label>
                     <label class="purchase-option${defaultToBuyOnce ? ' selected' : ''}" data-option="onetime">
                         <input type="radio" name="purchase_${product.id}" value="onetime"${defaultToBuyOnce ? ' checked' : ''}>
                         <div class="option-details">
                             <span class="option-label">Buy Once</span>
                         </div>
-                        <div class="option-price">${formatMoney(defaultVariant.price)}${discountBadge}</div>
+                        <div class="option-price-wrapper">
+                            ${hasDiscount ? `<span class="option-price-original">${onetimeOriginalPrice}</span>` : ''}
+                            <span class="option-price">${onetimeDiscountedPrice}</span>
+                            ${discountBadge}
+                        </div>
                     </label>
                 </div>
             `;
@@ -2747,10 +2956,17 @@
             const discountPercent = hasDiscount ? Math.round(((defaultVariant.compare_at_price - defaultVariant.price) / defaultVariant.compare_at_price) * 100) : 0;
             const discountBadge = hasDiscount ? `<span class="product-discount-badge">${discountPercent}% OFF</span>` : '';
 
+            const onetimeOriginalPrice = hasDiscount ? formatMoney(defaultVariant.compare_at_price) : '';
+            const onetimeDiscountedPrice = formatMoney(defaultVariant.price);
+            
             purchaseOptionsHTML = `
                 <div class="product-price-row">
                     ${quantityHTML}
-                    <div class="product-price-only">${formatMoney(defaultVariant.price)}${discountBadge}</div>
+                    <div class="product-price-wrapper">
+                        ${hasDiscount ? `<span class="product-price-original">${onetimeOriginalPrice}</span>` : ''}
+                        <span class="product-price-only">${onetimeDiscountedPrice}</span>
+                        ${discountBadge}
+                    </div>
                 </div>
             `;
         }
@@ -2759,6 +2975,11 @@
 
         card.innerHTML = `
             ${number ? `<div class="product-number-badge">${number}</div>` : ''}
+            <button class="product-remove-btn" data-remove-btn style="${section === 'top-picks' ? '' : 'display: none;'}" aria-label="Remove product">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <path d="M5 5L15 15M15 5L5 15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </button>
             <div class="product-card-image">
                 ${isBogo ? `<div class="product-bogo-badge">${bogoBadgeText}</div>` : ''}
                 <img src="${product.featured_image || ''}" alt="${product.title}">
@@ -2775,9 +2996,6 @@
                 ${frequencyHTML}
                 ${purchaseOptionsHTML}
             </div>
-            <button class="product-remove-btn" data-remove-btn style="${section === 'top-picks' ? '' : 'display: none;'}">
-                Remove Product
-            </button>
             <button class="product-add-btn product-add-btn-corner" data-add-btn style="${section === 'top-picks' ? 'display: none;' : ''}">
                 Add
             </button>
@@ -2788,14 +3006,21 @@
         card.dataset.selectedVariantPrice = defaultVariant.price;
         card.dataset.isBogo = isBogo;
 
-        // Variant selector event listener
+        // Variant selector event listener (size buttons)
         if (hasMultipleVariants) {
-            const variantSelect = card.querySelector('[data-variant-select]');
-            if (variantSelect) {
-                variantSelect.addEventListener('change', (e) => {
-                    const selectedVariantId = parseInt(e.target.value);
-                    const selectedVariantIndex = parseInt(e.target.options[e.target.selectedIndex].dataset.variantIndex);
+            const variantButtons = card.querySelectorAll('.variant-button');
+            variantButtons.forEach(button => {
+                button.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    if (button.disabled) return;
+                    
+                    const selectedVariantId = parseInt(button.dataset.variantId);
+                    const selectedVariantIndex = parseInt(button.dataset.variantIndex);
                     const selectedVariant = product.variants[selectedVariantIndex];
+                    
+                    // Update button states
+                    variantButtons.forEach(btn => btn.classList.remove('selected'));
+                    button.classList.add('selected');
 
                     // Update card's variant ID and store selected variant data
                     card.dataset.variantId = selectedVariantId;
@@ -2807,15 +3032,25 @@
                     const variantDiscountBadge = hasVariantDiscount ? `<span class="product-discount-badge">${variantDiscountPercent}% OFF</span>` : '';
 
                     // Update prices based on new variant
-                    const priceOnlyEl = card.querySelector('.product-price-only');
-                    const subscriptionPriceEl = card.querySelector('[data-option="subscription"] .option-price');
-                    const onetimePriceEl = card.querySelector('[data-option="onetime"] .option-price');
+                    const priceWrapper = card.querySelector('.product-price-wrapper');
+                    const subscriptionPriceWrapper = card.querySelector('[data-option="subscription"] .option-price-wrapper');
+                    const onetimePriceWrapper = card.querySelector('[data-option="onetime"] .option-price-wrapper');
+                    
+                    const hasVariantDiscount = selectedVariant.compare_at_price && selectedVariant.compare_at_price > selectedVariant.price;
+                    const variantOriginalPrice = hasVariantDiscount ? formatMoney(selectedVariant.compare_at_price) : '';
+                    const variantDiscountedPrice = formatMoney(selectedVariant.price);
+                    const variantDiscountPercent = hasVariantDiscount ? Math.round(((selectedVariant.compare_at_price - selectedVariant.price) / selectedVariant.compare_at_price) * 100) : 0;
+                    const variantDiscountBadge = hasVariantDiscount ? `<span class="product-discount-badge">${variantDiscountPercent}% OFF</span>` : '';
 
-                    if (priceOnlyEl) {
-                        priceOnlyEl.innerHTML = formatMoney(selectedVariant.price) + variantDiscountBadge;
+                    if (priceWrapper && !hasSubscription) {
+                        priceWrapper.innerHTML = `
+                            ${hasVariantDiscount ? `<span class="product-price-original">${variantOriginalPrice}</span>` : ''}
+                            <span class="product-price-only">${variantDiscountedPrice}</span>
+                            ${variantDiscountBadge}
+                        `;
                     }
 
-                    if (subscriptionPriceEl && onetimePriceEl && hasSubscription) {
+                    if (subscriptionPriceWrapper && onetimePriceWrapper && hasSubscription) {
                         const sellingPlanGroup = product.selling_plan_groups[0];
                         const currentPlanSelect = card.querySelector('[data-frequency-select]');
                         let currentPlan = sellingPlanGroup.selling_plans[0];
@@ -2826,8 +3061,20 @@
                         }
 
                         const subscriptionPrice = calculateSubscriptionPrice(selectedVariant.price, currentPlan);
-                        subscriptionPriceEl.innerHTML = formatMoney(subscriptionPrice);
-                        onetimePriceEl.innerHTML = formatMoney(selectedVariant.price) + variantDiscountBadge;
+                        const subscriptionDiscountPercent = Math.round(((selectedVariant.price - subscriptionPrice) / selectedVariant.price) * 100);
+                        const subscriptionDiscountBadge = subscriptionDiscountPercent > 0 ? `<span class="product-discount-badge product-discount-badge-subscribe">SAVE ${subscriptionDiscountPercent}%</span>` : '';
+                        
+                        subscriptionPriceWrapper.innerHTML = `
+                            ${hasVariantDiscount ? `<span class="option-price-original">${variantOriginalPrice}</span>` : ''}
+                            <span class="option-price">${formatMoney(subscriptionPrice)}</span>
+                            ${subscriptionDiscountBadge}
+                        `;
+                        
+                        onetimePriceWrapper.innerHTML = `
+                            ${hasVariantDiscount ? `<span class="option-price-original">${variantOriginalPrice}</span>` : ''}
+                            <span class="option-price">${variantDiscountedPrice}</span>
+                            ${variantDiscountBadge}
+                        `;
                     }
 
                     // Trigger currency converter update
@@ -2942,14 +3189,25 @@
 
                 const subscriptionOption = card.querySelector('[data-option="subscription"]');
                 const subscriptionRadio = subscriptionOption.querySelector('input');
-                const subscriptionPrice = subscriptionOption.querySelector('.option-price');
+                const subscriptionPriceWrapper = subscriptionOption.querySelector('.option-price-wrapper');
 
                 subscriptionRadio.dataset.sellingPlan = planId;
 
                 // Get the current variant price
                 const currentVariantPrice = parseInt(card.dataset.selectedVariantPrice) || product.variants[0].price;
                 const newPrice = calculateSubscriptionPrice(currentVariantPrice, selectedPlan);
-                subscriptionPrice.innerHTML = formatMoney(newPrice);
+                const subscriptionDiscountPercent = Math.round(((currentVariantPrice - newPrice) / currentVariantPrice) * 100);
+                const subscriptionDiscountBadge = subscriptionDiscountPercent > 0 ? `<span class="product-discount-badge product-discount-badge-subscribe">SAVE ${subscriptionDiscountPercent}%</span>` : '';
+                
+                if (subscriptionPriceWrapper) {
+                    const originalPriceEl = subscriptionPriceWrapper.querySelector('.option-price-original');
+                    const originalPrice = originalPriceEl ? originalPriceEl.textContent : '';
+                    subscriptionPriceWrapper.innerHTML = `
+                        ${originalPrice ? `<span class="option-price-original">${originalPrice}</span>` : ''}
+                        <span class="option-price">${formatMoney(newPrice)}</span>
+                        ${subscriptionDiscountBadge}
+                    `;
+                }
 
                 // Trigger currency converter
                 updateCurrencyConverter();
