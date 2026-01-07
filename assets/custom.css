@@ -472,7 +472,7 @@ video-section-play-button {
 
 .cart-drawer__header {
     margin: 0;
-    padding: 13px 24px;
+    padding: 13px 24px !important;
 }
 .cart-drawer__header .cart-drawer__title {
     font-family: "Vanilla Ravioli";
