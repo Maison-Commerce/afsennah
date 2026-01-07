@@ -641,7 +641,7 @@
         border: 1px solid #e5e7eb;
         border-radius: 8px;
         overflow: hidden;
-        min-height: 38px;
+        min-height: 38.8px;
     }
 
     .quantity-btn {
@@ -707,7 +707,7 @@
         background-repeat: no-repeat;
         background-position: right 10px center;
         padding-right: 32px;
-        min-height: 38px;
+        min-height: 38.8px;
     }
 
     .frequency-dropdown:hover {
