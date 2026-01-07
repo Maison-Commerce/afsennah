@@ -1058,7 +1058,7 @@ video-section-play-button {
 .subscription-content span,
 .subscription-content h3 {
     font-family: "Gotham";
-    font-weight: 500;
+    font-weight: bold;
     font-style: Medium;
     font-size: 12px;
     line-height: 150%;
