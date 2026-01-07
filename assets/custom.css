@@ -1334,3 +1334,13 @@ height: 100%;
     border-radius: 24px;
     border: none;
 }
+
+.cart-drawer__footer .subtotal {
+    font-family: "Gotham";
+    font-weight: 500;
+    font-style: Medium;
+    font-size: 16px;
+    line-height: 150%;
+    letter-spacing: 0%;
+    color: #2F3936;
+}
