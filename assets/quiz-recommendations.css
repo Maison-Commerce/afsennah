@@ -115,60 +115,92 @@
 
     .gift-progress-section {
         background: #fff;
-        border-radius: 8px;
-        padding: 16px;
-        margin-bottom: 16px;
-        border: 1px solid #e5e7eb;
+        border-radius: 12px 12px 0 0;
+        padding: 0;
+        margin-bottom: 0;
+        border: none;
+        overflow: hidden;
     }
 
     .gift-progress-header {
-        margin-bottom: 12px;
+        background: #FFFBC0;
+        padding: 16px 20px;
+        border-radius: 12px 12px 0 0;
+        margin-bottom: 0;
+    }
+
+    .gift-progress-header-content {
         display: flex;
-        justify-content: space-between;
-        align-items: center;
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .gift-progress-title {
+        font-family: 'Vanilla Ravioli', sans-serif;
+        font-size: 20px;
+        font-weight: 700;
+        color: #111827;
+        margin: 0;
+        line-height: 1.2;
+    }
+
+    .gift-progress-subtitle {
+        font-size: 14px;
+        font-weight: 400;
+        color: #6B7280;
+        margin: 0;
+        line-height: 1.4;
     }
 
     .gift-progress-label {
-        font-size: 14px;
-        font-weight: 600;
-        color: #111827;
-        flex: 1;
+        display: none;
     }
 
     .gift-toggle-btn {
         display: none;
-        background: none;
-        border: none;
-        padding: 8px;
-        cursor: pointer;
-        color: #6b7280;
-        transition: transform 0.3s ease;
-        z-index: 10;
-        position: relative;
-        -webkit-tap-highlight-color: transparent;
-    }
-
-    .gift-toggle-btn[aria-expanded="true"] .gift-toggle-arrow {
-        transform: rotate(180deg);
-    }
-
-    .gift-toggle-arrow {
-        transition: transform 0.3s ease;
     }
 
     .gift-progress-bar-container {
         position: relative;
-        height: 12px;
-        background: var(--gift-progress-bar-bg-color, #e5e7eb);
-        border-radius: 6px;
+        height: 8px;
+        background: #E5E5F4;
+        border-radius: 0;
         overflow: visible;
+        margin: 16px 20px;
     }
 
     .gift-progress-bar {
         height: 100%;
-        background: var(--gift-progress-bar-color, #d4ff6a);
-        border-radius: 6px;
+        background: #1A365D;
+        border-radius: 4px;
         transition: width 0.4s ease-out;
+        position: relative;
+    }
+
+    .gift-progress-bar::after {
+        content: '';
+        position: absolute;
+        right: -8px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 16px;
+        height: 16px;
+        background: #1A365D;
+        border-radius: 50%;
+        border: 2px solid #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .gift-progress-bar[style*="100%"]::after,
+    .gift-progress-bar[style*="width: 100"]::after {
+        content: '✓';
+        font-size: 10px;
+        color: #fff;
+        font-weight: 700;
+        line-height: 16px;
+        text-align: center;
     }
 
     .gift-progress-milestones {
@@ -184,143 +216,197 @@
         position: absolute;
         top: 50%;
         transform: translate(-50%, -50%);
-        width: 24px;
-        height: 24px;
+        width: 20px;
+        height: 20px;
         background: #fff;
-        border: 3px solid #e5e7eb;
+        border: 2px solid #E5E5F4;
         border-radius: 50%;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 10px;
-        font-weight: 700;
-        color: #9ca3af;
+        font-size: 0;
         transition: all 0.3s ease;
         z-index: 1;
     }
 
     .gift-milestone.reached {
-        background: var(--gift-milestone-color, #d4ff6a);
-        border-color: var(--gift-milestone-color, #d4ff6a);
-        color: #166534;
+        background: #1A365D;
+        border-color: #1A365D;
     }
 
     .gift-milestone.reached::after {
         content: '✓';
-        font-size: 12px;
+        font-size: 10px;
+        color: #fff;
+        font-weight: 700;
     }
 
     .gift-milestone:not(.reached)::after {
-        content: attr(data-tier);
+        content: '';
+        width: 8px;
+        height: 8px;
+        background: #E5E5F4;
+        border-radius: 50%;
     }
 
     .gift-cards-container {
         display: flex;
-        flex-direction: column;
+        flex-direction: row;
         gap: 12px;
+        padding: 20px;
+        overflow-x: auto;
     }
 
     .gift-tier-card {
-        background: #fff;
+        background: transparent;
         border-radius: 8px;
-        overflow: hidden;
-        border: 1px solid #e5e7eb;
+        overflow: visible;
+        border: none;
         opacity: 0.5;
         transition: all 0.3s ease;
+        flex-shrink: 0;
+        width: 100px;
     }
 
     .gift-tier-card.unlocked {
         opacity: 1;
-        transform: scale(1);
-        border: none;
     }
 
-    .gift-tier-card.locked .gift-card-main {
-        filter: grayscale(50%);
+    .gift-tier-card.locked {
+        opacity: 0.5;
     }
 
     .gift-tier-banner {
-        background: #e5e7eb;
-        color: #6b7280;
-        text-align: center;
-        padding: 8px 16px;
-        font-size: 12px;
-        font-weight: 600;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-        transition: all 0.3s ease;
-    }
-
-    .gift-tier-card.unlocked .gift-tier-banner {
-        background: var(--gift-progress-bar-color, #d4ff6a);
-        color: #000;
+        display: none;
     }
 
     .gift-tier-card .gift-card-main {
         display: flex;
-        gap: 16px;
-        padding: 16px;
+        flex-direction: column;
+        gap: 8px;
+        padding: 0;
     }
 
     .gift-tier-card .gift-card-image {
-        width: 80px;
-        height: 80px;
+        width: 100px;
+        height: 100px;
         background: #f9fafb;
         border-radius: 8px;
-        overflow: hidden;
+        overflow: visible;
         flex-shrink: 0;
+        position: relative;
     }
 
     .gift-tier-card .gift-card-image img {
         width: 100%;
         height: 100%;
         object-fit: cover;
+        border-radius: 8px;
+    }
+
+    .gift-tier-card .gift-card-image::after {
+        content: '';
+        position: absolute;
+        top: 4px;
+        right: 4px;
+        width: 20px;
+        height: 20px;
+        background: #fff;
+        border-radius: 50%;
+        border: 2px solid #E5E5F4;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1;
+    }
+
+    .gift-tier-card.unlocked .gift-card-image::after {
+        border-color: #1A365D;
+        background: #1A365D;
+        content: '✓';
+        font-size: 10px;
+        color: #fff;
+        font-weight: 700;
+        line-height: 20px;
+        text-align: center;
+    }
+
+    .gift-tier-card.locked .gift-card-image::after {
+        content: '';
+        width: 12px;
+        height: 12px;
+        background: #E5E5F4;
+        border-radius: 50%;
+        top: 50%;
+        right: 50%;
+        transform: translate(50%, -50%);
+        border: none;
+    }
+
+    .gift-tier-card.locked .gift-card-image::before {
+        content: '';
+        position: absolute;
+        top: 4px;
+        right: 4px;
+        width: 20px;
+        height: 20px;
+        background: #fff;
+        border-radius: 50%;
+        border: 2px solid #E5E5F4;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1;
+        background-image: url("data:image/svg+xml,%3Csvg width='10' height='10' viewBox='0 0 10 10' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M2.5 4.16667H2.08333C1.8125 4.16667 1.5625 4.27083 1.375 4.45833C1.1875 4.64583 1.08333 4.89583 1.08333 5.16667V7.91667C1.08333 8.1875 1.1875 8.4375 1.375 8.625C1.5625 8.8125 1.8125 8.91667 2.08333 8.91667H7.91667C8.1875 8.91667 8.4375 8.8125 8.625 8.625C8.8125 8.4375 8.91667 8.1875 8.91667 7.91667V5.16667C8.91667 4.89583 8.8125 4.64583 8.625 4.45833C8.4375 4.27083 8.1875 4.16667 7.91667 4.16667H7.5V3.33333C7.5 2.4375 7.14583 1.58333 6.52083 0.958333C5.89583 0.333333 5.04167 0 4.16667 0C3.29167 0 2.4375 0.333333 1.8125 0.958333C1.1875 1.58333 0.833333 2.4375 0.833333 3.33333V4.16667H2.5ZM2.08333 5.16667H7.91667V7.91667H2.08333V5.16667ZM3.33333 4.16667V3.33333C3.33333 2.8125 3.54167 2.3125 3.91667 1.9375C4.29167 1.5625 4.79167 1.35417 5.3125 1.35417C5.83333 1.35417 6.33333 1.5625 6.70833 1.9375C7.08333 2.3125 7.29167 2.8125 7.29167 3.33333V4.16667H3.33333Z' fill='%239CA3AF'/%3E%3C/svg%3E");
+        background-size: 10px 10px;
+        background-position: center;
+        background-repeat: no-repeat;
     }
 
     .gift-tier-card .gift-card-content {
-        flex: 1;
         display: flex;
         flex-direction: column;
-        justify-content: center;
-        gap: 4px;
+        gap: 0;
+        padding: 0;
+    }
+
+    .gift-tier-card .gift-product-title {
+        font-size: 12px;
+        font-weight: 500;
+        color: #111827;
+        margin: 8px 0 0 0;
+        line-height: 1.4;
+        text-align: center;
+    }
+
+    .gift-tier-card .gift-product-description {
+        display: none;
+    }
+
+    .gift-tier-price {
+        display: none;
+    }
+
+    .gift-tier-locked-text {
+        display: none;
+    }
+
+    .gift-progress-footer {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 12px 20px;
+        color: #9CA3AF;
+        font-size: 12px;
+        border-top: 1px solid #E5E5F4;
+    }
+
+    .gift-progress-footer svg {
+        flex-shrink: 0;
     }
 
     .section-products .recommended-product-card:last-child{
         margin-bottom: 0!important;
-    }
-
-    .gift-tier-card .gift-product-title {
-        font-size: 16px;
-        margin: 0;
-    }
-
-    .gift-tier-price {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        margin-top: 4px;
-    }
-
-    .gift-tier-original-price {
-        text-decoration: line-through;
-        color: #9ca3af;
-        font-size: 14px;
-    }
-
-    .gift-tier-free-label {
-        color: #16a34a;
-        font-weight: 700;
-        font-size: 14px;
-    }
-
-    .gift-tier-locked-text {
-        font-size: 12px;
-        color: #9ca3af;
-        font-style: italic;
-    }
-
-    .gift-tier-card.unlocked .gift-tier-locked-text {
-        display: none;
     }
 
     /* Gift price display in cart */
