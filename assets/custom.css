@@ -1002,6 +1002,6 @@ video-section-play-button {
     border: 1px solid #E5E5F4;
 }
 
-.cart-item__column cart-item__price .cart-item__remove {
+.cart-item__column.cart-item__price .cart-item__remove {
     display: block !important;
 }
