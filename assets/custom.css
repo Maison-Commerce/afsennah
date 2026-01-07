@@ -1088,3 +1088,9 @@ video-section-play-button {
     padding: 0;
     color rgba(35, 35, 35, 0.75);
 }
+
+.cart-item__description {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+}
