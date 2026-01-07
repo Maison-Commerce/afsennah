@@ -198,6 +198,7 @@
                 // Hide SVG and restore border
                 if (checkbox) {
                     checkbox.style.border = '1px solid rgba(0, 0, 0, 0.15)';
+                    checkbox.style.background = '#fdfdfe';
                 }
                 if (checkboxInnerChecked) {
                     checkboxInnerChecked.style.display = 'none';
