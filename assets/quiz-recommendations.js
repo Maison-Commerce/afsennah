@@ -1436,11 +1436,6 @@
         Object.keys(subscriptionGroups).forEach(planName => {
             const group = subscriptionGroups[planName];
 
-            const groupHeader = document.createElement('div');
-            groupHeader.className = 'cart-subscription-group-header';
-            groupHeader.innerHTML = `Ships ${planName.toLowerCase()}`;
-            cartItemsContainer.appendChild(groupHeader);
-
             group.forEach(({ item, price, originalPrice, discount }) => {
                 // Create a group container for subscription items
                 const itemGroup = document.createElement('div');

@@ -931,14 +931,6 @@
         gap: 12px;
     }
 
-    .cart-subscription-group-header {
-        font-size: 13px;
-        font-weight: 600;
-        color: #102B26;
-        text-transform: capitalize;
-        margin-top: 8px;
-        margin-bottom: 6px;
-    }
 
     .cart-subscription-item {
         padding-left: 12px;
