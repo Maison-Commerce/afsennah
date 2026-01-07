@@ -446,14 +446,14 @@
     .recommended-product-card {
         background: #fff;
         border-radius: 8px;
-        padding: 16px;
+        padding: 24px;
         margin-bottom: 20px;
         display: flex;
         flex-direction: column;
         gap: 16px;
         position: relative;
         opacity: 1;
-        border: 1px solid #e5e7eb;
+        border: 1px solid #E5E5F4;
     }
 
     .product-bogo-badge {
