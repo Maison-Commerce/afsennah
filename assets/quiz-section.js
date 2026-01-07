@@ -48,26 +48,7 @@
         },
 
         calculateQuizHeight() {
-            const announcementBar = document.querySelector('announcement-bar');
-            const pageHeader = document.querySelector('page-header');
-
-            let totalHeaderHeight = 0;
-
-            if (announcementBar) {
-                totalHeaderHeight += announcementBar.offsetHeight;
-            }
-
-            if (pageHeader) {
-                totalHeaderHeight += pageHeader.offsetHeight;
-            }
-
-            const quizHeight = 'calc(100vh - ' + totalHeaderHeight + 'px)';
-
-            // Apply to all quiz sections
-            const quizSections = document.querySelectorAll('.quiz-step, .quiz-calculating, .quiz-results, .quiz-intro, .quiz-recommendations');
-            quizSections.forEach(section => {
-                section.style.minHeight = quizHeight;
-            });
+            
         },
 
         setupEventListeners() {
