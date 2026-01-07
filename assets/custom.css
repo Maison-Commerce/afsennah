@@ -1055,3 +1055,13 @@ video-section-play-button {
     justify-content: space-between;
     align-items: flex-start
 }
+
+.subscription-content h3 {
+    font-family: "Gotham";
+    font-weight: 500;
+    font-style: Medium;
+    font-size: 12px;
+    line-height: 150%;
+    letter-spacing: 0%;
+
+}
