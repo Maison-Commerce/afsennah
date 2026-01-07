@@ -145,9 +145,8 @@
         const progressBar = document.querySelector('[data-gift-progress-bar]');
         const progressLabel = document.querySelector('[data-gift-progress-label]');
         const milestonesContainer = document.querySelector('[data-gift-milestones]');
-        const cardsContainer = document.querySelector('[data-gift-cards-container]');
 
-        if (!progressBar || !progressLabel || !milestonesContainer || !cardsContainer) return;
+        if (!progressBar || !progressLabel || !milestonesContainer) return;
 
         // Find the next tier to unlock and max threshold
         const maxThreshold = giftTiers.length > 0 ? giftTiers[giftTiers.length - 1].threshold : 1;
@@ -157,7 +156,6 @@
         // Update progress bar
         const progressPercent = Math.min((cartTotal / maxThreshold) * 100, 100);
         progressBar.style.width = `${progressPercent}%`;
-        cardsContainer.style.setProperty('--progress-percent', `${progressPercent}%`);
 
         // Helper to format currency
         const formatCurrency = (amountInBaseCurrency) => {
@@ -251,34 +249,6 @@
                 milestonesContainer.appendChild(milestone);
             });
         }
-
-        // Render gift cards
-        cardsContainer.innerHTML = '';
-        giftTiers.forEach((tier, index) => {
-            if (!tier.product) return;
-
-            const card = document.createElement('div');
-            card.className = `gift-tier-card ${tier.unlocked ? 'unlocked' : 'locked'}`;
-            card.dataset.tier = tier.tier;
-
-            const variant = tier.variantId ? tier.product.variants.find(v => v.id === tier.variantId) : tier.product.variants[0];
-            const variantTitle = variant && variant.title !== 'Default Title' ? variant.title : '';
-            const imageUrl = variant?.featured_image?.src || tier.product.featured_image?.src || tier.product.featured_image || '';
-
-            card.innerHTML = `
-                <div class="gift-card-image">
-                    ${imageUrl ? `<img src="${imageUrl}" alt="${tier.product.title}">` : ''}
-                </div>
-                <div class="gift-card-content">
-                    <h3 class="gift-product-title">${tier.product.title}${variantTitle ? ` (${variantTitle})` : ''}</h3>
-                </div>
-            `;
-
-            cardsContainer.appendChild(card);
-        });
-
-        // Update connecting line progress
-        cardsContainer.style.setProperty('--progress-percent', `${progressPercent}%`);
     }
 
     function initRecommendations() {
