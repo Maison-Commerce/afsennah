@@ -411,11 +411,12 @@
     .section-title {
         font-size: 22px;
         font-weight: 600;
-        color: #102B26;
+        color: #1A365D;
         margin: 0 0 16px 0;
         line-height: 1.3;
         text-align: center;
-        background: var(--highlight-color, #d4ff6a);
+        background: #F1F1F9;
+        border: 1.5px solid #B4B4DE;
         padding: 5px 10px;
         border-radius: 8px;
     }
