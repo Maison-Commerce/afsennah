@@ -177,7 +177,7 @@
                                     <span class="upsell-package-header-text">{{ block.settings.header_text | default: 'LIMITED-TIME CRAZY DEAL' }}</span>
                                 </div>
                                 <div class="upsell-package-timer" data-upsell-countdown>
-                                    <span class="timer-value" data-timer-hours>00</span>:<span class="timer-value" data-timer-minutes>00</span>:<span class="timer-value" data-timer-seconds>00</span>:<span class="timer-value" data-timer-milliseconds>00</span>
+                                    <span class="timer-value" data-timer-hours>00</span>:<span class="timer-value" data-timer-minutes>00</span>:<span class="timer-value" data-timer-seconds>00</span>
                                 </div>
                             </div>
 
@@ -220,20 +220,6 @@
 
             <!-- Right Column: Upsell & Cart Summary (Desktop) -->
         <div class="quiz-recommendations-cart-column">
-            <!-- Limited-Time Deal Banner -->
-            {% if section.settings.show_limited_deal %}
-                <div class="limited-deal-banner">
-                    <div class="limited-deal-content">
-                        <svg class="limited-deal-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
-                            <path d="M10 2L12.5 7.5L18 8.5L14 12.5L15 18L10 15L5 18L6 12.5L2 8.5L7.5 7.5L10 2Z" fill="currentColor"/>
-                        </svg>
-                        <span class="limited-deal-text">{{ section.settings.limited_deal_text | default: 'LIMITED-TIME CRAZY DEAL' }}</span>
-                    </div>
-                    <div class="limited-deal-timer" data-countdown-timer>
-                        <span class="timer-value" data-timer-hours>00</span>:<span class="timer-value" data-timer-minutes>00</span>:<span class="timer-value" data-timer-seconds>00</span>:<span class="timer-value" data-timer-milliseconds>00</span>
-                    </div>
-                </div>
-            {% endif %}
 
             <!-- Ultimate Hair Care Package Upsell -->
             {% if section.settings.upsell_product != blank %}
@@ -1762,12 +1748,13 @@
         display: none;
     }
 
-    /* Upsell Package Block */
+        /* Upsell Package Block */
         .upsell-package-block {
             margin-top: 40px;
             border-radius: 12px;
             overflow: hidden;
             background: #fffbc0;
+            max-width: 100%;
         }
 
         .upsell-package-header {
@@ -1777,12 +1764,14 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            gap: 16px;
         }
 
         .upsell-package-header-left {
             display: flex;
             align-items: center;
             gap: 8px;
+            flex-shrink: 0;
         }
 
         .upsell-package-flame-icon {
@@ -1797,6 +1786,7 @@
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 0.5px;
+            white-space: nowrap;
         }
 
         .upsell-package-timer {
@@ -1808,6 +1798,8 @@
             font-size: 12px;
             font-weight: 600;
             letter-spacing: 1px;
+            white-space: nowrap;
+            flex-shrink: 0;
         }
 
         .upsell-package-content {
@@ -1819,19 +1811,20 @@
 
         .upsell-package-image {
             width: 100%;
-            margin-bottom: 8px;
+            margin-bottom: 16px;
         }
 
         .upsell-package-image img {
             width: 100%;
             height: auto;
             object-fit: contain;
+            display: block;
         }
 
         .upsell-package-discount-badge {
             background: #E98C36;
             color: white;
-            padding: 6px 16px;
+            padding: 8px 20px;
             border-radius: 20px;
             font-family: 'Gotham', sans-serif;
             font-size: 12px;
@@ -1840,7 +1833,7 @@
             letter-spacing: 0.5px;
             display: inline-block;
             align-self: center;
-            margin-bottom: 8px;
+            margin-bottom: 20px;
         }
 
         .upsell-package-text-content {
@@ -2016,17 +2009,6 @@
             display: none; /* Hide desktop cart on mobile */
         }
 
-        #shopify-section-{{ section.id }} .limited-deal-banner {
-            flex-direction: column;
-            gap: 12px;
-            align-items: flex-start;
-            padding: 10px 12px;
-        }
-
-        #shopify-section-{{ section.id }} .limited-deal-timer {
-            width: 100%;
-            text-align: center;
-        }
 
         #shopify-section-{{ section.id }} .upsell-package-card {
             padding: 16px;
@@ -4188,9 +4170,8 @@
             const hoursEl = timer.querySelector('[data-timer-hours]');
             const minutesEl = timer.querySelector('[data-timer-minutes]');
             const secondsEl = timer.querySelector('[data-timer-seconds]');
-            const millisecondsEl = timer.querySelector('[data-timer-milliseconds]');
             
-            if (!hoursEl || !minutesEl || !secondsEl || !millisecondsEl) return;
+            if (!hoursEl || !minutesEl || !secondsEl) return;
             
             // Get countdown values from section settings
             const recommendationsSection = document.querySelector('[data-recommendations]');
@@ -4198,32 +4179,29 @@
             const minutes = parseInt(recommendationsSection?.dataset.countdownMinutes || '9');
             const seconds = parseInt(recommendationsSection?.dataset.countdownSeconds || '57');
             
-            let totalMilliseconds = (hours * 3600 + minutes * 60 + seconds) * 1000;
+            let totalSeconds = hours * 3600 + minutes * 60 + seconds;
             
             const updateTimer = () => {
-                if (totalMilliseconds <= 0) {
+                if (totalSeconds <= 0) {
                     hoursEl.textContent = '00';
                     minutesEl.textContent = '00';
                     secondsEl.textContent = '00';
-                    millisecondsEl.textContent = '00';
                     return;
                 }
                 
-                const h = Math.floor(totalMilliseconds / 3600000);
-                const m = Math.floor((totalMilliseconds % 3600000) / 60000);
-                const s = Math.floor((totalMilliseconds % 60000) / 1000);
-                const ms = Math.floor((totalMilliseconds % 1000) / 10);
+                const h = Math.floor(totalSeconds / 3600);
+                const m = Math.floor((totalSeconds % 3600) / 60);
+                const s = totalSeconds % 60;
                 
                 hoursEl.textContent = String(h).padStart(2, '0');
                 minutesEl.textContent = String(m).padStart(2, '0');
                 secondsEl.textContent = String(s).padStart(2, '0');
-                millisecondsEl.textContent = String(ms).padStart(2, '0');
                 
-                totalMilliseconds -= 10;
+                totalSeconds--;
             };
             
             updateTimer();
-            const interval = setInterval(updateTimer, 10);
+            const interval = setInterval(updateTimer, 1000);
         });
     }
 
