@@ -63,9 +63,6 @@
             {% endif %}
           {%- endfor -%}
 
-          {% if item.selling_plan_allocation %}
-            <div class="subscription-description">{{ item.selling_plan_allocation.selling_plan.name | escape_once }}</div>
-          {% endif %}
 
           {% if section.settings.show_backorder_text == true %}
             {% render 'backorder', product: item.product, variant: item.variant %}
@@ -228,3 +225,9 @@
     {% endif %}
   </div>
 </div>
+{% if item.selling_plan_allocation %}
+  1{{ item.selling_plan_allocation.selling_plan }}
+  2{{ item.selling_plan_allocation.selling_plan | json }}
+  <div class="subscription-description">{{ item.selling_plan_allocation.selling_plan.name | escape_once }}</div>
+{% endif %}
+{% comment %} {% if %} {% endcomment %}
