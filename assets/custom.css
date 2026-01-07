@@ -1300,10 +1300,14 @@ height: 100%;
 .cart-item-upsells .img-ar img {
     position: relative
 }
+
+.cart-upsell-product__image .bg-image {
+    height: 96px;
+    width: 96px;
+}
 .cart-upsell-product__image-link {
     height: 96px;
-    max-height: 96px;
-    min-height: 96px;
+   
 }
 .cart-upsell-product__image .img-ar.img-ar--contain {
     height: 96px;
