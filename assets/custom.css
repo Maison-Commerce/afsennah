@@ -1296,3 +1296,7 @@ flex-direction: column;
 .cart-item-upsells .cart-upsell-product {
 height: 100%;
 }
+
+.cart-item-upsells .img-ar img {
+    position: relative
+}
