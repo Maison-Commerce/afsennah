@@ -110,39 +110,12 @@
         </button>
       </div>
 
-      <!-- Product Images -->
-      {% if section.settings.show_products %}
+      <!-- Product Image -->
+      {% if section.settings.product_image != blank %}
         <div class="quiz-calculating-products">
-          {% if section.settings.product_image_1 != blank %}
-            <div class="quiz-calculating-product-image">
-              <img src="{{ section.settings.product_image_1 | image_url: width: 200 }}" alt="" loading="lazy">
-            </div>
-          {% endif %}
-          {% if section.settings.product_image_2 != blank %}
-            <div class="quiz-calculating-product-image">
-              <img src="{{ section.settings.product_image_2 | image_url: width: 200 }}" alt="" loading="lazy">
-            </div>
-          {% endif %}
-          {% if section.settings.product_image_3 != blank %}
-            <div class="quiz-calculating-product-image">
-              <img src="{{ section.settings.product_image_3 | image_url: width: 200 }}" alt="" loading="lazy">
-            </div>
-          {% endif %}
-          {% if section.settings.product_image_4 != blank %}
-            <div class="quiz-calculating-product-image">
-              <img src="{{ section.settings.product_image_4 | image_url: width: 200 }}" alt="" loading="lazy">
-            </div>
-          {% endif %}
-          {% if section.settings.product_image_5 != blank %}
-            <div class="quiz-calculating-product-image">
-              <img src="{{ section.settings.product_image_5 | image_url: width: 200 }}" alt="" loading="lazy">
-            </div>
-          {% endif %}
-          {% if section.settings.product_image_6 != blank %}
-            <div class="quiz-calculating-product-image">
-              <img src="{{ section.settings.product_image_6 | image_url: width: 200 }}" alt="" loading="lazy">
-            </div>
-          {% endif %}
+          <div class="quiz-calculating-product-image">
+            <img src="{{ section.settings.product_image | image_url: width: 1200 }}" alt="" loading="lazy">
+          </div>
         </div>
       {% endif %}
 
@@ -476,19 +449,18 @@
     flex-shrink: 0;
   }
 
-  /* Product Images */
+  /* Product Image */
   #shopify-section-{{ section.id }} .quiz-calculating-products {
     display: flex;
-    gap: 1px;
     align-items: flex-end;
     justify-content: center;
     width: 100%;
-    max-width: 572px;
+    max-width: {{ section.settings.product_image_max_width | default: 572 }}px;
     margin: 0 auto;
   }
 
   #shopify-section-{{ section.id }} .quiz-calculating-product-image {
-    flex: 1;
+    width: 100%;
     border-radius: 18.646px;
     overflow: hidden;
     display: flex;
@@ -672,8 +644,7 @@
     }
 
     #shopify-section-{{ section.id }} .quiz-calculating-products {
-      max-width: 339px;
-      gap: 0.593px;
+      max-width: {{ section.settings.product_image_max_width_mobile | default: 339 }}px;
     }
 
     #shopify-section-{{ section.id }} .quiz-calculating-product-image {
@@ -769,40 +740,31 @@
       "default": "See My Results"
     },
     {
-      "type": "checkbox",
-      "id": "show_products",
-      "label": "Show Product Images",
-      "default": true
+      "type": "image_picker",
+      "id": "product_image",
+      "label": "Product Image"
     },
     {
-      "type": "image_picker",
-      "id": "product_image_1",
-      "label": "Product Image 1"
+      "type": "range",
+      "id": "product_image_max_width",
+      "label": "Product Image Max Width (Desktop)",
+      "min": 500,
+      "max": 600,
+      "step": 1,
+      "default": 572,
+      "unit": "px",
+      "info": "Maximum width of the product image on desktop"
     },
     {
-      "type": "image_picker",
-      "id": "product_image_2",
-      "label": "Product Image 2"
-    },
-    {
-      "type": "image_picker",
-      "id": "product_image_3",
-      "label": "Product Image 3"
-    },
-    {
-      "type": "image_picker",
-      "id": "product_image_4",
-      "label": "Product Image 4"
-    },
-    {
-      "type": "image_picker",
-      "id": "product_image_5",
-      "label": "Product Image 5"
-    },
-    {
-      "type": "image_picker",
-      "id": "product_image_6",
-      "label": "Product Image 6"
+      "type": "range",
+      "id": "product_image_max_width_mobile",
+      "label": "Product Image Max Width (Mobile)",
+      "min": 300,
+      "max": 400,
+      "step": 1,
+      "default": 339,
+      "unit": "px",
+      "info": "Maximum width of the product image on mobile"
     },
     {
       "type": "header",
