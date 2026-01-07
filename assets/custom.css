@@ -1196,4 +1196,11 @@ video-section-play-button {
 }
 .cart-upsell-product__title {
     text-align: center;
+    font-family: "Gotham";
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 150%;
+    letter-spacing: 0%;
+    text-align: center;
+    color: #2C2926;
 }
