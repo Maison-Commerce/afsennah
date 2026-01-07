@@ -243,9 +243,9 @@
             return tempDiv.textContent || tempDiv.innerText || formatted;
         };
 
-        // Update progress label
+        // Update progress label (supports richtext HTML)
         if (allUnlocked) {
-            progressLabel.textContent = giftCompleteText;
+            progressLabel.innerHTML = giftCompleteText;
         } else if (nextTier) {
             const remaining = nextTier.threshold - cartTotal;
             const lastUnlockedTier = giftTiers.filter(t => t.unlocked).pop();
@@ -254,26 +254,34 @@
             if (lastUnlockedTier && lastUnlockedTier.product) {
                 const variant = lastUnlockedTier.variantId ? lastUnlockedTier.product.variants.find(v => v.id === lastUnlockedTier.variantId) : lastUnlockedTier.product.variants[0];
                 const variantTitle = variant && variant.title !== 'Default Title' ? ` (${variant.title})` : '';
-                headerText = `🎁 ${lastUnlockedTier.product.title}${variantTitle} added! `;
+                headerText = `🎁 <strong>${lastUnlockedTier.product.title}${variantTitle}</strong> added! `;
             }
             
             if (nextTier && nextTier.product) {
-                headerText += `Spend ${formatCurrency(remaining)} more to get Free ${nextTier.product.title}`;
+                // Use the richtext template and replace placeholders
+                headerText = giftProgressText
+                    .replace('[[remaining]]', formatCurrency(remaining))
+                    .replace('[[current]]', formatCurrency(cartTotal))
+                    .replace('[[next_tier]]', formatCurrency(nextTier.threshold));
             } else {
-                headerText += giftProgressText
+                headerText = giftProgressText
                     .replace('[[remaining]]', formatCurrency(remaining))
                     .replace('[[current]]', formatCurrency(cartTotal))
                     .replace('[[next_tier]]', formatCurrency(nextTier.threshold));
             }
             
-            progressLabel.textContent = headerText;
+            progressLabel.innerHTML = headerText;
         } else {
             const firstTier = giftTiers[0];
             if (firstTier && firstTier.product) {
                 const remaining = firstTier.threshold - cartTotal;
-                progressLabel.textContent = `Spend ${formatCurrency(remaining)} more to get Free ${firstTier.product.title}`;
+                // Use the richtext template and replace placeholders
+                progressLabel.innerHTML = giftProgressText
+                    .replace('[[remaining]]', formatCurrency(remaining))
+                    .replace('[[current]]', formatCurrency(cartTotal))
+                    .replace('[[next_tier]]', formatCurrency(firstTier.threshold));
             } else {
-                progressLabel.textContent = giftProgressText
+                progressLabel.innerHTML = giftProgressText
                     .replace('[[remaining]]', formatCurrency(firstTier ? firstTier.threshold - cartTotal : 0))
                     .replace('[[current]]', formatCurrency(cartTotal))
                     .replace('[[next_tier]]', formatCurrency(firstTier ? firstTier.threshold : 0));
