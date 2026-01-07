@@ -200,7 +200,11 @@
                     {% endif %}
                     {% unless block.settings.answer_image != blank %}
                       <div class="quiz-answer-checkbox">
-                        <div class="quiz-answer-checkbox-inner"></div>
+                        <div class="quiz-answer-checkbox-inner">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <path d="M10 3.87756C13.375 3.87756 16.1112 6.61392 16.1113 9.98889C16.1113 13.364 13.3751 16.1002 10 16.1002C6.62503 16.1001 3.88867 13.3639 3.88867 9.98889C3.88879 6.61399 6.6251 3.87768 10 3.87756Z" stroke="#1A365D" stroke-width="5.55556"/>
+                          </svg>
+                        </div>
                       </div>
                     {% endunless %}
                     <div class="quiz-answer-text">
