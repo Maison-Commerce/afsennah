@@ -942,11 +942,6 @@
         padding-left: 12px;
     }
 
-    .cart-subscription-item .cart-item-name {
-        font-weight: 400;
-    }
-
-
     .cart-item {
         display: flex;
         align-items: flex-start;
