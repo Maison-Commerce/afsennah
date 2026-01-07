@@ -1033,7 +1033,7 @@ video-section-play-button {
 }
 .cart-item__image {
     width: max-content;
-    padding: 0;
+    padding-right: 16px;
 }
 .cart-item__image .theme-img {
     height: 80px;
