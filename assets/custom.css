@@ -1213,7 +1213,7 @@ video-section-play-button {
 }
 
 .cart-upsell-product__image img {
-    width: 80px;
-    height: 80px;
-    border-radius: 8px;
+    width: 80px !important;
+    height: 80px !important;
+    border-radius: 8px !important;
 }
