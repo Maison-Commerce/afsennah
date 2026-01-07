@@ -1463,15 +1463,15 @@
                     if (hasSubscriptionDiscount) {
                         priceHTML = `
                             <div class="cart-item-price">
-                                <span class="cart-item-price-original">${formatMoney(compareAtTotal)}</span>
                                 <span>${formatMoney(itemTotal)}</span>
+                                <span class="cart-item-price-original">${formatMoney(compareAtTotal)}</span>
                             </div>
                         `;
                     } else {
                         priceHTML = `
                             <div class="cart-item-price">
-                                <span class="cart-item-price-original">${formatMoney(compareAtTotal)}</span>
                                 <span>${formatMoney(itemTotal)}</span>
+                                <span class="cart-item-price-original">${formatMoney(compareAtTotal)}</span>
                             </div>
                         `;
                     }
@@ -1479,8 +1479,8 @@
                     // No compare_at_price, but has subscription discount
                     priceHTML = `
                         <div class="cart-item-price">
-                            <span class="cart-item-price-original">${formatMoney(originalTotal)}</span>
                             <span>${formatMoney(itemTotal)}</span>
+                            <span class="cart-item-price-original">${formatMoney(originalTotal)}</span>
                         </div>
                     `;
                 } else {
