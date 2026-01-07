@@ -653,9 +653,7 @@
 /* Quiz Recommendations Styles */
 .recommendations-layout {
     display: flex;
-    gap: 40px;
     margin: 0 auto;
-    justify-content: space-around;
 }
 
 .recommendations-left {
