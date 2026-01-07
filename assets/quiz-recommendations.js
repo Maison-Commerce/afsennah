@@ -750,12 +750,18 @@
             const hasDiscount = defaultVariant.compare_at_price && defaultVariant.compare_at_price > defaultVariant.price;
             const discountPercent = hasDiscount ? Math.round(((defaultVariant.compare_at_price - defaultVariant.price) / defaultVariant.compare_at_price) * 100) : 0;
             const discountBadge = hasDiscount ? `<span class="product-discount-badge">${discountPercent}% OFF</span>` : '';
+            
+            // Calculate total price (unit price × quantity, default quantity is 1)
+            const initialQuantity = 1;
+            const unitPrice = defaultVariant.price;
+            const totalPrice = unitPrice * initialQuantity;
+            const compareAtTotal = hasDiscount ? defaultVariant.compare_at_price * initialQuantity : null;
 
             purchaseOptionsHTML = `
                 <div class="product-price-row">
                     <div class="product-price-only">
-                        ${hasDiscount ? `<span class="option-price-original">${formatMoney(defaultVariant.compare_at_price)}</span>` : ''}
-                        <span class="option-price-current">${formatMoney(defaultVariant.price)}</span>
+                        ${compareAtTotal ? `<span class="option-price-original">${formatMoney(compareAtTotal)}</span>` : ''}
+                        <span class="option-price-current">${formatMoney(totalPrice)}</span>
                         ${discountBadge}
                     </div>
                 </div>
@@ -923,6 +929,26 @@
                 const sellingPlanId = selectedOption?.dataset.sellingPlan || null;
                 const selectedVariantId = parseInt(card.dataset.variantId);
 
+                // Update displayed price for non-subscription products
+                if (!hasSubscription) {
+                    const priceOnlyEl = card.querySelector('.product-price-only');
+                    if (priceOnlyEl) {
+                        const variant = product.variants.find(v => v.id === selectedVariantId) || defaultVariant;
+                        const unitPrice = variant.price;
+                        const totalPrice = unitPrice * currentQty;
+                        const hasDiscount = variant.compare_at_price && variant.compare_at_price > variant.price;
+                        const compareAtTotal = hasDiscount ? variant.compare_at_price * currentQty : null;
+                        const discountPercent = hasDiscount ? Math.round(((variant.compare_at_price - variant.price) / variant.compare_at_price) * 100) : 0;
+                        const discountBadge = hasDiscount ? `<span class="product-discount-badge">${discountPercent}% OFF</span>` : '';
+                        
+                        const originalPriceHTML = compareAtTotal ? `<span class="option-price-original">${formatMoney(compareAtTotal)}</span>` : '';
+                        priceOnlyEl.innerHTML = `${originalPriceHTML}<span class="option-price-current">${formatMoney(totalPrice)}</span>${discountBadge}`;
+                        
+                        // Trigger currency converter update
+                        updateCurrencyConverter();
+                    }
+                }
+
                 // Only update cart if product is in cart (top-picks section or manually added)
                 const itemInCart = cartItems.find(item => parseInt(item.variantId) === selectedVariantId);
                 if (itemInCart) {
@@ -943,6 +969,26 @@
             const selectedOption = card.querySelector('input[type="radio"]:checked');
             const sellingPlanId = selectedOption?.dataset.sellingPlan || null;
             const selectedVariantId = parseInt(card.dataset.variantId);
+
+            // Update displayed price for non-subscription products
+            if (!hasSubscription) {
+                const priceOnlyEl = card.querySelector('.product-price-only');
+                if (priceOnlyEl) {
+                    const variant = product.variants.find(v => v.id === selectedVariantId) || defaultVariant;
+                    const unitPrice = variant.price;
+                    const totalPrice = unitPrice * currentQty;
+                    const hasDiscount = variant.compare_at_price && variant.compare_at_price > variant.price;
+                    const compareAtTotal = hasDiscount ? variant.compare_at_price * currentQty : null;
+                    const discountPercent = hasDiscount ? Math.round(((variant.compare_at_price - variant.price) / variant.compare_at_price) * 100) : 0;
+                    const discountBadge = hasDiscount ? `<span class="product-discount-badge">${discountPercent}% OFF</span>` : '';
+                    
+                    const originalPriceHTML = compareAtTotal ? `<span class="option-price-original">${formatMoney(compareAtTotal)}</span>` : '';
+                    priceOnlyEl.innerHTML = `${originalPriceHTML}<span class="option-price-current">${formatMoney(totalPrice)}</span>${discountBadge}`;
+                    
+                    // Trigger currency converter update
+                    updateCurrencyConverter();
+                }
+            }
 
             // Only update cart if product is in cart (top-picks section or manually added)
             const itemInCart = cartItems.find(item => parseInt(item.variantId) === selectedVariantId);
