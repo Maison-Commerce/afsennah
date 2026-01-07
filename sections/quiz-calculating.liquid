@@ -19,100 +19,722 @@
   }
 {%- endstyle -%}
 
-<style>
-  .nav-mobile {
-      display: none!important;
-      .quiz-btn-next {
-          margin: 0 auto 20px auto;
-      }
-  }
-  @media (max-width: 767px) {
-      .nav-mobile {
-          display: block!important;
-      }
-      .nav-desktop {
-          display: none!important;
-      }
-  }
-</style>
-
 <div class="quiz-calculating quiz-calculating-{{ section.id }}" data-calculating style="display: none;">
-  <div class="container">
-    <div class="quiz-container">
-      <div class="calculating-content">
-        {% if section.settings.title != blank %}
-          <h2 class="calculating-title">{{ section.settings.title }}</h2>
-        {% endif %}
-
-        {% if section.settings.subtitle != blank %}
-          <p class="calculating-subtitle">{{ section.settings.subtitle }}</p>
-        {% endif %}
-
-        <div class="quiz-navigation nav-mobile">
-          <button type="button" class="quiz-btn quiz-btn-next" data-view-results-btn>
-            {{ section.settings.button_text }}
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-              <path d="M7.5 15L12.5 10L7.5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </button>
-        </div>
-
-        {% if section.blocks.size > 0 %}
-          <div class="reviews-container">
-            {% for block in section.blocks %}
-              <div class="review-card" {{ block.shopify_attributes }}>
-                <div class="review-stars">
+  <div class="quiz-calculating-wrapper">
+    <!-- Left Column - Reviews (Desktop Only) -->
+    {% if section.blocks.size > 0 %}
+      <div class="quiz-calculating-reviews-column">
+        <div class="quiz-calculating-reviews-container">
+          {% for block in section.blocks %}
+            {% assign opacity = 100 %}
+            {% if forloop.index == 1 %}
+              {% assign opacity = 40 %}
+            {% elsif forloop.index == 2 %}
+              {% assign opacity = 70 %}
+            {% elsif forloop.index == 4 %}
+              {% assign opacity = 70 %}
+            {% elsif forloop.index == 5 %}
+              {% assign opacity = 40 %}
+            {% endif %}
+            <div class="quiz-calculating-review-card" style="opacity: {{ opacity }}%;" {{ block.shopify_attributes }}>
+              <div class="quiz-calculating-review-content">
+                <div class="quiz-calculating-review-stars">
                   {% for i in (1..5) %}
-                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                      <path d="M10 1.66669L12.575 6.88335L18.3333 7.72502L14.1667 11.7834L15.15 17.5167L10 14.8084L4.85 17.5167L5.83333 11.7834L1.66667 7.72502L7.425 6.88335L10 1.66669Z" fill="#FFC107" stroke="#FFC107" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <svg width="16" height="16" viewBox="0 0 20 20" fill="none">
+                      <path d="M10 1.66669L12.575 6.88335L18.3333 7.72502L14.1667 11.7834L15.15 17.5167L10 14.8084L4.85 17.5167L5.83333 11.7834L1.66667 7.72502L7.425 6.88335L10 1.66669Z" fill="#E98C36" stroke="#E98C36" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                     </svg>
                   {% endfor %}
                 </div>
-                <p class="review-text">{{ block.settings.review_text }}</p>
-                <div class="review-author-info">
-                  <p class="review-author">— {{ block.settings.author_name }}</p>
-                  {% if block.settings.author_image != blank %}
-                    <img src="{{ block.settings.author_image | image_url: width: 60, height: 60, crop: 'center' }}"
-                         alt="{{ block.settings.author_name }}"
-                         class="review-author-image">
-                  {% endif %}
+                <div class="quiz-calculating-review-text">{{ block.settings.review_text }}</div>
+                <div class="quiz-calculating-review-author">
+                  <span class="quiz-calculating-review-author-name">{{ block.settings.author_name }}</span>
+                  <svg width="4" height="4" viewBox="0 0 4 4" fill="none" class="quiz-calculating-review-dot">
+                    <circle cx="2" cy="2" r="2" fill="#2C2926"/>
+                  </svg>
+                  <div class="quiz-calculating-review-verified">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                      <path d="M8 0L10.06 5.90667L16 6.82667L11.3333 11.1733L12.12 17.3333L8 14.6667L3.88 17.3333L4.66667 11.1733L0 6.82667L5.94 5.90667L8 0Z" fill="#2C2926"/>
+                    </svg>
+                    <span class="quiz-calculating-review-verified-text">Verified Buyer</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    {% endif %}
+
+    <!-- Right Column - Content -->
+    <div class="quiz-calculating-content-column">
+      <!-- Breadcrumbs -->
+      <div class="quiz-calculating-breadcrumbs">
+        <a href="{{ routes.root_url }}" class="quiz-calculating-breadcrumb-link">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none" class="quiz-calculating-breadcrumb-icon">
+            <path d="M15.8335 10.0001H4.16683M4.16683 10.0001L10.0002 4.16675M4.16683 10.0001L10.0002 15.8334" stroke="#232323" stroke-opacity="0.45" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span class="quiz-calculating-breadcrumb-text">Home</span>
+        </a>
+        <button type="button" class="quiz-calculating-mobile-next" data-view-results-btn>
+          <span>Next</span>
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <path d="M7.5 15L12.5 10L7.5 5" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Progress Bar -->
+      <div class="quiz-calculating-progress-wrapper">
+        <div class="quiz-calculating-progress-bar">
+          <div class="quiz-calculating-progress-bar-track"></div>
+          <div class="quiz-calculating-progress-bar-fill"></div>
+        </div>
+        <div class="quiz-calculating-step-indicator" data-step-indicator></div>
+      </div>
+
+      <!-- Main Content -->
+      <div class="quiz-calculating-main-content">
+        {% if section.settings.title != blank %}
+          <h2 class="quiz-calculating-title">{{ section.settings.title }}</h2>
+        {% endif %}
+
+        {% if section.settings.subtitle != blank %}
+          <p class="quiz-calculating-subtitle">{{ section.settings.subtitle }}</p>
+        {% endif %}
+
+        <button type="button" class="quiz-calculating-button" data-view-results-btn>
+          <span>{{ section.settings.button_text }}</span>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 20 20" fill="none">
+            <path d="M15.0003 6.66663L18.3337 9.99996M18.3337 9.99996L15.0003 13.3333M18.3337 9.99996H1.66699" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Product Images -->
+      {% if section.settings.show_products %}
+        <div class="quiz-calculating-products">
+          {% if section.settings.product_image_1 != blank %}
+            <div class="quiz-calculating-product-image">
+              <img src="{{ section.settings.product_image_1 | image_url: width: 200 }}" alt="" loading="lazy">
+            </div>
+          {% endif %}
+          {% if section.settings.product_image_2 != blank %}
+            <div class="quiz-calculating-product-image">
+              <img src="{{ section.settings.product_image_2 | image_url: width: 200 }}" alt="" loading="lazy">
+            </div>
+          {% endif %}
+          {% if section.settings.product_image_3 != blank %}
+            <div class="quiz-calculating-product-image">
+              <img src="{{ section.settings.product_image_3 | image_url: width: 200 }}" alt="" loading="lazy">
+            </div>
+          {% endif %}
+          {% if section.settings.product_image_4 != blank %}
+            <div class="quiz-calculating-product-image">
+              <img src="{{ section.settings.product_image_4 | image_url: width: 200 }}" alt="" loading="lazy">
+            </div>
+          {% endif %}
+          {% if section.settings.product_image_5 != blank %}
+            <div class="quiz-calculating-product-image">
+              <img src="{{ section.settings.product_image_5 | image_url: width: 200 }}" alt="" loading="lazy">
+            </div>
+          {% endif %}
+          {% if section.settings.product_image_6 != blank %}
+            <div class="quiz-calculating-product-image">
+              <img src="{{ section.settings.product_image_6 | image_url: width: 200 }}" alt="" loading="lazy">
+            </div>
+          {% endif %}
+        </div>
+      {% endif %}
+
+      <!-- Mobile Reviews Carousel -->
+      {% if section.blocks.size > 0 %}
+        <div class="quiz-calculating-mobile-reviews">
+          <div class="quiz-calculating-mobile-reviews-container">
+            {% for block in section.blocks %}
+              <div class="quiz-calculating-mobile-review-card" {{ block.shopify_attributes }}>
+                <div class="quiz-calculating-mobile-review-content">
+                  <div class="quiz-calculating-mobile-review-stars">
+                    {% for i in (1..5) %}
+                      <svg width="12" height="12" viewBox="0 0 20 20" fill="none">
+                        <path d="M10 1.66669L12.575 6.88335L18.3333 7.72502L14.1667 11.7834L15.15 17.5167L10 14.8084L4.85 17.5167L5.83333 11.7834L1.66667 7.72502L7.425 6.88335L10 1.66669Z" fill="#E98C36" stroke="#E98C36" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                    {% endfor %}
+                  </div>
+                  <div class="quiz-calculating-mobile-review-text">{{ block.settings.review_text }}</div>
+                  <div class="quiz-calculating-mobile-review-author">
+                    <span class="quiz-calculating-mobile-review-author-name">{{ block.settings.author_name }}</span>
+                    <svg width="3" height="3" viewBox="0 0 3 3" fill="none" class="quiz-calculating-mobile-review-dot">
+                      <circle cx="1.5" cy="1.5" r="1.5" fill="#2C2926"/>
+                    </svg>
+                    <div class="quiz-calculating-mobile-review-verified">
+                      <svg width="12" height="12" viewBox="0 0 16 16" fill="none">
+                        <path d="M8 0L10.06 5.90667L16 6.82667L11.3333 11.1733L12.12 17.3333L8 14.6667L3.88 17.3333L4.66667 11.1733L0 6.82667L5.94 5.90667L8 0Z" fill="#2C2926"/>
+                      </svg>
+                      <span class="quiz-calculating-mobile-review-verified-text">Verified Buyer</span>
+                    </div>
+                  </div>
                 </div>
               </div>
             {% endfor %}
           </div>
-        {% endif %}
-
-        <div class="quiz-navigation nav-desktop">
-          <button type="button" class="quiz-btn quiz-btn-next" data-view-results-btn>
-            {{ section.settings.button_text }}
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-              <path d="M7.5 15L12.5 10L7.5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </button>
         </div>
-      </div>
+      {% endif %}
     </div>
   </div>
 </div>
 
-<script>
-    (function() {
-        // Select all buttons with the data-attribute
-        const viewResultsBtns = document.querySelectorAll('[data-view-results-btn]');
+<style>
+  /* Base Styles */
+  #shopify-section-{{ section.id }} .quiz-calculating-wrapper {
+    display: flex;
+    align-items: stretch;
+    min-height: 100vh;
+    background: #f1f1f9;
+    max-width: 1440px;
+    margin: 0 auto;
+  }
 
-        // Check if any buttons were found
-        if (viewResultsBtns.length > 0) {
-            // Loop through each button found
-            viewResultsBtns.forEach(function(btn) {
-                // Add the click event listener to each one
-                btn.addEventListener('click', function() {
-                    if (window.QuizManager) {
-                        window.QuizManager.showResults();
-                    }
-                });
-            });
+  /* Left Column - Reviews (Desktop) */
+  #shopify-section-{{ section.id }} .quiz-calculating-reviews-column {
+    width: 720px;
+    flex-shrink: 0;
+    background: #cccce8;
+    padding: 70px 62px;
+    display: none;
+    overflow-y: auto;
+    max-height: 100vh;
+  }
+
+  #shopify-section-{{ section.id }} .quiz-calculating-reviews-container {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    align-items: center;
+    justify-content: center;
+  }
+
+  #shopify-section-{{ section.id }} .quiz-calculating-review-card {
+    width: 410px;
+    background: white;
+    border-radius: 24px;
+    box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.06);
+    overflow: hidden;
+    transition: opacity 0.3s;
+  }
+
+  #shopify-section-{{ section.id }} .quiz-calculating-review-content {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 16px;
+    align-items: center;
+  }
+
+  #shopify-section-{{ section.id }} .quiz-calculating-review-stars {
+    display: flex;
+    gap: 0;
+    align-items: center;
+  }
+
+  #shopify-section-{{ section.id }} .quiz-calculating-review-text {
+    font-family: 'Gotham', sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.5;
+    color: rgba(29, 33, 30, 0.75);
+    text-align: center;
+    margin: 0;
+    width: 100%;
+  }
+
+  #shopify-section-{{ section.id }} .quiz-calculating-review-text p {
+    margin: 0;
+  }
+
+  #shopify-section-{{ section.id }} .quiz-calculating-review-author {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    padding: 4px 12px;
+    background: #f1f1f9;
+    border-radius: 56px;
+  }
+
+  #shopify-section-{{ section.id }} .quiz-calculating-review-author-name {
+    font-family: 'Neue Haas Grotesk Display Pro', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 1.5;
+    color: #2c2926;
+  }
+
+  #shopify-section-{{ section.id }} .quiz-calculating-review-dot {
+    flex-shrink: 0;
+  }
+
+  #shopify-section-{{ section.id }} .quiz-calculating-review-verified {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  #shopify-section-{{ section.id }} .quiz-calculating-review-verified-text {
+    font-family: 'Gotham', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 1.5;
+    color: #2c2926;
+  }
+
+  /* Right Column - Content */
+  #shopify-section-{{ section.id }} .quiz-calculating-content-column {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 20px 60px 80px 60px;
+    background: #f1f1f9;
+    border-left: 1px solid white;
+    position: relative;
+    min-height: 100vh;
+    justify-content: space-between;
+  }
+
+  /* Breadcrumbs */
+  #shopify-section-{{ section.id }} .quiz-calculating-breadcrumbs {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 0;
+    width: 100%;
+  }
+
+  #shopify-section-{{ section.id }} .quiz-calculating-breadcrumb-link {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    color: rgba(35, 35, 35, 0.45);
+    font-family: 'Gotham', sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.5;
+    transition: color 0.2s;
+  }
+
+  #shopify-section-{{ section.id }} .quiz-calculating-breadcrumb-link:hover {
+    color: rgba(35, 35, 35, 0.7);
+  }
+
+  #shopify-section-{{ section.id }} .quiz-calculating-breadcrumb-icon {
+    width: 20px;
+    height: 20px;
+  }
+
+  #shopify-section-{{ section.id }} .quiz-calculating-breadcrumb-text {
+    font-family: 'Gotham', sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.5;
+  }
+
+  #shopify-section-{{ section.id }} .quiz-calculating-mobile-next {
+    display: none;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 16px;
+    background: #1a365d;
+    border-radius: 8px;
+    color: white;
+    font-family: 'Gotham', sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+  }
+
+  @media (max-width: 1024px) {
+    #shopify-section-{{ section.id }} .quiz-calculating-mobile-next {
+      display: flex;
+    }
+  }
+
+  /* Progress Bar */
+  #shopify-section-{{ section.id }} .quiz-calculating-progress-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 24px;
+  }
+
+  #shopify-section-{{ section.id }} .quiz-calculating-progress-bar {
+    position: relative;
+    width: 100%;
+    height: 3px;
+  }
+
+  #shopify-section-{{ section.id }} .quiz-calculating-progress-bar-track {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: rgba(28, 28, 28, 0.1);
+    border-radius: 999px;
+  }
+
+  #shopify-section-{{ section.id }} .quiz-calculating-progress-bar-fill {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 3px;
+    background: #1a365d;
+    border-radius: 999px;
+    width: 100%;
+    transition: width 0.3s ease;
+  }
+
+  #shopify-section-{{ section.id }} .quiz-calculating-step-indicator {
+    font-family: 'Gotham', sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #272727;
+    text-align: center;
+  }
+
+  /* Main Content */
+  #shopify-section-{{ section.id }} .quiz-calculating-main-content {
+    display: flex;
+    flex-direction: column;
+    gap: 44px;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+  }
+
+  #shopify-section-{{ section.id }} .quiz-calculating-title {
+    font-family: 'Vanilla Ravioli', sans-serif;
+    font-size: 32px;
+    font-weight: 400;
+    line-height: 1.3;
+    color: #232323;
+    text-transform: capitalize;
+    text-align: center;
+    margin: 0;
+    max-width: 474px;
+  }
+
+  #shopify-section-{{ section.id }} .quiz-calculating-subtitle {
+    font-family: 'Gotham', sans-serif;
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #272727;
+    text-align: center;
+    margin: 0;
+    max-width: 412px;
+  }
+
+  #shopify-section-{{ section.id }} .quiz-calculating-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 16px 32px;
+    height: 56px;
+    background: #1a365d;
+    color: #fcfefe;
+    border: none;
+    border-radius: 16px;
+    font-family: 'Gotham', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.5;
+    cursor: pointer;
+    transition: background 0.2s;
+    max-width: 500px;
+    width: 100%;
+  }
+
+  #shopify-section-{{ section.id }} .quiz-calculating-button:hover {
+    background: #152a4a;
+  }
+
+  #shopify-section-{{ section.id }} .quiz-calculating-button svg {
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+  }
+
+  /* Product Images */
+  #shopify-section-{{ section.id }} .quiz-calculating-products {
+    display: flex;
+    gap: 1px;
+    align-items: flex-end;
+    justify-content: center;
+    width: 100%;
+    max-width: 572px;
+    margin: 0 auto;
+  }
+
+  #shopify-section-{{ section.id }} .quiz-calculating-product-image {
+    flex: 1;
+    border-radius: 18.646px;
+    overflow: hidden;
+    display: flex;
+    align-items: flex-end;
+  }
+
+  #shopify-section-{{ section.id }} .quiz-calculating-product-image img {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: contain;
+    object-position: bottom;
+  }
+
+  /* Mobile Reviews */
+  #shopify-section-{{ section.id }} .quiz-calculating-mobile-reviews {
+    display: none;
+    width: 100%;
+    overflow-x: auto;
+    padding: 20px 0;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  #shopify-section-{{ section.id }} .quiz-calculating-mobile-reviews::-webkit-scrollbar {
+    display: none;
+  }
+
+  #shopify-section-{{ section.id }} .quiz-calculating-mobile-reviews-container {
+    display: flex;
+    gap: 12px;
+    padding: 0 20px;
+  }
+
+  #shopify-section-{{ section.id }} .quiz-calculating-mobile-review-card {
+    flex: 0 0 310px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0px 1.514px 6.055px rgba(0, 0, 0, 0.06);
+    overflow: hidden;
+  }
+
+  #shopify-section-{{ section.id }} .quiz-calculating-mobile-review-content {
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+    padding: 12px;
+    align-items: center;
+  }
+
+  #shopify-section-{{ section.id }} .quiz-calculating-mobile-review-stars {
+    display: flex;
+    gap: 0;
+    align-items: center;
+  }
+
+  #shopify-section-{{ section.id }} .quiz-calculating-mobile-review-text {
+    font-family: 'Gotham', sans-serif;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 1.5;
+    color: rgba(29, 33, 30, 0.75);
+    text-align: center;
+    margin: 0;
+    width: 100%;
+  }
+
+  #shopify-section-{{ section.id }} .quiz-calculating-mobile-review-text p {
+    margin: 0;
+  }
+
+  #shopify-section-{{ section.id }} .quiz-calculating-mobile-review-author {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    padding: 3px 9px;
+    background: #f1f1f9;
+    border-radius: 42px;
+  }
+
+  #shopify-section-{{ section.id }} .quiz-calculating-mobile-review-author-name {
+    font-family: 'Neue Haas Grotesk Display Pro', sans-serif;
+    font-size: 9px;
+    font-weight: 500;
+    line-height: 1.5;
+    color: #2c2926;
+  }
+
+  #shopify-section-{{ section.id }} .quiz-calculating-mobile-review-dot {
+    flex-shrink: 0;
+  }
+
+  #shopify-section-{{ section.id }} .quiz-calculating-mobile-review-verified {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+  }
+
+  #shopify-section-{{ section.id }} .quiz-calculating-mobile-review-verified-text {
+    font-family: 'Gotham', sans-serif;
+    font-size: 9px;
+    font-weight: 500;
+    line-height: 1.5;
+    color: #2c2926;
+  }
+
+  /* Mobile Styles */
+  @media (min-width: 1025px) {
+    #shopify-section-{{ section.id }} .quiz-calculating-reviews-column {
+      display: block;
+    }
+  }
+
+  @media (max-width: 1024px) {
+    #shopify-section-{{ section.id }} .quiz-calculating-wrapper {
+      flex-direction: column;
+    }
+
+    #shopify-section-{{ section.id }} .quiz-calculating-reviews-column {
+      display: none;
+    }
+
+    #shopify-section-{{ section.id }} .quiz-calculating-content-column {
+      padding: 0 20px 20px 20px;
+      border-left: none;
+      min-height: auto;
+      gap: 24px;
+    }
+
+    #shopify-section-{{ section.id }} .quiz-calculating-breadcrumbs {
+      padding: 20px 0;
+    }
+
+    #shopify-section-{{ section.id }} .quiz-calculating-progress-wrapper {
+      margin-bottom: 0;
+    }
+
+    #shopify-section-{{ section.id }} .quiz-calculating-progress-bar {
+      height: 2px;
+    }
+
+    #shopify-section-{{ section.id }} .quiz-calculating-progress-bar-track {
+      height: 2px;
+    }
+
+    #shopify-section-{{ section.id }} .quiz-calculating-progress-bar-fill {
+      height: 3px;
+      top: calc(50% + 0.5px);
+      transform: translateY(-50%);
+    }
+
+    #shopify-section-{{ section.id }} .quiz-calculating-step-indicator {
+      display: none;
+    }
+
+    #shopify-section-{{ section.id }} .quiz-calculating-main-content {
+      gap: 24px;
+      padding-top: 0;
+    }
+
+    #shopify-section-{{ section.id }} .quiz-calculating-title {
+      font-size: 24px;
+      line-height: 1.4;
+      color: #272727;
+      max-width: 100%;
+    }
+
+    #shopify-section-{{ section.id }} .quiz-calculating-subtitle {
+      font-size: 14px;
+      max-width: 100%;
+    }
+
+    #shopify-section-{{ section.id }} .quiz-calculating-button {
+      padding: 12px 24px;
+      height: auto;
+      border-radius: 12px;
+      gap: 12px;
+      max-width: 100%;
+    }
+
+    #shopify-section-{{ section.id }} .quiz-calculating-products {
+      max-width: 339px;
+      gap: 0.593px;
+    }
+
+    #shopify-section-{{ section.id }} .quiz-calculating-product-image {
+      border-radius: 11px;
+    }
+
+    #shopify-section-{{ section.id }} .quiz-calculating-mobile-reviews {
+      display: block;
+    }
+  }
+</style>
+
+<script>
+  (function() {
+    // Select all buttons with the data-attribute
+    const viewResultsBtns = document.querySelectorAll('[data-view-results-btn]');
+
+    // Check if any buttons were found
+    if (viewResultsBtns.length > 0) {
+      // Loop through each button found
+      viewResultsBtns.forEach(function(btn) {
+        // Add the click event listener to each one
+        btn.addEventListener('click', function() {
+          if (window.QuizManager) {
+            window.QuizManager.showResults();
+          }
+        });
+      });
+    }
+
+    // Update progress bar to 100% when calculating screen is shown
+    function updateCalculatingProgress() {
+      const calculatingSection = document.querySelector('[data-calculating]');
+      if (calculatingSection && calculatingSection.style.display !== 'none') {
+        const progressFill = calculatingSection.querySelector('.quiz-calculating-progress-bar-fill');
+        if (progressFill) {
+          progressFill.style.width = '100%';
         }
-    })();
+        
+        // Update step indicator
+        const stepIndicator = calculatingSection.querySelector('[data-step-indicator]');
+        if (stepIndicator && window.QuizManager) {
+          const visibleSteps = window.QuizManager.getVisibleSteps ? window.QuizManager.getVisibleSteps() : [];
+          const totalSteps = visibleSteps.length || 21;
+          stepIndicator.textContent = 'Question ' + totalSteps + ' of ' + totalSteps;
+        }
+      }
+    }
+
+    // Watch for calculating section visibility
+    const observer = new MutationObserver(function(mutations) {
+      mutations.forEach(function(mutation) {
+        if (mutation.type === 'attributes' && mutation.attributeName === 'style') {
+          updateCalculatingProgress();
+        }
+      });
+    });
+
+    const calculatingSection = document.querySelector('[data-calculating]');
+    if (calculatingSection) {
+      observer.observe(calculatingSection, {
+        attributes: true,
+        attributeFilter: ['style']
+      });
+    }
+
+    // Initial update
+    updateCalculatingProgress();
+  })();
 </script>
 
 {% schema %}
@@ -124,19 +746,55 @@
       "type": "text",
       "id": "title",
       "label": "Title",
-      "default": "Analyzing your answers..."
+      "default": "Your answers are analyzed. Click 'See My Results' to continue"
     },
     {
       "type": "textarea",
       "id": "subtitle",
       "label": "Subtitle",
-      "default": "See what others with your concern are saying about our formula"
+      "default": "See what others with your concern are saying about our custom formulas!"
     },
     {
       "type": "text",
       "id": "button_text",
       "label": "Button Text",
-      "default": "View your results"
+      "default": "See My Results"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_products",
+      "label": "Show Product Images",
+      "default": true
+    },
+    {
+      "type": "image_picker",
+      "id": "product_image_1",
+      "label": "Product Image 1"
+    },
+    {
+      "type": "image_picker",
+      "id": "product_image_2",
+      "label": "Product Image 2"
+    },
+    {
+      "type": "image_picker",
+      "id": "product_image_3",
+      "label": "Product Image 3"
+    },
+    {
+      "type": "image_picker",
+      "id": "product_image_4",
+      "label": "Product Image 4"
+    },
+    {
+      "type": "image_picker",
+      "id": "product_image_5",
+      "label": "Product Image 5"
+    },
+    {
+      "type": "image_picker",
+      "id": "product_image_6",
+      "label": "Product Image 6"
     },
     {
       "type": "header",
@@ -186,21 +844,16 @@
       "name": "Review",
       "settings": [
         {
-          "type": "textarea",
+          "type": "richtext",
           "id": "review_text",
           "label": "Review Text",
-          "default": "This product has completely transformed my hair!"
+          "default": "<p>I've tried everything, but this is the only formula that truly delivers results for my hair.</p>"
         },
         {
           "type": "text",
           "id": "author_name",
           "label": "Author Name",
           "default": "Sarah M."
-        },
-        {
-          "type": "image_picker",
-          "id": "author_image",
-          "label": "Author Image"
         }
       ]
     }
@@ -212,22 +865,36 @@
         {
           "type": "review",
           "settings": {
-            "review_text": "This product has completely transformed my hair!",
+            "review_text": "<p>I've tried everything, but this is the only formula that truly delivers results for my hair.</p>",
             "author_name": "Sarah M."
           }
         },
         {
           "type": "review",
           "settings": {
-            "review_text": "I've tried so many products, but this is the only one that actually works.",
-            "author_name": "Jessica L."
+            "review_text": "<p>Using 1,5 year the hair oil and for 1 month the liquid vitamine. These are the results</p>",
+            "author_name": "Lauren P."
           }
         },
         {
           "type": "review",
           "settings": {
-            "review_text": "My hair has never felt healthier. Highly recommend!",
-            "author_name": "Amanda K."
+            "review_text": "<p>I was always struggle with growing my hair, probably last 10 years. I could not find any routine and treatment for my fine hair.</p>",
+            "author_name": "Andreea B."
+          }
+        },
+        {
+          "type": "review",
+          "settings": {
+            "review_text": "<p>Significant reduction of shedding. But I'm still on my way to fuller hair.</p>",
+            "author_name": "Alenka Čakš Č."
+          }
+        },
+        {
+          "type": "review",
+          "settings": {
+            "review_text": "<p>My hair has never felt healthier, fuller, and stronger it's truly transformed. Thank you afsennah!</p>",
+            "author_name": "Jessica L."
           }
         }
       ]
