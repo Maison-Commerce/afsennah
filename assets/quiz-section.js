@@ -1,635 +1,1076 @@
-{% comment %}
-  Quiz Results Section for Shopify
-  Place this section AFTER all quiz step sections
+// Quiz Section JavaScript - Global (localStorage ONLY)
+(function() {
+    'use strict';
 
-  Use [[question_id]] syntax to insert user answers
-  Example: You have [[thickness]] x [[texture]] hair
-{% endcomment %}
-
-{{ 'quiz-section.css' | asset_url | stylesheet_tag }}
-
-{%- style -%}
-  .quiz-results-{{ section.id }} {
-  --primary-color: {{ section.settings.primary_color }};
-  --text-color: {{ section.settings.text_color }};
-  --button-color: {{ section.settings.button_color }};
-  --button-text-color: {{ section.settings.button_text_color }};
-  --btn-border-radius: {{ section.settings.button_border_radius }};
-  }
-
-  #shopify-section-{{ section.id }}.quiz-section {
-  background: {{ section.settings.background_color }};
-  }
-{%- endstyle -%}
-
-<div class="quiz-results quiz-results-{{ section.id }}" data-results style="display: none;" data-visible-questions="{{ section.settings.visible_questions }}">
-  <div class="quiz-results-wrapper">
-    <!-- Left Column - Image (Desktop Only) -->
-    {% if section.settings.results_image != blank %}
-      <div class="quiz-results-image-column">
-        <div class="quiz-results-image-container">
-          <img 
-            src="{{ section.settings.results_image | image_url: width: 1440 }}" 
-            alt=""
-            class="quiz-results-image"
-            loading="lazy"
-          >
-        </div>
-      </div>
-    {% endif %}
-
-    <!-- Right Column - Content -->
-    <div class="quiz-results-content-column">
-      <!-- Close Button (Desktop) -->
-      <button type="button" class="quiz-results-close" aria-label="Close">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
-          <path d="M15 5L5 15M5 5L15 15" stroke="#2F3936" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-      </button>
-
-      <!-- Main Content -->
-      <div class="quiz-results-main-content">
-        <!-- Title -->
-        {% if section.settings.title != blank %}
-          <h2 class="quiz-results-title">{{ section.settings.title }}</h2>
-        {% endif %}
-
-        <!-- Description -->
-        {% if section.settings.description != blank %}
-          <div class="quiz-results-description">{{ section.settings.description }}</div>
-        {% endif %}
-
-        <!-- Your Answers Section -->
-        <div class="quiz-results-answers-section">
-          <div class="quiz-results-answers-header">
-            <h3 class="quiz-results-answers-title">Your Answers</h3>
-          </div>
-          <div class="quiz-results-answers-content">
-            <table class="quiz-results-answers-table" data-answers-table>
-              <!-- Table will be populated by JavaScript -->
-            </table>
-          </div>
-        </div>
-      </div>
-
-      <!-- Action Buttons -->
-      <div class="quiz-results-actions">
-        <button type="button" class="quiz-results-button quiz-results-button-secondary" data-restart-btn>
-          <span>Retake Quiz</span>
-        </button>
-        <button type="button" class="quiz-results-button quiz-results-button-primary" data-next-results-btn>
-          <span>{{ section.settings.next_button_text }}</span>
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-            <path d="M18 8L22 12M22 12L18 16M22 12H2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<style>
-  /* Base Styles */
-  #shopify-section-{{ section.id }} .quiz-results-wrapper {
-    display: flex;
-    align-items: stretch;
-    min-height: calc(100vh - 136px);
-    height: auto;
-    background: #f1f1f9;
-  }
-
-  #shopify-section-{{ section.id }} {
-    padding: 0;
-    display: block !important;
-  }
-
-  #shopify-section-{{ section.id }} .quiz-results {
-    min-height: fit-content;
-    height: auto;
-    display: block;
-  }
-
-  #shopify-section-{{ section.id }} .quiz-results[style*="display: none"] {
-    display: none !important;
-  }
-
-  #shopify-section-{{ section.id }} .quiz-results.active {
-    opacity: 1 !important;
-    transform: translateY(0) !important;
-  }
-
-  /* Left Column - Image (Desktop) */
-  #shopify-section-{{ section.id }} .quiz-results-image-column {
-    width: 100%;
-    display: none;
-    position: relative;
-    overflow: hidden;
-  }
-
-  #shopify-section-{{ section.id }} .quiz-results-image-container {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 100%;
-    height: 100%;
-  }
-
-  #shopify-section-{{ section.id }} .quiz-results-image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-
-  /* Right Column - Content */
-  #shopify-section-{{ section.id }} .quiz-results-content-column {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    padding: 80px 60px;
-    background: #f1f1f9;
-    border-left: 1px solid white;
-    position: relative;
-    min-height: calc(100vh - 136px);
-    height: auto;
-    justify-content: space-between;
-  }
-
-  /* Close Button */
-  #shopify-section-{{ section.id }} .quiz-results-close {
-    position: absolute;
-    top: 25px;
-    right: 25px;
-    width: 36px;
-    height: 36px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: #f7f7fc;
-    border: none;
-    border-radius: 999px;
-    cursor: pointer;
-    transition: background 0.2s;
-  }
-
-  #shopify-section-{{ section.id }} .quiz-results-close:hover {
-    background: #e8e8f0;
-  }
-
-  #shopify-section-{{ section.id }} .quiz-results-close svg {
-    width: 20px;
-    height: 20px;
-  }
-
-  /* Main Content */
-  #shopify-section-{{ section.id }} .quiz-results-main-content {
-    display: flex;
-    flex-direction: column;
-    gap: 44px;
-    align-items: center;
-    justify-content: flex-start;
-    flex: 1;
-  }
-
-  /* Title */
-  #shopify-section-{{ section.id }} .quiz-results-title {
-    font-family: 'Vanilla Ravioli', sans-serif;
-    font-size: 32px;
-    font-weight: 400;
-    line-height: 1.3;
-    color: #232323;
-    text-transform: capitalize;
-    text-align: center;
-    margin: 0;
-    max-width: 474px;
-  }
-
-  /* Description */
-  #shopify-section-{{ section.id }} .quiz-results-description {
-    font-family: 'Gotham', sans-serif;
-    font-size: 16px;
-    font-weight: 400;
-    line-height: 1.5;
-    color: #272727;
-    text-align: center;
-    max-width: 100%;
-  }
-
-  #shopify-section-{{ section.id }} .quiz-results-description p {
-    margin: 0 0 16px 0;
-  }
-
-  #shopify-section-{{ section.id }} .quiz-results-description p:last-child {
-    margin-bottom: 0;
-  }
-
-  #shopify-section-{{ section.id }} .quiz-results-description strong {
-    font-family: 'Gotham', sans-serif;
-    font-weight: 500;
-  }
-
-  #shopify-section-{{ section.id }} .quiz-results-description b {
-    font-family: 'Gotham', sans-serif;
-    font-weight: 700;
-  }
-
-  /* Your Answers Section */
-  #shopify-section-{{ section.id }} .quiz-results-answers-section {
-    width: 100%;
-    background: #fffbc0;
-    border-radius: 12px;
-    overflow: hidden;
-  }
-
-  #shopify-section-{{ section.id }} .quiz-results-answers-header {
-    background: #fffbc0;
-    padding: 8px 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  #shopify-section-{{ section.id }} .quiz-results-answers-title {
-    font-family: 'Gotham', sans-serif;
-    font-size: 16px;
-    font-weight: 500;
-    line-height: 1.5;
-    color: #232323;
-    margin: 0;
-  }
-
-  #shopify-section-{{ section.id }} .quiz-results-answers-content {
-    background: white;
-    padding: 32px;
-    border-radius: 0 0 12px 12px;
-  }
-
-  #shopify-section-{{ section.id }} .quiz-results-answers-table {
-    width: 100%;
-    border-collapse: collapse;
-  }
-
-  #shopify-section-{{ section.id }} .quiz-results-answers-table tr {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    padding: 0;
-  }
-
-  #shopify-section-{{ section.id }} .quiz-results-answers-table td {
-    font-family: 'Gotham', sans-serif;
-    font-size: 14px;
-    font-weight: 400;
-    line-height: 1.5;
-    padding: 0;
-    border: none;
-  }
-
-  #shopify-section-{{ section.id }} .quiz-results-answers-table td:first-child {
-    color: #667085;
-    text-align: left;
-    text-transform: capitalize;
-  }
-
-  #shopify-section-{{ section.id }} .quiz-results-answers-table td:last-child {
-    color: #232323;
-    text-align: right;
-  }
-
-  #shopify-section-{{ section.id }} .quiz-results-answers-table tr:not(:last-child) {
-    margin-bottom: 12px;
-    padding-bottom: 12px;
-    border-bottom: 0.75px solid rgba(16, 43, 38, 0.14);
-  }
-
-  /* Action Buttons */
-  #shopify-section-{{ section.id }} .quiz-results-actions {
-    display: flex;
-    gap: 20px;
-    padding-top: 44px;
-  }
-
-  #shopify-section-{{ section.id }} .quiz-results-button {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
-    padding: 16px 32px;
-    height: 56px;
-    border: none;
-    border-radius: 16px;
-    font-family: 'Gotham', sans-serif;
-    font-size: 14px;
-    font-weight: 500;
-    line-height: 1.5;
-    cursor: pointer;
-    transition: all 0.2s;
-    flex: 1;
-  }
-
-  #shopify-section-{{ section.id }} .quiz-results-button-primary {
-    background: #1a365d;
-    color: #fcfefe;
-    gap: 8px;
-  }
-
-  #shopify-section-{{ section.id }} .quiz-results-button-primary:hover {
-    background: #152a4a;
-  }
-
-  #shopify-section-{{ section.id }} .quiz-results-button-secondary {
-    background: white;
-    border: 1px solid #d4d9e1;
-    color: #272727;
-  }
-
-  #shopify-section-{{ section.id }} .quiz-results-button-secondary:hover {
-    background: #f7f7fc;
-  }
-
-  #shopify-section-{{ section.id }} .quiz-results-button svg {
-    width: 24px;
-    height: 24px;
-    flex-shrink: 0;
-  }
-
-  #shopify-section-{{ section.id }} .quiz-results-button-secondary svg {
-    width: 20px;
-    height: 20px;
-  }
-
-  /* Mobile Styles */
-  @media (min-width: 1025px) {
-    #shopify-section-{{ section.id }} .quiz-results-image-column {
-      display: block;
+    // Prevent multiple script executions
+    if (window.QuizManagerInitialized) {
+        return;
     }
-  }
+    window.QuizManagerInitialized = true;
 
-  @media (max-width: 1024px) {
-    #shopify-section-{{ section.id }} .quiz-results-wrapper {
-      flex-direction: column;
-      height: auto;
-    }
+    const QuizManager = {
+        steps: [],
+        currentStepIndex: 0,
+        answers: {},
+        introData: {},
+        recommendedProducts: [],
+        calculatedPorosity: null,
+        calculatedElasticity: null,
+        formulationHairTreatment: null,
+        formulationElixir: null,
+        formulationConditioner: null,
+        initialized: false,
 
-    #shopify-section-{{ section.id }} .quiz-results {
-      height: auto;
-    }
+        init() {
+            // Prevent multiple initializations
+            if (this.initialized) return;
+            this.initialized = true;
 
-    #shopify-section-{{ section.id }} .quiz-results-image-column {
-      display: none;
-    }
+            this.steps = Array.from(document.querySelectorAll('[data-quiz-step]'));
+            if (this.steps.length === 0) return;
 
-    #shopify-section-{{ section.id }} .quiz-results-content-column {
-      padding: 20px;
-      border-left: none;
-      min-height: auto;
-      height: auto;
-      gap: 32px;
-    }
-
-    #shopify-section-{{ section.id }} .quiz-results-close {
-      display: none;
-    }
-
-    #shopify-section-{{ section.id }} .quiz-results-main-content {
-      gap: 24px;
-      padding-top: 0;
-    }
-
-    #shopify-section-{{ section.id }} .quiz-results-title {
-      font-size: 24px;
-      line-height: 1.4;
-      max-width: 100%;
-    }
-
-    #shopify-section-{{ section.id }} .quiz-results-description {
-      font-size: 14px;
-    }
-
-    #shopify-section-{{ section.id }} .quiz-results-answers-header {
-      padding: 8px 0;
-    }
-
-    #shopify-section-{{ section.id }} .quiz-results-answers-title {
-      font-size: 14px;
-    }
-
-    #shopify-section-{{ section.id }} .quiz-results-answers-content {
-      padding: 18px;
-    }
-
-    #shopify-section-{{ section.id }} .quiz-results-answers-table td {
-      font-size: 12px;
-    }
-
-    #shopify-section-{{ section.id }} .quiz-results-answers-table td:first-child {
-      font-weight: 300;
-    }
-
-    #shopify-section-{{ section.id }} .quiz-results-answers-table tr:not(:last-child) {
-      margin-bottom: 8px;
-      padding-bottom: 8px;
-    }
-
-    #shopify-section-{{ section.id }} .quiz-results-actions {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      background: #f1f1f9;
-      padding: 20px;
-      flex-direction: column-reverse;
-      gap: 10px;
-      box-shadow: 0px -10px 38.3px rgba(0, 0, 0, 0.1);
-      z-index: 100;
-    }
-
-    #shopify-section-{{ section.id }} .quiz-results-button {
-      padding: 12px 24px;
-      height: auto;
-      border-radius: 12px;
-      gap: 12px;
-      width: 100%;
-    }
-
-    #shopify-section-{{ section.id }} .quiz-results-button-primary {
-      order: 1;
-    }
-
-    #shopify-section-{{ section.id }} .quiz-results-button-secondary {
-      order: 2;
-    }
-
-    #shopify-section-{{ section.id }} .quiz-results-button svg {
-      width: 20px;
-      height: 20px;
-    }
-
-    /* Add padding to bottom of content to account for fixed buttons */
-    #shopify-section-{{ section.id }} .quiz-results-content-column {
-      padding-bottom: 180px;
-    }
-  }
-</style>
-
-<script>
-  (function() {
-    // Auto-save results when shown
-    const results = document.querySelector('[data-results]');
-    if (results) {
-      const observer = new MutationObserver(function(mutations) {
-        mutations.forEach(function(mutation) {
-          if (mutation.attributeName === 'style' && results.style.display !== 'none') {
-            if (window.QuizManager && window.QuizManager.answers) {
-              window.QuizManager.saveResults();
-            }
-          }
-        });
-      });
-      observer.observe(results, { attributes: true });
-    }
-
-    // Next button to show recommendations (attach to ALL buttons)
-    const nextBtns = document.querySelectorAll('[data-next-results-btn]');
-    nextBtns.forEach(nextBtn => {
-      if (nextBtn) {
-        nextBtn.addEventListener('click', function() {
-          const results = document.querySelector('[data-results]');
-          const recommendations = document.querySelector('[data-recommendations]');
-
-          if (results && recommendations) {
-            results.style.display = 'none';
-            recommendations.style.display = 'block';
-            recommendations.style.opacity = '1';
-            recommendations.style.transform = 'translateY(0)';
-            setTimeout(() => {
-              recommendations.classList.add('active');
-              
-              // Trigger initialization after section is visible
-              // Dispatch a custom event to trigger initRecommendations
-              const event = new CustomEvent('recommendations-visible', { 
-                detail: { section: recommendations } 
-              });
-              document.dispatchEvent(event);
-              
-              // Also try direct initialization after a short delay
-              setTimeout(() => {
-                if (window.initRecommendations && typeof window.initRecommendations === 'function') {
-                  window.initRecommendations();
-                }
-              }, 300);
-            }, 50);
-
-            window.scrollTo({
-              top: 0,
-              behavior: 'smooth'
+            // Hide all quiz steps initially
+            this.steps.forEach(step => {
+                step.style.display = 'none';
             });
-          }
-        });
-      }
-    });
 
-    // Close button functionality
-    const closeBtn = document.querySelector('.quiz-results-close');
-    if (closeBtn) {
-      closeBtn.addEventListener('click', function() {
-        const results = document.querySelector('[data-results]');
-        if (results) {
-          results.style.display = 'none';
+            this.setupEventListeners();
+            this.calculateQuizHeight();
+
+            // Recalculate height on window resize
+            window.addEventListener('resize', () => this.calculateQuizHeight());
+
+            // Only show first step if there's no intro section
+            const intro = document.querySelector('[data-quiz-intro]');
+            if (!intro) {
+                this.showCurrentStep();
+            }
+        },
+
+        calculateQuizHeight() {
+            const announcementBar = document.querySelector('announcement-bar');
+            const pageHeader = document.querySelector('page-header');
+
+            let totalHeaderHeight = 0;
+
+            if (announcementBar) {
+                totalHeaderHeight += announcementBar.offsetHeight;
+            }
+
+            if (pageHeader) {
+                totalHeaderHeight += pageHeader.offsetHeight;
+            }
+
+            const quizHeight = 'calc(100vh - ' + totalHeaderHeight + 'px)';
+
+            // Apply to all quiz sections
+            const quizSections = document.querySelectorAll('.quiz-step, .quiz-calculating, .quiz-results, .quiz-intro, .quiz-recommendations');
+            quizSections.forEach(section => {
+                section.style.minHeight = quizHeight;
+            });
+        },
+
+        setupEventListeners() {
+            this.steps.forEach((step, index) => {
+                const nextBtns = step.querySelectorAll('[data-next-btn]');
+                const backBtns = step.querySelectorAll('[data-back-btn]');
+                const infoToggle = step.querySelector('[data-info-toggle]');
+                const isFreeText = step.dataset.freeTextMode === 'true';
+                const isMultiple = step.dataset.multipleChoice === 'true';
+
+                if (isFreeText) {
+                    // Handle free text fields
+                    const textareas = step.querySelectorAll('.free-text-textarea');
+                    textareas.forEach(textarea => {
+                        textarea.addEventListener('input', () => {
+                            this.handleAnswerChange(step);
+                        });
+                    });
+                } else {
+                    // Handle regular answers
+                    const freshAnswers = step.querySelectorAll('input[type="radio"], input[type="checkbox"]');
+                    freshAnswers.forEach(input => {
+                        input.addEventListener('change', (e) => {
+                            console.log('Answer changed:', input.dataset.answerValue);
+                            
+                            // For radio buttons, update all checkboxes in the group
+                            if (input.type === 'radio') {
+                                this.updateAllAnswerCheckboxStates(step);
+                            } else {
+                                this.updateAnswerCheckboxState(input);
+                            }
+                            
+                            this.handleAnswerChange(step);
+
+                            // Auto-advance for single radio selection (not multiple choice)
+                            if (!isMultiple && input.type === 'radio' && input.checked) {
+                                setTimeout(() => {
+                                    this.nextStep();
+                                }, 300);
+                            }
+                        });
+                        
+                        // Update initial state
+                        this.updateAnswerCheckboxState(input);
+                    });
+                }
+
+                nextBtns.forEach(nextBtn => {
+                    if (nextBtn) {
+                        nextBtn.addEventListener('click', (e) => {
+                            e.preventDefault();
+                            this.nextStep();
+                        });
+                    }
+                });
+
+                backBtns.forEach(backBtn => {
+                    if (backBtn) {
+                        backBtn.addEventListener('click', (e) => {
+                            e.preventDefault();
+                            this.previousStep();
+                        });
+                    }
+                });
+
+                if (infoToggle) {
+                    infoToggle.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        this.toggleInfo(step);
+                    });
+                }
+
+                // Close popup when clicking overlay or close button
+                const infoPopup = step.querySelector('[data-info-popup]');
+                if (infoPopup) {
+                    const overlay = infoPopup.querySelector('[data-info-overlay]');
+                    const closeBtn = infoPopup.querySelector('[data-info-close]');
+
+                    if (overlay) {
+                        overlay.addEventListener('click', () => this.closeInfo(step));
+                    }
+
+                    if (closeBtn) {
+                        closeBtn.addEventListener('click', () => this.closeInfo(step));
+                    }
+                }
+            });
+
+            const restartBtn = document.querySelector('[data-restart-btn]');
+            if (restartBtn) {
+                restartBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    this.restart();
+                });
+            }
+
+            const saveBtn = document.querySelector('[data-save-btn]');
+            if (saveBtn) {
+                saveBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    this.saveResults();
+                });
+            }
+
+            this.loadSavedResults();
+
+            console.log('Quiz initialized with', this.steps.length, 'steps');
+        },
+
+        updateAnswerCheckboxState(input) {
+            // Find the answer label containing this input
+            const answerLabel = input.closest('.quiz-answer');
+            if (!answerLabel) return;
+
+            const checkbox = answerLabel.querySelector('.quiz-answer-checkbox');
+            const checkboxInnerChecked = answerLabel.querySelector('.quiz-answer-checkbox-inner-checked');
+
+            if (input.checked) {
+                // Show SVG and remove border
+                if (checkbox) {
+                    checkbox.style.border = 'none';
+                    checkbox.style.background = 'transparent';
+                }
+                if (checkboxInnerChecked) {
+                    checkboxInnerChecked.style.display = 'block';
+                }
+            } else {
+                // Hide SVG and restore border
+                if (checkbox) {
+                    checkbox.style.border = '1px solid rgba(0, 0, 0, 0.15)';
+                    checkbox.style.background = '#fdfdfe';
+                }
+                if (checkboxInnerChecked) {
+                    checkboxInnerChecked.style.display = 'none';
+                }
+            }
+        },
+
+        updateAllAnswerCheckboxStates(step) {
+            // Update all answer checkboxes in the step
+            const inputs = step.querySelectorAll('input[type="radio"], input[type="checkbox"]');
+            inputs.forEach(input => {
+                this.updateAnswerCheckboxState(input);
+            });
+        },
+
+        updateQuizImages() {
+            // Update images based on gender selection
+            const genderAnswer = this.answers['gender'];
+            const isMale = genderAnswer && genderAnswer.value === 'male';
+            
+            // Find all quiz steps with images
+            const allSteps = document.querySelectorAll('[data-quiz-step]');
+            
+            allSteps.forEach(step => {
+                const imageContainer = step.querySelector('[data-quiz-image]');
+                if (!imageContainer) return;
+                
+                const femaleImg = imageContainer.querySelector('[data-image-female]');
+                const maleImg = imageContainer.querySelector('[data-image-male]');
+                
+                if (isMale && maleImg) {
+                    // Show male image, hide female
+                    if (femaleImg) femaleImg.style.display = 'none';
+                    maleImg.style.display = 'block';
+                } else if (!isMale && femaleImg) {
+                    // Show female image, hide male
+                    femaleImg.style.display = 'block';
+                    if (maleImg) maleImg.style.display = 'none';
+                } else {
+                    // Default: show female if available
+                    if (femaleImg) femaleImg.style.display = 'block';
+                    if (maleImg) maleImg.style.display = 'none';
+                }
+            });
+        },
+
+        handleAnswerChange(step) {
+            console.log('handleAnswerChange called for step:', step.dataset.questionId);
+
+            const questionId = step.dataset.questionId;
+            const isFreeText = step.dataset.freeTextMode === 'true';
+            const isMultiple = step.dataset.multipleChoice === 'true';
+            const orderNotePosition = step.dataset.orderNotePosition ? parseInt(step.dataset.orderNotePosition, 10) : null;
+            const nextBtns = step.querySelectorAll('[data-next-btn]');
+
+            console.log('Question ID:', questionId, 'Is Free Text:', isFreeText, 'Is Multiple:', isMultiple, 'Order Note Position:', orderNotePosition);
+
+            // Update images if gender question was answered
+            if (questionId === 'gender') {
+                this.updateQuizImages();
+            }
+
+            if (isFreeText) {
+                // Handle free text fields
+                const textareas = step.querySelectorAll('.free-text-textarea');
+                const fields = {};
+                let allFilled = true;
+
+                textareas.forEach(textarea => {
+                    const fieldId = textarea.dataset.fieldId;
+                    const value = textarea.value.trim();
+                    fields[fieldId] = value;
+
+                    if (!value) {
+                        allFilled = false;
+                    }
+                });
+
+                this.answers[questionId] = {
+                    type: 'free_text',
+                    fields: fields,
+                    title: Object.values(fields).filter(v => v).join(', '),
+                    orderNotePosition: orderNotePosition
+                };
+
+                console.log('Free text fields:', this.answers[questionId]);
+                nextBtns.forEach(btn => btn.disabled = !allFilled);
+            } else {
+                // Handle regular answers
+                if (isMultiple) {
+                    const checked = step.querySelectorAll('input:checked');
+                    const answersArray = Array.from(checked).map(input => ({
+                        value: input.dataset.answerValue,
+                        title: input.dataset.answerTitle,
+                        productHandles: input.dataset.productHandles,
+                        productHandlesMale: input.dataset.productHandlesMale,
+                        porosity: input.dataset.porosity,
+                        elasticity: input.dataset.elasticity,
+                        formulations: [
+                            input.dataset.formulation1 || null,
+                            input.dataset.formulation2 || null,
+                            input.dataset.formulation3 || null,
+                            input.dataset.formulation4 || null,
+                            input.dataset.formulation5 || null,
+                            input.dataset.formulation6 || null,
+                            input.dataset.formulation7 || null
+                        ].filter(f => f !== null && f !== '')
+                    }));
+                    // Add orderNotePosition to the array
+                    answersArray.orderNotePosition = orderNotePosition;
+                    this.answers[questionId] = answersArray;
+                    console.log('Multiple answers selected:', this.answers[questionId]);
+                } else {
+                    const checked = step.querySelector('input:checked');
+                    if (checked) {
+                        this.answers[questionId] = {
+                            value: checked.dataset.answerValue,
+                            title: checked.dataset.answerTitle,
+                            productHandles: checked.dataset.productHandles,
+                            productHandlesMale: checked.dataset.productHandlesMale,
+                            porosity: checked.dataset.porosity,
+                            elasticity: checked.dataset.elasticity,
+                            formulations: [
+                                checked.dataset.formulation1 || null,
+                                checked.dataset.formulation2 || null,
+                                checked.dataset.formulation3 || null,
+                                checked.dataset.formulation4 || null,
+                                checked.dataset.formulation5 || null,
+                                checked.dataset.formulation6 || null,
+                                checked.dataset.formulation7 || null
+                            ].filter(f => f !== null && f !== ''),
+                            orderNotePosition: orderNotePosition
+                        };
+                        console.log('Single answer selected:', this.answers[questionId]);
+                    }
+                }
+
+                const hasAnswer = isMultiple
+                    ? this.answers[questionId]?.length > 0
+                    : this.answers[questionId] !== undefined;
+
+                console.log('Has answer:', hasAnswer);
+                nextBtns.forEach(btn => btn.disabled = !hasAnswer);
+            }
+
+            // Save progress whenever an answer changes
+            this.saveProgress();
+        },
+
+        toggleInfo(step) {
+            const popup = step.querySelector('[data-info-popup]');
+            if (popup) {
+                popup.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+        },
+
+        closeInfo(step) {
+            const popup = step.querySelector('[data-info-popup]');
+            if (popup) {
+                popup.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        },
+
+        showCurrentStep() {
+            const step = this.getVisibleSteps()[this.currentStepIndex];
+            if (!step) return;
+
+            this.steps.forEach(s => s.style.display = 'none');
+            step.style.display = 'block';
+
+            setTimeout(() => step.classList.add('active'), 50);
+
+            const backBtns = step.querySelectorAll('[data-back-btn]');
+            backBtns.forEach(backBtn => {
+                if (backBtn) {
+                    backBtn.style.display = this.currentStepIndex > 0 ? 'flex' : 'none';
+                }
+            });
+
+            const stepIndicator = step.querySelector('[data-step-indicator]');
+            const visibleSteps = this.getVisibleSteps();
+            if (stepIndicator) {
+                stepIndicator.textContent = 'Question ' + (this.currentStepIndex + 1) + ' of ' + visibleSteps.length;
+            }
+
+            // Update all checkbox states when showing a step
+            this.updateAllAnswerCheckboxStates(step);
+
+            // Update images based on gender selection
+            this.updateQuizImages();
+
+            this.updateProgress();
+            this.scrollToTop();
+        },
+
+        getVisibleSteps() {
+            return this.steps.filter(step => {
+                const parent = step.dataset.conditionalParent;
+                const requiredValue = step.dataset.conditionalValue;
+
+                if (!parent || !requiredValue) return true;
+
+                const parentAnswer = this.answers[parent];
+                if (!parentAnswer) return false;
+
+                if (Array.isArray(parentAnswer)) {
+                    return parentAnswer.some(a => a.value === requiredValue);
+                }
+
+                return parentAnswer.value === requiredValue;
+            });
+        },
+
+        updateProgress() {
+            const visibleSteps = this.getVisibleSteps();
+            const progress = ((this.currentStepIndex + 1) / visibleSteps.length) * 100;
+
+            this.steps.forEach(step => {
+                const bar = step.querySelector('[data-progress-bar]');
+                if (bar) bar.style.width = progress + '%';
+            });
+        },
+
+        nextStep() {
+            const currentStep = this.getVisibleSteps()[this.currentStepIndex];
+            currentStep.classList.remove('active');
+
+            setTimeout(() => {
+                this.currentStepIndex++;
+                const visibleSteps = this.getVisibleSteps();
+
+                // Save progress before transitioning
+                this.saveProgress();
+
+                if (this.currentStepIndex >= visibleSteps.length) {
+                    this.showCalculating();
+                } else {
+                    this.showCurrentStep();
+                }
+            }, 300);
+        },
+
+        previousStep() {
+            const currentStep = this.getVisibleSteps()[this.currentStepIndex];
+            currentStep.classList.remove('active');
+
+            setTimeout(() => {
+                this.currentStepIndex--;
+                this.showCurrentStep();
+            }, 300);
+        },
+
+        showCalculating() {
+            this.steps.forEach(s => s.style.display = 'none');
+            const calculating = document.querySelector('[data-calculating]');
+            if (calculating) {
+                calculating.style.display = 'block';
+                setTimeout(() => calculating.classList.add('active'), 50);
+                this.scrollToTop();
+
+                // Calculate porosity and elasticity
+                this.calculatePorosityAndElasticity();
+
+                // Log formulations
+                this.logFormulations();
+            }
+        },
+
+        logFormulations() {
+            console.log('=== FORMULATION VALUES ===');
+            Object.keys(this.answers).forEach(questionId => {
+                const answer = this.answers[questionId];
+
+                if (Array.isArray(answer)) {
+                    // Multiple choice answers
+                    answer.forEach((a, index) => {
+                        if (a.formulations && a.formulations.length > 0) {
+                            console.log(`Question: ${questionId}, Answer ${index + 1}: ${a.title}`);
+                            console.log('  Formulations:', a.formulations);
+                        }
+                    });
+                } else if (answer.type !== 'free_text') {
+                    // Single choice answer (not free text)
+                    if (answer.formulations && answer.formulations.length > 0) {
+                        console.log(`Question: ${questionId}, Answer: ${answer.title}`);
+                        console.log('  Formulations:', answer.formulations);
+                    }
+                }
+            });
+            console.log('========================');
+        },
+
+        calculatePorosityAndElasticity() {
+            const porosityCount = { low: 0, medium: 0, high: 0 };
+            const elasticityCount = { low: 0, medium: 0, high: 0 };
+
+            // Iterate through all answers
+            Object.keys(this.answers).forEach(questionId => {
+                const answer = this.answers[questionId];
+
+                if (Array.isArray(answer)) {
+                    // Multiple choice answers
+                    answer.forEach(a => {
+                        if (a.porosity && a.porosity !== 'none') {
+                            porosityCount[a.porosity]++;
+                        }
+                        if (a.elasticity && a.elasticity !== 'none') {
+                            elasticityCount[a.elasticity]++;
+                        }
+                    });
+                } else if (answer.type !== 'free_text') {
+                    // Single choice answer (not free text)
+                    if (answer.porosity && answer.porosity !== 'none') {
+                        porosityCount[answer.porosity]++;
+                    }
+                    if (answer.elasticity && answer.elasticity !== 'none') {
+                        elasticityCount[answer.elasticity]++;
+                    }
+                }
+            });
+
+            // Calculate porosity result
+            this.calculatedPorosity = this.determineResult(porosityCount);
+
+            // Calculate elasticity result
+            this.calculatedElasticity = this.determineResult(elasticityCount);
+
+            console.log('Porosity counts:', porosityCount);
+            console.log('Calculated Porosity:', this.calculatedPorosity);
+            console.log('Elasticity counts:', elasticityCount);
+            console.log('Calculated Elasticity:', this.calculatedElasticity);
+
+            // Calculate formulation products based on porosity × elasticity
+            this.calculateFormulationProducts();
+        },
+
+        calculateFormulationProducts() {
+            // Formulation lookup table based on porosity × elasticity
+            const formulationTable = {
+                'high-high': { hairTreatment: 47, elixir: 61, conditioner: 83 },
+                'high-medium': { hairTreatment: 47, elixir: 61, conditioner: 81 },
+                'high-low': { hairTreatment: 51, elixir: 63, conditioner: 81 },
+                'medium-high': { hairTreatment: 47, elixir: 61, conditioner: 83 },
+                'medium-medium': { hairTreatment: 47, elixir: 61, conditioner: 82 },
+                'medium-low': { hairTreatment: 51, elixir: 63, conditioner: 85 },
+                'low-high': { hairTreatment: 47, elixir: 61, conditioner: 81 },
+                'low-medium': { hairTreatment: 51, elixir: 63, conditioner: 84 },
+                'low-low': { hairTreatment: 51, elixir: 63, conditioner: 85 }
+            };
+
+            // Create the key from calculated porosity and elasticity
+            const key = `${this.calculatedPorosity}-${this.calculatedElasticity}`;
+
+            // Get formulation values
+            const formulations = formulationTable[key];
+
+            if (formulations) {
+                this.formulationHairTreatment = formulations.hairTreatment;
+                this.formulationElixir = formulations.elixir;
+                this.formulationConditioner = formulations.conditioner;
+
+                console.log('=== FORMULATION PRODUCTS ===');
+                console.log(`Porosity × Elasticity: ${this.calculatedPorosity} × ${this.calculatedElasticity}`);
+                console.log(`Hair Treatment Formulation: ${this.formulationHairTreatment}`);
+                console.log(`Elixir Formulation: ${this.formulationElixir}`);
+                console.log(`Conditioner Formulation: ${this.formulationConditioner}`);
+                console.log('============================');
+            } else {
+                console.warn('No formulation values found for:', key);
+            }
+        },
+
+        determineResult(count) {
+            const total = count.low + count.medium + count.high;
+
+            if (total === 0) {
+                return null; // No data to calculate
+            }
+
+            // Find the maximum count
+            const maxCount = Math.max(count.low, count.medium, count.high);
+
+            // Get all keys with the maximum count
+            const winners = [];
+            if (count.low === maxCount) winners.push('low');
+            if (count.medium === maxCount) winners.push('medium');
+            if (count.high === maxCount) winners.push('high');
+
+            // If there's a tie (50/50 or 3-way tie), return medium
+            if (winners.length > 1) {
+                return 'medium';
+            }
+
+            // Otherwise return the single winner
+            return winners[0];
+        },
+
+        showResults() {
+            // *** MARK QUIZ AS COMPLETED IMMEDIATELY ***
+            try {
+                localStorage.setItem('quiz_completed', 'true');
+                console.log('✓✓✓ Quiz marked as COMPLETED in localStorage ✓✓✓');
+            } catch (e) {
+                console.error('Error setting quiz completion flag:', e);
+            }
+
+            // Hide calculating screen
+            const calculatingScreen = document.querySelector('[data-calculating]');
+            if (calculatingScreen) {
+                calculatingScreen.style.display = 'none';
+            }
+
+            const results = document.querySelector('[data-results]');
+            if (!results) {
+                console.error('Results section not found');
+                return;
+            }
+
+            // Find description element (new structure)
+            const descriptionEl = results.querySelector('.quiz-results-description');
+            let html = descriptionEl ? descriptionEl.innerHTML : '';
+
+            // Collect all recommended products
+            this.recommendedProducts = [];
+
+            // Determine if user selected "male" for gender question
+            const isMale = this.answers['gender']?.value === 'male';
+            console.log('=== GENDER-BASED PRODUCT SELECTION ===');
+            console.log('Gender answer:', this.answers['gender']);
+            console.log('Is Male:', isMale);
+            console.log('======================================');
+
+            // Replace intro data placeholders (e.g., [[name]], [[email]])
+            Object.keys(this.introData).forEach(fieldId => {
+                const value = this.introData[fieldId];
+                const regex = new RegExp('\\[\\[\\s*' + fieldId + '\\s*\\]\\]', 'g');
+                html = html.replace(regex, value);
+            });
+
+            // Replace calculated porosity and elasticity
+            if (this.calculatedPorosity) {
+                const porosityRegex = new RegExp('\\[\\[\\s*porosity\\s*\\]\\]', 'g');
+                html = html.replace(porosityRegex, this.calculatedPorosity);
+            }
+            if (this.calculatedElasticity) {
+                const elasticityRegex = new RegExp('\\[\\[\\s*elasticity\\s*\\]\\]', 'g');
+                html = html.replace(elasticityRegex, this.calculatedElasticity);
+            }
+
+            // Replace question answer placeholders
+            Object.keys(this.answers).forEach(questionId => {
+                const answer = this.answers[questionId];
+                let replacement = '';
+
+                if (answer.type === 'free_text') {
+                    // For free text questions, use all field values
+                    replacement = answer.title;
+                } else if (Array.isArray(answer)) {
+                    replacement = answer.map(a => a.title).join(', ');
+                    // Collect products from multiple answers
+                    answer.forEach(a => {
+                        const hasMaleProducts = a.productHandlesMale && a.productHandlesMale !== '';
+                        const hasFemaleProducts = a.productHandles && a.productHandles !== '';
+
+                        let productHandlesToUse = '';
+
+                        if (isMale) {
+                            // User is male - ONLY use male products, never fallback to female
+                            if (hasMaleProducts) {
+                                productHandlesToUse = a.productHandlesMale;
+                                console.log(`Using MALE products for answer "${a.title}":`, productHandlesToUse);
+                            } else {
+                                console.log(`NO male products assigned for answer "${a.title}" - skipping`);
+                            }
+                        } else {
+                            // User is female/not male - use female products only
+                            if (hasFemaleProducts) {
+                                productHandlesToUse = a.productHandles;
+                                console.log(`Using FEMALE products for answer "${a.title}":`, productHandlesToUse);
+                            } else {
+                                console.log(`NO female products assigned for answer "${a.title}" - skipping`);
+                            }
+                        }
+
+                        if (productHandlesToUse) {
+                            const products = productHandlesToUse.split(',').map(p => p.trim()).filter(p => p);
+                            this.recommendedProducts.push(...products);
+                        }
+                    });
+                } else {
+                    replacement = answer.title;
+                    // Collect products from single answer
+                    const hasMaleProducts = answer.productHandlesMale && answer.productHandlesMale !== '';
+                    const hasFemaleProducts = answer.productHandles && answer.productHandles !== '';
+
+                    let productHandlesToUse = '';
+
+                    if (isMale) {
+                        // User is male - ONLY use male products, never fallback to female
+                        if (hasMaleProducts) {
+                            productHandlesToUse = answer.productHandlesMale;
+                            console.log(`Using MALE products for answer "${answer.title}":`, productHandlesToUse);
+                        } else {
+                            console.log(`NO male products assigned for answer "${answer.title}" - skipping`);
+                        }
+                    } else {
+                        // User is female/not male - use female products only
+                        if (hasFemaleProducts) {
+                            productHandlesToUse = answer.productHandles;
+                            console.log(`Using FEMALE products for answer "${answer.title}":`, productHandlesToUse);
+                        } else {
+                            console.log(`NO female products assigned for answer "${answer.title}" - skipping`);
+                        }
+                    }
+
+                    if (productHandlesToUse) {
+                        const products = productHandlesToUse.split(',').map(p => p.trim()).filter(p => p);
+                        this.recommendedProducts.push(...products);
+                    }
+                }
+
+                const regex = new RegExp('\\[\\[\\s*' + questionId + '\\s*\\]\\]', 'g');
+                html = html.replace(regex, replacement);
+            });
+
+            // Remove duplicates from recommended products
+            this.recommendedProducts = [...new Set(this.recommendedProducts)];
+
+            console.log('Recommended Products:', this.recommendedProducts);
+
+            // Update description content if element exists
+            if (descriptionEl && html) {
+                descriptionEl.innerHTML = html;
+            }
+
+            // Populate answers table
+            this.populateAnswersTable();
+
+            // Hide all quiz steps
+            this.steps.forEach(step => {
+                step.style.display = 'none';
+            });
+
+            // Hide calculating screen if still visible
+            if (calculatingScreen) {
+                calculatingScreen.style.display = 'none';
+            }
+
+            // Show results section
+            results.style.display = 'block';
+            results.style.opacity = '1';
+            results.style.transform = 'translateY(0)';
+            setTimeout(() => results.classList.add('active'), 50);
+
+            this.scrollToTop();
+        },
+
+        populateAnswersTable() {
+            const table = document.querySelector('[data-answers-table]');
+            if (!table) return;
+
+            // Get visible questions list from results section
+            const resultsSection = document.querySelector('[data-results]');
+            const visibleQuestionsStr = resultsSection?.dataset.visibleQuestions || '';
+
+            console.log('Raw visible questions string:', visibleQuestionsStr);
+
+            const visibleQuestions = visibleQuestionsStr
+                .split(',')
+                .map(q => q.trim())
+                .filter(q => q);
+
+            console.log('Parsed visible questions:', visibleQuestions);
+            console.log('Visible questions count:', visibleQuestions.length);
+
+            let tableHTML = '';
+
+            // Add intro data first (always shown by default)
+            Object.keys(this.introData).forEach(fieldId => {
+                const value = this.introData[fieldId];
+                const formattedFieldId = fieldId.replace(/_/g, ' ');
+                tableHTML += '<tr><td>' + formattedFieldId + '</td><td>' + value + '</td></tr>';
+            });
+
+            // Add question answers (filtered if visibleQuestions is set)
+            Object.keys(this.answers).forEach(questionId => {
+                console.log('Checking question:', questionId);
+
+                // If visibleQuestions list exists and this question is not in it, skip
+                if (visibleQuestions.length > 0 && !visibleQuestions.includes(questionId)) {
+                    console.log('  - Skipping (not in visible list)');
+                    return;
+                }
+
+                console.log('  - Including in table');
+
+                const answer = this.answers[questionId];
+                let answerText = '';
+
+                if (answer.type === 'free_text') {
+                    answerText = answer.title;
+                } else if (Array.isArray(answer)) {
+                    answerText = answer.map(a => a.title).join(', ');
+                } else {
+                    answerText = answer.title;
+                }
+
+                // Capitalize and replace underscores with spaces
+                const formattedQuestionId = questionId.replace(/_/g, ' ');
+
+                tableHTML += '<tr><td>' + formattedQuestionId + '</td><td>' + answerText + '</td></tr>';
+            });
+
+            table.innerHTML = tableHTML;
+
+            console.log('Table populated with', table.querySelectorAll('tr').length, 'rows');
+        },
+
+        restart() {
+            // IMMEDIATELY clear completion flag FIRST
+            this.clearCompletion();
+            console.log('🔄 RESTART: Completion flag cleared');
+            this.currentStepIndex = 0;
+            this.answers = {};
+
+            // Clear progress
+            this.clearProgress();
+
+            // Clear completion flag so they need to complete again
+            this.clearCompletion();
+
+            const results = document.querySelector('[data-results]');
+            results.classList.remove('active');
+            setTimeout(() => {
+                results.style.display = 'none';
+
+                this.steps.forEach(step => {
+                    step.querySelectorAll('input').forEach(input => input.checked = false);
+                    step.querySelectorAll('[data-next-btn]').forEach(btn => btn.disabled = true);
+                });
+
+                this.showCurrentStep();
+            }, 300);
+        },
+
+        saveResults() {
+            try {
+                const quizData = {
+                    introData: this.introData,
+                    answers: this.answers,
+                    recommendedProducts: this.recommendedProducts,
+                    calculatedPorosity: this.calculatedPorosity,
+                    calculatedElasticity: this.calculatedElasticity,
+                    formulationHairTreatment: this.formulationHairTreatment,
+                    formulationElixir: this.formulationElixir,
+                    formulationConditioner: this.formulationConditioner,
+                    timestamp: new Date().toISOString()
+                };
+                const quizDataStr = JSON.stringify(quizData);
+                localStorage.setItem('quiz_results', quizDataStr);
+
+                console.log('Results saved successfully to localStorage');
+            } catch (e) {
+                console.error('Save error:', e);
+            }
+        },
+
+        saveProgress() {
+            try {
+                const visibleSteps = this.getVisibleSteps();
+
+                const progressData = {
+                    currentStepIndex: this.currentStepIndex,
+                    introData: this.introData,
+                    answers: this.answers,
+                    timestamp: Date.now()
+                };
+
+                const progressDataStr = JSON.stringify(progressData);
+
+                // Save to localStorage only
+                localStorage.setItem('quiz_progress', progressDataStr);
+
+                // Verify it was saved
+                const savedData = localStorage.getItem('quiz_progress');
+                if (savedData) {
+                    const verifyData = JSON.parse(savedData);
+                    console.log('Progress saved:');
+                    console.log('  - Current step index:', this.currentStepIndex);
+                    console.log('  - Visible step:', this.currentStepIndex + 1, 'of', visibleSteps.length);
+                    console.log('  - Total answers saved:', Object.keys(this.answers).length);
+                    console.log('  - Storage: localStorage');
+                    console.log('  - Data size:', progressDataStr.length, 'characters');
+
+                    if (verifyData.currentStepIndex !== this.currentStepIndex) {
+                        console.error('WARNING: Verification failed! Expected', this.currentStepIndex, 'but got', verifyData.currentStepIndex);
+                    }
+                } else {
+                    console.error('ERROR: Progress was not saved to localStorage!');
+                }
+            } catch (e) {
+                console.error('Progress save error:', e);
+            }
+        },
+
+        resumeQuiz() {
+            try {
+                const progressDataStr = localStorage.getItem('quiz_progress');
+
+                if (progressDataStr) {
+                    const progressData = JSON.parse(progressDataStr);
+
+                    console.log('Resuming quiz with data:', progressData);
+
+                    // Restore state
+                    this.introData = progressData.introData || {};
+                    this.answers = progressData.answers || {};
+
+                    // Get visible steps based on restored answers
+                    const visibleSteps = this.getVisibleSteps();
+
+                    // Set current step index
+                    this.currentStepIndex = Math.min(progressData.currentStepIndex, visibleSteps.length - 1);
+
+                    console.log('Total steps:', this.steps.length);
+                    console.log('Visible steps:', visibleSteps.length);
+                    console.log('Restored currentStepIndex:', progressData.currentStepIndex);
+                    console.log('Setting currentStepIndex to:', this.currentStepIndex);
+
+                    // Restore selections in the DOM
+                    Object.keys(this.answers).forEach(questionId => {
+                        const step = Array.from(this.steps).find(s => s.dataset.questionId === questionId);
+                        if (!step) return;
+
+                        const answer = this.answers[questionId];
+                        const isFreeText = step.dataset.freeTextMode === 'true';
+
+                        if (isFreeText && answer.type === 'free_text') {
+                            // Restore free text fields
+                            Object.keys(answer.fields).forEach(fieldId => {
+                                const textarea = step.querySelector(`[data-field-id="${fieldId}"]`);
+                                if (textarea) {
+                                    textarea.value = answer.fields[fieldId];
+                                }
+                            });
+                        } else if (Array.isArray(answer)) {
+                            // Multiple choice - check all selected answers
+                            answer.forEach(a => {
+                                const input = step.querySelector(`input[value="${a.value}"]`);
+                                if (input) {
+                                    input.checked = true;
+                                    this.updateAnswerCheckboxState(input);
+                                }
+                            });
+                        } else {
+                            // Single choice - check the selected answer
+                            const input = step.querySelector(`input[value="${answer.value}"]`);
+                            if (input) {
+                                input.checked = true;
+                                this.updateAnswerCheckboxState(input);
+                            }
+                        }
+
+                        // Enable next button if answer exists
+                        const nextBtns = step.querySelectorAll('[data-next-btn]');
+                        nextBtns.forEach(btn => { if (btn) btn.disabled = false; });
+                    });
+
+                    console.log('Restored answers:', this.answers);
+                    console.log('Showing step at index:', this.currentStepIndex);
+
+                    // Show current step
+                    this.showCurrentStep();
+                    
+                    // Update images based on saved gender selection
+                    this.updateQuizImages();
+                } else {
+                    console.log('No saved progress found');
+                    this.showCurrentStep();
+                }
+            } catch (e) {
+                console.error('Resume error:', e);
+                this.showCurrentStep();
+            }
+        },
+
+        clearProgress() {
+            // Clear localStorage
+            localStorage.removeItem('quiz_progress');
+
+            // Also clear completion flag when clearing progress
+            this.clearCompletion();
+
+            // Reset state
+            this.currentStepIndex = 0;
+            this.answers = {};
+            this.introData = {};
+
+            // Clear all inputs
+            this.steps.forEach(step => {
+                step.querySelectorAll('input[type="radio"], input[type="checkbox"]').forEach(input => {
+                    input.checked = false;
+                });
+                step.querySelectorAll('textarea').forEach(textarea => {
+                    textarea.value = '';
+                });
+                const nextBtns = step.querySelectorAll('[data-next-btn]');
+                nextBtns.forEach(btn => { if (btn) btn.disabled = true; });
+            });
+
+            console.log('Quiz progress cleared from localStorage');
+        },
+
+        loadSavedResults() {
+            // Silent load - no banner, just allow retaking
+            try {
+                const savedResults = localStorage.getItem('quiz_results');
+                if (savedResults) {
+                    console.log('Previous quiz results found - user can retake to override');
+                }
+            } catch (e) {
+                console.log('No saved results found');
+            }
+        },
+
+        scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        },
+
+        markComplete() {
+            try {
+                localStorage.setItem('quiz_completed', 'true');
+                console.log('✓ Quiz marked as completed');
+            } catch (e) {
+                console.error('Error marking quiz complete:', e);
+            }
+        },
+
+        clearCompletion() {
+            try {
+                localStorage.removeItem('quiz_completed');
+                console.log('✓ Quiz completion cleared');
+            } catch (e) {
+                console.error('Error clearing completion:', e);
+            }
+        },
+
+        isCompleted() {
+            return localStorage.getItem('quiz_completed') === 'true';
         }
-      });
-    }
-  })();
-</script>
+    };
 
-<script src="{{ 'quiz-section.js' | asset_url }}" defer></script>
+    // Initialize when DOM is ready
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', () => QuizManager.init());
+    } else {
+        QuizManager.init();
+    }
 
-{% schema %}
-{
-  "name": "Quiz Results",
-  "class": "quiz-section",
-  "settings": [
-    {
-      "type": "image_picker",
-      "id": "results_image",
-      "label": "Results Image (Desktop)",
-      "info": "Image will display on the left side on desktop (720px width)"
-    },
-    {
-      "type": "text",
-      "id": "title",
-      "label": "Title",
-      "default": "Your answers are analyzed. Click 'See My Results' to continue"
-    },
-    {
-      "type": "richtext",
-      "id": "description",
-      "label": "Description",
-      "info": "Use <strong> or <b> tags for bold text. Use [[question_id]] to insert answers.",
-      "default": "<p>Click 'show me my recommendations' to see the top 3 products for your hair needs pre-added to your basket. Each targets your scalp and hair for visible results. Below is your hair diagnosis: <strong>Medium, Coily hair.</strong></p><p>We've selected products to help you achieve a Healthy and Balanced Scalp. Afsennah will review your consultation to ensure the perfect formulation. If needed, Afsennah will contact you within <b>72 hours.</b></p>"
-    },
-    {
-      "type": "text",
-      "id": "next_button_text",
-      "label": "Next Button Text",
-      "default": "Show My Recommendations"
-    },
-    {
-      "type": "header",
-      "content": "Colors"
-    },
-    {
-      "type": "color",
-      "id": "primary_color",
-      "label": "Primary Color",
-      "default": "#000000"
-    },
-    {
-      "type": "color",
-      "id": "text_color",
-      "label": "Text Color",
-      "default": "#111827"
-    },
-    {
-      "type": "color",
-      "id": "button_color",
-      "label": "Button Background Color",
-      "default": "#000000"
-    },
-    {
-      "type": "color",
-      "id": "button_text_color",
-      "label": "Button Text Color",
-      "default": "#ffffff"
-    },
-    {
-      "type": "text",
-      "id": "button_border_radius",
-      "label": "Button Border Radius",
-      "default": "5rem",
-      "info": "CSS value for button border radius (e.g., 5rem, 8px, 50%)"
-    },
-    {
-      "type": "color",
-      "id": "background_color",
-      "label": "Background Color",
-      "default": "#f0f0ff"
-    },
-    {
-      "type": "header",
-      "content": "Answers Table Settings"
-    },
-    {
-      "type": "textarea",
-      "id": "visible_questions",
-      "label": "Visible Question IDs",
-      "info": "Comma-separated list of question IDs to show in the answers table. Leave empty to show all questions. Example: hair_type,goals,concerns"
+    // Make QuizManager globally accessible
+    window.QuizManager = QuizManager;
+
+    // Re-initialize on Shopify theme editor events
+    if (typeof Shopify !== 'undefined' && Shopify.designMode) {
+        document.addEventListener('shopify:section:load', () => {
+            QuizManager.initialized = false;
+            QuizManager.init();
+        });
     }
-  ],
-  "presets": [
-    {
-      "name": "Quiz Results"
-    }
-  ]
-}
-{% endschema %}
+})();
