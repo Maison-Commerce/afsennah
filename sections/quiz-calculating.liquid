@@ -188,10 +188,9 @@
   #shopify-section-{{ section.id }} .quiz-calculating-wrapper {
     display: flex;
     align-items: stretch;
-    min-height: 100vh;
+    min-height: calc(100vh - 136px);
+    height: calc(100vh - 136px);
     background: #f1f1f9;
-    max-width: 1440px;
-    margin: 0 auto;
   }
 
   /* Left Column - Reviews (Desktop) */
@@ -296,7 +295,8 @@
     background: #f1f1f9;
     border-left: 1px solid white;
     position: relative;
-    min-height: 100vh;
+    min-height: calc(100vh - 136px);
+    height: calc(100vh - 136px);
     justify-content: space-between;
   }
 
