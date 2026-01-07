@@ -10,6 +10,10 @@
 
 {%- liquid
   assign cheapest_variant = product.variants | sort: 'price' | first
+  if cheapest_variant == blank
+    assign cheapest_variant = product.selected_or_first_available_variant
+  endif
+  
   assign compare_at_price = cheapest_variant.compare_at_price
   assign price = cheapest_variant.price
   
@@ -23,6 +27,7 @@
     assign custom_aspect_ratio = custom_aspect_ratio | at_least: 0.6
   endif
 -%}
+
 <div class="cart-upsell-product" data-product-id="{{ product.id }}" data-variant-id="{{ cheapest_variant.id }}">
   <div class="cart-upsell-product__image">
     <a href="{{ product.url }}" class="cart-upsell-product__image-link">
@@ -76,6 +81,11 @@
     transition: transform 0.2s ease, box-shadow 0.2s ease;
   }
   
+  .cart-upsell-product:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+  
   .cart-upsell-product__image {
     position: relative;
     width: 100%;
@@ -119,6 +129,10 @@
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
+  }
+  
+  .cart-upsell-product__title:hover {
+    text-decoration: underline;
   }
   
   .cart-upsell-product__price {
@@ -170,6 +184,15 @@
     margin-top: auto;
   }
   
+  .cart-upsell-product__add-btn:hover {
+    background: #f5f5f5;
+    border-color: #999;
+  }
+  
+  .cart-upsell-product__add-btn:active {
+    transform: scale(0.98);
+  }
+  
   .cart-upsell-product__add-btn svg {
     width: 16px;
     height: 16px;
@@ -186,42 +209,77 @@
 <script>
   (function() {
     // Use event delegation to handle dynamically added products
-    document.addEventListener('click', function(e) {
+    function handleAddToCart(e) {
       const addBtn = e.target.closest('.cart-upsell-product__add-btn');
       if (!addBtn) return;
       
       e.preventDefault();
-      const productCard = addBtn.closest('.cart-upsell-product');
-      const variantId = addBtn.dataset.variantId;
-      const productId = productCard ? productCard.dataset.productId : null;
+      e.stopPropagation();
       
-      if (!variantId) return;
+      const productCard = addBtn.closest('.cart-upsell-product');
+      let variantId = addBtn.dataset.variantId;
+      
+      // Fallback: try to get from product card
+      if (!variantId && productCard) {
+        variantId = productCard.dataset.variantId;
+      }
+      
+      if (!variantId) {
+        console.error('No variant ID found for product:', productCard ? productCard.dataset.productId : 'unknown');
+        alert('Помилка: не вдалося знайти варіант продукту');
+        return;
+      }
       
       // Disable button during request
       addBtn.classList.add('loading');
       addBtn.disabled = true;
       
+      // Use theme.routes.cartAdd if available, otherwise fallback to direct path
+      const cartAddUrl = (window.theme && window.theme.routes && window.theme.routes.cartAdd) 
+        ? window.theme.routes.cartAdd 
+        : '/cart/add.js';
+      
+      const variantIdNum = parseInt(variantId);
+      if (isNaN(variantIdNum)) {
+        console.error('Invalid variant ID:', variantId);
+        alert('Помилка: невалідний ID варіанту');
+        addBtn.classList.remove('loading');
+        addBtn.disabled = false;
+        return;
+      }
+      
       // Add to cart
-      fetch('/cart/add.js', {
+      fetch(cartAddUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          id: variantId,
+          id: variantIdNum,
           quantity: 1
         })
       })
-      .then(response => response.json())
+      .then(response => {
+        if (!response.ok) {
+          return response.text().then(text => {
+            console.error('Cart add error response:', text);
+            throw new Error(`HTTP error! status: ${response.status}, body: ${text}`);
+          });
+        }
+        return response.json();
+      })
       .then(data => {
-        // Dispatch cart change event
+        console.log('Product added to cart:', data);
+        
+        // Dispatch cart change event - this is the main way to update cart
         document.dispatchEvent(new CustomEvent('on:cart:change', { bubbles: true }));
         
-        // Update cart drawer if it exists
+        // Also dispatch cart drawer refresh event
+        document.dispatchEvent(new CustomEvent('dispatch:cart-drawer:refresh', { bubbles: true }));
+        
+        // Update cart drawer directly
         const cartDrawer = document.querySelector('cart-drawer');
-        if (cartDrawer && typeof cartDrawer.refresh === 'function') {
-          cartDrawer.refresh();
-        } else if (cartDrawer && cartDrawer.querySelector('cart-form')) {
+        if (cartDrawer) {
           const cartForm = cartDrawer.querySelector('cart-form');
           if (cartForm && typeof cartForm.refresh === 'function') {
             cartForm.refresh();
@@ -234,10 +292,20 @@
       })
       .catch(error => {
         console.error('Error adding to cart:', error);
+        alert('Помилка додавання продукту до кошика: ' + error.message);
         addBtn.classList.remove('loading');
         addBtn.disabled = false;
       });
-    });
+    }
+    
+    // Add event listener when DOM is ready
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('click', handleAddToCart);
+      });
+    } else {
+      document.addEventListener('click', handleAddToCart);
+    }
   })();
 </script>
 
