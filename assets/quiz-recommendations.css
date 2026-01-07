@@ -950,7 +950,7 @@
 
     .cart-subscription-item .cart-item-price {
         text-align: left;
-        align-items: flex-start;
+        align-items: center;
     }
 
     .cart-subscription-item .cart-item-remove {
@@ -995,7 +995,6 @@
 
     .cart-item-price-wrapper {
         display: flex;
-        flex-direction: column;
         align-items: flex-end;
         gap: 4px;
         flex-shrink: 0;
