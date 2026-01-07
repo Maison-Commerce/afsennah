@@ -1077,6 +1077,11 @@
                         }
 
                         updateCartItem(selectedVariantId, currentQty, updatedProduct, sellingPlanId);
+                        
+                        // Force update cart display to ensure totals are recalculated
+                        setTimeout(() => {
+                            updateCartDisplay();
+                        }, 0);
                     }
                 });
             });
@@ -1281,11 +1286,18 @@
         const numericVariantId = parseInt(variantId);
 
         // Remove only non-gift, non-BOGO items with this variantId (preserve gifts and BOGO free items)
-        cartItems = cartItems.filter(item =>
-            parseInt(item.variantId) !== numericVariantId ||
-            item.isGift ||
-            item.isBogoFree
-        );
+        // When switching purchase options (subscription <-> one-time), remove the old option
+        const numericSellingPlanId = sellingPlanId ? parseInt(sellingPlanId) : null;
+        cartItems = cartItems.filter(item => {
+            // Keep items with different variantId
+            if (parseInt(item.variantId) !== numericVariantId) return true;
+            // Keep gifts and BOGO items
+            if (item.isGift || item.isBogoFree) return true;
+            // Remove items with same variantId but different sellingPlanId (switching purchase options)
+            const itemSellingPlanId = item.sellingPlanId ? parseInt(item.sellingPlanId) : null;
+            // Only keep if sellingPlanId matches (same purchase option)
+            return itemSellingPlanId === numericSellingPlanId;
+        });
 
         if (quantity > 0) {
             addToCart(numericVariantId, quantity, product, sellingPlanId);
