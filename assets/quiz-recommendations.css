@@ -6,7 +6,6 @@
     .recommendations-layout {
         display: flex;
         gap: 24px;
-        justify-content: space-around;
         align-items: start;
     }
 
