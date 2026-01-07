@@ -1019,3 +1019,8 @@ video-section-play-button {
     flex-direction: column;
     gap: 20px;
 }
+
+.cart-item__column.cart-item__quantity .quantity {
+    border-radius: 8px;
+    border: 1px solid #FBF9F5;
+}
