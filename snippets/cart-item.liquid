@@ -109,42 +109,7 @@
           {%- endif -%}
         {%- endif -%}
       </div>
-    </div>
-
-
-    <div class="cart-item__column cart-item__price">
-      <div class="cart-item__price-wrapper">
-        <span class="visually-hidden">
-          {%- if item.variant.compare_at_price > item.variant.price or item.original_line_price > item.final_line_price -%}
-            {{- 'products.product.price.sale_price' | t -}}
-          {%- else -%}
-            {{- 'products.product.price.regular_price' | t -}}
-          {%- endif -%}
-        </span>
-        <span class="theme-money cart-item__selling-price">{{ item.final_price | money }}</span>
-        {% if item.variant.compare_at_price > item.variant.price %}
-          <span class="visually-hidden">{{ 'products.product.price.regular_price' | t }}</span>
-          <span class="struck-out-price small-text"><span class="theme-money">{{ item.variant.compare_at_price | money }}</span></span>
-        {% elsif item.original_line_price > item.final_line_price %}
-          <span class="visually-hidden">{{ 'products.product.price.regular_price' | t }}</span>
-          <span class="struck-out-price small-text"><span class="theme-money">{{ item.original_price | money }}</span></span>
-        {% endif %}
-
-        {% render 'unit-price', variant: item %}
-
-        {%- unless drawer -%}
-          {{- line_item_discounts -}}
-        {%- endunless -%}
-      </div>
-      
-      <button type="button" class="cart-item__remove cart-item__remove-icon" aria-label="{{ 'cart.items.remove' | t | escape }}" data-key="{{ item.key }}">
-        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M2.5 4.99996H17.5M15.8333 4.99996V16.6666C15.8333 17.5 15 18.3333 14.1667 18.3333H5.83333C5 18.3333 4.16667 17.5 4.16667 16.6666V4.99996M6.66667 4.99996V3.33329C6.66667 2.49996 7.5 1.66663 8.33333 1.66663H11.6667C12.5 1.66663 13.3333 2.49996 13.3333 3.33329V4.99996M8.33333 9.16663V14.1666M11.6667 9.16663V14.1666" stroke="#98A2B3" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-      </button>
-    </div>
-
-    {% liquid
+      {% liquid
       if item.variant.inventory_management != blank and item.variant.inventory_policy == 'deny'
         assign quantity = item.quantity | at_most: item.variant.inventory_quantity | at_least: 1
       else
@@ -189,6 +154,42 @@
         {{- 'cart.items.remove' | t -}}
       </a>
     </div>
+    </div>
+
+
+    <div class="cart-item__column cart-item__price">
+      <div class="cart-item__price-wrapper">
+        <span class="visually-hidden">
+          {%- if item.variant.compare_at_price > item.variant.price or item.original_line_price > item.final_line_price -%}
+            {{- 'products.product.price.sale_price' | t -}}
+          {%- else -%}
+            {{- 'products.product.price.regular_price' | t -}}
+          {%- endif -%}
+        </span>
+        <span class="theme-money cart-item__selling-price">{{ item.final_price | money }}</span>
+        {% if item.variant.compare_at_price > item.variant.price %}
+          <span class="visually-hidden">{{ 'products.product.price.regular_price' | t }}</span>
+          <span class="struck-out-price small-text"><span class="theme-money">{{ item.variant.compare_at_price | money }}</span></span>
+        {% elsif item.original_line_price > item.final_line_price %}
+          <span class="visually-hidden">{{ 'products.product.price.regular_price' | t }}</span>
+          <span class="struck-out-price small-text"><span class="theme-money">{{ item.original_price | money }}</span></span>
+        {% endif %}
+
+        {% render 'unit-price', variant: item %}
+
+        {%- unless drawer -%}
+          {{- line_item_discounts -}}
+        {%- endunless -%}
+      </div>
+      
+      <button type="button" class="cart-item__remove cart-item__remove-icon" aria-label="{{ 'cart.items.remove' | t | escape }}" data-key="{{ item.key }}">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M2.5 4.99996H17.5M15.8333 4.99996V16.6666C15.8333 17.5 15 18.3333 14.1667 18.3333H5.83333C5 18.3333 4.16667 17.5 4.16667 16.6666V4.99996M6.66667 4.99996V3.33329C6.66667 2.49996 7.5 1.66663 8.33333 1.66663H11.6667C12.5 1.66663 13.3333 2.49996 13.3333 3.33329V4.99996M8.33333 9.16663V14.1666M11.6667 9.16663V14.1666" stroke="#98A2B3" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+    </div>
+
+    
 
     {%- unless drawer -%}
       <div class="cart-item__column cart-item__total">
