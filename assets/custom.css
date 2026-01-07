@@ -1003,5 +1003,5 @@ video-section-play-button {
 }
 
 .cart-item__column cart-item__price .cart-item__remove {
-    display: block;
+    display: block !important;
 }
