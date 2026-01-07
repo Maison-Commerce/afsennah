@@ -445,7 +445,7 @@
 
     .recommended-product-card {
         background: #fff;
-        border-radius: 8px;
+        border-radius: 16px;
         padding: 24px;
         margin-bottom: 20px;
         display: flex;
