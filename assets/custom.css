@@ -1046,11 +1046,12 @@ video-section-play-button {
     border-radius:8px;
     background: #F7F7FC;
     padding: 8px;
-    display: grid;
-    grid-template-columns: 1fr 
+    display: flex;
+    flex-direction: column;
 }
-.subscription-description  .content-heading {
+.subscription-description .content-heading {
     display: flex;
     width: 100%;
     justify-content: space-between;
+    align-items: center
 }
