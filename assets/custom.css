@@ -1024,3 +1024,6 @@ video-section-play-button {
     border-radius: 8px;
     border: 1px solid #FBF9F5;
 }
+.cart-item__column.cart-item__quantity .buttoned-input a {
+    padding: 0
+}
