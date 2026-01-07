@@ -855,8 +855,9 @@
 
 
     .product-add-btn {
-        background: var(--button-color, #a6a8de);
-        color: var(--button-text-color, white);
+        background: #F1F1F9;
+        border: 1.5px solid #B4B4DE;
+        color: white;
         border: none;
         padding: 8px 20px;
         border-radius: 5rem;
@@ -866,6 +867,7 @@
         z-index: 10;
         position: relative;
         align-self: flex-end;
+        text-transform: uppercase;
     }
 
     .product-add-btn:hover {
