@@ -226,8 +226,10 @@
   </div>
 </div>
 {% if item.selling_plan_allocation %}
-  1{{ item.selling_plan_allocation.selling_plan }}
-  2{{ item.selling_plan_allocation.selling_plan | json }}
+  {% comment %} 1{{ item.selling_plan_allocation.selling_plan }} {% endcomment %}
+  <script>
+    console.log({{ item.selling_plan_allocation.selling_plan | json }})
+  </script>
   <div class="subscription-description">{{ item.selling_plan_allocation.selling_plan.name | escape_once }}</div>
 {% endif %}
 {% comment %} {% if %} {% endcomment %}
