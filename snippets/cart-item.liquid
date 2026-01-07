@@ -228,7 +228,9 @@
 {% if item.selling_plan_allocation %}
   {% comment %} 1{{ item.selling_plan_allocation.selling_plan }} {% endcomment %}
   <script>
-    console.log({{ item.selling_plan_allocation.selling_plan | json }})
+    {% assign sellingOption = item.selling_plan_allocation.selling_plan.options | first %}
+    console.log({{ sellingOption.name }})
+    console.log({{ sellingOption.value }})
   </script>
   <div class="subscription-description">{{ item.selling_plan_allocation.selling_plan.name | escape_once }}</div>
 {% endif %}
