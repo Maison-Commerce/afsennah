@@ -1053,5 +1053,5 @@ video-section-play-button {
     display: flex;
     width: 100%;
     justify-content: space-between;
-    align-items: center
+    align-items: flex-start
 }
