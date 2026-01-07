@@ -1072,12 +1072,13 @@
         border-top: 1px solid #E5E5F4;
         padding-top: 16px;
         margin-bottom: 24px;
+        display: flex;
+        align-items: center;
     }
 
     .cart-total-label {
         font-size: 14px;
         color: #6B7280;
-        margin-bottom: 8px;
     }
 
     .cart-total-price {
