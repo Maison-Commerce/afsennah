@@ -1301,14 +1301,14 @@ height: 100%;
     position: relative
 }
 .cart-upsell-product__image-link {
-    height: 80px;
-    max-height: 80px;
-    min-height: 80px;
+    height: 96px;
+    max-height: 96px;
+    min-height: 96px;
 }
 .cart-upsell-product__image .img-ar.img-ar--contain {
-    height: 80px;
+    height: 96px;
 }
 .cart-upsell-product__image {
-    height: 80px !important;
+    height: 96px !important;
     padding: 0 !important
 }
