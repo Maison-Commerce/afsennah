@@ -766,25 +766,25 @@
         const isBogo = isBogoEligible(product);
 
         card.innerHTML = `
-            <div class="product-card-image">
-                ${isBogo ? `<div class="product-bogo-badge">${bogoBadgeText}</div>` : ''}
-                <img src="${product.featured_image || ''}" alt="${product.title}">
+            <div class="product-card-header-row">
+                <div class="product-card-image">
+                    ${isBogo ? `<div class="product-bogo-badge">${bogoBadgeText}</div>` : ''}
+                    <img src="${product.featured_image || ''}" alt="${product.title}">
+                </div>
+                <div class="product-card-title-wrapper">
+                    <h3 class="product-card-title product-card-title-desktop">${product.title}</h3>
+                    <h3 class="product-card-title product-card-title-mobile">${product.title}</h3>
+                    ${description ? `<div class="product-card-description">${description}</div>` : ''}
+                </div>
+                ${section === 'top-picks' ? `
+                    <button class="product-remove-btn" data-remove-btn aria-label="Remove product">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <path d="M5 5L15 15M15 5L5 15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                ` : ''}
             </div>
             <div class="product-card-content">
-                <div class="product-card-header">
-                    <div class="product-card-title-wrapper">
-                        <h3 class="product-card-title product-card-title-desktop">${product.title}</h3>
-                        <h3 class="product-card-title product-card-title-mobile">${product.title}</h3>
-                        ${description ? `<div class="product-card-description">${description}</div>` : ''}
-                    </div>
-                    ${section === 'top-picks' ? `
-                        <button class="product-remove-btn" data-remove-btn aria-label="Remove product">
-                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                                <path d="M5 5L15 15M15 5L5 15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                        </button>
-                    ` : ''}
-                </div>
                 <div class="product-options-group">
                     ${quantityHTML}
                     ${variantSelectorHTML}
