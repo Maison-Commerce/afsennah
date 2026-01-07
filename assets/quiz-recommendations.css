@@ -109,9 +109,6 @@
     }
 
     /* Tiered Gift System Styles */
-    .gift-tiers-container {
-        margin-bottom: 30px;
-    }
 
     .gift-progress-section {
         background: #fff;
@@ -428,9 +425,6 @@
     }
 
     @media (max-width: 767px) {
-        .gift-tiers-container {
-            margin-bottom: 24px;
-        }
 
         .gift-progress-section {
             padding: 12px;
