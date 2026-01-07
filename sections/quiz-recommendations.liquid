@@ -202,24 +202,8 @@
                     {% if section.settings.checkout_subtext != blank %}
                         <div class="checkout-subtext">{{ section.settings.checkout_subtext }}</div>
                     {% endif %}
-                    {% if section.settings.highlight_text_desktop != blank %}
-                        <div class="cart-highlight-box-external desktop-only cart-highlight-fullscreen" data-highlight-text>
-                            {{ section.settings.highlight_text_desktop }}
-                        </div>
-                    {% endif %}
                 </div>
             </div>
-
-            {% if section.settings.highlight_text_desktop != blank %}
-                <div class="cart-highlight-box-external desktop-only cart-highlight-static" data-highlight-text>
-                    {{ section.settings.highlight_text_desktop }}
-                </div>
-            {% endif %}
-            {% if section.settings.highlight_text_mobile != blank %}
-                <div class="cart-highlight-box-external mobile-only" data-highlight-text>
-                    {{ section.settings.highlight_text_mobile }}
-                </div>
-            {% endif %}
         </div>
     </div>
 </div>
@@ -626,24 +610,6 @@
             "id": "background_color",
             "label": "Background Color",
             "default": "#f0f0ff"
-        },
-        {
-            "type": "header",
-            "content": "Highlight Text Boxes"
-        },
-        {
-            "type": "richtext",
-            "id": "highlight_text_desktop",
-            "label": "Highlight Text (Desktop)",
-            "info": "Appears in cart summary on desktop. Use [[amount:100]] for auto-converted currency (e.g., '[[amount:100]]' becomes '$180' in USD)",
-            "default": "<p><strong>60% off</strong> + free shipping applied!</p>"
-        },
-        {
-            "type": "richtext",
-            "id": "highlight_text_mobile",
-            "label": "Highlight Text (Mobile)",
-            "info": "Appears in cart summary on mobile. Use [[amount:100]] for auto-converted currency (e.g., '[[amount:100]]' becomes '$180' in USD)",
-            "default": "<p><strong>60% off</strong> + free shipping applied!</p>"
         },
         {
             "type": "text",
