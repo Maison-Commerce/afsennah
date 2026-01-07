@@ -1031,7 +1031,10 @@ video-section-play-button {
     justify-content: center;
     align-items: center;
 }
-
+.cart-item__image {
+    width: max-content;
+    padding: 0;
+}
 .cart-item__image .theme-img {
     max-height: 80px;
     width: auto;
