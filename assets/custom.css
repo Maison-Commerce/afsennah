@@ -1194,3 +1194,6 @@ video-section-play-button {
 .cart-drawer__content .cart-info-block--lmtb {
     display: none;
 }
+.cart-upsell-product__title {
+    text-align: center;
+}
