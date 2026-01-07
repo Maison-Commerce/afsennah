@@ -9,9 +9,9 @@
 {%- endcomment -%}
 
 {%- liquid
-  assign cheapest_variant = product.variants | sort: 'price' | first
-  assign compare_at_price = cheapest_variant.compare_at_price
-  assign price = cheapest_variant.price
+  assign first_available_variant = product.selected_or_first_available_variant
+  assign compare_at_price = first_available_variant.compare_at_price
+  assign price = first_available_variant.price
   
   if compare_at_price > price
     assign discount_percent = compare_at_price | minus: price | times: 100.0 | divided_by: compare_at_price | round
@@ -23,7 +23,7 @@
     assign custom_aspect_ratio = custom_aspect_ratio | at_least: 0.6
   endif
 -%}
-<div class="cart-upsell-product" data-product-id="{{ product.id }}" data-variant-id="{{ cheapest_variant.id }}">
+<div class="cart-upsell-product" data-product-id="{{ product.id }}" data-variant-id="{{ first_available_variant.id }}">
   <div class="cart-upsell-product__image">
     <a href="{{ product.url }}" class="cart-upsell-product__image-link">
       {% if product.featured_media %}
@@ -56,7 +56,7 @@
       </div>
     {% endif %}
     
-    <button type="button" class="cart-upsell-product__add-btn" data-variant-id="{{ cheapest_variant.id }}" aria-label="Add {{ product.title | escape }} to cart">
+    <button type="button" class="cart-upsell-product__add-btn" data-variant-id="{{ first_available_variant.id }}" aria-label="Add {{ product.title | escape }} to cart">
       <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M8 3V13M3 8H13" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
       </svg>
@@ -201,28 +201,16 @@
       addBtn.classList.add('loading');
       addBtn.disabled = true;
       
-      // Get cart drawer and section ID for updating
-      const cartDrawer = document.querySelector('cart-drawer');
-      const sectionsToUpdate = cartDrawer ? [cartDrawer] : [];
-      const sectionIds = sectionsToUpdate.map(el => el.dataset.sectionId).filter(id => id);
-      
-      // Prepare form data
-      const formData = new FormData();
-      formData.append('id', variantId);
-      formData.append('quantity', 1);
-      formData.append('sections_url', window.location.pathname);
-      if (sectionIds.length > 0) {
-        formData.append('sections', sectionIds.join(','));
-      }
-      
-      // Add to cart using theme.routes.cartAdd
-      fetch(theme.routes.cartAdd, {
+      // Add to cart using /cart/add.js
+      fetch('/cart/add.js', {
         method: 'POST',
         headers: {
-          'Accept': 'application/javascript',
-          'X-Requested-With': 'XMLHttpRequest'
+          'Content-Type': 'application/json',
         },
-        body: formData
+        body: JSON.stringify({
+          id: variantId,
+          quantity: 1
+        })
       })
       .then(response => {
         if (!response.ok) {
@@ -234,32 +222,27 @@
       })
       .then(data => {
         // Check for errors in response
-        let error = null;
         if (data.status) {
-          error = typeof data.description === 'string' ? data.description : data.message;
-          if (data.errors && typeof data.errors === 'object') {
-            error = Object.entries(data.errors).map((item) => item[1].join(', ')).join('; ');
-          }
-        }
-        
-        if (error) {
+          const error = typeof data.description === 'string' ? data.description : data.message;
           console.error('Error adding to cart:', error);
-          // Re-enable button on error
           addBtn.classList.remove('loading');
           addBtn.disabled = false;
           return;
         }
         
-        // Update sections if available
-        if (data.sections && sectionsToUpdate.length === Object.keys(data.sections).length) {
-          sectionsToUpdate.forEach((el) => {
-            if (el.updateFromCartChange && data.sections[el.dataset.sectionId]) {
-              el.updateFromCartChange(data.sections[el.dataset.sectionId]);
-            }
-          });
-        } else {
-          // Fallback: dispatch cart change event if sections not available
-          document.dispatchEvent(new CustomEvent('on:cart:change', { bubbles: true, cancelable: false }));
+        // Dispatch cart change event
+        document.dispatchEvent(new CustomEvent('on:cart:change', { bubbles: true, cancelable: false }));
+        
+        // Update cart drawer by calling refresh on cart-form
+        const cartDrawer = document.querySelector('cart-drawer');
+        if (cartDrawer) {
+          const cartForm = cartDrawer.querySelector('cart-form');
+          if (cartForm && typeof cartForm.refresh === 'function') {
+            cartForm.refresh();
+          } else {
+            // Fallback: dispatch refresh event
+            document.dispatchEvent(new CustomEvent('dispatch:cart-drawer:refresh', { bubbles: true }));
+          }
         }
         
         // Dispatch cart add event for compatibility
@@ -270,22 +253,17 @@
           }
         }));
         
-        // Open drawer if afterAddToCart setting is 'drawer'
-        if (theme.settings.afterAddToCart === 'drawer' && cartDrawer) {
-          cartDrawer.open(addBtn);
-        }
-        
         // Re-enable button
         addBtn.classList.remove('loading');
         addBtn.disabled = false;
       })
       .catch(error => {
         console.error('Error adding to cart:', error);
-        // Re-enable button on error
         addBtn.classList.remove('loading');
         addBtn.disabled = false;
       });
     });
   })();
 </script>
+
 
