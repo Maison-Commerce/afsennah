@@ -265,8 +265,8 @@
 
   /* Desktop Image */
   #shopify-section-{{ section.id }} .quiz-step-image {
-    width: 720px;
-    flex-shrink: 0;
+    max-width: 720px;
+    width: 100%;
     height: auto;
     overflow: hidden;
     position: relative;
@@ -474,6 +474,7 @@
     flex-shrink: 0;
     border-radius: 12px;
     overflow: hidden;
+    margin-right: 6px;
   }
 
   #shopify-section-{{ section.id }} .quiz-answer-image img {
@@ -502,6 +503,10 @@
       grid-template-columns: repeat(2, 1fr) !important;
     }
   {% endif %}
+
+  @media (max-width: 1024px) {
+  
+  }
 
   @media (max-width: 1024px) {
     {% if section.settings.answers_layout_mobile == 'two_columns' %}
