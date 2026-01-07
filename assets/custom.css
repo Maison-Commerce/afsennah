@@ -1168,5 +1168,8 @@ video-section-play-button {
     line-height: 150%;
     letter-spacing: 0%;
     vertical-align: middle;
+    color: #2C2926;
+}
+.opposing-items__left.product-info-label p {
 
 }
