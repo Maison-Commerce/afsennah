@@ -24,20 +24,34 @@
   background: {{ section.settings.background_color }};
   }
 
-  .quiz-step-{{ section.id }} .quiz-answers {
-  grid-template-columns: repeat({{ section.settings.columns_desktop }}, 1fr);
-  }
+  {% if section.settings.answers_layout == 'two_columns' %}
+    .quiz-step-{{ section.id }} .quiz-answers {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+  {% else %}
+    .quiz-step-{{ section.id }} .quiz-answers {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+  {% endif %}
 
   @media (max-width: 1024px) {
-  .quiz-step-{{ section.id }} .quiz-answers {
-  grid-template-columns: repeat({{ section.settings.columns_tablet }}, 1fr);
-  }
-  }
-
-  @media (max-width: 640px) {
-  .quiz-step-{{ section.id }} .quiz-answers {
-  grid-template-columns: repeat({{ section.settings.columns_mobile }}, 1fr);
-  }
+    {% if section.settings.answers_layout_mobile == 'two_columns' %}
+      .quiz-step-{{ section.id }} .quiz-answers {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+      }
+    {% else %}
+      .quiz-step-{{ section.id }} .quiz-answers {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+    {% endif %}
   }
 {%- endstyle -%}
 
@@ -421,9 +435,6 @@
 
   /* Answers */
   #shopify-section-{{ section.id }} .quiz-answers {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
     width: 100%;
   }
 
@@ -484,6 +495,28 @@
 
   #shopify-section-{{ section.id }} .quiz-answer:has(.quiz-answer-image) input:checked + .quiz-answer-content {
     border-radius: 18px;
+  }
+
+  /* Two-column layout adjustments */
+  {% if section.settings.answers_layout == 'two_columns' %}
+    #shopify-section-{{ section.id }} .quiz-answers {
+      display: grid !important;
+      grid-template-columns: repeat(2, 1fr) !important;
+    }
+  {% endif %}
+
+  @media (max-width: 1024px) {
+    {% if section.settings.answers_layout_mobile == 'two_columns' %}
+      #shopify-section-{{ section.id }} .quiz-answers {
+        display: grid !important;
+        grid-template-columns: repeat(2, 1fr) !important;
+      }
+    {% else %}
+      #shopify-section-{{ section.id }} .quiz-answers {
+        display: flex !important;
+        flex-direction: column !important;
+      }
+    {% endif %}
   }
 
   #shopify-section-{{ section.id }} .quiz-answer-image {
@@ -906,14 +939,48 @@
       "content": "Layout"
     },
     {
+      "type": "select",
+      "id": "answers_layout",
+      "label": "Answer Layout - Desktop",
+      "options": [
+        {
+          "value": "one_column",
+          "label": "One Column (Stacked)"
+        },
+        {
+          "value": "two_columns",
+          "label": "Two Columns (Side by Side)"
+        }
+      ],
+      "default": "one_column",
+      "info": "Choose how answers are displayed on desktop screens"
+    },
+    {
+      "type": "select",
+      "id": "answers_layout_mobile",
+      "label": "Answer Layout - Mobile",
+      "options": [
+        {
+          "value": "one_column",
+          "label": "One Column (Stacked)"
+        },
+        {
+          "value": "two_columns",
+          "label": "Two Columns (Side by Side)"
+        }
+      ],
+      "default": "one_column",
+      "info": "Choose how answers are displayed on mobile screens"
+    },
+    {
       "type": "range",
       "id": "columns_desktop",
       "min": 1,
       "max": 6,
       "step": 1,
-      "label": "Columns - Desktop",
+      "label": "Columns - Desktop (Legacy)",
       "default": 2,
-      "info": "Number of answer columns on desktop screens"
+      "info": "Legacy setting - use Answer Layout instead"
     },
     {
       "type": "range",
@@ -921,9 +988,9 @@
       "min": 1,
       "max": 6,
       "step": 1,
-      "label": "Columns - Tablet",
+      "label": "Columns - Tablet (Legacy)",
       "default": 2,
-      "info": "Number of answer columns on tablet screens"
+      "info": "Legacy setting - use Answer Layout instead"
     },
     {
       "type": "range",
@@ -931,9 +998,9 @@
       "min": 1,
       "max": 6,
       "step": 1,
-      "label": "Columns - Mobile",
+      "label": "Columns - Mobile (Legacy)",
       "default": 1,
-      "info": "Number of answer columns on mobile screens"
+      "info": "Legacy setting - use Answer Layout instead"
     },
     {
       "type": "header",
