@@ -547,6 +547,9 @@
         justify-content: center;
         flex-shrink: 0;
         margin-left: auto;
+        position: absolute;
+        top: 8px;
+        right: 8px;
     }
 
     .product-remove-btn:hover {
