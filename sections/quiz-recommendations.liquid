@@ -3686,10 +3686,10 @@
 
         if (!hoursEl || !minutesEl || !secondsEl || !millisecondsEl) return;
 
-        const recommendationsSectionState = document.querySelector('[data-recommendations]');
-        const hours = parseInt(recommendationsSectionState?.dataset.countdownHours || '0') || 0;
-        const minutes = parseInt(recommendationsSectionState?.dataset.countdownMinutes || '9') || 9;
-        const seconds = parseInt(recommendationsSectionState?.dataset.countdownSeconds || '57') || 57;
+        const recommendationsSectionForCountdown = document.querySelector('[data-recommendations]');
+        const hours = parseInt(recommendationsSectionForCountdown?.dataset.countdownHours || '0') || 0;
+        const minutes = parseInt(recommendationsSectionForCountdown?.dataset.countdownMinutes || '9') || 9;
+        const seconds = parseInt(recommendationsSectionForCountdown?.dataset.countdownSeconds || '57') || 57;
 
         let totalMilliseconds = (hours * 3600 + minutes * 60 + seconds) * 1000;
 
@@ -3755,19 +3755,19 @@
     }
 
     // Initialize countdown and upsell when recommendations are shown
-    const recommendationsSectionState = document.querySelector('[data-recommendations]');
-    if (recommendationsSectionState) {
-        const observer = new MutationObserver(function(mutations) {
+    const recommendationsSectionForTimer = document.querySelector('[data-recommendations]');
+    if (recommendationsSectionForTimer) {
+        const timerObserver = new MutationObserver(function(mutations) {
             mutations.forEach(function(mutation) {
                 if (mutation.attributeName === 'style') {
-                    if (recommendationsSectionState.style.display !== 'none') {
+                    if (recommendationsSectionForTimer.style.display !== 'none') {
                         initCountdownTimer();
                         initUpsellButton();
                     }
                 }
             });
         });
-        observer.observe(recommendationsSectionState, { attributes: true });
+        timerObserver.observe(recommendationsSectionForTimer, { attributes: true });
     }
 
 
@@ -3995,19 +3995,19 @@
     window.initRecommendations = initRecommendations;
 
     // Initialize recommendations when section becomes visible
-    const recommendationsSectionState = document.querySelector('[data-recommendations]');
-    if (recommendationsSectionState) {
+    // Use the same variable from the countdown timer section above
+    if (recommendationsSectionForTimer) {
         // Check if section is already visible
         const checkVisibility = () => {
-            const style = window.getComputedStyle(recommendationsSectionState);
-            const isVisible = recommendationsSectionState.style.display !== 'none' && 
+            const style = window.getComputedStyle(recommendationsSectionForTimer);
+            const isVisible = recommendationsSectionForTimer.style.display !== 'none' && 
                              style.display !== 'none' &&
-                             recommendationsSectionState.offsetParent !== null;
+                             recommendationsSectionForTimer.offsetParent !== null;
             
             console.log('Checking visibility:', {
-                inlineStyle: recommendationsSectionState.style.display,
+                inlineStyle: recommendationsSectionForTimer.style.display,
                 computedStyle: style.display,
-                offsetParent: recommendationsSectionState.offsetParent !== null,
+                offsetParent: recommendationsSectionForTimer.offsetParent !== null,
                 isVisible: isVisible,
                 initialized: initialized
             });
@@ -4038,7 +4038,7 @@
                 }
             });
         });
-        observer.observe(recommendationsSectionState, { 
+        observer.observe(recommendationsSectionForTimer, { 
             attributes: true, 
             attributeFilter: ['style', 'class'],
             childList: false,
