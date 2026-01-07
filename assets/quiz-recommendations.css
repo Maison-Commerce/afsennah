@@ -754,7 +754,7 @@
 
     .purchase-option.selected {
         border-color: #B4B4DE;
-        background: #e9d5ff;
+        background: #F1F1F9;
     }
 
     .purchase-option input[type="radio"] {
