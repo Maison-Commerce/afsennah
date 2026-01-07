@@ -758,6 +758,11 @@
                 <button class="product-add-btn product-add-btn-corner" data-add-btn>
                     Add
                 </button>
+                <button class="product-remove-btn" data-remove-btn aria-label="Remove product" style="display: none;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                        <path d="M2.5 4.99996H17.5M15.8333 4.99996V16.6666C15.8333 17.5 15 18.3333 14.1667 18.3333H5.83333C5 18.3333 4.16667 17.5 4.16667 16.6666V4.99996M6.66667 4.99996V3.33329C6.66667 2.49996 7.5 1.66663 8.33333 1.66663H11.6667C12.5 1.66663 13.3333 2.49996 13.3333 3.33329V4.99996M8.33333 9.16663V14.1666M11.6667 9.16663V14.1666" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
             ` : ''}
         `;
 
@@ -954,28 +959,70 @@
         const removeBtn = card.querySelector('[data-remove-btn]');
         if (removeBtn) {
             removeBtn.addEventListener('click', () => {
-                const selectedVariantId = card.dataset.variantId;
-                removeProductFromCart(product, selectedVariantId);
+                const selectedVariantId = parseInt(card.dataset.variantId);
+                const selectedOption = card.querySelector('input[type="radio"]:checked');
+                const sellingPlanId = selectedOption?.dataset.sellingPlan || null;
+                
+                // Actually remove from cart
+                updateCartItem(selectedVariantId, 0, product, sellingPlanId);
+                
+                // Update button visibility after removing
+                setTimeout(() => {
+                    checkCartState();
+                }, 100);
             });
         }
+
+        // Check if product is already in cart and update button visibility
+        const checkCartState = () => {
+            const selectedVariantId = parseInt(card.dataset.variantId);
+            const selectedOption = card.querySelector('input[type="radio"]:checked');
+            const sellingPlanId = selectedOption?.dataset.sellingPlan || null;
+            const numericSellingPlanId = sellingPlanId ? parseInt(sellingPlanId) : null;
+            
+            const itemInCart = cartItems.find(item => {
+                const itemVariantId = parseInt(item.variantId);
+                const itemSellingPlanId = item.sellingPlanId ? parseInt(item.sellingPlanId) : null;
+                return itemVariantId === selectedVariantId && 
+                       itemSellingPlanId === numericSellingPlanId &&
+                       !item.isGift && 
+                       !item.isBogoFree;
+            });
+            
+            const addBtn = card.querySelector('[data-add-btn]');
+            const removeBtn = card.querySelector('[data-remove-btn]');
+            
+            if (itemInCart && itemInCart.quantity > 0) {
+                // Product is in cart - show remove button, hide add button
+                if (addBtn) addBtn.style.display = 'none';
+                if (removeBtn) removeBtn.style.display = 'block';
+                card.classList.remove('removed');
+                productStates[product.id].removed = false;
+            } else {
+                // Product is not in cart - show add button, hide remove button
+                if (addBtn) addBtn.style.display = 'inline-flex';
+                if (removeBtn) removeBtn.style.display = 'none';
+                card.classList.add('removed');
+                productStates[product.id].removed = true;
+            }
+        };
+        
+        // Check initial state
+        checkCartState();
 
         const addBtn = card.querySelector('[data-add-btn]');
         if (addBtn) {
             addBtn.addEventListener('click', () => {
-                productStates[product.id].removed = false;
-                card.classList.remove('removed');
-                addBtn.style.display = 'none';
-
-                const removeBtn = card.querySelector('[data-remove-btn]');
-                if (removeBtn) {
-                    removeBtn.style.display = 'block';
-                }
-
                 const currentQty = productStates[product.id].quantity || 1;
                 const selectedOption = card.querySelector('input[type="radio"]:checked');
                 const sellingPlanId = selectedOption?.dataset.sellingPlan || null;
-                const selectedVariantId = card.dataset.variantId;
+                const selectedVariantId = parseInt(card.dataset.variantId);
                 addToCart(selectedVariantId, currentQty, product, sellingPlanId);
+                
+                // Update button visibility after adding
+                setTimeout(() => {
+                    checkCartState();
+                }, 100);
             });
         }
 
@@ -1078,10 +1125,13 @@
 
                         updateCartItem(selectedVariantId, currentQty, updatedProduct, sellingPlanId);
                         
-                        // Force update cart display to ensure totals are recalculated
+                        // Update button visibility after purchase option change
                         setTimeout(() => {
-                            updateCartDisplay();
-                        }, 0);
+                            checkCartState();
+                        }, 100);
+                    } else {
+                        // Product not in cart, update button visibility
+                        checkCartState();
                     }
                 });
             });
@@ -1191,6 +1241,55 @@
         }
 
         updateCartDisplay();
+        
+        // Update button visibility for all product cards after cart changes
+        updateProductCardButtons();
+    }
+    
+    function updateProductCardButtons() {
+        // Update button visibility for all product cards based on cart state
+        const allCards = document.querySelectorAll('.recommended-product-card');
+        allCards.forEach(card => {
+            const productId = card.dataset.productId;
+            if (!productId) return;
+            
+            const selectedVariantId = parseInt(card.dataset.variantId);
+            const selectedOption = card.querySelector('input[type="radio"]:checked');
+            const sellingPlanId = selectedOption?.dataset.sellingPlan || null;
+            const numericSellingPlanId = sellingPlanId ? parseInt(sellingPlanId) : null;
+            
+            const itemInCart = cartItems.find(item => {
+                const itemVariantId = parseInt(item.variantId);
+                const itemSellingPlanId = item.sellingPlanId ? parseInt(item.sellingPlanId) : null;
+                return itemVariantId === selectedVariantId && 
+                       itemSellingPlanId === numericSellingPlanId &&
+                       !item.isGift && 
+                       !item.isBogoFree;
+            });
+            
+            const addBtn = card.querySelector('[data-add-btn]');
+            const removeBtn = card.querySelector('[data-remove-btn]');
+            
+            if (itemInCart && itemInCart.quantity > 0) {
+                // Product is in cart - show remove button, hide add button
+                if (addBtn) addBtn.style.display = 'none';
+                if (removeBtn) removeBtn.style.display = 'block';
+                card.classList.remove('removed');
+                if (productStates[productId]) {
+                    productStates[productId].removed = false;
+                }
+            } else {
+                // Product is not in cart - show add button, hide remove button (for non-top-picks)
+                if (card.closest('[data-section-products]')?.dataset.sectionProducts !== 'top-picks') {
+                    if (addBtn) addBtn.style.display = 'inline-flex';
+                    if (removeBtn) removeBtn.style.display = 'none';
+                }
+                card.classList.add('removed');
+                if (productStates[productId]) {
+                    productStates[productId].removed = true;
+                }
+            }
+        });
     }
 
     function removeProductFromCart(product, variantId) {
