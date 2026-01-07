@@ -158,41 +158,9 @@
                 {% endif %}
 
                 <div class="recommended-products-list" data-recommended-list>
-                    <!-- Section 1: Top 3 Picks (Auto-added to cart) -->
+                    <!-- Top Picks (Auto-added to cart) -->
                     <div class="recommendations-section" data-section="top-picks">
-                        {% comment %} {% if section.settings.section1_title != blank %}
-                            <h3 class="section-title">{{ section.settings.section1_title }}</h3>
-                        {% endif %} {% endcomment %}
-                        {% if section.settings.section1_description != blank %}
-                            <div class="section-description">{{ section.settings.section1_description }}</div>
-                        {% endif %}
                         <div class="section-products" data-section-products="top-picks"></div>
-                    </div>
-
-                    <hr class="section-divider">
-
-                    <!-- Section 2: Additional Recommendations (Not auto-added) -->
-                    <div class="recommendations-section" data-section="additional">
-                        {% if section.settings.section2_title != blank %}
-                            <h3 class="section-title">{{ section.settings.section2_title }}</h3>
-                        {% endif %}
-                        {% if section.settings.section2_description != blank %}
-                            <div class="section-description">{{ section.settings.section2_description }}</div>
-                        {% endif %}
-                        <div class="section-products" data-section-products="additional"></div>
-                    </div>
-
-                    <hr class="section-divider">
-
-                    <!-- Section 3: Accessories (Manual products, not auto-added) -->
-                    <div class="recommendations-section" data-section="accessories">
-                        {% if section.settings.section3_title != blank %}
-                            <h3 class="section-title">{{ section.settings.section3_title }}</h3>
-                        {% endif %}
-                        {% if section.settings.section3_description != blank %}
-                            <div class="section-description">{{ section.settings.section3_description }}</div>
-                        {% endif %}
-                        <div class="section-products" data-section-products="accessories"></div>
                     </div>
                 </div>
             </div>
@@ -2569,21 +2537,15 @@
         }
 
         const topPicksContainer = document.querySelector('[data-section-products="top-picks"]');
-        const additionalContainer = document.querySelector('[data-section-products="additional"]');
-        const accessoriesContainer = document.querySelector('[data-section-products="accessories"]');
         const giftProductHandle = document.querySelector('[data-gift-product]')?.dataset.giftProduct;
 
         console.log('Containers found:', {
-            topPicks: !!topPicksContainer,
-            additional: !!additionalContainer,
-            accessories: !!accessoriesContainer
+            topPicks: !!topPicksContainer
         });
 
-        if (!topPicksContainer || !additionalContainer || !accessoriesContainer) {
-            console.error('Section containers not found!', {
-                topPicks: topPicksContainer,
-                additional: additionalContainer,
-                accessories: accessoriesContainer
+        if (!topPicksContainer) {
+            console.error('Top picks container not found!', {
+                topPicks: topPicksContainer
             });
             // Retry after a short delay
             setTimeout(initRecommendations, 500);
@@ -2619,11 +2581,10 @@
                 return;
             }
             
-            // Section 1: Top 3 picks (auto-added to cart)
-            const topPicks = validProducts.slice(0, 3);
-            console.log('Top picks (Section 1):', topPicks.length, 'products');
+            // Top picks (auto-added to cart) - show all recommended products
+            console.log('Top picks:', validProducts.length, 'products');
             
-            topPicks.forEach((product, index) => {
+            validProducts.forEach((product, index) => {
                 if (!product || !product.id) {
                     console.error('Invalid product at index', index, product);
                     return;
@@ -2655,29 +2616,6 @@
                 // Auto-add to cart with the same variant that's selected in the card
                 addToCart(selectedVariantId, 1, product, initialSellingPlanId);
             });
-
-            // Section 2: Additional recommendations (not auto-added)
-            const additionalProducts = validProducts.slice(3);
-            console.log('Additional products (Section 2):', additionalProducts.length, 'products');
-            
-            additionalProducts.forEach((product) => {
-                if (!product || !product.id) {
-                    console.error('Invalid additional product:', product);
-                    return;
-                }
-                
-                console.log('Creating additional product card for:', product.title);
-                productStates[product.id] = { removed: false, quantity: 1 };
-                const productCard = createProductCard(product, 'additional');
-                
-                if (!productCard) {
-                    console.error('Failed to create additional product card for:', product.title);
-                    return;
-                }
-                
-                additionalContainer.appendChild(productCard);
-                // NOT auto-added to cart
-            });
             
             // Update cart display after products are added
             console.log('Updating cart display...');
@@ -2698,39 +2636,6 @@
                 updateCurrencyConverter();
             }, 500);
         });
-
-        // Section 3: Accessories (manual product list from settings)
-        const accessoryHandles = {{ section.settings.accessories_products | json }};
-        console.log('Accessory handles (Section 3):', accessoryHandles);
-        
-        if (accessoryHandles && accessoryHandles.length > 0) {
-            const accessoryPromises = accessoryHandles.map(item => {
-                // Handle both string handles and product objects
-                const handle = typeof item === 'string' ? item : (item?.handle || null);
-                if (!handle) return Promise.resolve(null);
-                
-                console.log('Fetching accessory product:', handle);
-                return fetch(`/products/${handle}.js`)
-                    .then(response => response.ok ? response.json() : null)
-                    .catch(() => null);
-            });
-
-            Promise.all(accessoryPromises).then(accessories => {
-                console.log('Fetched accessories:', accessories);
-                accessories.forEach((product) => {
-                    if (!product) return;
-                    productStates[product.id] = { removed: false, quantity: 1 };
-                    const productCard = createProductCard(product, 'accessories');
-                    accessoriesContainer.appendChild(productCard);
-                    // NOT auto-added to cart
-                });
-
-                // Trigger currency converter after accessories are loaded
-                setTimeout(() => {
-                    updateCurrencyConverter();
-                }, 500);
-            });
-        }
     }
 
     function isBogoEligible(product) {
@@ -4373,60 +4278,6 @@
             "label": "Custom Product Order (Optional)",
             "info": "Set the display order of recommended products. Only products that were recommended by the quiz will be shown, in the order specified here. Leave empty to use default quiz order.",
             "limit": 20
-        },
-        {
-            "type": "header",
-            "content": "Section 1: Top Picks"
-        },
-        {
-            "type": "text",
-            "id": "section1_title",
-            "label": "Section 1 Title",
-            "default": "Our Top 3 Picks For You"
-        },
-        {
-            "type": "richtext",
-            "id": "section1_description",
-            "label": "Section 1 Description",
-            "info": "First 3 quiz recommendations, auto-added to cart"
-        },
-        {
-            "type": "header",
-            "content": "Section 2: Additional Recommendations"
-        },
-        {
-            "type": "text",
-            "id": "section2_title",
-            "label": "Section 2 Title",
-            "default": "Transform your routine into a ritual"
-        },
-        {
-            "type": "richtext",
-            "id": "section2_description",
-            "label": "Section 2 Description",
-            "info": "Remaining quiz recommendations, not auto-added to cart"
-        },
-        {
-            "type": "header",
-            "content": "Section 3: Accessories"
-        },
-        {
-            "type": "text",
-            "id": "section3_title",
-            "label": "Section 3 Title",
-            "default": "Hair Accessories You didn't know Your Hair Needed"
-        },
-        {
-            "type": "richtext",
-            "id": "section3_description",
-            "label": "Section 3 Description",
-            "info": "Manual product selection, not auto-added to cart"
-        },
-        {
-            "type": "product_list",
-            "id": "accessories_products",
-            "label": "Accessory Products",
-            "info": "Select products to display in the accessories section"
         },
         {
             "type": "header",
