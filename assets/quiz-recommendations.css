@@ -9,13 +9,11 @@
     }
 
     .recommendations-left {
-        flex: 1;
-        max-width: 800px;
+        width: 60%;
     }
 
     .recommendations-right {
-        width: 380px;
-        flex-shrink: 0;
+        width: 40%;
     }
 
     .gift-product-card {
