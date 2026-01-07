@@ -27,7 +27,11 @@
   <div class="cart-upsell-product__image">
     <a href="{{ product.url }}" class="cart-upsell-product__image-link">
       {% if product.featured_media %}
-        {%- render 'image' with product.featured_media.preview_image, loading: 'lazy', custom_aspect_ratio: custom_aspect_ratio, custom_crop: 'contain' -%}
+        <div
+           class="bg-image"
+           style="background: url('{{product.featured_media.preview_image | image_url }}') no-repeat;"
+          ></div>
+        {% comment %} {%- render 'image' with product.featured_media.preview_image, loading: 'lazy', custom_aspect_ratio: custom_aspect_ratio, custom_crop: 'contain' -%} {% endcomment %}
       {% else %}
         <div class="placeholder-image">{{ 'product-1' | placeholder_svg_tag }}</div>
       {% endif %}
