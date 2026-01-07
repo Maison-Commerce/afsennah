@@ -743,7 +743,7 @@
         align-items: center;
         justify-content: space-between;
         padding: 12px;
-        border: 1px solid #e5e7eb;
+        outline: 1px solid #e5e7eb;
         border-radius: 8px;
         cursor: pointer;
         background: #fff;
