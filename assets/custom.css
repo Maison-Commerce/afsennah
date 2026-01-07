@@ -1006,6 +1006,7 @@ video-section-play-button {
     display: flex;
     flex-direction: column-reverse;
     justify-content: space-between;
+    height: 100%;
 }
 .cart-item__column.cart-item__price .cart-item__remove {
     display: block !important;
