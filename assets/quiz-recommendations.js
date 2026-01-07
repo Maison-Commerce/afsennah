@@ -351,9 +351,6 @@
         // Initialize tiered gift system
         initGiftTiers();
 
-        // Process currency placeholders in highlight text
-        processHighlightTextCurrency();
-
         if (sortOrder && sortOrder.trim() !== '') {
             const sortOrderHandles = sortOrder.split(',').map(h => h.trim()).filter(h => h);
             console.log('Custom sort order:', sortOrderHandles);
@@ -575,40 +572,6 @@
         }
     }
 
-    function processHighlightTextCurrency() {
-        // Find all highlight text elements with the data attribute
-        const highlightElements = document.querySelectorAll('[data-highlight-text]');
-
-        highlightElements.forEach(element => {
-            let html = element.innerHTML;
-
-            // Find all [[amount:XXX]] patterns where XXX is the EUR amount
-            const pattern = /\[\[amount:(\d+(?:\.\d+)?)\]\]/g;
-
-            html = html.replace(pattern, (match, eurAmount) => {
-                const amountInEur = parseFloat(eurAmount);
-
-                // Convert EUR amount to user's currency using Shopify.currency.rate
-                let centsInUserCurrency = Math.round(amountInEur * 100);
-
-                if (typeof Shopify !== 'undefined' && Shopify.currency && Shopify.currency.rate) {
-                    const rate = parseFloat(Shopify.currency.rate);
-                    if (rate && rate !== 1) {
-                        centsInUserCurrency = Math.round(centsInUserCurrency * rate);
-                    }
-                }
-
-                // Format the amount using formatMoney and extract just the text
-                const formattedHtml = formatMoney(centsInUserCurrency);
-                // Create a temp element to extract text from the HTML
-                const temp = document.createElement('div');
-                temp.innerHTML = formattedHtml;
-                return temp.textContent || temp.innerText || formattedHtml;
-            });
-
-            element.innerHTML = html;
-        });
-    }
 
     function createProductCard(product, section, number = null) {
         const card = document.createElement('div');
