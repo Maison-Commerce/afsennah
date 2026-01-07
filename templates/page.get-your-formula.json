@@ -2130,27 +2130,35 @@
     },
     "quiz_recommendations_xc9HX6": {
       "type": "quiz-recommendations",
+      "blocks": {
+        "upsell_package_pFmWBb": {
+          "type": "upsell_package",
+          "settings": {
+            "product_image": "shopify://shop_images/Frame_1484580966.png",
+            "header_text": "LIMITED-TIME CRAZY DEAL",
+            "title": "Ultimate Hair Care Package",
+            "description": "<p>Get all 7 products — more than our top 3 bestsellers — with <strong>50% off</strong>. This is a one-time purchase with no subscription. A limited-time offer we may not keep for long.</p>",
+            "discount_percent": 50,
+            "product": "100-pack",
+            "button_text": "Claim Ultimate Package",
+            "footer_text": "No subscription • One-time payment • Limited availability"
+          }
+        }
+      },
+      "block_order": [
+        "upsell_package_pFmWBb"
+      ],
       "name": "Quiz Recommendations",
       "settings": {
-        "title": "NOW WITH FREE GIFTS TIER",
-        "subtitle": "<p>Your hair story is about to change. These products were chosen to help you grow, heal, and fall in love with your hair again. They’re already waiting in your basket. All that’s left is to begin.</p>",
+        "show_feature_bar": true,
+        "sale_banner_text": "WINTER SALE 25% OFF SITEWIDE!",
+        "intro_text": "<p>Your hair story is about to change. These products were chosen to help you grow, heal, and fall in love with your hair again. They're already waiting in your basket. All that's left is to begin.</p>",
+        "cta_button_text": "Your Top 3 Products +25% OFF",
         "product_sort_order": [
           "custom-hair-growth-oil-for-her",
           "custom-hair-treatment",
           "custom-scalp-tonic",
           "micro-needle-scalp-roller"
-        ],
-        "section1_title": "Your Top 3 Products + Free Gifts Tier",
-        "section1_description": "",
-        "section2_title": "Transform your routine into a ritual",
-        "section2_description": "",
-        "section3_title": "Hair Accessories You didn't know Your Hair Needed",
-        "section3_description": "",
-        "accessories_products": [
-          "mulberry-pillowcase",
-          "microfiber-towel-set",
-          "micro-needle-scalp-roller",
-          "mulberry-silk-scrunchies-set"
         ],
         "gift_tiers_enabled": true,
         "gift_progress_text": "Spend [[remaining]] more to unlock your next gift!",
@@ -2199,7 +2207,18 @@
         "background_color": "#f0f0ff",
         "highlight_text_desktop": "<p><strong>WINTERSALE 25% OFF SITEWIDE! FOR A LIMITED TIME only  + </strong>Free shipping on all orders above [[amount:100]]!<br/><br/><em>Every drop brings you closer to the hair you’ve been wishing for.</em></p>",
         "highlight_text_mobile": "<p>Free shipping on all orders above [[amount:100]]!</p>",
-        "checkout_subtext": "WINTERSALE 25% OFF SITEWIDE!"
+        "checkout_subtext": "WINTERSALE 25% OFF SITEWIDE!",
+        "show_limited_deal": true,
+        "limited_deal_text": "LIMITED-TIME CRAZY DEAL",
+        "countdown_hours": 0,
+        "countdown_minutes": 9,
+        "countdown_seconds": 57,
+        "upsell_product": "",
+        "upsell_title": "Ultimate Hair Care Package",
+        "upsell_description": "<p>Get all 7 products — more than our top 3 bestsellers — with <strong>50% off</strong>. This is a one-time purchase with no subscription. A limited time offer we may not keep for long</p>",
+        "upsell_button_text": "Claim Ultimate Package",
+        "upsell_fine_print": "no subscription • One-time payment • Limited availability",
+        "upsell_discount_percent": 50
       }
     }
   },
