@@ -140,19 +140,15 @@
                                 </div>
                             </div>
                             <div class="gift-progress-bar-container">
-                                <div class="gift-progress-bar" data-gift-progress-bar style="width: 0%"></div>
-                                <div class="gift-progress-milestones" data-gift-milestones>
-                                    {%- comment -%} Milestones will be dynamically added by JS {%- endcomment -%}
+                                <div class="gift-progress-bar-track">
+                                    <div class="gift-progress-bar" data-gift-progress-bar style="width: 0%"></div>
+                                    <div class="gift-progress-milestones" data-gift-milestones>
+                                        {%- comment -%} Milestones will be dynamically added by JS {%- endcomment -%}
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="gift-cards-container" data-gift-cards-container>
-                                {%- comment -%} Gift cards are inserted here by JavaScript {%- endcomment -%}
-                            </div>
-                            <div class="gift-progress-footer">
-                                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                                    <path d="M13.3333 4L6 11.3333L2.66667 8" stroke="#1A365D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                </svg>
-                                <span>Free shipping</span>
+                                <div class="gift-cards-container" data-gift-cards-container>
+                                    {%- comment -%} Gift cards are inserted here by JavaScript {%- endcomment -%}
+                                </div>
                             </div>
                         </div>
                     {% endif %}
