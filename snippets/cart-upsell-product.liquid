@@ -208,6 +208,66 @@
       document.addEventListener('DOMContentLoaded', checkButtons);
     }
     
+    // Setup MutationObserver to watch for dynamically added upsell products
+    const setupObserver = () => {
+      // Find cart-item-upsells container or cart-drawer
+      const observeTarget = document.querySelector('.cart-item-upsells') || 
+                           document.querySelector('cart-drawer') || 
+                           document.body;
+      
+      console.log('[Cart Upsell] Setting up MutationObserver on:', observeTarget);
+      
+      const observer = new MutationObserver((mutations) => {
+        let hasNewButtons = false;
+        
+        mutations.forEach((mutation) => {
+          mutation.addedNodes.forEach((node) => {
+            if (node.nodeType === 1) { // Element node
+              // Check if the added node is a button or contains buttons
+              if (node.matches && node.matches('.cart-upsell-product__add-btn')) {
+                hasNewButtons = true;
+                console.log('[Cart Upsell] New button added:', node);
+              } else if (node.querySelector && node.querySelector('.cart-upsell-product__add-btn')) {
+                hasNewButtons = true;
+                const buttons = node.querySelectorAll('.cart-upsell-product__add-btn');
+                console.log('[Cart Upsell] New buttons added in container:', buttons.length, node);
+              }
+            }
+          });
+        });
+        
+        if (hasNewButtons) {
+          console.log('[Cart Upsell] New upsell buttons detected, rechecking...');
+          setTimeout(checkButtons, 100);
+        }
+      });
+      
+      observer.observe(observeTarget, {
+        childList: true,
+        subtree: true
+      });
+      
+      console.log('[Cart Upsell] MutationObserver active');
+      
+      // Also listen for cart drawer events that might trigger updates
+      document.addEventListener('on:cart:after-merge', () => {
+        console.log('[Cart Upsell] Cart after-merge event, rechecking buttons');
+        setTimeout(checkButtons, 200);
+      });
+      
+      document.addEventListener('on:cart-drawer:after-open', () => {
+        console.log('[Cart Upsell] Cart drawer opened, rechecking buttons');
+        setTimeout(checkButtons, 200);
+      });
+    };
+    
+    // Setup observer when DOM is ready
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', setupObserver);
+    } else {
+      setupObserver();
+    }
+    
     // Use event delegation to handle dynamically added products
     document.addEventListener('click', function(e) {
       // Only log if it might be our button (to reduce noise)
