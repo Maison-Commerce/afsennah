@@ -1203,6 +1203,7 @@ video-section-play-button {
     letter-spacing: 0%;
     text-align: center;
     color: #2C2926;
+    margin-bottom: 4px;
 }
 .cart-upsell-product__price {
     font-family: "Gotham";
