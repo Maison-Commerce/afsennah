@@ -812,7 +812,7 @@
     }
 
     .subscription-discount-badge {
-        padding: 4px 8px;
+        padding: 4px 12px;
         border-radius: var(--48, 48px);
         background: var(--orange-500, #EC9F57);
         color: var(--White, #FFF);
