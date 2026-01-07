@@ -1025,5 +1025,9 @@ video-section-play-button {
     border: 1px solid #FBF9F5;
 }
 .cart-item__column.cart-item__quantity .buttoned-input a {
-    padding: 0
+    padding: 0;
+    width: 33px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
