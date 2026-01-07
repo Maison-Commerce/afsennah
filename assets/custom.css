@@ -1145,6 +1145,9 @@ video-section-play-button {
 .cart-item-upsells .slider-nav {
     width: max-content
 }
+.cart-item-upsells .product-grid .product-block__detail {
+    margin: 0; 
+}
 .cart-item-upsells .no-wrap.slider-nav .slider-nav__btn {
     width: 32px;
     height: 32px;
