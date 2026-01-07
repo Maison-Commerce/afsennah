@@ -972,11 +972,16 @@
     }
 
     .cart-item-name {
-        font-size: 14px;
+       overflow: hidden;
+        color: var(--Text-Primary, #232323);
+        text-overflow: ellipsis;
+
+        /* Text/Normal/Medium */
+        font-family: 'Gotham', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        font-size: 16px;
+        font-style: normal;
         font-weight: 500;
-        color: #1A365D;
-        display: block;
-        line-height: 1.4;
+        line-height: 150%; /* 24px */
     }
 
     .cart-item-price {
