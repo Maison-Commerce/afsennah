@@ -765,6 +765,10 @@
         flex-shrink: 0;
     }
 
+    .purchase-option input[type="radio"]:checked {
+        accent-color: #1A365D!important;
+    }
+
     .option-details {
         flex: 1;
         display: flex;
