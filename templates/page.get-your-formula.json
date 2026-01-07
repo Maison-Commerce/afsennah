@@ -840,7 +840,7 @@
         "conditional_parent": "",
         "conditional_value": "",
         "order_note_position": 10,
-        "answers_layout": "two_columns",
+        "answers_layout": "one_column",
         "answers_layout_mobile": "one_column",
         "columns_desktop": 5,
         "columns_tablet": 5,
