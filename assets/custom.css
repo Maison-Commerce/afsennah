@@ -1211,6 +1211,7 @@ video-section-play-button {
     font-size: 12px;
     line-height: 150%;
     letter-spacing: 0%;
+    justify-content: center;
 }
 
 .cart-upsell-product__image img {
