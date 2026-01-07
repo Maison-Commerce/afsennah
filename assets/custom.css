@@ -1160,3 +1160,13 @@ video-section-play-button {
     border: 1px solid rgba(138, 150, 139, 0.3);
     border-radius: 999px
 }
+
+.opposing-items__left.product-info-label h3 {
+    font-family: "Neue Haas Grotesk Display Pro";
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 150%;
+    letter-spacing: 0%;
+    vertical-align: middle;
+
+}
