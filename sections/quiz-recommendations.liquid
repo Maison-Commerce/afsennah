@@ -78,28 +78,27 @@
 
                                     <!-- Main Content -->
                                     <div class="maison_commerce_maison_upsell_package__content" style="--content-padding-mobile: {{ block.settings.content_padding_mobile | default: 16 }}px; padding: {{ block.settings.content_padding_desktop | default: 24 }}px; gap: {{ block.settings.content_gap | default: 18 }}px;">
-                                        <!-- Desktop: Image and Text Side by Side -->
-                                        <div class="maison_commerce_maison_upsell_package__main-row">
-                                            {% if block.settings.product_image != blank %}
-                                                <div class="maison_commerce_maison_upsell_package__image">
-                                                    <img src="{{ block.settings.product_image | image_url: width: 800 }}" alt="{{ block.settings.title }}">
-                                                </div>
-                                            {% endif %}
-
-                                            <div class="maison_commerce_maison_upsell_package__text-content" style="gap: {{ block.settings.text_gap | default: 12 }}px;">
-                                                <div class="maison_commerce_maison_upsell_package__title-row">
-                                                    <h3 class="maison_commerce_maison_upsell_package__title" style="font-size: {{ block.settings.title_font_size_desktop | default: 20 }}px; color: {{ block.settings.text_color | default: '#232323' }};">{{ block.settings.title | default: 'Ultimate Hair Care Package' }}</h3>
-                                                    {% if block.settings.discount_percent > 0 %}
-                                                        <div class="maison_commerce_maison_upsell_package__discount-badge" style="background: {{ block.settings.discount_badge_color | default: '#EC9F57' }}; padding: {{ block.settings.badge_padding_vertical | default: 4 }}px {{ block.settings.badge_padding_horizontal | default: 12 }}px; font-size: {{ block.settings.badge_font_size_desktop | default: 10 }}px;">SAVE {{ block.settings.discount_percent }}%</div>
-                                                    {% endif %}
-                                                </div>
-                                                {% if block.settings.description != blank %}
-                                                    <div class="maison_commerce_maison_upsell_package__description" style="font-size: {{ block.settings.description_font_size_desktop | default: 14 }}px; color: {{ block.settings.text_color | default: 'rgba(35,35,35,0.75)' }};">{{ block.settings.description }}</div>
-                                                {% endif %}
+                                        <!-- Products Image (Centered) -->
+                                        {% if block.settings.product_image != blank %}
+                                            <div class="maison_commerce_maison_upsell_package__image">
+                                                <img src="{{ block.settings.product_image | image_url: width: 800 }}" alt="{{ block.settings.title }}">
                                             </div>
+                                        {% endif %}
+
+                                        <!-- Title and Badge Row (Centered) -->
+                                        <div class="maison_commerce_maison_upsell_package__title-row">
+                                            <h3 class="maison_commerce_maison_upsell_package__title" style="font-size: {{ block.settings.title_font_size_desktop | default: 20 }}px; color: {{ block.settings.text_color | default: '#232323' }};">{{ block.settings.title | default: 'Ultimate Hair Care Package' }}</h3>
+                                            {% if block.settings.discount_percent > 0 %}
+                                                <div class="maison_commerce_maison_upsell_package__discount-badge" style="background: {{ block.settings.discount_badge_color | default: '#EC9F57' }}; padding: {{ block.settings.badge_padding_vertical | default: 4 }}px {{ block.settings.badge_padding_horizontal | default: 12 }}px; font-size: {{ block.settings.badge_font_size_desktop | default: 10 }}px;">SAVE {{ block.settings.discount_percent }}%</div>
+                                            {% endif %}
                                         </div>
 
-                                        <!-- Button and Footer -->
+                                        <!-- Description (Centered) -->
+                                        {% if block.settings.description != blank %}
+                                            <div class="maison_commerce_maison_upsell_package__description" style="font-size: {{ block.settings.description_font_size_desktop | default: 14 }}px; color: {{ block.settings.text_color | default: 'rgba(35,35,35,0.75)' }};">{{ block.settings.description }}</div>
+                                        {% endif %}
+
+                                        <!-- Button and Footer (Centered) -->
                                         <div class="maison_commerce_maison_upsell_package__actions">
                                             {% if block.settings.product != blank %}
                                                 <button class="maison_commerce_maison_upsell_package__button" data-upsell-package-button data-product-handle="{{ block.settings.product.handle }}" style="background: {{ block.settings.button_bg_color | default: '#ffffff' }}; color: {{ block.settings.button_text_color | default: '#1a365d' }}; padding: {{ block.settings.button_padding_vertical | default: 16 }}px {{ block.settings.button_padding_horizontal | default: 32 }}px; border-radius: {{ block.settings.button_border_radius | default: 12 }}px; font-size: {{ block.settings.button_font_size_desktop | default: 16 }}px;">
@@ -739,24 +738,18 @@
     .maison_commerce_maison_upsell_package__content {
         display: flex;
         flex-direction: column;
+        align-items: center;
         background: #FFFBC0;
         border-radius: 0 0 16px 16px;
         padding: 24px;
         gap: 18px;
     }
 
-    .maison_commerce_maison_upsell_package__main-row {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 24px;
-        width: 100%;
-    }
-
     .maison_commerce_maison_upsell_package__image {
         display: flex;
         justify-content: center;
-        align-items: flex-end;
+        align-items: center;
+        width: 100%;
     }
 
     .maison_commerce_maison_upsell_package__image img {
@@ -767,18 +760,13 @@
         display: block;
     }
 
-    .maison_commerce_maison_upsell_package__text-content {
-        display: flex;
-        flex-direction: column;
-        gap: 12px;
-        min-width: 0;
-    }
-
     .maison_commerce_maison_upsell_package__title-row {
         display: flex;
         align-items: center;
+        justify-content: center;
         gap: 8px;
         flex-wrap: wrap;
+        width: 100%;
     }
 
     .maison_commerce_maison_upsell_package__discount-badge {
@@ -803,7 +791,7 @@
         display: flex;
         flex-direction: column;
         gap: 8px;
-        align-items: flex-start;
+        align-items: center;
         width: 100%;
     }
 
@@ -814,6 +802,7 @@
         margin: 0;
         line-height: 1.4;
         color: #232323;
+        text-align: center;
     }
 
     .maison_commerce_maison_upsell_package__description {
@@ -822,6 +811,8 @@
         font-weight: 300;
         line-height: 1.5;
         color: rgba(35, 35, 35, 0.75);
+        text-align: center;
+        width: 100%;
     }
 
     .maison_commerce_maison_upsell_package__description p {
@@ -1152,18 +1143,6 @@
         .maison_commerce_maison_upsell_package__content {
             padding: 16px !important;
             gap: 12px !important;
-        }
-
-        .maison_commerce_maison_upsell_package__main-row {
-            flex-direction: column;
-            gap: 12px;
-            align-items: center;
-        }
-
-        .maison_commerce_maison_upsell_package__text-content {
-            gap: 8px;
-            align-items: center;
-            width: 100%;
         }
 
         .maison_commerce_maison_upsell_package__title-row {
