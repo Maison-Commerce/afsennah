@@ -230,51 +230,21 @@
           return;
         }
         
-        // Dispatch cart change event
-        document.dispatchEvent(new CustomEvent('on:cart:change', { bubbles: true, cancelable: false }));
-        
         // Update cart drawer by calling refresh on cart-form
         const cartDrawer = document.querySelector('cart-drawer');
         if (cartDrawer) {
           const cartForm = cartDrawer.querySelector('cart-form');
           if (cartForm && typeof cartForm.refresh === 'function') {
             cartForm.refresh();
-            // Call UpCart refresh after cart-form refresh (with delay to ensure cart is updated)
-            setTimeout(() => {
-              if (typeof window.upcartRefreshCart === 'function') {
-                try {
-                  window.upcartRefreshCart();
-                } catch (error) {
-                  console.warn('Error calling upcartRefreshCart:', error);
-                }
-              }
-            }, 100);
           } else {
             // Fallback: dispatch refresh event
             document.dispatchEvent(new CustomEvent('dispatch:cart-drawer:refresh', { bubbles: true }));
-            // Call UpCart refresh after refresh event
-            setTimeout(() => {
-              if (typeof window.upcartRefreshCart === 'function') {
-                try {
-                  window.upcartRefreshCart();
-                } catch (error) {
-                  console.warn('Error calling upcartRefreshCart:', error);
-                }
-              }
-            }, 100);
           }
-        } else {
-          // Call UpCart refresh even if cart drawer doesn't exist
-          setTimeout(() => {
-            if (typeof window.upcartRefreshCart === 'function') {
-              try {
-                window.upcartRefreshCart();
-              } catch (error) {
-                console.warn('Error calling upcartRefreshCart:', error);
-              }
-            }
-          }, 100);
         }
+        
+        // Dispatch cart change event - UpCart and other apps will listen to this
+        // UpCart will handle its own refresh through event listeners
+        document.dispatchEvent(new CustomEvent('on:cart:change', { bubbles: true, cancelable: false }));
         
         // Dispatch cart add event for compatibility
         document.dispatchEvent(new CustomEvent('on:cart:add', {
@@ -296,5 +266,6 @@
     });
   })();
 </script>
+
 
 
