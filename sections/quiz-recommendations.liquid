@@ -28,9 +28,9 @@
 {%- endstyle -%}
 
 <div class="quiz-recommendations quiz-section quiz-recommendations-{{ section.id }}" data-recommendations style="display: none;" data-product-sort-order="{% if section.settings.product_sort_order != blank %}{{ section.settings.product_sort_order | map: 'handle' | join: ',' }}{% endif %}" data-bogo-enabled="{{ section.settings.bogo_enabled }}" data-bogo-products="{% if section.settings.bogo_products != blank %}{{ section.settings.bogo_products | map: 'handle' | join: ',' }}{% endif %}" data-bogo-badge-text="{{ section.settings.bogo_badge_text }}" data-bogo-cart-text="{{ section.settings.bogo_cart_text }}">
-    <div class="recommendations-layout">
-        <!-- Left Side: Gift Product & Recommended Products -->
-        <div class="recommendations-left">
+    <div class="quiz-recommendations-wrapper">
+        <!-- Left Column: Products Content -->
+        <div class="quiz-recommendations-content-column">
             {% if section.settings.gift_tiers_enabled %}
                 {%- comment -%} Tiered Gift System {%- endcomment -%}
                 <div class="gift-tiers-container"
@@ -157,8 +157,8 @@
             </div>
         </div>
 
-        <!-- Right Side: Cart Summary -->
-        <div class="recommendations-right">
+        <!-- Right Column: Cart Summary (Desktop) -->
+        <div class="quiz-recommendations-cart-column">
             <div class="cart-summary">
                 <div class="cart-summary-header" data-cart-header>
                     <div class="cart-header-content">
@@ -218,28 +218,88 @@
             {% endif %}
         </div>
     </div>
+
+    <!-- Mobile Sticky Cart Bar -->
+    <div class="quiz-recommendations-mobile-sticky-bar">
+        <div class="mobile-sticky-bar-content">
+            <div class="mobile-sticky-bar-left">
+                <span class="mobile-sticky-bar-label">Order Summary</span>
+                <span class="mobile-sticky-bar-count" data-mobile-item-count>(0)</span>
+            </div>
+            <div class="mobile-sticky-bar-right">
+                <span class="mobile-sticky-bar-total" data-mobile-total-price>$0.00</span>
+                <button class="mobile-sticky-bar-toggle" data-mobile-cart-toggle aria-label="Toggle cart">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                        <path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
 </div>
 
 <style>
-    .quiz-recommendations {
-        padding: 40px 20px;
+    /* Base Styles */
+    #shopify-section-{{ section.id }} {
+        padding: 0;
+        display: block !important;
     }
 
-    .recommendations-layout {
+    #shopify-section-{{ section.id }} .quiz-recommendations {
+        min-height: fit-content;
+        height: auto;
+        display: block;
+        background: #f1f1f9;
+    }
+
+    #shopify-section-{{ section.id }} .quiz-recommendations[style*="display: none"] {
+        display: none !important;
+    }
+
+    #shopify-section-{{ section.id }} .quiz-recommendations.active {
+        opacity: 1 !important;
+        transform: translateY(0) !important;
+    }
+
+    /* Wrapper */
+    #shopify-section-{{ section.id }} .quiz-recommendations-wrapper {
         display: flex;
-        gap: 24px;
-        justify-content: space-around;
-        align-items: start;
+        align-items: flex-start;
+        min-height: calc(100vh - 136px);
+        background: #f1f1f9;
     }
 
-    .recommendations-left {
+    /* Left Column - Content */
+    #shopify-section-{{ section.id }} .quiz-recommendations-content-column {
         flex: 1;
-        max-width: 800px;
+        display: flex;
+        flex-direction: column;
+        padding: 80px 60px;
+        background: #f1f1f9;
+        border-left: 1px solid white;
+        min-height: calc(100vh - 136px);
     }
 
-    .recommendations-right {
+    /* Right Column - Cart Summary (Desktop) */
+    #shopify-section-{{ section.id }} .quiz-recommendations-cart-column {
         width: 380px;
         flex-shrink: 0;
+        display: flex;
+        flex-direction: column;
+        padding: 80px 40px 80px 60px;
+        background: #f1f1f9;
+    }
+
+    /* Mobile Sticky Bar */
+    #shopify-section-{{ section.id }} .quiz-recommendations-mobile-sticky-bar {
+        display: none;
+    }
+
+    /* Desktop Only - Show cart column */
+    @media (min-width: 1025px) {
+        #shopify-section-{{ section.id }} .quiz-recommendations-cart-column {
+            display: flex;
+        }
     }
 
     .gift-product-card {
@@ -1058,7 +1118,7 @@
         display: inline-flex !important;
     }
 
-    .cart-summary {
+    #shopify-section-{{ section.id }} .cart-summary {
         background: #fff;
         border-radius: 8px;
         position: sticky;
@@ -1379,114 +1439,154 @@
         display: none;
     }
 
+    /* Mobile Styles */
     @media (max-width: 1024px) {
-        .recommendations-layout {
+        #shopify-section-{{ section.id }} .quiz-recommendations-wrapper {
             flex-direction: column;
+            min-height: auto;
         }
 
-        .recommendations-left {
-            padding-bottom: 160px;
+        #shopify-section-{{ section.id }} .quiz-recommendations-content-column {
+            padding: 20px;
+            border-left: none;
+            min-height: auto;
+            padding-bottom: 100px; /* Space for sticky bar */
         }
 
-        .recommendations-right {
-            width: 100%;
+        #shopify-section-{{ section.id }} .quiz-recommendations-cart-column {
+            display: none; /* Hide desktop cart on mobile */
+        }
+
+        /* Mobile Sticky Bar */
+        #shopify-section-{{ section.id }} .quiz-recommendations-mobile-sticky-bar {
+            display: block;
             position: fixed;
             bottom: 0;
             left: 0;
             right: 0;
-            z-index: 9999;
-        }
-
-        .cart-summary {
-            position: static;
-            border-radius: 0;
+            background: white;
+            border-top: 1px solid #e5e7eb;
             box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.1);
-            max-height: none;
-            overflow: visible;
+            z-index: 9999;
+            padding: 12px 20px;
+        }
+
+        #shopify-section-{{ section.id }} .mobile-sticky-bar-content {
             display: flex;
-            flex-direction: column;
-            transition: all 0.3s ease;
-            padding: 12px!important;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 100%;
         }
 
-        .cart-summary.collapsed {
-            max-height: none;
+        #shopify-section-{{ section.id }} .mobile-sticky-bar-left {
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
-        .cart-summary.collapsed .cart-summary-body {
-            display: none;
+        #shopify-section-{{ section.id }} .mobile-sticky-bar-label {
+            font-family: 'Gotham', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            color: #102B26;
         }
 
-        .cart-summary.collapsed .cart-header-total {
-            display: block;
+        #shopify-section-{{ section.id }} .mobile-sticky-bar-count {
+            font-family: 'Gotham', sans-serif;
+            font-size: 14px;
+            color: #6b7280;
+            font-weight: 400;
         }
 
-        .cart-summary.collapsed .cart-close-btn {
-            display: none;
+        #shopify-section-{{ section.id }} .mobile-sticky-bar-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
         }
 
-        .cart-summary.collapsed .checkout-mobile {
-            display: block;
+        #shopify-section-{{ section.id }} .mobile-sticky-bar-total {
+            font-family: 'Gotham', sans-serif;
+            font-size: 18px;
+            font-weight: 600;
+            color: #102B26;
         }
 
-        .cart-summary:not(.collapsed) {
+        #shopify-section-{{ section.id }} .mobile-sticky-bar-toggle {
+            background: none;
+            border: none;
+            padding: 4px;
+            cursor: pointer;
+            color: #6b7280;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.3s ease;
+        }
+
+        #shopify-section-{{ section.id }} .mobile-sticky-bar-toggle svg {
+            transition: transform 0.3s ease;
+        }
+
+        #shopify-section-{{ section.id }} .cart-summary.expanded ~ .mobile-sticky-bar-toggle svg,
+        #shopify-section-{{ section.id }} .quiz-recommendations-cart-column:not(.collapsed) ~ .mobile-sticky-bar-toggle svg {
+            transform: rotate(180deg);
+        }
+
+        /* Mobile Cart Summary (Full Screen Overlay) */
+        #shopify-section-{{ section.id }} .quiz-recommendations-cart-column.mobile-expanded {
+            display: flex !important;
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
-            border-radius: 0;
-            max-height: 100vh;
+            width: 100%;
             z-index: 10000;
+            background: white;
+            padding: 20px;
+            overflow-y: auto;
+            flex-direction: column;
         }
 
-        .cart-summary:not(.collapsed) .cart-header-total {
-            display: none;
+        #shopify-section-{{ section.id }} .quiz-recommendations-cart-column.mobile-expanded .cart-summary {
+            position: static;
+            border: none;
+            padding: 0;
+            border-radius: 0;
+            box-shadow: none;
         }
 
-        .cart-summary:not(.collapsed) .cart-toggle-btn {
-            display: none;
-        }
-
-        .cart-summary:not(.collapsed) .cart-close-btn {
-            display: flex;
-        }
-
-        .cart-summary:not(.collapsed) .cart-summary-body {
+        #shopify-section-{{ section.id }} .quiz-recommendations-cart-column.mobile-expanded .cart-summary-body {
             flex: 1;
             overflow-y: auto;
+            padding-top: 16px;
         }
 
-        .cart-summary:not(.collapsed) .cart-highlight-fullscreen {
-            display: block!important;
-        }
-
-        .cart-summary:not(.collapsed) .checkout-mobile {
-            display: none;
-        }
-
-        .cart-summary.collapsed .cart-highlight-static {
-            display: none;
-        }
-
-        .cart-summary-header {
-            cursor: pointer;
-        }
-
-        .cart-summary.collapsed {
-            padding: 12px;
-            border-bottom: 0;
-        }
-
-        .cart-summary.collapsed .cart-summary-header {
-            margin-bottom: 0;
-            border-bottom: 0;
+        /* Mobile Cart Header */
+        #shopify-section-{{ section.id }} .quiz-recommendations-cart-column.mobile-expanded .cart-summary-header {
             display: flex;
+            justify-content: space-between;
             align-items: center;
+            padding-bottom: 16px;
+            border-bottom: 1px solid #e5e7eb;
+            margin-bottom: 16px;
         }
 
-        .cart-toggle-btn {
-            display: block;
+        #shopify-section-{{ section.id }} .quiz-recommendations-cart-column.mobile-expanded .cart-close-btn {
+            display: flex;
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: #f3f4f6;
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 10001;
+            color: #111827;
         }
 
         .desktop-only {
@@ -1497,9 +1597,6 @@
             display: block;
         }
 
-        .recommendations-left {
-            padding-bottom: 100px;
-        }
 
         .cart-highlight-box-external.mobile-only {
             background: white;
@@ -1517,8 +1614,9 @@
     }
 
     @media (max-width: 767px) {
-        .quiz-recommendations {
-            padding: 30px 16px;
+        #shopify-section-{{ section.id }} .quiz-recommendations-content-column {
+            padding: 20px 16px;
+            padding-bottom: 100px;
         }
 
         .recommended-product-card {
@@ -3090,6 +3188,16 @@
             itemCountEl.textContent = `(${itemCount})`;
         }
 
+        // Update mobile sticky bar
+        const mobileItemCountEl = document.querySelector('[data-mobile-item-count]');
+        const mobileTotalPriceEl = document.querySelector('[data-mobile-total-price]');
+        if (mobileItemCountEl) {
+            mobileItemCountEl.textContent = `(${itemCount})`;
+        }
+        if (mobileTotalPriceEl) {
+            mobileTotalPriceEl.textContent = totalFormatted;
+        }
+
         // Add click handlers for cart item remove buttons
         const removeButtons = cartItemsContainer.querySelectorAll('[data-cart-remove]');
         removeButtons.forEach(button => {
@@ -3120,23 +3228,29 @@
     const cartClose = document.querySelector('[data-cart-close]');
     const cartSummary = document.querySelector('.cart-summary');
     const cartHeader = document.querySelector('[data-cart-header]');
+    const mobileCartColumn = document.querySelector('.quiz-recommendations-cart-column');
+    const mobileStickyBar = document.querySelector('.quiz-recommendations-mobile-sticky-bar');
+    const mobileStickyToggle = document.querySelector('[data-mobile-cart-toggle]');
+    const mobileItemCount = document.querySelector('[data-mobile-item-count]');
+    const mobileTotalPrice = document.querySelector('[data-mobile-total-price]');
 
     function initCartState() {
-        if (cartSummary && window.innerWidth <= 1024) {
-            cartSummary.classList.add('collapsed');
+        // Desktop: cart is always visible
+        // Mobile: cart column is hidden by default, shown when sticky bar is clicked
+        if (window.innerWidth <= 1024 && mobileCartColumn) {
+            mobileCartColumn.classList.remove('mobile-expanded');
         }
     }
+
 
     if (cartToggle && cartSummary) {
         initCartState();
 
         window.addEventListener('resize', () => {
             if (window.innerWidth <= 1024) {
-                if (!cartSummary.classList.contains('collapsed')) {
-                    cartSummary.classList.add('collapsed');
+                if (mobileCartColumn && mobileCartColumn.classList.contains('mobile-expanded')) {
+                    mobileCartColumn.classList.remove('mobile-expanded');
                 }
-            } else {
-                cartSummary.classList.remove('collapsed');
             }
         });
 
@@ -3154,9 +3268,22 @@
         if (cartClose) {
             cartClose.addEventListener('click', () => {
                 cartSummary.classList.add('collapsed');
+                if (mobileCartColumn) {
+                    mobileCartColumn.classList.remove('mobile-expanded');
+                }
             });
         }
     }
+
+    // Mobile sticky bar toggle
+    if (mobileStickyToggle && mobileCartColumn) {
+        mobileStickyToggle.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            mobileCartColumn.classList.toggle('mobile-expanded');
+        });
+    }
+
 
     async function checkout() {
         if (cartItems.length === 0) {
