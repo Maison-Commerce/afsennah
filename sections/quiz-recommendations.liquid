@@ -164,40 +164,44 @@
         <!-- Right Side: Cart Summary -->
         <div class="recommendations-right">
             <div class="cart-summary">
-                <div class="cart-summary-header" data-cart-header>
-                    <div class="cart-header-content">
-                        <div class="cart-header-left">
-                            <h3 class="cart-summary-title">Order Summary</h3>
-                            <span class="cart-item-count" data-item-count>(0)</span>
-                        </div>
-                        <button class="cart-toggle-btn" data-cart-toggle aria-label="Toggle cart">
-                            <svg class="cart-arrow" width="20" height="20" viewBox="0 0 20 20" fill="none">
-                                <path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                        </button>
-                    </div>
-                    <div class="cart-header-total">
-                        <span class="total-price-header" data-total-price-header>$0.00</span>
-                    </div>
+                <div class="cart-summary-header">
+                    <h3 class="cart-summary-title">Order Summary</h3>
                 </div>
-                <button class="quiz-btn quiz-btn-checkout checkout-mobile" data-checkout-btn>
-                    Checkout
-                </button>
-                {% if section.settings.checkout_subtext != blank %}
-                    <div class="checkout-subtext checkout-mobile">{{ section.settings.checkout_subtext }}</div>
-                {% endif %}
-                <button class="cart-close-btn" data-cart-close aria-label="Close cart">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                        <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                </button>
-                <div class="cart-summary-body" data-cart-body>
+                <div class="cart-summary-body">
                     <div class="cart-items" data-cart-items>
                         <!-- Cart items will be added here dynamically -->
                     </div>
-                    <span class="total-price" data-total-price style="display: none;">$0.00</span>
+                    <div class="cart-summary-totals">
+                        <div class="cart-summary-row">
+                            <span>Subtotal:</span>
+                            <span data-subtotal>$0.00</span>
+                        </div>
+                        <div class="cart-summary-row cart-discount-row" data-discount-row style="display: none;">
+                            <span>Discount:</span>
+                            <span data-discount>- $0.00</span>
+                        </div>
+                        <div class="cart-summary-row">
+                            <span>VAT:</span>
+                            <span>Calculated at checkout</span>
+                        </div>
+                        <div class="cart-summary-row">
+                            <span>Shipping:</span>
+                            <span style="font-weight: bold;">Free</span>
+                        </div>
+                    </div>
+                    <div class="cart-total-section">
+                        <div class="cart-total-label">Total Price (with savings)</div>
+                        <div class="cart-total-price">
+                            <span class="cart-total-original" data-total-original style="display: none;">$0.00</span>
+                            <span class="cart-total-current" data-total-current>$0.00</span>
+                        </div>
+                    </div>
                     <button class="quiz-btn quiz-btn-checkout" data-checkout-btn>
                         Checkout
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                            <path d="M8 2V8M8 14C11.3137 14 14 11.3137 14 8C14 4.68629 11.3137 2 8 2C4.68629 2 2 4.68629 2 8C2 11.3137 4.68629 14 8 14Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M8 5V8L10 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
                     </button>
                     {% if section.settings.checkout_subtext != blank %}
                         <div class="checkout-subtext">{{ section.settings.checkout_subtext }}</div>
