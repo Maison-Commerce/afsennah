@@ -1136,6 +1136,7 @@ video-section-play-button {
 .cart-item-upsells .no-wrap.slider-nav {
     position: relative;
     transform: none;
+    background: none;
 }
 
 .cart-item-upsells carousel-slider {
