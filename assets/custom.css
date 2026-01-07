@@ -999,4 +999,5 @@ video-section-play-button {
 .cart__line-item {
     padding: 12px;
     border-radius: 16px;
+    border: 1px solid #E5E5F4;
 }
