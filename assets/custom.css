@@ -1184,3 +1184,6 @@ video-section-play-button {
     width: 14px;
     height: 14px;
 }
+.cart-info-block--lmtb {
+    display: none;
+}
