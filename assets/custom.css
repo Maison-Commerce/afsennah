@@ -1775,3 +1775,14 @@ height: 100%;
     vertical-align: middle;
     color: rgba(35, 35, 35, 0.75);
 }
+
+.sls-price {
+    color: #1A365D;
+    font-family: "Gotham";
+    font-weight: 500;
+    font-style: Medium;
+    font-size: 16px;
+    line-height: 150%;
+    letter-spacing: 0%;
+
+}
