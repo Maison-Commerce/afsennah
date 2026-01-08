@@ -105,6 +105,66 @@
                     {% endif %}
                     <div class="section-products" data-section-products="accessories"></div>
                 </div>
+
+                <!-- Upsell Package Blocks -->
+                {% for block in section.blocks %}
+                    {% case block.type %}
+                        {% when 'upsell_package' %}
+                            <div class="maison_commerce_maison_upsell_package__block" {{ block.shopify_attributes }} data-upsell-package-block data-countdown-hours="{{ block.settings.countdown_hours | default: 0 }}" data-countdown-minutes="{{ block.settings.countdown_minutes | default: 9 }}" data-countdown-seconds="{{ block.settings.countdown_seconds | default: 57 }}">
+                                <!-- Header -->
+                                <div class="maison_commerce_maison_upsell_package__header">
+                                    <div class="maison_commerce_maison_upsell_package__header-left">
+                                        {% if block.settings.flame_icon != blank %}
+                                            <img src="{{ block.settings.flame_icon | image_url: width: 20 }}" alt="" class="maison_commerce_maison_upsell_package__flame-icon">
+                                        {% else %}
+                                            <svg class="maison_commerce_maison_upsell_package__flame-icon" width="16" height="16" viewBox="0 0 20 20" fill="none">
+                                                <path d="M10 2L12.5 7.5L18 8.5L14 12.5L15 18L10 15L5 18L6 12.5L2 8.5L7.5 7.5L10 2Z" fill="#E98C36"/>
+                                            </svg>
+                                        {% endif %}
+                                        <span class="maison_commerce_maison_upsell_package__header-text">{{ block.settings.header_text | default: 'LIMITED-TIME CRAZY DEAL' }}</span>
+                                    </div>
+                                    <div class="maison_commerce_maison_upsell_package__timer" data-countdown-timer>
+                                        <span class="timer-value" data-timer-hours>00</span>:<span class="timer-value" data-timer-minutes>00</span>:<span class="timer-value" data-timer-seconds>00</span>
+                                    </div>
+                                </div>
+
+                                <!-- Main Content -->
+                                <div class="maison_commerce_maison_upsell_package__content">
+                                    {% if block.settings.product_image != blank %}
+                                        <div class="maison_commerce_maison_upsell_package__image">
+                                            <img src="{{ block.settings.product_image | image_url: width: 800 }}" alt="{{ block.settings.title }}">
+                                        </div>
+                                    {% endif %}
+
+                                    {% if block.settings.discount_percent > 0 %}
+                                        <div class="maison_commerce_maison_upsell_package__discount-badge">SAVE {{ block.settings.discount_percent }}%</div>
+                                    {% endif %}
+
+                                    <div class="maison_commerce_maison_upsell_package__text-content">
+                                        {% if block.settings.title != blank %}
+                                            <h3 class="maison_commerce_maison_upsell_package__title">{{ block.settings.title }}</h3>
+                                        {% endif %}
+                                        {% if block.settings.description != blank %}
+                                            <div class="maison_commerce_maison_upsell_package__description">{{ block.settings.description }}</div>
+                                        {% endif %}
+                                    </div>
+
+                                    {% if block.settings.products != blank %}
+                                        <button class="maison_commerce_maison_upsell_package__button" data-upsell-package-button data-product-handles="{% for product in block.settings.products %}{{ product.handle }}{% unless forloop.last %},{% endunless %}{% endfor %}">
+                                            {{ block.settings.button_text | default: 'Claim Ultimate Package' }}
+                                            <svg width="24" height="24" viewBox="0 0 20 20" fill="none">
+                                                <path d="M7.5 5L12.5 10L7.5 15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                            </svg>
+                                        </button>
+                                    {% endif %}
+
+                                    {% if block.settings.footer_text != blank %}
+                                        <div class="maison_commerce_maison_upsell_package__footer">{{ block.settings.footer_text }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                    {% endcase %}
+                {% endfor %}
             </div>
         </div>
 
@@ -663,7 +723,99 @@
             "id": "checkout_subtext",
             "label": "Checkout Subtext",
             "info": "Text displayed under the main checkout button.",
-            "default": "if you don’t like your first order it will be on us"
+            "default": "if you don't like your first order it will be on us"
+        }
+    ],
+    "blocks": [
+        {
+            "type": "upsell_package",
+            "name": "Upsell Package",
+            "settings": [
+                {
+                    "type": "header",
+                    "content": "Content"
+                },
+                {
+                    "type": "image_picker",
+                    "id": "product_image",
+                    "label": "Product Image"
+                },
+                {
+                    "type": "image_picker",
+                    "id": "flame_icon",
+                    "label": "Flame Icon (Optional)",
+                    "info": "Custom icon for header. If not set, default SVG icon will be used."
+                },
+                {
+                    "type": "text",
+                    "id": "header_text",
+                    "label": "Header Text",
+                    "default": "LIMITED-TIME CRAZY DEAL"
+                },
+                {
+                    "type": "text",
+                    "id": "title",
+                    "label": "Title",
+                    "default": "Ultimate Hair Care Package"
+                },
+                {
+                    "type": "richtext",
+                    "id": "description",
+                    "label": "Description",
+                    "default": "<p>Get all 7 products — more than our top 3 bestsellers — with <strong>50% off</strong>. This is a one-time purchase with no subscription. A limited-time offer we may not keep for long.</p>"
+                },
+                {
+                    "type": "range",
+                    "id": "discount_percent",
+                    "min": 0,
+                    "max": 100,
+                    "step": 5,
+                    "unit": "%",
+                    "label": "Discount Percent",
+                    "default": 50
+                },
+                {
+                    "type": "product_list",
+                    "id": "products",
+                    "label": "Products",
+                    "info": "Select products to add to cart when button is clicked",
+                    "limit": 20
+                },
+                {
+                    "type": "text",
+                    "id": "button_text",
+                    "label": "Button Text",
+                    "default": "Claim Ultimate Package"
+                },
+                {
+                    "type": "text",
+                    "id": "footer_text",
+                    "label": "Footer Text",
+                    "default": "No subscription • One-time payment • Limited availability"
+                },
+                {
+                    "type": "header",
+                    "content": "Countdown Timer"
+                },
+                {
+                    "type": "number",
+                    "id": "countdown_hours",
+                    "label": "Countdown Hours",
+                    "default": 0
+                },
+                {
+                    "type": "number",
+                    "id": "countdown_minutes",
+                    "label": "Countdown Minutes",
+                    "default": 9
+                },
+                {
+                    "type": "number",
+                    "id": "countdown_seconds",
+                    "label": "Countdown Seconds",
+                    "default": 57
+                }
+            ]
         }
     ],
     "presets": [
