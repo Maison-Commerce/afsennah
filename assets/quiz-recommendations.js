@@ -421,12 +421,10 @@
         if (initialized) return;
 
         if (!window.QuizManager || !window.QuizManager.recommendedProducts) {
-            console.log('No recommended products found');
             return;
         }
 
         let productHandles = window.QuizManager.recommendedProducts;
-        console.log('Product handles from QuizManager:', productHandles);
 
         // Get custom sort order from data attribute
         const recommendationsSection = document.querySelector('[data-recommendations]');
@@ -438,14 +436,12 @@
         bogoProductHandles = bogoProductsData ? bogoProductsData.split(',').map(h => h.trim()).filter(h => h) : [];
         bogoBadgeText = recommendationsSection?.dataset.bogoBadgeText || 'BUY 1 GET 1 FREE';
         bogoCartText = recommendationsSection?.dataset.bogoCartText || 'Buy 1 Get 1 Free';
-        console.log('BOGO settings loaded:', { bogoEnabled, bogoProductHandles, bogoBadgeText, bogoCartText });
 
         // Initialize tiered gift system
         initGiftTiers();
 
         if (sortOrder && sortOrder.trim() !== '') {
             const sortOrderHandles = sortOrder.split(',').map(h => h.trim()).filter(h => h);
-            console.log('Custom sort order:', sortOrderHandles);
 
             // Reorder productHandles based on sortOrder
             // First, add products from sortOrder that are in recommendedProducts
@@ -462,7 +458,6 @@
 
             // Then add any remaining recommended products not in sortOrder
             productHandles = [...orderedHandles, ...remainingHandles];
-            console.log('Reordered product handles:', productHandles);
         }
 
         const topPicksContainer = document.querySelector('[data-section-products="top-picks"]');
@@ -476,7 +471,6 @@
         }
 
         if (productHandles.length === 0) {
-            console.log('No product handles to fetch');
             return;
         }
 
@@ -485,21 +479,18 @@
         // Fetch quiz recommended products
         const fetchPromises = productHandles.map(handle => {
             if (!handle) return Promise.resolve(null);
-            console.log('Fetching product:', handle);
             return fetch(`/products/${handle}.js`)
                 .then(response => response.ok ? response.json() : null)
                 .catch(() => null);
         });
 
         Promise.all(fetchPromises).then(products => {
-            console.log('Fetched products:', products);
             
             // Store all products globally for access in updateProductCardButtons
             window.quizRecommendationsProducts = products.filter(p => p !== null);
             
             // Section 1: Top 3 picks (auto-added to cart)
             const topPicks = products.slice(0, 3).filter(p => p !== null);
-            console.log('Top picks (Section 1):', topPicks.length, 'products');
             
             topPicks.forEach((product, index) => {
                 productStates[product.id] = { removed: false, quantity: 1 };
