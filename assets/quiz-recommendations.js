@@ -421,12 +421,12 @@
         if (initialized) return;
 
         if (!window.QuizManager || !window.QuizManager.recommendedProducts) {
-            console.log('No recommended products found');
+            
             return;
         }
 
         let productHandles = window.QuizManager.recommendedProducts;
-        console.log('Product handles from QuizManager:', productHandles);
+        
 
         // Get custom sort order from data attribute
         const recommendationsSection = document.querySelector('[data-recommendations]');
@@ -438,14 +438,14 @@
         bogoProductHandles = bogoProductsData ? bogoProductsData.split(',').map(h => h.trim()).filter(h => h) : [];
         bogoBadgeText = recommendationsSection?.dataset.bogoBadgeText || 'BUY 1 GET 1 FREE';
         bogoCartText = recommendationsSection?.dataset.bogoCartText || 'Buy 1 Get 1 Free';
-        console.log('BOGO settings loaded:', { bogoEnabled, bogoProductHandles, bogoBadgeText, bogoCartText });
+        
 
         // Initialize tiered gift system
         initGiftTiers();
 
         if (sortOrder && sortOrder.trim() !== '') {
             const sortOrderHandles = sortOrder.split(',').map(h => h.trim()).filter(h => h);
-            console.log('Custom sort order:', sortOrderHandles);
+            
 
             // Reorder productHandles based on sortOrder
             // First, add products from sortOrder that are in recommendedProducts
@@ -462,7 +462,7 @@
 
             // Then add any remaining recommended products not in sortOrder
             productHandles = [...orderedHandles, ...remainingHandles];
-            console.log('Reordered product handles:', productHandles);
+            
         }
 
         const topPicksContainer = document.querySelector('[data-section-products="top-picks"]');
@@ -476,7 +476,7 @@
         }
 
         if (productHandles.length === 0) {
-            console.log('No product handles to fetch');
+            
             return;
         }
 
@@ -485,21 +485,21 @@
         // Fetch quiz recommended products
         const fetchPromises = productHandles.map(handle => {
             if (!handle) return Promise.resolve(null);
-            console.log('Fetching product:', handle);
+            
             return fetch(`/products/${handle}.js`)
                 .then(response => response.ok ? response.json() : null)
                 .catch(() => null);
         });
 
         Promise.all(fetchPromises).then(products => {
-            console.log('Fetched products:', products);
+            
             
             // Store all products globally for access in updateProductCardButtons
             window.quizRecommendationsProducts = products.filter(p => p !== null);
             
             // Section 1: Top 3 picks (auto-added to cart)
             const topPicks = products.slice(0, 3).filter(p => p !== null);
-            console.log('Top picks (Section 1):', topPicks.length, 'products');
+            
             
             topPicks.forEach((product, index) => {
                 productStates[product.id] = { removed: false, quantity: 1 };
@@ -524,11 +524,11 @@
 
             // Section 2: Additional recommendations (not auto-added)
             const additionalProducts = products.slice(3).filter(p => p !== null);
-            console.log('Additional products (Section 2):', additionalProducts.length, 'products');
+            
             
             // Store additional products globally for upsell package blocks
             window.quizRecommendationsAdditionalProducts = additionalProducts;
-            console.log('Stored additional products for upsell package:', additionalProducts.length, 'products');
+            
             
             // Check if there are any upsell package blocks - if so, hide Section 2
             const upsellBlocks = document.querySelectorAll('[data-upsell-package-block]');
@@ -579,7 +579,7 @@
         // Section 3: Accessories (manual product list from settings)
         // accessoryHandles will be passed from inline script
         const accessoryHandles = window.quizRecommendationsConfig?.accessoryHandles || [];
-        console.log('Accessory handles (Section 3):', accessoryHandles);
+        
         
         // Get the accessories section element and divider
         const accessoriesSection = document.querySelector('[data-section="accessories"]');
@@ -600,14 +600,14 @@
                 const handle = typeof item === 'string' ? item : (item?.handle || null);
                 if (!handle) return Promise.resolve(null);
                 
-                console.log('Fetching accessory product:', handle);
+                
                 return fetch(`/products/${handle}.js`)
                     .then(response => response.ok ? response.json() : null)
                     .catch(() => null);
             });
 
             Promise.all(accessoryPromises).then(accessories => {
-                console.log('Fetched accessories:', accessories);
+                
                 const validAccessories = accessories.filter(product => product !== null);
                 
                 validAccessories.forEach((product) => {
@@ -685,7 +685,7 @@
                     : 'USD';
                 Currency.convertAll(shopCurrency, '[name=currencies]');
             } catch (e) {
-                console.log('Currency conversion update failed:', e);
+                
             }
         }
         // Also try alternate method for different currency converter apps
@@ -1216,7 +1216,7 @@
                     const currentQty = productStates[product.id].quantity || 1;
                     const selectedVariantId = parseInt(card.dataset.variantId);
 
-                    console.log('Purchase option changed:', {
+                    
                         productId: product.id,
                         variantId: selectedVariantId,
                         sellingPlanId: sellingPlanId,
@@ -1226,7 +1226,7 @@
 
                     // Only update cart if product is in cart (check by variantId)
                     const itemInCart = cartItems.find(item => item.variantId === selectedVariantId);
-                    console.log('Item in cart:', itemInCart ? 'Yes' : 'No');
+                    
 
                     if (itemInCart) {
                         // Create updated product with selected variant info
@@ -1354,7 +1354,7 @@
             }
         }
 
-        console.log('Cart updated. Current cart items:', cartItems.length);
+        
 
         updateCartDisplay();
         
@@ -1459,39 +1459,39 @@
         // This function removes a product from cart AND updates the product card state
         // It's used by both the product card remove button and the cart item remove button
 
-        console.log('=== removeProductFromCart START ===');
-        console.log('Product:', product.title, 'ID:', product.id);
-        console.log('Variant ID:', variantId);
+        
+        
+        
 
         // Find the product card - try multiple selectors
         let productCard = document.querySelector(`[data-product-id="${product.id}"]`);
 
         // If it's a custom element, look for the actual recommended-product-card inside it
         if (productCard && productCard.tagName === 'PRODUCT-BLOCK') {
-            console.log('Found PRODUCT-BLOCK, looking for recommended-product-card inside...');
+            
             const innerCard = productCard.querySelector('.recommended-product-card');
             if (innerCard) {
-                console.log('Found inner recommended-product-card');
+                
                 productCard = innerCard;
             }
         }
 
-        console.log('Product card found:', !!productCard);
+        
 
         if (productCard) {
-            console.log('Product card element:', productCard);
-            console.log('Product card tag:', productCard.tagName);
-            console.log('Product card classes before:', productCard.className);
+            
+            
+            
         }
 
         if (productCard && productStates[product.id]) {
-            console.log('ProductState exists:', productStates[product.id]);
+            
 
             // Update state
             productStates[product.id].removed = true;
             productCard.classList.add('removed');
 
-            console.log('Product card classes after:', productCard.className);
+            
 
             // Update buttons - search more deeply
             let addBtn = productCard.querySelector('[data-add-btn]');
@@ -1499,45 +1499,45 @@
 
             // If not found, search globally by product ID and button attributes
             if (!addBtn || !removeBtn) {
-                console.log('Buttons not found in productCard, searching globally...');
+                
                 const allCards = document.querySelectorAll(`[data-product-id="${product.id}"]`);
-                console.log('Found', allCards.length, 'elements with product ID');
+                
 
                 allCards.forEach((card, index) => {
-                    console.log(`Card ${index}:`, card.tagName, card.className);
+                    
                     const tempAdd = card.querySelector('[data-add-btn]');
                     const tempRemove = card.querySelector('[data-remove-btn]');
                     if (tempAdd) {
-                        console.log(`  - Found add button in card ${index}`);
+                        
                         addBtn = tempAdd;
                     }
                     if (tempRemove) {
-                        console.log(`  - Found remove button in card ${index}`);
+                        
                         removeBtn = tempRemove;
                     }
                 });
             }
 
-            console.log('Add button found:', !!addBtn, addBtn);
-            console.log('Remove button found:', !!removeBtn, removeBtn);
+            
+            
 
             if (addBtn) {
-                console.log('Add button display BEFORE:', addBtn.style.display);
+                
                 addBtn.style.display = 'inline-flex';
-                console.log('Add button display AFTER:', addBtn.style.display);
+                
             }
             if (removeBtn) {
-                console.log('Remove button display BEFORE:', removeBtn.style.display);
+                
                 removeBtn.style.display = 'none';
-                console.log('Remove button display AFTER:', removeBtn.style.display);
+                
             }
         } else {
-            console.log('FAILED: productCard or productStates not found');
-            if (!productCard) console.log('- Product card is null');
-            if (!productStates[product.id]) console.log('- productStates[product.id] is null');
+            
+            if (!productCard) 
+            if (!productStates[product.id]) 
         }
 
-        console.log('=== removeProductFromCart END ===');
+        
 
         // Remove from cart
         updateCartItem(variantId, 0, product, null);
@@ -2438,8 +2438,8 @@
                     
                     // Split handles and fetch products
                     const handles = productHandles.split(',').map(h => h.trim()).filter(h => h);
-                    console.log('Upsell Package Button Clicked');
-                    console.log('Product handles from block:', handles);
+                    
+                    
                     
                     if (handles.length === 0) {
                         console.error('No product handles found');
@@ -2472,8 +2472,8 @@
                         const productResults = await Promise.all(productPromises);
                         const products = productResults.filter(p => p !== null);
                         
-                        console.log('Fetched products:', products.length, 'out of', handles.length);
-                        console.log('Products:', products);
+                        
+                        
                         
                         if (products.length === 0) {
                             throw new Error('No products could be fetched');
@@ -2508,25 +2508,25 @@
                                     // By omitting it, we ensure one-time purchase
                                     
                                     if (hasSubscription) {
-                                        console.log(`Product "${product.title}" has subscription options, but adding as ONE-TIME PURCHASE (no selling_plan)`);
+                                        
                                     }
                                     
-                                    console.log(`Adding "${product.title}" with 50% discount property`);
+                                    
                                     
                                     itemsToAdd.push(itemData);
                                 } else {
                                     // No available variants - skip this product
                                     skippedProducts.push(product.title || product.handle);
-                                    console.log(`Skipping sold-out product: ${product.title || product.handle}`);
+                                    
                                 }
                             } else {
                                 skippedProducts.push(product?.title || product?.handle || 'Unknown product');
-                                console.log(`Skipping product with no variants: ${product?.title || product?.handle || 'Unknown product'}`);
+                                
                             }
                         }
                         
                         // Log what we're adding
-                        console.log('Upsell Package: Items to add (all as ONE-TIME PURCHASE):', itemsToAdd.map(item => ({
+                        
                             variantId: item.id,
                             quantity: item.quantity,
                             selling_plan: item.selling_plan || 'NONE (one-time purchase)'
@@ -2538,10 +2538,10 @@
 
                         // Log skipped products if any
                         if (skippedProducts.length > 0) {
-                            console.log(`Skipped ${skippedProducts.length} unavailable product(s):`, skippedProducts);
+                            
                         }
 
-                        console.log(`Adding ${itemsToAdd.length} available product(s) to cart`);
+                        
 
                         // Add all available products to cart via Shopify API
                         const response = await fetch('/cart/add.js', {
