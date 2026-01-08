@@ -1392,3 +1392,12 @@ height: 100%;
     align-items: center;
     border-radius: 8px;
 }
+.cart-drawer__usp-badges-label {
+    font-family: "Gotham";
+    font-weight: 400;
+    font-style: Book;
+    font-size: 12px;
+    line-height: 150%;
+    letter-spacing: 0%;
+    color: #232323;
+}
