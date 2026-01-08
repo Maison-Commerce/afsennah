@@ -165,7 +165,7 @@
         color: var(--Text-Primary, #232323);
         text-align: center;
 
-        font-family: "Vanilla Ravioli";
+        font-family: 'Vanilla Ravioli', sans-serif;
         font-size: 32px;
         font-style: normal;
         font-weight: 400;
@@ -177,7 +177,7 @@
         color: var(--Text-Primary, #272727);
         text-align: center;
 
-        font-family: Gotham;
+        font-family: 'Gotham', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
         font-size: 16px;
         font-style: normal;
         font-weight: 400;
