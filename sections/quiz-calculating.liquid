@@ -859,7 +859,10 @@
         // Disable smooth scrolling for auto-scroll (it interferes with programmatic scrolling)
         reviewsContainer.style.scrollBehavior = 'auto';
 
-        // Auto-scroll function with seamless looping
+        // Auto-scroll function with seamless looping - smoother animation
+        let scrollPosition = 0;
+        const scrollSpeed = 0.3; // pixels per frame (smaller = smoother)
+        
         function autoScroll() {
           const currentScrollHeight = reviewsContainer.scrollHeight;
           const currentClientHeight = reviewsContainer.clientHeight;
@@ -867,17 +870,20 @@
           
           if (currentMaxScroll <= 0) return;
 
-          // Scroll down
-          if (reviewsContainer.scrollTop < currentMaxScroll - 1) {
-            reviewsContainer.scrollTop += 1;
-          } else {
-            // Reset to top when reaching bottom for seamless loop
-            reviewsContainer.scrollTop = 0;
+          // Increment scroll position smoothly
+          scrollPosition += scrollSpeed;
+          
+          // Reset to top when reaching bottom for seamless loop
+          if (scrollPosition >= currentMaxScroll) {
+            scrollPosition = 0;
           }
+          
+          // Apply smooth scroll position
+          reviewsContainer.scrollTop = scrollPosition;
         }
 
-        // Start auto-scrolling every 30ms
-        scrollInterval = setInterval(autoScroll, 30);
+        // Start auto-scrolling every 16ms (~60fps for smoother animation)
+        scrollInterval = setInterval(autoScroll, 16);
         console.log('[Auto-scroll] Interval started:', scrollInterval);
 
         // Pause on hover (reviewsColumn already found above)
@@ -892,8 +898,9 @@
           
           reviewsColumn.addEventListener('mouseleave', () => {
             console.log('[Auto-scroll] Resumed after hover');
-            // Restart scrolling
-            scrollInterval = setInterval(autoScroll, 30);
+            // Restart scrolling with current position
+            scrollPosition = reviewsContainer.scrollTop;
+            scrollInterval = setInterval(autoScroll, 16);
           });
         }
       }, 200);
