@@ -2270,14 +2270,25 @@
                                 const availableVariant = product.variants.find(v => v.available);
                                 
                                 if (availableVariant) {
-                                    // Always add as one-time purchase (no subscription)
-                                    // By omitting 'selling_plan', Shopify defaults to one-time purchase
-                                    itemsToAdd.push({
+                                    // Check if product has subscription options
+                                    const hasSubscription = product.selling_plan_groups && product.selling_plan_groups.length > 0;
+                                    
+                                    // Prepare item data - explicitly set as one-time purchase
+                                    const itemData = {
                                         id: availableVariant.id,
                                         quantity: 1
-                                        // Note: Not including 'selling_plan' ensures one-time purchase
-                                        // even if the product has subscription options available
-                                    });
+                                    };
+                                    
+                                    // Explicitly ensure one-time purchase by NOT including selling_plan
+                                    // Shopify defaults to one-time purchase when selling_plan is omitted
+                                    // If we wanted subscription, we would add: itemData.selling_plan = planId
+                                    // By omitting it, we ensure one-time purchase
+                                    
+                                    if (hasSubscription) {
+                                        console.log(`Product "${product.title}" has subscription options, but adding as ONE-TIME PURCHASE (no selling_plan)`);
+                                    }
+                                    
+                                    itemsToAdd.push(itemData);
                                 } else {
                                     // No available variants - skip this product
                                     skippedProducts.push(product.title || product.handle);
@@ -2288,6 +2299,13 @@
                                 console.log(`Skipping product with no variants: ${product?.title || product?.handle || 'Unknown product'}`);
                             }
                         }
+                        
+                        // Log what we're adding
+                        console.log('Upsell Package: Items to add (all as ONE-TIME PURCHASE):', itemsToAdd.map(item => ({
+                            variantId: item.id,
+                            quantity: item.quantity,
+                            selling_plan: item.selling_plan || 'NONE (one-time purchase)'
+                        })));
 
                         if (itemsToAdd.length === 0) {
                             throw new Error('No available products found to add to cart');
