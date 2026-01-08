@@ -2152,15 +2152,15 @@ height: 100%;
     object-fit: cover;
   }
 
-  .video-slide-container-{{ block.id }} {
+  /* .video-slide-container-{{ block.id }} {
     --video-slide-border-radius: {{ block.settings.border_radius | default: 8 }}px;
-  }
+  } */
 
-  @media screen and (max-width: 768px) {
+  /* @media screen and (max-width: 768px) {
     .video-slide-container-{{ block.id }} {
       --video-slide-border-radius: {{ block.settings.border_radius_mobile | default: 8 }}px;
     }
-  }
+  } */
 
   /* Video slider grid styles - 3 videos per view */
   .video-slider-grid {
