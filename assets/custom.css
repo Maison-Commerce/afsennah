@@ -1643,3 +1643,15 @@ height: 100%;
     letter-spacing: 0%;
     color: #232323;
 }
+
+.product-info.modern {
+    display: grid;
+    grid-template-columns: 1fr 0.8fr;
+}
+@media (max-width: 768px) {
+
+    .product-info.modern {
+        display: flex;
+        flex-direction: column;
+    }
+}
