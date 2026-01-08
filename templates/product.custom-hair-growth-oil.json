@@ -85,7 +85,12 @@
             "show_pickup_availability": true,
             "show_backorder_text": true,
             "quiz_cta_text": "Get Your Formula",
-            "quiz_cta_url": "shopify://pages/get-your-formula"
+            "quiz_cta_url": "shopify://pages/get-your-formula",
+            "text_above_checkout": "Delivery in 1-2 business days",
+            "text_icon": "",
+            "text_icon_size": "small",
+            "enable_text_box": false,
+            "text_box_color": "#e0f4d5"
           }
         },
         "text_UT9ray": {
