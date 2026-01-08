@@ -2132,3 +2132,18 @@ justify-content: space-between;
     background: #F1F1F9;
     border-radius: 999px;
 }
+
+.video-slide-title {
+    font-family: "Swarsh Daisy";
+    font-weight: 400;
+    font-style: Regular;
+    font-size: 20px;
+    line-height: 140%;
+    letter-spacing: 0%;
+    vertical-align: middle;
+    color: #2F3936
+}
+
+.video-slider-grid .slider__item {
+    height: 550px;
+}
