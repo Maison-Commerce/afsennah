@@ -347,7 +347,7 @@ image-with-text-overlay > div > div,
     display: flex;
     transition: transform 0.3s ease;
     will-change: transform;
-    padding: 0 10%;
+    /* padding: 0 10%; */
 }
 
 .slider-slide--modern {
