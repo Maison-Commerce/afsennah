@@ -39,7 +39,13 @@
             "icon_size": "small",
             "enable_box": false,
             "box_color": "#e0f4d5",
-            "show_in_quickbuy": false
+            "show_in_quickbuy": false,
+            "desktop_background_color": "#ffffff",
+            "desktop_border_radius": 0,
+            "desktop_padding": 0,
+            "mobile_background_color": "#ffffff",
+            "mobile_border_radius": 0,
+            "mobile_padding": 0
           }
         },
         "price": {
@@ -122,7 +128,13 @@
             "icon_size": "small",
             "enable_box": false,
             "box_color": "#e0f4d5",
-            "show_in_quickbuy": false
+            "show_in_quickbuy": false,
+            "desktop_background_color": "#fffef3",
+            "desktop_border_radius": 16,
+            "desktop_padding": 24,
+            "mobile_background_color": "#fffef3",
+            "mobile_border_radius": 16,
+            "mobile_padding": 24
           }
         },
         "accordion_eCyiUV": {
