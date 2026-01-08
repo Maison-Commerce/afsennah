@@ -1054,6 +1054,9 @@ video-section-play-button {
 .cart-drawer .collection-slider {
     padding-top: 6px;
 }
+.cart-drawer .section-footer__payment-icon {
+    width: 32px;
+}
 .subscription-description {
     border-radius:8px;
     background: #F7F7FC;
