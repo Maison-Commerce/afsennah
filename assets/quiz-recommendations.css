@@ -1577,6 +1577,13 @@
         gap: 24px;
     }
 
+    .maison_commerce_maison_upsell_package__text-content-top{
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+
     .maison_commerce_maison_upsell_package__header-left {
         display: flex;
         align-items: center;
