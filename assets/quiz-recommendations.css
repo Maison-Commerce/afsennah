@@ -1461,6 +1461,10 @@
             height: 180px;
         }
 
+        .section-title{
+            font-size: 16px;
+        }
+
         .product-card-title-mobile {
             display: block;
             font-size: 18px;
