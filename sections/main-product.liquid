@@ -1072,8 +1072,28 @@
                       assign text_col = '255,255,255'
                     endif
                   endif
+                  
+                  assign desktop_bg = block.settings.desktop_background_color | default: '#ffffff'
+                  assign desktop_br = block.settings.desktop_border_radius | default: 0
+                  assign desktop_pad = block.settings.desktop_padding | default: 0
+                  assign mobile_bg = block.settings.mobile_background_color | default: '#ffffff'
+                  assign mobile_br = block.settings.mobile_border_radius | default: 0
+                  assign mobile_pad = block.settings.mobile_padding | default: 0
                 -%}
-                <div class="richtext product-info-block {% if block.settings.icon != blank or block.settings.custom_icon != blank %} with-icon{% endif %}{% if block.settings.enable_box %} text-box{% endif %}" {% if block.settings.enable_box %}style="--box-color: {{ block.settings.box_color }}; --box-text-color: {{ text_col }}"{% endif %}>
+                <div class="richtext product-info-block {% if block.settings.icon != blank or block.settings.custom_icon != blank %} with-icon{% endif %}{% if block.settings.enable_box %} text-box{% endif %}" 
+                     style="
+                       {% if block.settings.enable_box %}--box-color: {{ block.settings.box_color }}; --box-text-color: {{ text_col }};{% endif %}
+                       --desktop-bg: {{ desktop_bg }};
+                       --desktop-br: {{ desktop_br }}px;
+                       --desktop-pad: {{ desktop_pad }}px;
+                       --mobile-bg: {{ mobile_bg }};
+                       --mobile-br: {{ mobile_br }}px;
+                       --mobile-pad: {{ mobile_pad }}px;
+                       background-color: var(--mobile-bg);
+                       border-radius: var(--mobile-br);
+                       padding: var(--mobile-pad);
+                     "
+                     data-block-id="{{ block.id }}">
                   {%- if block.settings.icon == blank and block.settings.custom_icon == blank -%}
                     <div class="rte cf">{{ block.settings.richtext }}</div>
                   {%- else -%}
@@ -3415,6 +3435,66 @@
           "id": "show_in_quickbuy",
           "label": "Show in quick buy",
           "default": false
+        },
+        {
+          "type": "header",
+          "content": "Desktop Styles"
+        },
+        {
+          "type": "color",
+          "id": "desktop_background_color",
+          "label": "Background color",
+          "default": "#ffffff"
+        },
+        {
+          "type": "range",
+          "id": "desktop_border_radius",
+          "min": 0,
+          "max": 50,
+          "step": 1,
+          "unit": "px",
+          "label": "Border radius",
+          "default": 0
+        },
+        {
+          "type": "range",
+          "id": "desktop_padding",
+          "min": 0,
+          "max": 100,
+          "step": 2,
+          "unit": "px",
+          "label": "Padding",
+          "default": 0
+        },
+        {
+          "type": "header",
+          "content": "Mobile Styles"
+        },
+        {
+          "type": "color",
+          "id": "mobile_background_color",
+          "label": "Background color",
+          "default": "#ffffff"
+        },
+        {
+          "type": "range",
+          "id": "mobile_border_radius",
+          "min": 0,
+          "max": 50,
+          "step": 1,
+          "unit": "px",
+          "label": "Border radius",
+          "default": 0
+        },
+        {
+          "type": "range",
+          "id": "mobile_padding",
+          "min": 0,
+          "max": 100,
+          "step": 2,
+          "unit": "px",
+          "label": "Padding",
+          "default": 0
         }
       ]
     },
