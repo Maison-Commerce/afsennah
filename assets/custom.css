@@ -388,8 +388,8 @@ image-with-text-overlay > div > div,
 
 .thumbnail-item {
     flex-shrink: 0;
-    width: 80px;
-    height: 80px;
+    width: 64px;
+    height: 64px;
     border: 2px solid transparent;
     border-radius: 8px;
     overflow: hidden;
