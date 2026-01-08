@@ -527,7 +527,7 @@
                 
                 // Update upsell blocks text with dynamic price and product count
                 upsellBlocks.forEach(block => {
-                    updateUpsellPackageBlockText(block, additionalProducts);
+                    updateUpsellPackageBlockText(block);
                 });
                 
                 // Re-initialize upsell blocks now that products are available
@@ -2223,29 +2223,60 @@
     const initializedUpsellBlocks = new Set();
 
     // Update upsell package block text with dynamic price and product count
-    function updateUpsellPackageBlockText(block, products) {
-        if (!products || products.length === 0) return;
-
-        // Calculate total price with 50% discount
-        let totalPrice = 0;
-        products.forEach(product => {
-            if (product.variants && product.variants.length > 0) {
-                // Use first available variant, or first variant if none available
-                const variant = product.variants.find(v => v.available) || product.variants[0];
-                if (variant && variant.price) {
-                    // Convert price from cents to dollars
-                    const priceInDollars = variant.price / 100;
-                    totalPrice += priceInDollars;
-                }
-            }
-        });
-
-        // Apply 50% discount
-        const discountedPrice = totalPrice * 0.5;
-
-        // Update button text
+    async function updateUpsellPackageBlockText(block) {
+        // Get product handles from the button's data attribute (from block settings)
         const button = block.querySelector('[data-upsell-package-button]');
-        if (button) {
+        if (!button) return;
+        
+        const productHandles = button.getAttribute('data-product-handles');
+        if (!productHandles || productHandles.trim() === '') return;
+        
+        // Split handles and fetch products
+        const handles = productHandles.split(',').map(h => h.trim()).filter(h => h);
+        if (handles.length === 0) return;
+        
+        try {
+            // Fetch all products from their handles
+            const productPromises = handles.map(handle => 
+                fetch(`/products/${handle}.js`)
+                    .then(response => {
+                        if (!response.ok) {
+                            console.error(`Failed to fetch product: ${handle}`);
+                            return null;
+                        }
+                        return response.json();
+                    })
+                    .catch(err => {
+                        console.error(`Error fetching product ${handle}:`, err);
+                        return null;
+                    })
+            );
+            
+            const productResults = await Promise.all(productPromises);
+            const products = productResults.filter(p => p !== null);
+            
+            if (products.length === 0) return;
+
+            // Calculate total price with 50% discount
+            let totalPrice = 0;
+            products.forEach(product => {
+                if (product.variants && product.variants.length > 0) {
+                    // Use first available variant, or first variant if none available
+                    const variant = product.variants.find(v => v.available) || product.variants[0];
+                    if (variant && variant.price) {
+                        // Convert price from cents to dollars
+                        const priceInDollars = variant.price / 100;
+                        totalPrice += priceInDollars;
+                    }
+                }
+            });
+
+            // Apply 50% discount
+            const discountedPrice = totalPrice * 0.5;
+
+            // Update button text
+            const button = block.querySelector('[data-upsell-package-button]');
+            if (button) {
             // Get the original button text from the data attribute (set by Liquid template)
             let baseText = button.getAttribute('data-original-text');
             
@@ -2261,25 +2292,28 @@
                 baseText = 'Claim Ultimate Package';
             }
             
-            // Format the discounted price
-            const formattedPrice = formatMoney(Math.round(discountedPrice * 100));
-            
-            // Update button HTML with new price and preserve SVG
-            button.innerHTML = `${baseText} — ${formattedPrice}<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>`;
-        }
+                // Format the discounted price
+                const formattedPrice = formatMoney(Math.round(discountedPrice * 100));
+                
+                // Update button HTML with new price and preserve SVG
+                button.innerHTML = `${baseText} — ${formattedPrice}<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                    <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>`;
+            }
 
-        // Update description text
-        const description = block.querySelector('.maison_commerce_maison_upsell_package__description');
-        if (description) {
-            let descriptionText = description.innerHTML;
-            // Replace any number followed by "products" or standalone numbers that might be product counts
-            // Look for patterns like "7 products" or "Get all 7 products"
-            descriptionText = descriptionText.replace(/\b(\d+)\s+products?\b/g, `${products.length} products`);
-            // Also replace standalone numbers that might be product counts (e.g., "Get all 7 —")
-            descriptionText = descriptionText.replace(/\b(\d+)\b(?=\s*—)/g, products.length.toString());
-            description.innerHTML = descriptionText;
+            // Update description text
+            const description = block.querySelector('.maison_commerce_maison_upsell_package__description');
+            if (description) {
+                let descriptionText = description.innerHTML;
+                // Replace any number followed by "products" or standalone numbers that might be product counts
+                // Look for patterns like "7 products" or "Get all 7 products"
+                descriptionText = descriptionText.replace(/\b(\d+)\s+products?\b/g, `${products.length} products`);
+                // Also replace standalone numbers that might be product counts (e.g., "Get all 7 —")
+                descriptionText = descriptionText.replace(/\b(\d+)\b(?=\s*—)/g, products.length.toString());
+                description.innerHTML = descriptionText;
+            }
+        } catch (error) {
+            console.error('Error updating upsell package block text:', error);
         }
     }
 
@@ -2296,11 +2330,8 @@
             // Mark as initialized
             initializedUpsellBlocks.add(block);
             
-            // Update block text with dynamic price and product count if products are available
-            const additionalProducts = window.quizRecommendationsAdditionalProducts || [];
-            if (additionalProducts.length > 0) {
-                updateUpsellPackageBlockText(block, additionalProducts);
-            }
+            // Update block text with dynamic price and product count
+            updateUpsellPackageBlockText(block);
             
             // Clear any existing interval if it exists
             if (block._upsellTimerInterval) {
@@ -2375,16 +2406,23 @@
                 button.addEventListener('click', async (e) => {
                     e.preventDefault();
                     
-                    // Get products from Section 2 (Additional Recommendations)
-                    const additionalProducts = window.quizRecommendationsAdditionalProducts || [];
+                    // Get product handles from the button's data attribute (from block settings)
+                    const productHandles = button.getAttribute('data-product-handles');
                     
+                    if (!productHandles || productHandles.trim() === '') {
+                        console.error('No product handles found in button data attribute');
+                        alert('No products configured for this package.');
+                        return;
+                    }
+                    
+                    // Split handles and fetch products
+                    const handles = productHandles.split(',').map(h => h.trim()).filter(h => h);
                     console.log('Upsell Package Button Clicked');
-                    console.log('Available products:', additionalProducts.length);
-                    console.log('Products:', additionalProducts);
+                    console.log('Product handles from block:', handles);
                     
-                    if (additionalProducts.length === 0) {
-                        console.error('No products available. Products may not be loaded yet.');
-                        alert('Products are still loading. Please wait a moment and try again.');
+                    if (handles.length === 0) {
+                        console.error('No product handles found');
+                        alert('No products configured for this package.');
                         return;
                     }
 
@@ -2394,8 +2432,31 @@
                     button.innerHTML = 'Adding to Cart...';
 
                     try {
-                        // Use the products from Section 2
-                        const products = additionalProducts;
+                        // Fetch all products from their handles
+                        const productPromises = handles.map(handle => 
+                            fetch(`/products/${handle}.js`)
+                                .then(response => {
+                                    if (!response.ok) {
+                                        console.error(`Failed to fetch product: ${handle}`);
+                                        return null;
+                                    }
+                                    return response.json();
+                                })
+                                .catch(err => {
+                                    console.error(`Error fetching product ${handle}:`, err);
+                                    return null;
+                                })
+                        );
+                        
+                        const productResults = await Promise.all(productPromises);
+                        const products = productResults.filter(p => p !== null);
+                        
+                        console.log('Fetched products:', products.length, 'out of', handles.length);
+                        console.log('Products:', products);
+                        
+                        if (products.length === 0) {
+                            throw new Error('No products could be fetched');
+                        }
 
                         // Prepare cart items for Shopify API - only include available products
                         const itemsToAdd = [];
