@@ -1794,8 +1794,10 @@ height: 100%;
     letter-spacing: 0%;
     color: #627690 !important;
     font-style: normal !important;
+    margin: 0 !important;
 }
 
 .sls-total-price {
     flex-direction: row-reverse;
+    gap: 8px;
 }
