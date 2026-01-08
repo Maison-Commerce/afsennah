@@ -2295,7 +2295,7 @@ justify-content: space-between;
     transform: none;
 }
 .product-item-upsells__dots {
-    display: none;
+    display: none !important;
 }
 
 .product-item-upsells .cart-upsell-product {
