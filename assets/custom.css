@@ -2119,3 +2119,12 @@ justify-content: space-between;
     position: relative;
     transform: none;
 }
+
+
+.video-slider__wrapper .slider-nav__btn {
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
