@@ -1469,6 +1469,10 @@
             font-size: 24px;
         }
 
+        .maison-quiz-recom-text{
+            gap: 8px;
+        }
+
         .maison-quiz-recom-text-subtitle{
             font-size: 14px;
         }
