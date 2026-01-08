@@ -2343,3 +2343,7 @@ justify-content: space-between;
 .slider__grid.product-grid.product-grid--carousel.product-grid--per-row-2 {
     gap: 18px;
 }
+
+.product-item-upsells .carousel.block.collection-slider {
+    overflow: hidden;
+}
