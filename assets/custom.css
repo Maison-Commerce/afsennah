@@ -1687,3 +1687,12 @@ height: 100%;
     box-shadow: none;
     outline: none;
 }
+.option-selector .label {
+    font-family: "Gotham";
+    font-weight: 500;
+    font-style: Medium;
+    font-size: 12px;
+    line-height: 150%;
+    letter-spacing: 0%;
+    color: #232323;
+}
