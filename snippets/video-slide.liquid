@@ -27,23 +27,66 @@
 -%}
 
 {%- if is_first_in_group -%}
-  <slideshow-component
-    class="slider-mobile-gutter video-slider__wrapper"
-    role="region"
-    aria-roledescription="{{ 'sections.slideshow.carousel' | t }}"
-    aria-label="Video slides"
-  >
+  <carousel-slider class="carousel block collection-slider video-slider__wrapper" data-dispatch-events="false">
     {%- if block.settings.title != blank -%}
-      <h2 class="video-slide-title" style="margin-bottom: 1.5rem; font-size: {{ block.settings.title_size | default: 24 }}px;">{{ block.settings.title }}</h2>
+      <div class="opposing-items opposing-items--valign-base very-lightly-spaced-row">
+        <div class="opposing-items__left">
+          <h2 class="video-slide-title" style="margin-bottom: 0; font-size: {{ block.settings.title_size | default: 24 }}px;">{{ block.settings.title }}</h2>
+        </div>
+        {%- if video_slide_count > 3 -%}
+          <div class="no-wrap slider-nav">
+            <button name="prev" class="slider-nav__btn has-ltr-icon">
+              <span class="visually-hidden">{{ 'general.slider.previous' | t }}</span>
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M3.4286 4.57141L1.14288 6.85713M1.14288 6.85713L3.4286 9.14284M1.14288 6.85713H12.5715" stroke="currentColor" stroke-width="0.857143" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+            <button name="next" class="slider-nav__btn has-ltr-icon">
+              <span class="visually-hidden">{{ 'general.slider.next' | t }}</span>
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <g clip-path="url(#clip0_video_slider)">
+                  <path d="M10.2857 4.57141L12.5715 6.85713M12.5715 6.85713L10.2857 9.14284M12.5715 6.85713H1.14288" stroke="currentColor" stroke-width="0.857143" stroke-linecap="round" stroke-linejoin="round"/>
+                </g>
+                <defs>
+                  <clipPath id="clip0_video_slider">
+                    <rect width="13.7143" height="13.7143" fill="white"/>
+                  </clipPath>
+                </defs>
+              </svg>
+            </button>
+          </div>
+        {%- endif -%}
+      </div>
+    {%- else -%}
+      {%- if video_slide_count > 3 -%}
+        <div class="opposing-items opposing-items--valign-base very-lightly-spaced-row">
+          <div class="opposing-items__left"></div>
+          <div class="no-wrap slider-nav">
+            <button name="prev" class="slider-nav__btn has-ltr-icon">
+              <span class="visually-hidden">{{ 'general.slider.previous' | t }}</span>
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M3.4286 4.57141L1.14288 6.85713M1.14288 6.85713L3.4286 9.14284M1.14288 6.85713H12.5715" stroke="currentColor" stroke-width="0.857143" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+            <button name="next" class="slider-nav__btn has-ltr-icon">
+              <span class="visually-hidden">{{ 'general.slider.next' | t }}</span>
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <g clip-path="url(#clip0_video_slider)">
+                  <path d="M10.2857 4.57141L12.5715 6.85713M12.5715 6.85713L10.2857 9.14284M12.5715 6.85713H1.14288" stroke="currentColor" stroke-width="0.857143" stroke-linecap="round" stroke-linejoin="round"/>
+                </g>
+                <defs>
+                  <clipPath id="clip0_video_slider">
+                    <rect width="13.7143" height="13.7143" fill="white"/>
+                  </clipPath>
+                </defs>
+              </svg>
+            </button>
+          </div>
+        </div>
+      {%- endif -%}
     {%- endif -%}
-    <div
-      id="Slider-{{ section.id }}-video-slides-{{ video_slide_start_index }}"
-      class="grid grid--3-col-tablet slider slider--everywhere"
-      role="list"
-      {% if video_slide_count > 3 %}
-        aria-label="{{ 'general.slider.name' | t }}"
-      {% endif %}
-    >
+    <div class="slider slider--no-scrollbar slider--edge-peek">
+      <ul class="slider__grid product-grid product-grid--carousel product-grid--per-row-3 product-grid--per-row-mob-3 video-slider-grid">
 {%- endif -%}
 
 <style>
@@ -51,6 +94,10 @@
     position: relative;
     overflow: hidden;
     border-radius: var(--video-slide-border-radius, 8px);
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
   }
 
   .video-slide-image-wrapper {
@@ -58,6 +105,7 @@
     width: 100%;
     overflow: hidden;
     border-radius: var(--video-slide-border-radius, 8px);
+    aspect-ratio: 16 / 9;
   }
 
   .video-slide-image {
@@ -74,6 +122,21 @@
     object-fit: cover;
     display: block;
     border-radius: var(--video-slide-border-radius, 8px);
+  }
+
+  .video-slide-video-wrapper {
+    position: relative;
+    width: 100%;
+    border-radius: var(--video-slide-border-radius, 8px);
+    overflow: hidden;
+    aspect-ratio: 16 / 9;
+  }
+  
+  .video-slide-video-wrapper video,
+  .video-slide-video-wrapper iframe {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
 
   .video-slide-poster {
@@ -195,36 +258,38 @@
     }
   }
 
-  .slider.slider--everywhere {
-    gap: 16px;
+  /* Video slider grid styles - 3 videos per view */
+  .video-slider-grid {
+    --product-columns-desktop: 3;
+    grid-auto-columns: calc((100% - var(--gutter) * 2) / 3);
   }
 
-  .slider.slider--everywhere.grid--3-col-tablet .grid__item {
-    width: calc(33.33% - var(--grid-mobile-horizontal-spacing) * 2 / 3);
+  .video-slider-grid .slider__item {
+    display: flex;
+    flex-direction: column;
   }
 
-  @media screen and (min-width: 750px) {
-    .slider.slider--everywhere.grid--3-col-tablet .grid__item {
-      width: calc(33.33% - var(--grid-desktop-horizontal-spacing) * 2 / 3);
+  /* Mobile styles - 3 videos per view */
+  @media (max-width: 767.98px) {
+    .video-slider-grid {
+      --product-columns-desktop: 3;
+      grid-auto-columns: calc((100% - var(--gutter) * 2) / 3);
     }
   }
 
-  .slider-button.disable {
-    opacity: 0.5;
-    cursor: not-allowed;
-    pointer-events: none;
+  /* Video slider wrapper spacing */
+  .video-slider__wrapper {
+    margin-bottom: 2rem;
+  }
+
+  .video-slide-title {
+    margin-bottom: 1rem;
   }
 </style>
 
-<div
+<li
   id="Slide-{{ section.id }}-video-{{ block.id }}"
-  class="grid__item slider__slide slideshow__slide video-slide-container video-slide-container-{{ block.id }}"
-  tabindex="-1"
-  role="group"
-  {% if video_slide_count > 3 %}
-    aria-roledescription="{{ 'sections.slideshow.slide' | t }}"
-    aria-label="{{ block_index | plus: 1 }} {{ 'general.slider.of' | t }} {{ video_slide_count }}"
-  {% endif %}
+  class="slider__item video-slide-container video-slide-container-{{ block.id }}"
   {{ block.shopify_attributes }}
 >
   {%- if block.settings.media_type == 'video' -%}
@@ -237,19 +302,19 @@
       {%- else -%}
         {%- assign poster = null -%}
       {%- endif -%}
-      <div class="video-slide-video-wrapper" style="position: relative; width: 100%; border-radius: var(--video-slide-border-radius, 8px); overflow: hidden;">
+      <div class="video-slide-video-wrapper">
         {%- if block.settings.video != blank -%}
           {%- if poster != null -%}
             {{
               poster
               | image_url: width: 1920
-              | image_tag: loading: 'lazy', alt: block.settings.alt_text, class: 'video-slide-poster-image', style: 'width: 100%; height: auto; display: block;'
+              | image_tag: loading: 'lazy', alt: block.settings.alt_text, class: 'video-slide-poster-image', style: 'width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0; display: block;'
             }}
           {%- endif -%}
           <video
             id="{{ video_id }}"
             class="video-slide-video"
-            style="width: 100%; height: auto; display: block; border-radius: var(--video-slide-border-radius, 8px); {% if poster != null %} top: 0; left: 0;{% endif %}"
+            style="width: 100%; height: 100%; object-fit: cover; border-radius: var(--video-slide-border-radius, 8px); position: absolute; top: 0; left: 0;"
             {% if poster != null %}
               poster="{{ poster | image_url: width: 1920 }}"
             {% endif %}
@@ -427,10 +492,10 @@
               assign embed_url = 'https://player.vimeo.com/video/' | append: video_id_param
             endif
           -%}
-          <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: var(--video-slide-border-radius, 8px);">
+          <div class="video-slide-video-wrapper">
             <iframe
               src="{{ embed_url }}"
-              style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none;"
+              style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; border-radius: var(--video-slide-border-radius, 8px);"
               allow="autoplay; encrypted-media"
               allowfullscreen
               loading="lazy"
@@ -451,103 +516,17 @@
       </span>
     </div>
   {%- endif -%}
-</div>
+</li>
 
 {%- if is_last or next_block == blank or next_block.type != 'video_slide' -%}
+      </ul>
     </div>
-    {%- if video_slide_count > 3 -%}
-      <div class="slider-buttons no-js-hidden video-slider-buttons-{{ video_slide_start_index }}">
-        <button
-          type="button"
-          class="slider-button slider-button--prev"
-          name="previous"
-          aria-label="{{ 'general.slider.previous_slide' | t }}"
-          aria-controls="Slider-{{ section.id }}-video-slides-{{ video_slide_start_index }}"
-        >
-          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M2.25 5.99993C2.25 5.64993 2.4 5.34993 2.65 5.14993L8.25 0.249925C8.65 -0.100075 9.2 -0.0500746 9.55 0.349925C9.85 0.749925 9.85 1.29993 9.45 1.59993L4.55 5.89993C4.5 5.94993 4.5 5.99993 4.55 6.04993L9.45 10.3499C9.85 10.6999 9.9 11.2499 9.55 11.6499C9.2 12.0499 8.65 12.0999 8.25 11.7499L8.2 11.6999L2.65 6.84993C2.4 6.64993 2.25 6.29993 2.25 5.99993Z" fill="#1E1B16"/>
-          </svg>
-        </button>
-        <button
-          type="button"
-          class="slider-button slider-button--next"
-          name="next"
-          aria-label="{{ 'general.slider.next_slide' | t }}"
-          aria-controls="Slider-{{ section.id }}-video-slides-{{ video_slide_start_index }}"
-        >
-          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <g clip-path="url(#clip0_4075_5988)">
-              <path d="M9.74999 5.99992C9.74999 6.34992 9.59999 6.64992 9.34999 6.84992L3.74999 11.7999C3.34999 12.1499 2.74999 12.0999 2.44999 11.6999C2.14999 11.2999 2.14999 10.7499 2.54999 10.3999L7.44999 6.09992C7.49999 6.04991 7.49999 5.99992 7.44999 5.89992L2.54999 1.59992C2.14999 1.24992 2.14999 0.649915 2.49999 0.299915C2.84999 -0.0500847 3.39999 -0.100085 3.79999 0.199915L9.39999 5.09992C9.59999 5.34992 9.74999 5.64992 9.74999 5.99992Z" fill="#1E1B16"/>
-            </g>
-            <defs>
-              <clipPath id="clip0_4075_5988">
-                <rect width="12" height="12" fill="white"/>
-              </clipPath>
-            </defs>
-          </svg>
-        </button>
-      </div>
-      <script>
-        (function() {
-          const sliderId = 'Slider-{{ section.id }}-video-slides-{{ video_slide_start_index }}';
-          const slider = document.getElementById(sliderId);
-          const buttonsWrapper = document.querySelector('.video-slider-buttons-{{ video_slide_start_index }}');
-          const slideshowComponent = slider?.closest('slideshow-component');
-          
-          if (!slider || !buttonsWrapper) return;
-
-          const prevButton = buttonsWrapper.querySelector('.slider-button--prev');
-          const nextButton = buttonsWrapper.querySelector('.slider-button--next');
-          const slides = Array.from(slider.querySelectorAll('.slider__slide'));
-
-          function updateButtons() {
-            if (!slides.length) return;
-
-            prevButton.classList.remove('disable');
-            nextButton.classList.remove('disable');
-
-            const firstSlide = slides[0];
-            const lastSlide = slides[slides.length - 1];
-            
-            const firstSlideVisible = isElementVisible(firstSlide, slider);
-            if (firstSlideVisible && slider.scrollLeft <= 10) {
-              prevButton.classList.add('disable');
-            }
-
-            const maxScrollLeft = slider.scrollWidth - slider.clientWidth;
-            const isAtEnd = slider.scrollLeft >= maxScrollLeft - 10;
-            
-            if (isAtEnd) {
-              nextButton.classList.add('disable');
-            }
-          }
-
-          function isElementVisible(element, container) {
-            const elementRect = element.getBoundingClientRect();
-            const containerRect = container.getBoundingClientRect();
-            
-            return (
-              elementRect.left >= containerRect.left &&
-              elementRect.right <= containerRect.right
-            );
-          }
-
-          setTimeout(updateButtons, 100);
-
-          slider.addEventListener('scroll', updateButtons);
-
-          if (slideshowComponent) {
-            slideshowComponent.addEventListener('slideChanged', updateButtons);
-          }
-
-          let resizeTimeout;
-          window.addEventListener('resize', function() {
-            clearTimeout(resizeTimeout);
-            resizeTimeout = setTimeout(updateButtons, 100);
-          });
-        })();
-      </script>
-    {%- endif -%}
-  </slideshow-component>
+  </carousel-slider>
 {%- endif -%}
+
+
+
+
+
+
 
