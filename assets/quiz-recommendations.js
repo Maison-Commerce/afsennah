@@ -515,11 +515,9 @@
 
             // Section 2: Additional recommendations (not auto-added)
             const additionalProducts = products.slice(3).filter(p => p !== null);
-            console.log('Additional products (Section 2):', additionalProducts.length, 'products');
             
             // Store additional products globally for upsell package blocks
             window.quizRecommendationsAdditionalProducts = additionalProducts;
-            console.log('Stored additional products for upsell package:', additionalProducts.length, 'products');
             
             // Check if there are any upsell package blocks - if so, hide Section 2
             const upsellBlocks = document.querySelectorAll('[data-upsell-package-block]');
