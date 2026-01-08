@@ -637,6 +637,12 @@
         {% endif %}
       </div>
 
+      <div class="section-footer__payment-icons">
+        {% for type in shop.enabled_payment_types %}
+          {{ type | payment_type_svg_tag: class: 'section-footer__payment-icon' }}
+        {% endfor %}
+      </div>
+
       {%- if section.settings.announcement_position == 'below-checkout' -%}
         <div class="cart-info-block cart-info-block--smt">{{- announcement -}}</div>
       {%- endif -%}
