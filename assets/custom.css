@@ -2354,3 +2354,7 @@ justify-content: space-between;
 .product-item-upsells .carousel.block.collection-slider {
     overflow: hidden;
 }
+
+.quiz-cta-wrapper {
+    margin-bottom: 12px;
+}
