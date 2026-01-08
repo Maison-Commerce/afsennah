@@ -1742,3 +1742,14 @@ height: 100%;
     vertical-align: middle;
     color: #1D211E;
 }
+
+.sls-savings-badge {
+    background: #E98C36;
+    font-family: "Gotham";
+    font-weight: 700;
+    font-style: Bold;
+    font-size: 12px;
+    line-height: 150%;
+    letter-spacing: 0%;
+    color: #FFFFFF;
+}
