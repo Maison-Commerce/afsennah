@@ -127,9 +127,99 @@
         "video_slide_6kdLjD": {
           "type": "video_slide",
           "settings": {
-            "title": "",
+            "title": "Join 1500+ Happy Women",
             "title_size": 24,
-            "media_type": "image",
+            "media_type": "video",
+            "video": "shopify://files/videos/VD1(No Outline).mov",
+            "video_url": "https://www.youtube.com/watch?v=_9VUPq3SxOc",
+            "video_host": "youtube",
+            "video_id": "",
+            "alt_text": "Video slide",
+            "border_radius": 8,
+            "border_radius_mobile": 8
+          }
+        },
+        "video_slide_JjnLi8": {
+          "type": "video_slide",
+          "settings": {
+            "title": "Join 1500+ Happy Women",
+            "title_size": 24,
+            "media_type": "video",
+            "video": "shopify://files/videos/VD1(No Outline).mov",
+            "video_url": "https://www.youtube.com/watch?v=_9VUPq3SxOc",
+            "video_host": "youtube",
+            "video_id": "",
+            "alt_text": "Video slide",
+            "border_radius": 8,
+            "border_radius_mobile": 8
+          }
+        },
+        "video_slide_JqjU8e": {
+          "type": "video_slide",
+          "settings": {
+            "title": "Join 1500+ Happy Women",
+            "title_size": 24,
+            "media_type": "video",
+            "video": "shopify://files/videos/VD1(No Outline).mov",
+            "video_url": "https://www.youtube.com/watch?v=_9VUPq3SxOc",
+            "video_host": "youtube",
+            "video_id": "",
+            "alt_text": "Video slide",
+            "border_radius": 8,
+            "border_radius_mobile": 8
+          }
+        },
+        "video_slide_CYRENe": {
+          "type": "video_slide",
+          "settings": {
+            "title": "Join 1500+ Happy Women",
+            "title_size": 24,
+            "media_type": "video",
+            "video": "shopify://files/videos/VD1(No Outline).mov",
+            "video_url": "https://www.youtube.com/watch?v=_9VUPq3SxOc",
+            "video_host": "youtube",
+            "video_id": "",
+            "alt_text": "Video slide",
+            "border_radius": 8,
+            "border_radius_mobile": 8
+          }
+        },
+        "video_slide_bCD4fx": {
+          "type": "video_slide",
+          "settings": {
+            "title": "Join 1500+ Happy Women",
+            "title_size": 24,
+            "media_type": "video",
+            "video": "shopify://files/videos/VD1(No Outline).mov",
+            "video_url": "https://www.youtube.com/watch?v=_9VUPq3SxOc",
+            "video_host": "youtube",
+            "video_id": "",
+            "alt_text": "Video slide",
+            "border_radius": 8,
+            "border_radius_mobile": 8
+          }
+        },
+        "video_slide_n68zUW": {
+          "type": "video_slide",
+          "settings": {
+            "title": "Join 1500+ Happy Women",
+            "title_size": 24,
+            "media_type": "video",
+            "video": "shopify://files/videos/VD1(No Outline).mov",
+            "video_url": "https://www.youtube.com/watch?v=_9VUPq3SxOc",
+            "video_host": "youtube",
+            "video_id": "",
+            "alt_text": "Video slide",
+            "border_radius": 8,
+            "border_radius_mobile": 8
+          }
+        },
+        "video_slide_hfCTDe": {
+          "type": "video_slide",
+          "settings": {
+            "title": "Join 1500+ Happy Women",
+            "title_size": 24,
+            "media_type": "video",
             "video": "shopify://files/videos/VD1(No Outline).mov",
             "video_url": "https://www.youtube.com/watch?v=_9VUPq3SxOc",
             "video_host": "youtube",
@@ -238,6 +328,12 @@
         "text_UT9ray",
         "divider_Cwfcya",
         "video_slide_6kdLjD",
+        "video_slide_JjnLi8",
+        "video_slide_JqjU8e",
+        "video_slide_CYRENe",
+        "video_slide_bCD4fx",
+        "video_slide_n68zUW",
+        "video_slide_hfCTDe",
         "richtext_cyRJhp",
         "accordion_eCyiUV",
         "accordion_bjJGWh",
