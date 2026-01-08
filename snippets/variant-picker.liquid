@@ -157,7 +157,7 @@
                   {% endif %}
                 </legend>
                 {{ size_chart_link }}
-              </div>
+              </div>3
             {%- else -%}
               <legend class="label">
                   {% if option.name contains 'size'%}
@@ -165,9 +165,11 @@
                   {% else %}
                     {{- option.name -}}
                   {% endif %}
+                2
                 {% if is_color_selector %}: <span class="option-selector__label-value js-color-text">{% if section.settings.select_first_variant or product.variants.size == 1 or product.selected_variant %}{{ option.selected_value }}{% endif %}</span>{% endif %}</legend>
             {%- endif -%}
             <div class="option-selector__btns flex flex-wrap">
+              4
               {%- for value in option.values -%}
                 {%- assign value_index0 = forloop.index0 -%}
                 {%- if is_variant_image_style -%}
