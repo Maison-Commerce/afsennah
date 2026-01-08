@@ -277,6 +277,16 @@
             "main_image_width": 280
           }
         },
+        "product_upsells_eVNWhn": {
+          "type": "product-upsells",
+          "settings": {
+            "title": "Try both and save big",
+            "subtitle": "No consultation required*",
+            "product_list": "{{ product.metafields[\"shopify--discovery--product_recommendation\"].related_products.value }}",
+            "color_scheme": "1",
+            "show_in_quickbuy": false
+          }
+        },
         "loox_reviews_loox_snippets_widget_JQFkCB": {
           "type": "shopify://apps/loox-reviews/blocks/loox-snippets-widget/5c3b337f-fd14-4df5-b1d6-80ec13e6e28e",
           "settings": {
@@ -322,6 +332,7 @@
         "accordion_eCyiUV",
         "accordion_bjJGWh",
         "testimonial_under_gallery_yE3cQA",
+        "product_upsells_eVNWhn",
         "loox_reviews_loox_snippets_widget_JQFkCB"
       ],
       "settings": {
