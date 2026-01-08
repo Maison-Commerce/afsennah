@@ -836,10 +836,11 @@
                               endif
                             endif
                           -%}
-                          <div class="product-info-block{% if block.settings.text_icon != blank or block.settings.text_custom_icon != blank %} with-icon{% endif %}{% if block.settings.enable_text_box %} text-box{% endif %}" {% if block.settings.enable_text_box %}style="--box-color: {{ block.settings.text_box_color }}; --box-text-color: {{ text_col }}"{% endif %}>
+                          <div class="product-info-block{% if block.settings.text_icon != blank or block.settings.text_custom_icon != blank %} with-icon with-icon--right{% endif %}{% if block.settings.enable_text_box %} text-box{% endif %}" {% if block.settings.enable_text_box %}style="--box-color: {{ block.settings.text_box_color }}; --box-text-color: {{ text_col }}"{% endif %}>
                             {%- if block.settings.text_icon == blank and block.settings.text_custom_icon == blank -%}
-                              {{- block.settings.text_above_checkout -}}
+                              <div class="rte cf">{{ block.settings.text_above_checkout }}</div>
                             {%- else -%}
+                              <span class="with-icon__beside rte cf">{{ block.settings.text_above_checkout }}</span>
                               {% if block.settings.text_custom_icon == blank %}
                                 {% render 'icon', icon: block.settings.text_icon, size: block.settings.text_icon_size %}
                               {% else %}
@@ -856,7 +857,6 @@
                                   {%- render 'image' with block.settings.text_custom_icon, sizes: icon_sizes, widths: icon_widths -%}
                                 </span>
                               {% endif %}
-                              <span class="with-icon__beside">{{ block.settings.text_above_checkout }}</span>
                             {%- endif -%}
                           </div>
                         </div>
@@ -2304,7 +2304,7 @@
       "content": "Text above checkout"
     },
     {
-      "type": "text",
+      "type": "richtext",
       "id": "text_above_checkout",
       "label": "Text",
       "info": "Text displayed above the checkout button"
