@@ -1418,6 +1418,14 @@
             padding: 20px;
             padding-bottom: 120px;
         }
+
+        .option-price-current{
+            font-size: 14px;
+        }
+
+        .option-price-original{
+            font-size: 12px;
+        }
     }
 
     @media (max-width: 1249px) {
