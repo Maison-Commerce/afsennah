@@ -28,63 +28,34 @@
 
 {%- if is_first_in_group -%}
   <carousel-slider class="carousel block collection-slider video-slider__wrapper" data-dispatch-events="false">
-    {%- if block.settings.title != blank -%}
-      <div class="opposing-items opposing-items--valign-base very-lightly-spaced-row">
-        <div class="opposing-items__left">
+    <div class="opposing-items opposing-items--valign-base very-lightly-spaced-row">
+      <div class="opposing-items__left">
+        {%- if block.settings.title != blank -%}
           <h2 class="video-slide-title" style="margin-bottom: 0; font-size: {{ block.settings.title_size | default: 24 }}px;">{{ block.settings.title }}</h2>
-        </div>
-        {%- if video_slide_count > 3 -%}
-          <div class="no-wrap slider-nav">
-            <button name="prev" class="slider-nav__btn has-ltr-icon">
-              <span class="visually-hidden">{{ 'general.slider.previous' | t }}</span>
-              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M3.4286 4.57141L1.14288 6.85713M1.14288 6.85713L3.4286 9.14284M1.14288 6.85713H12.5715" stroke="currentColor" stroke-width="0.857143" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </button>
-            <button name="next" class="slider-nav__btn has-ltr-icon">
-              <span class="visually-hidden">{{ 'general.slider.next' | t }}</span>
-              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <g clip-path="url(#clip0_video_slider)">
-                  <path d="M10.2857 4.57141L12.5715 6.85713M12.5715 6.85713L10.2857 9.14284M12.5715 6.85713H1.14288" stroke="currentColor" stroke-width="0.857143" stroke-linecap="round" stroke-linejoin="round"/>
-                </g>
-                <defs>
-                  <clipPath id="clip0_video_slider">
-                    <rect width="13.7143" height="13.7143" fill="white"/>
-                  </clipPath>
-                </defs>
-              </svg>
-            </button>
-          </div>
         {%- endif -%}
       </div>
-    {%- else -%}
-      {%- if video_slide_count > 3 -%}
-        <div class="opposing-items opposing-items--valign-base very-lightly-spaced-row">
-          <div class="opposing-items__left"></div>
-          <div class="no-wrap slider-nav">
-            <button name="prev" class="slider-nav__btn has-ltr-icon">
-              <span class="visually-hidden">{{ 'general.slider.previous' | t }}</span>
-              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M3.4286 4.57141L1.14288 6.85713M1.14288 6.85713L3.4286 9.14284M1.14288 6.85713H12.5715" stroke="currentColor" stroke-width="0.857143" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </button>
-            <button name="next" class="slider-nav__btn has-ltr-icon">
-              <span class="visually-hidden">{{ 'general.slider.next' | t }}</span>
-              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <g clip-path="url(#clip0_video_slider)">
-                  <path d="M10.2857 4.57141L12.5715 6.85713M12.5715 6.85713L10.2857 9.14284M12.5715 6.85713H1.14288" stroke="currentColor" stroke-width="0.857143" stroke-linecap="round" stroke-linejoin="round"/>
-                </g>
-                <defs>
-                  <clipPath id="clip0_video_slider">
-                    <rect width="13.7143" height="13.7143" fill="white"/>
-                  </clipPath>
-                </defs>
-              </svg>
-            </button>
-          </div>
-        </div>
-      {%- endif -%}
-    {%- endif -%}
+      <div class="no-wrap slider-nav">
+        <button name="prev" class="slider-nav__btn has-ltr-icon">
+          <span class="visually-hidden">{{ 'general.slider.previous' | t }}</span>
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M3.4286 4.57141L1.14288 6.85713M1.14288 6.85713L3.4286 9.14284M1.14288 6.85713H12.5715" stroke="#2E432F" stroke-width="0.857143" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        <button name="next" class="slider-nav__btn has-ltr-icon">
+          <span class="visually-hidden">{{ 'general.slider.next' | t }}</span>
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <g clip-path="url(#clip0_video_slider_{{ video_slide_start_index }})">
+              <path d="M10.2857 4.57141L12.5715 6.85713M12.5715 6.85713L10.2857 9.14284M12.5715 6.85713H1.14288" stroke="#2E432F" stroke-width="0.857143" stroke-linecap="round" stroke-linejoin="round"/>
+            </g>
+            <defs>
+              <clipPath id="clip0_video_slider_{{ video_slide_start_index }}">
+                <rect width="13.7143" height="13.7143" fill="white"/>
+              </clipPath>
+            </defs>
+          </svg>
+        </button>
+      </div>
+    </div>
     <div class="slider slider--no-scrollbar slider--edge-peek">
       <ul class="slider__grid product-grid product-grid--carousel product-grid--per-row-3 product-grid--per-row-mob-3 video-slider-grid">
 {%- endif -%}
@@ -280,6 +251,11 @@
   /* Video slider wrapper spacing */
   .video-slider__wrapper {
     margin-bottom: 2rem;
+    overflow: hidden;
+  }
+
+  .video-slider__wrapper .slider {
+    overflow: hidden;
   }
 
   .video-slide-title {
