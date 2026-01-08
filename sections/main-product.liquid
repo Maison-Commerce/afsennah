@@ -1528,6 +1528,342 @@
               </div>
             {% endif %}
 
+          {% when 'product-upsells' %}
+            {%- if block.settings.product_list != blank -%}
+              <div class="lightly-spaced-row lightish-spaced-row-above{% unless block.settings.show_in_quickbuy %} not-in-quickbuy{% endunless %}" {{ block.shopify_attributes }}>
+                <div class="product-item-upsells" data-block-id="{{ block.id }}">
+                  <cc-product-upsell data-from="{{ routes.product_recommendations_url }}?section_id=mini-related-products&limit=8&product_id={{ product.id }}">
+                    <carousel-slider class="carousel block collection-slider use-color-scheme use-color-scheme--{{ block.settings.color_scheme }}" data-dispatch-events="false">
+                      <div class="opposing-items opposing-items--valign-base very-lightly-spaced-row">
+                        <div class="opposing-items__left product-info-label">
+                          <h2>{{ block.settings.title | escape }}</h2>
+                          {% if block.settings.subtitle != blank %}
+                            <p>{{ block.settings.subtitle }}</p>
+                          {% endif %}
+                        </div>
+                        <div class="no-wrap slider-nav">
+                          <button name="prev" class="slider-nav__btn has-ltr-icon">
+                            <span class="visually-hidden">{{ 'general.slider.previous' | t }}</span>
+                            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                              <path d="M3.4286 4.57141L1.14288 6.85713M1.14288 6.85713L3.4286 9.14284M1.14288 6.85713H12.5715" stroke="#2E432F" stroke-width="0.857143" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                          </button>
+                          <button name="next" class="slider-nav__btn has-ltr-icon">
+                            <span class="visually-hidden">{{ 'general.slider.next' | t }}</span>
+                            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                              <g clip-path="url(#clip0_10475_590)">
+                              <path d="M10.2857 4.57141L12.5715 6.85713M12.5715 6.85713L10.2857 9.14284M12.5715 6.85713H1.14288" stroke="#2E432F" stroke-width="0.857143" stroke-linecap="round" stroke-linejoin="round"/>
+                              </g>
+                              <defs>
+                              <clipPath id="clip0_10475_590">
+                              <rect width="13.7143" height="13.7143" fill="white"/>
+                              </clipPath>
+                              </defs>
+                            </svg>
+                          </button>
+                        </div>
+                      </div>
+                      <div class="slider slider--no-scrollbar slider--edge-peek">
+                        <ul class="slider__grid product-grid product-grid--carousel product-grid--per-row-2 product-grid--per-row-mob-2">
+                          {%- liquid
+                            if settings.prod_thumb_shape == 'portrait-23'
+                              assign chosen_aspect_ratio = 0.67
+                            elsif settings.prod_thumb_shape == 'portrait-45'
+                              assign chosen_aspect_ratio = 0.8
+                            elsif settings.prod_thumb_shape == 'square'
+                              assign chosen_aspect_ratio = 1.0
+                            elsif settings.prod_thumb_shape == 'landscape-54'
+                              assign chosen_aspect_ratio = 1.25
+                            elsif settings.prod_thumb_shape == 'landscape-32'
+                              assign chosen_aspect_ratio = 1.50
+                            elsif settings.prod_thumb_shape == 'tallest'
+                              assign chosen_aspect_ratio = 99
+                              for upsell_product in block.settings.product_list
+                                if upsell_product.featured_media.preview_image.aspect_ratio < chosen_aspect_ratio
+                                  assign chosen_aspect_ratio = upsell_product.featured_media.preview_image.aspect_ratio
+                                endif
+                              endfor
+                            else
+                              assign chosen_aspect_ratio = 0
+                              for upsell_product in block.settings.product_list
+                                if upsell_product.featured_media.preview_image.aspect_ratio > chosen_aspect_ratio
+                                  assign chosen_aspect_ratio = upsell_product.featured_media.preview_image.aspect_ratio
+                                endif
+                              endfor
+                            endif
+                          -%}
+                          {%- for upsell_product in block.settings.product_list -%}
+                            <li class="slider__item">
+                              {%- render 'cart-upsell-product', product: upsell_product, custom_aspect_ratio: chosen_aspect_ratio -%}
+                            </li>
+                          {%- endfor -%}
+                        </ul>
+                      </div>
+                      <div class="product-item-upsells__dots"></div>
+                    </carousel-slider>
+                  </cc-product-upsell>
+                </div>
+              </div>
+
+              <script>
+                (function() {
+                  const blockId = '{{ block.id }}';
+                  let isInitialized = false;
+                  let cleanupFn = null;
+
+                  function initProductUpsellsDots() {
+                    if (isInitialized) return;
+
+                    const upsellsContainer = document.querySelector(`.product-item-upsells[data-block-id="${blockId}"]`);
+                    if (!upsellsContainer) return;
+
+                    const carousel = upsellsContainer.querySelector('carousel-slider');
+                    if (!carousel || !carousel.hasAttribute('loaded')) {
+                      setTimeout(initProductUpsellsDots, 100);
+                      return;
+                    }
+
+                    if (carousel.dataset.dotsInitialized === 'true') return;
+
+                    const dotsContainer = upsellsContainer.querySelector('.product-item-upsells__dots');
+                    if (!dotsContainer) return;
+
+                    const slider = carousel.querySelector('.slider');
+                    const slides = carousel.querySelectorAll('.slider__item:not([hidden])');
+                    
+                    if (slides.length < 2) {
+                      dotsContainer.style.display = 'none';
+                      return;
+                    }
+
+                    dotsContainer.style.display = 'flex';
+                    carousel.dataset.dotsInitialized = 'true';
+
+                    function getCarouselInfo() {
+                      const grid = carousel.querySelector('.slider__grid');
+                      if (!grid) return null;
+
+                      const gridWidth = grid.clientWidth;
+                      if (gridWidth === 0) return null;
+
+                      const firstSlide = slides[0];
+                      const secondSlide = slides[1];
+                      if (!firstSlide || !secondSlide) return null;
+
+                      const firstRect = firstSlide.getBoundingClientRect();
+                      const secondRect = secondSlide.getBoundingClientRect();
+                      const slideSpan = secondRect.left - firstRect.left;
+                      
+                      if (slideSpan <= 0) return null;
+
+                      const isMobile = window.innerWidth < 768;
+                      
+                      let slidesPerPage;
+                      let totalPages;
+                      
+                      if (isMobile) {
+                        // Mobile: 1.5 slides visible
+                        slidesPerPage = (gridWidth + (slideSpan - firstSlide.clientWidth)) / slideSpan;
+                        totalPages = Math.max(1, slides.length);
+                      } else {
+                        // Desktop: 2 slides per page (2 full products)
+                        slidesPerPage = 2;
+                        if (slides.length <= 2) {
+                          totalPages = 1;
+                        } else {
+                          totalPages = Math.ceil(slides.length / 2);
+                        }
+                      }
+
+                      return { slidesPerPage, totalPages, slideSpan, isMobile };
+                    }
+
+                    let carouselInfo = getCarouselInfo();
+                    if (!carouselInfo) {
+                      setTimeout(() => {
+                        carouselInfo = getCarouselInfo();
+                        if (carouselInfo) initDots();
+                      }, 200);
+                      return;
+                    }
+
+                    let { slidesPerPage, totalPages, slideSpan, isMobile } = carouselInfo;
+                    let currentPage = 0;
+
+                    function debounce(func, wait) {
+                      let timeout;
+                      return function executedFunction(...args) {
+                        const later = () => {
+                          clearTimeout(timeout);
+                          func(...args);
+                        };
+                        clearTimeout(timeout);
+                        timeout = setTimeout(later, wait);
+                      };
+                    }
+
+                    function createDots() {
+                      dotsContainer.innerHTML = '';
+                      if (totalPages <= 1) {
+                        dotsContainer.style.display = 'none';
+                        return;
+                      }
+                      dotsContainer.style.display = 'flex';
+                      
+                      for (let i = 0; i < totalPages; i++) {
+                        const dot = document.createElement('button');
+                        dot.className = 'product-item-upsells__dot';
+                        if (i === 0) dot.classList.add('active');
+                        dot.setAttribute('aria-label', `Go to page ${i + 1}`);
+                        dot.dataset.pageIndex = i;
+                        dot.addEventListener('click', (e) => {
+                          const pageIndex = parseInt(e.currentTarget.dataset.pageIndex);
+                          goToPage(pageIndex);
+                        });
+                        dotsContainer.appendChild(dot);
+                      }
+                    }
+
+                    function goToPage(pageIndex) {
+                      if (pageIndex < 0 || pageIndex >= totalPages) return;
+                      
+                      let targetSlideIndex;
+                      if (isMobile) {
+                        targetSlideIndex = Math.min(pageIndex, slides.length - 1);
+                      } else {
+                        // Desktop: 2 slides per page
+                        targetSlideIndex = pageIndex * 2;
+                        targetSlideIndex = Math.min(targetSlideIndex, slides.length - 1);
+                      }
+                      
+                      const targetSlide = slides[targetSlideIndex];
+                      if (!targetSlide) return;
+
+                      if (typeof carousel.scrollToElement === 'function') {
+                        carousel.scrollToElement(targetSlide, 'smooth');
+                      } else {
+                        const targetScroll = targetSlide.offsetLeft;
+                        slider.scrollTo({
+                          left: targetScroll,
+                          behavior: 'smooth'
+                        });
+                      }
+                      
+                      setTimeout(() => {
+                        const currentIndex = Math.round(Math.abs(slider.scrollLeft) / slideSpan) || 0;
+                        updateDotsFromIndex(currentIndex);
+                      }, 150);
+                    }
+
+                    function updateDotsFromIndex(slideIndex) {
+                      let newPage;
+                      if (isMobile) {
+                        newPage = Math.min(slideIndex, totalPages - 1);
+                      } else {
+                        // Desktop: 2 slides per page
+                        const maxScrollLeft = slider.scrollWidth - slider.clientWidth;
+                        const isAtEnd = Math.abs(slider.scrollLeft - maxScrollLeft) < 10;
+                        
+                        const lastPageStartIndex = (totalPages - 1) * 2;
+                        
+                        if (isAtEnd || slideIndex >= lastPageStartIndex || slideIndex >= slides.length - 2) {
+                          newPage = totalPages - 1;
+                        } else {
+                          newPage = Math.floor(slideIndex / 2);
+                          newPage = Math.min(newPage, totalPages - 1);
+                        }
+                      }
+                      
+                      if (newPage >= 0 && newPage < totalPages) {
+                        currentPage = newPage;
+                        const dots = dotsContainer.querySelectorAll('.product-item-upsells__dot');
+                        dots.forEach((dot, idx) => {
+                          dot.classList.toggle('active', idx === currentPage);
+                        });
+                      }
+                    }
+
+                    const selectHandler = (e) => {
+                      const slideIndex = e.detail.index;
+                      updateDotsFromIndex(slideIndex);
+                    };
+                    
+                    carousel.addEventListener('on:carousel-slider:select', selectHandler);
+                    
+                    const scrollHandler = debounce(() => {
+                      const currentIndex = Math.round(Math.abs(slider.scrollLeft) / slideSpan) || 0;
+                      const maxScrollLeft = slider.scrollWidth - slider.clientWidth;
+                      const isAtEnd = Math.abs(slider.scrollLeft - maxScrollLeft) < 10;
+                      
+                      const slideIndexToUse = isAtEnd ? Math.max(currentIndex, slides.length - 1) : currentIndex;
+                      updateDotsFromIndex(slideIndexToUse);
+                    }, 150);
+                    
+                    slider.addEventListener('scroll', scrollHandler);
+
+                    function initDots() {
+                      carouselInfo = getCarouselInfo();
+                      if (!carouselInfo) return;
+                      
+                      slidesPerPage = carouselInfo.slidesPerPage;
+                      totalPages = carouselInfo.totalPages;
+                      slideSpan = carouselInfo.slideSpan;
+                      isMobile = carouselInfo.isMobile;
+                      
+                      createDots();
+                      
+                      const currentIndex = Math.round(Math.abs(slider.scrollLeft) / slideSpan) || 0;
+                      updateDotsFromIndex(currentIndex);
+                    }
+
+                    let resizeTimeout;
+                    const resizeHandler = () => {
+                      clearTimeout(resizeTimeout);
+                      resizeTimeout = setTimeout(() => {
+                        carouselInfo = getCarouselInfo();
+                        if (carouselInfo) {
+                          slidesPerPage = carouselInfo.slidesPerPage;
+                          totalPages = carouselInfo.totalPages;
+                          slideSpan = carouselInfo.slideSpan;
+                          isMobile = carouselInfo.isMobile;
+                          createDots();
+                          const currentIndex = Math.round(Math.abs(slider.scrollLeft) / slideSpan) || 0;
+                          updateDotsFromIndex(currentIndex);
+                        }
+                      }, 250);
+                    };
+                    
+                    window.addEventListener('resize', resizeHandler);
+
+                    initDots();
+                    isInitialized = true;
+
+                    cleanupFn = () => {
+                      carousel.removeEventListener('on:carousel-slider:select', selectHandler);
+                      slider.removeEventListener('scroll', scrollHandler);
+                      window.removeEventListener('resize', resizeHandler);
+                      carousel.dataset.dotsInitialized = 'false';
+                      isInitialized = false;
+                    };
+                  }
+
+                  function startInit() {
+                    setTimeout(() => {
+                      if (!isInitialized) {
+                        initProductUpsellsDots();
+                      }
+                    }, 300);
+                  }
+
+                  if (document.readyState === 'loading') {
+                    document.addEventListener('DOMContentLoaded', startInit);
+                  } else {
+                    startInit();
+                  }
+                })();
+              </script>
+            {%- endif -%}
+
           {% when 'complementary' %}
             <cc-fetched-content class="not-in-quickbuy" data-id="{{ block.id }}" data-url="{{ routes.product_recommendations_url }}?section_id={{ section.id }}&product_id={{ product.id }}&intent=complementary" contains-product-blocks {{ block.shopify_attributes }}>
               {%- if recommendations.performed and recommendations.products_count > 0 -%}
@@ -4706,6 +5042,55 @@
           "unit": "px",
           "label": "Image width",
           "default": 68
+        },
+        {
+          "type": "checkbox",
+          "id": "show_in_quickbuy",
+          "label": "Show in quick buy",
+          "default": false
+        }
+      ]
+    },
+    {
+      "type": "product-upsells",
+      "name": "Product Upsells",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading",
+          "default": "You may like"
+        },
+        {
+          "type": "text",
+          "id": "subtitle",
+          "label": "Subtitle",
+          "default": "No consultation required*"
+        },
+        {
+          "type": "product_list",
+          "id": "product_list",
+          "label": "Products"
+        },
+        {
+          "type": "select",
+          "id": "color_scheme",
+          "label": "Color scheme",
+          "default": "1",
+          "options": [
+            {
+              "value": "default",
+              "label": "Default"
+            },
+            {
+              "value": "1",
+              "label": "1"
+            },
+            {
+              "value": "2",
+              "label": "2"
+            }
+          ]
         },
         {
           "type": "checkbox",
