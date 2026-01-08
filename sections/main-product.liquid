@@ -637,7 +637,39 @@
                 {%- endif -%}
               {%- endif -%}
             </div>
-
+            {%- when 'video_slide' -%}
+                
+                  {%- liquid
+                  assign is_first_in_group = false
+                  
+                  if forloop.index0 == 0 or previous_block.type != 'video_slide'
+                    assign is_first_in_group = true
+                    assign video_slide_count = 0
+                    assign video_slide_start_index = forloop.index0
+                    for i in (forloop.index0..section.blocks.size)
+                      if i < section.blocks.size
+                        assign check_block = section.blocks[i]
+                        if check_block.type == 'video_slide'
+                          assign video_slide_count = video_slide_count | plus: 1
+                        else
+                          break
+                        endif
+                      else
+                        break
+                      endif
+                    endfor
+                  endif
+                -%}
+                {% render 'video-slide', 
+                  block: block, 
+                  section: section, 
+                  block_index: forloop.index0, 
+                  is_last: forloop.last, 
+                  next_block: next_block,
+                  is_first_in_group: is_first_in_group,
+                  video_slide_count: video_slide_count,
+                  video_slide_start_index: video_slide_start_index
+                %}
           {% when 'description' %}
             {%- if product.description != blank -%}
               <div class="{% unless block.settings.show_in_quickbuy %}not-in-quickbuy{% endunless %}{% if block.settings.show_in_tab %} product-info-accordion{% endif %}" {{ block.shopify_attributes }}>
