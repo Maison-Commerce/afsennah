@@ -510,8 +510,7 @@ image-with-text-overlay > div > div,
     .product-container--modern .product-slider-container--modern {
         aspect-ratio: 1;
         border-radius: 0;
-        overflow-x: visible;
-        overflow-y: hidden;
+        overflow: hidden;
     }
     
     .product-container--modern .product-slider--modern {
