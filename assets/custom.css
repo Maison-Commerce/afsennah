@@ -2285,7 +2285,10 @@ justify-content: space-between;
     background: rgba(233, 140, 54, 0.89);
 }
 
-
+.product-item-upsells .slider-nav__btn svg {
+    width: 5px;
+    height: 9px;
+}
 .product-item-upsells .slider-nav {
     width: auto;
     position: relative;
