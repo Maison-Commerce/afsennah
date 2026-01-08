@@ -151,9 +151,9 @@
           "type": "testimonial_under_gallery",
           "settings": {
             "left_side": true,
-            "padding": 24,
+            "padding": 16,
             "border_radius": 16,
-            "margin_top": 32,
+            "margin_top": 42,
             "border_color": "#f7f7fc",
             "background_color": "#f7f7fc",
             "rating_icon_1": "shopify://shop_images/star_3.svg",
