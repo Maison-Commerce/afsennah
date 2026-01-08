@@ -179,8 +179,9 @@
     background: #cccce8;
     padding: 70px 62px;
     display: none;
-    overflow-y: auto;
+    overflow: hidden;
     max-height: 100vh;
+    position: relative;
   }
 
   #shopify-section-{{ section.id }} .quiz-calculating-reviews-container {
@@ -188,7 +189,31 @@
     flex-direction: column;
     gap: 24px;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
+    height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
+    padding-right: 8px;
+  }
+
+  #shopify-section-{{ section.id }} .quiz-calculating-reviews-container::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  #shopify-section-{{ section.id }} .quiz-calculating-reviews-container::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  #shopify-section-{{ section.id }} .quiz-calculating-reviews-container::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 3px;
+  }
+
+  #shopify-section-{{ section.id }} .quiz-calculating-reviews-container::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 0, 0, 0.3);
   }
 
   #shopify-section-{{ section.id }} .quiz-calculating-review-card {
@@ -734,6 +759,77 @@
 
     // Initial update
     updateCalculatingProgress();
+
+    // Initialize vertical slider for reviews
+    function initReviewsSlider() {
+      const reviewsContainer = document.querySelector('.quiz-calculating-reviews-container');
+      if (!reviewsContainer) return;
+
+      let scrollPosition = 0;
+      const scrollSpeed = 0.5; // pixels per frame
+      let isPaused = false;
+
+      // Pause on hover
+      const reviewsColumn = document.querySelector('.quiz-calculating-reviews-column');
+      if (reviewsColumn) {
+        reviewsColumn.addEventListener('mouseenter', () => {
+          isPaused = true;
+        });
+        reviewsColumn.addEventListener('mouseleave', () => {
+          isPaused = false;
+        });
+      }
+
+      function scroll() {
+        if (isPaused) {
+          requestAnimationFrame(scroll);
+          return;
+        }
+
+        scrollPosition += scrollSpeed;
+        const maxScroll = reviewsContainer.scrollHeight - reviewsContainer.clientHeight;
+        
+        // Reset to top when reaching bottom for seamless loop
+        if (scrollPosition >= maxScroll) {
+          scrollPosition = 0;
+        }
+
+        reviewsContainer.scrollTop = scrollPosition;
+        requestAnimationFrame(scroll);
+      }
+
+      // Start scrolling
+      requestAnimationFrame(scroll);
+    }
+
+    // Initialize slider when calculating section is visible
+    const calculatingObserver = new MutationObserver(function(mutations) {
+      mutations.forEach(function(mutation) {
+        if (mutation.type === 'attributes' && mutation.attributeName === 'style') {
+          const calculatingSection = document.querySelector('[data-calculating]');
+          if (calculatingSection && calculatingSection.style.display !== 'none') {
+            setTimeout(() => {
+              initReviewsSlider();
+            }, 100);
+          }
+        }
+      });
+    });
+
+    const calculatingSection = document.querySelector('[data-calculating]');
+    if (calculatingSection) {
+      calculatingObserver.observe(calculatingSection, {
+        attributes: true,
+        attributeFilter: ['style']
+      });
+    }
+
+    // Initial check
+    if (calculatingSection && calculatingSection.style.display !== 'none') {
+      setTimeout(() => {
+        initReviewsSlider();
+      }, 100);
+    }
   })();
 </script>
 
