@@ -149,6 +149,12 @@
     {% endif %}
   </div>
 
+  {%- for block in section.blocks -%}
+    {%- if block.type == 'testimonial_under_gallery' and block.settings.left_side -%}
+      {% render 'testimonial-under-gallery', block: block %}
+    {%- endif -%}
+  {%- endfor -%}
+
   <script>
     (function() {
       const slider = document.getElementById('productSliderModern');
