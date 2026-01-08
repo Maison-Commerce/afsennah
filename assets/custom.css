@@ -1819,6 +1819,7 @@ height: 100%;
     align-items: center;
     gap: 8px;
 }
+.lightly-spaced-row.text-above-checkout .icon,
 .lightly-spaced-row.text-above-checkout img {
     width: 22px;
     height: 22px;
