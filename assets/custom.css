@@ -1379,3 +1379,16 @@ height: 100%;
     justify-content: center;
     gap: 8px;
 }
+
+.cart-drawer__usp-badges {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+.cart-drawer__usp-badges {
+    background: #F7F7FC;
+    display: flex;
+    gap: 4px;
+    align-items: center;
+    border-radius: 8px;
+}
