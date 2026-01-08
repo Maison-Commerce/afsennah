@@ -2118,6 +2118,7 @@ justify-content: space-between;
 .product-info .video-slider__wrapper .opposing-items .slider-nav {
     position: relative;
     transform: none;
+    width: auto;
 }
 
 
