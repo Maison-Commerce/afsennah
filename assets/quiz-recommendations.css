@@ -1412,9 +1412,9 @@
         }
     }
 
-    @media (max-width: 767px) {
+    @media (max-width: 1249px) {
         .quiz-recommendations {
-            padding: 30px 16px;
+            padding: 0;
         }
 
         .recommended-product-card {
