@@ -498,9 +498,6 @@ image-with-text-overlay > div > div,
         overflow-y: hidden;
     }
     
-    .product-container--modern .product-slider--modern {
-        padding: 0 10%;
-    }
     
     .product-container--modern .slider-slide--modern {
         max-width: 80vw;
@@ -518,7 +515,7 @@ image-with-text-overlay > div > div,
     }
     
     .product-container--modern .product-slider--modern {
-        padding: 0 10%;
+        /* padding: 0 10%; */
     }
     
     .product-container--modern .slider-slide--modern {
