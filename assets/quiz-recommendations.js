@@ -1730,6 +1730,18 @@
             });
         }
 
+        // Enable/disable checkout button based on cart state
+        const checkoutBtns = document.querySelectorAll('[data-checkout-btn], .quiz-btn-checkout');
+        checkoutBtns.forEach(btn => {
+            if (!hasItemsToDisplay) {
+                btn.disabled = true;
+                btn.classList.add('disabled');
+            } else {
+                btn.disabled = false;
+                btn.classList.remove('disabled');
+            }
+        });
+
         // Update totals section
         const subtotalEl = document.querySelector('[data-subtotal]');
         const discountRowEl = document.querySelector('[data-discount-row]');

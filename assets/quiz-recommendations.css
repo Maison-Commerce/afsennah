@@ -1234,6 +1234,15 @@
         position: relative;
     }
 
+    .quiz-btn-checkout.disabled,
+    .quiz-btn-checkout:disabled {
+        background: #9CA3AF;
+        color: #FFFFFF;
+        cursor: not-allowed;
+        opacity: 0.6;
+        pointer-events: none;
+    }
+
     .quiz-btn-checkout:hover {
         background: #2C5282;
     }
