@@ -83,8 +83,7 @@
                 </div>
 
                 <!-- Section 2: Additional Recommendations (Not auto-added) -->
-                <!-- Hidden if upsell package blocks exist -->
-                <div class="recommendations-section" data-section="additional" data-hide-if-upsell>
+                <div class="recommendations-section" data-section="additional">
                     {% if section.settings.section2_title != blank %}
                         <h3 class="section-title">{{ section.settings.section2_title }}</h3>
                     {% endif %}
@@ -152,12 +151,14 @@
                                         </div>
                                     </div>
                                     <div class="maison_commerce_maison_upsell_package__content-bottom">
-                                        <button class="maison_commerce_maison_upsell_package__button" data-upsell-package-button>
-                                            {{ block.settings.button_text | default: 'Claim Ultimate Package' }}
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                                            <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                            </svg>
-                                        </button>
+                                        {% if block.settings.products != blank %}
+                                            <button class="maison_commerce_maison_upsell_package__button" data-upsell-package-button data-product-handles="{% for product in block.settings.products %}{{ product.handle }}{% unless forloop.last %},{% endunless %}{% endfor %}">
+                                                {{ block.settings.button_text | default: 'Claim Ultimate Package' }}
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                                <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                                </svg>
+                                            </button>
+                                        {% endif %}
 
                                         {% if block.settings.footer_text != blank %}
                                             <div class="maison_commerce_maison_upsell_package__footer">{{ block.settings.footer_text }}</div>
@@ -777,11 +778,17 @@
                     "default": 50
                 },
                 {
+                    "type": "product_list",
+                    "id": "products",
+                    "label": "Products",
+                    "info": "Select products to add to cart when button is clicked",
+                    "limit": 20
+                },
+                {
                     "type": "text",
                     "id": "button_text",
                     "label": "Button Text",
-                    "default": "Claim Ultimate Package",
-                    "info": "Products will be taken from Section 2: Additional Recommendations"
+                    "default": "Claim Ultimate Package"
                 },
                 {
                     "type": "text",

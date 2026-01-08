@@ -503,30 +503,12 @@
             const additionalProducts = products.slice(3).filter(p => p !== null);
             console.log('Additional products (Section 2):', additionalProducts.length, 'products');
             
-            // Store additional products globally for upsell package blocks
-            window.quizRecommendationsAdditionalProducts = additionalProducts;
-            
-            // Check if there are any upsell package blocks - if so, hide Section 2
-            const upsellBlocks = document.querySelectorAll('[data-upsell-package-block]');
-            const section2Element = document.querySelector('[data-section="additional"]');
-            
-            if (upsellBlocks.length > 0 && section2Element) {
-                // Hide Section 2 if upsell blocks exist
-                section2Element.style.display = 'none';
-                // Also hide the divider before Section 3 if Section 2 is hidden
-                const divider = section2Element.previousElementSibling;
-                if (divider && divider.classList.contains('section-divider')) {
-                    divider.style.display = 'none';
-                }
-            } else {
-                // Show Section 2 normally if no upsell blocks
-                additionalProducts.forEach((product) => {
-                    productStates[product.id] = { removed: false, quantity: 1 };
-                    const productCard = createProductCard(product, 'additional');
-                    additionalContainer.appendChild(productCard);
-                    // NOT auto-added to cart
-                });
-            }
+            additionalProducts.forEach((product) => {
+                productStates[product.id] = { removed: false, quantity: 1 };
+                const productCard = createProductCard(product, 'additional');
+                additionalContainer.appendChild(productCard);
+                // NOT auto-added to cart
+            });
 
             // Add legacy gift product if exists (only if tiered gifts are NOT enabled)
             if (giftProductHandle && !giftTiersEnabled) {
@@ -2260,14 +2242,11 @@
             if (button) {
                 button.addEventListener('click', async (e) => {
                     e.preventDefault();
-                    
-                    // Get products from Section 2 (Additional Recommendations)
-                    const additionalProducts = window.quizRecommendationsAdditionalProducts || [];
-                    
-                    if (additionalProducts.length === 0) {
-                        alert('No products available to add to cart.');
-                        return;
-                    }
+                    const productHandles = button.dataset.productHandles;
+                    if (!productHandles) return;
+
+                    const handles = productHandles.split(',').map(h => h.trim()).filter(h => h);
+                    if (handles.length === 0) return;
 
                     // Disable button during processing
                     button.disabled = true;
@@ -2275,9 +2254,11 @@
                     button.innerHTML = 'Adding to Cart...';
 
                     try {
-                        // Use the products from Section 2
-                        const products = additionalProducts;
-                        console.log('Upsell Package: Adding products to cart:', products.length, 'products');
+                        // Fetch all products
+                        const productPromises = handles.map(handle => 
+                            fetch(`/products/${handle}.js`).then(res => res.json())
+                        );
+                        const products = await Promise.all(productPromises);
 
                         // Prepare cart items for Shopify API
                         const itemsToAdd = [];
@@ -2291,84 +2272,59 @@
                             }
                         }
 
-                        console.log('Upsell Package: Prepared items to add:', itemsToAdd.length, 'items');
-
                         if (itemsToAdd.length === 0) {
                             throw new Error('No valid products found');
                         }
 
-                        // Shopify's cart/add.js API can handle multiple items, but let's add them in batches
-                        // to ensure all items are added successfully (Shopify typically allows up to 250 items per request)
-                        const BATCH_SIZE = 50; // Safe batch size
-                        const batches = [];
-                        for (let i = 0; i < itemsToAdd.length; i += BATCH_SIZE) {
-                            batches.push(itemsToAdd.slice(i, i + BATCH_SIZE));
-                        }
+                        // Add all products to cart via Shopify API
+                        const response = await fetch('/cart/add.js', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({ items: itemsToAdd })
+                        });
 
-                        console.log('Upsell Package: Adding items in', batches.length, 'batches');
-
-                        // Add all batches sequentially
-                        for (let i = 0; i < batches.length; i++) {
-                            const batch = batches[i];
-                            const response = await fetch('/cart/add.js', {
-                                method: 'POST',
-                                headers: {
-                                    'Content-Type': 'application/json',
-                                },
-                                body: JSON.stringify({ items: batch })
-                            });
-
-                            if (!response.ok) {
-                                const errorData = await response.json().catch(() => ({ description: 'Unknown error' }));
-                                console.error(`Failed to add batch ${i + 1}:`, errorData);
-                                throw new Error(errorData.description || `Failed to add batch ${i + 1}`);
+                        if (response.ok) {
+                            // Reload cart from Shopify to sync
+                            const cartResponse = await fetch('/cart.js');
+                            const cart = await cartResponse.json();
+                            
+                            // Update local cartItems array
+                            cartItems.length = 0;
+                            for (const item of cart.items) {
+                                // Find the product from our fetched products
+                                const product = products.find(p => p.handle === item.handle);
+                                if (product) {
+                                    cartItems.push({
+                                        variantId: item.variant_id,
+                                        quantity: item.quantity,
+                                        product: product,
+                                        sellingPlanId: item.selling_plan_allocation ? item.selling_plan_allocation.selling_plan_id : null,
+                                        isGift: false,
+                                        isBogoFree: false
+                                    });
+                                }
                             }
-                        }
+                            
+                            // Update cart display and related functions
+                            updateCartDisplay();
+                            updateGiftTiers();
+                            updateProductCardButtons();
+                            
+                            // Trigger cart update event
+                            document.dispatchEvent(new CustomEvent('cart:updated'));
 
-                        // All batches added successfully
-                        console.log('Upsell Package: All batches added successfully');
-                        
-                        // Reload cart from Shopify to sync
-                        const cartResponse = await fetch('/cart.js');
-                        const cart = await cartResponse.json();
-                        
-                        console.log('Upsell Package: Cart reloaded, items in cart:', cart.items.length);
-                        
-                        // Update local cartItems array
-                        cartItems.length = 0;
-                        for (const item of cart.items) {
-                            // Find the product from Section 2 products
-                            const product = products.find(p => {
-                                // Match by handle or variant ID
-                                return p.handle === item.handle || 
-                                       p.variants.some(v => v.id === item.variant_id);
-                            });
-                            if (product) {
-                                cartItems.push({
-                                    variantId: item.variant_id,
-                                    quantity: item.quantity,
-                                    product: product,
-                                    sellingPlanId: item.selling_plan_allocation ? item.selling_plan_allocation.selling_plan_id : null,
-                                    isGift: false,
-                                    isBogoFree: false
-                                });
-                            }
+                            // Show success feedback
+                            button.innerHTML = 'Added to Cart!';
+                            setTimeout(() => {
+                                button.innerHTML = originalText;
+                                button.disabled = false;
+                            }, 2000);
+                        } else {
+                            const errorData = await response.json();
+                            throw new Error(errorData.description || 'Failed to add products to cart');
                         }
-                        
-                        // Update cart display and related functions
-                        updateCartDisplay();
-                        updateGiftTiers();
-                        updateProductCardButtons();
-                        
-                        // Trigger cart update event
-                        document.dispatchEvent(new CustomEvent('cart:updated'));
-
-                        // Show success feedback
-                        button.innerHTML = 'Added to Cart!';
-                        setTimeout(() => {
-                            button.innerHTML = originalText;
-                            button.disabled = false;
-                        }, 2000);
                     } catch (error) {
                         console.error('Error adding products to cart:', error);
                         button.innerHTML = originalText;
