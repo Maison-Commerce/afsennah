@@ -68,7 +68,7 @@
           "type": "variant-picker",
           "settings": {
             "show_single": false,
-            "selector_style": "dropdown",
+            "selector_style": "listed",
             "dynamic_availability": "show",
             "enable_size_chart": false,
             "size_chart_label": "Size guide",
@@ -186,6 +186,7 @@
         "show_location_underneath": false,
         "inventory_transfers_enable": false,
         "enable_sticky_columns": true,
+        "enable_modern_gallery": true,
         "enable_sticky_atc": false,
         "sticky_atc_position": "center",
         "sticky_atc_mobile": true,
