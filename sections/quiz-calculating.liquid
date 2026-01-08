@@ -762,37 +762,40 @@
     // Initial update
     updateCalculatingProgress();
 
-    // Track if slider is initialized to prevent multiple initializations
-    let sliderInitialized = false;
+    // Enable auto-scroll for reviews container
+    let scrollInterval = null;
 
-    // Initialize vertical slider for reviews
-    function initReviewsSlider() {
-      // Prevent multiple initializations
-      if (sliderInitialized) return;
-
-      // Try multiple selectors to find the container
+    function enableAutoScroll() {
       const reviewsContainer = document.querySelector('.quiz-calculating-reviews-container') || 
                                document.querySelector('[data-calculating] .quiz-calculating-reviews-container');
       
-      if (!reviewsContainer) {
-        console.log('Reviews container not found');
-        return;
+      if (!reviewsContainer) return;
+
+      // Clear any existing interval
+      if (scrollInterval) {
+        clearInterval(scrollInterval);
       }
 
-      // Check if there's content to scroll
-      const hasScrollableContent = reviewsContainer.scrollHeight > reviewsContainer.clientHeight;
-      if (!hasScrollableContent) {
-        console.log('No scrollable content in reviews container');
-        return;
+      // Enable smooth scrolling
+      reviewsContainer.style.scrollBehavior = 'smooth';
+
+      // Auto-scroll function
+      function autoScroll() {
+        const maxScroll = reviewsContainer.scrollHeight - reviewsContainer.clientHeight;
+        
+        if (maxScroll <= 0) return;
+
+        // Scroll down
+        if (reviewsContainer.scrollTop < maxScroll) {
+          reviewsContainer.scrollTop += 1;
+        } else {
+          // Reset to top when reaching bottom
+          reviewsContainer.scrollTop = 0;
+        }
       }
 
-      console.log('Initializing reviews slider');
-      sliderInitialized = true;
-
-      let scrollPosition = 0;
-      const scrollSpeed = 0.5; // pixels per frame
-      let isPaused = false;
-      let animationFrameId = null;
+      // Start auto-scrolling every 50ms
+      scrollInterval = setInterval(autoScroll, 50);
 
       // Pause on hover
       const reviewsColumn = document.querySelector('.quiz-calculating-reviews-column') ||
@@ -800,51 +803,25 @@
       
       if (reviewsColumn) {
         reviewsColumn.addEventListener('mouseenter', () => {
-          isPaused = true;
+          if (scrollInterval) {
+            clearInterval(scrollInterval);
+            scrollInterval = null;
+          }
         });
+        
         reviewsColumn.addEventListener('mouseleave', () => {
-          isPaused = false;
+          // Restart scrolling
+          scrollInterval = setInterval(autoScroll, 50);
         });
       }
-
-      function scroll() {
-        if (isPaused) {
-          animationFrameId = requestAnimationFrame(scroll);
-          return;
-        }
-
-        const maxScroll = reviewsContainer.scrollHeight - reviewsContainer.clientHeight;
-        
-        // Only scroll if there's content to scroll
-        if (maxScroll <= 0) {
-          animationFrameId = requestAnimationFrame(scroll);
-          return;
-        }
-
-        scrollPosition += scrollSpeed;
-        
-        // Reset to top when reaching bottom for seamless loop
-        if (scrollPosition >= maxScroll) {
-          scrollPosition = 0;
-          reviewsContainer.scrollTop = 0;
-        } else {
-          reviewsContainer.scrollTop = scrollPosition;
-        }
-
-        animationFrameId = requestAnimationFrame(scroll);
-      }
-
-      // Start scrolling
-      animationFrameId = requestAnimationFrame(scroll);
     }
 
-    // Initialize slider when calculating section is visible
-    function checkAndInitSlider() {
+    // Initialize auto-scroll when calculating section is visible
+    function checkAndEnableAutoScroll() {
       const calcSection = document.querySelector('[data-calculating]');
-      if (calcSection && calcSection.style.display !== 'none' && !sliderInitialized) {
-        // Wait a bit for DOM to be ready
+      if (calcSection && calcSection.style.display !== 'none') {
         setTimeout(() => {
-          initReviewsSlider();
+          enableAutoScroll();
         }, 300);
       }
     }
@@ -852,7 +829,7 @@
     const calculatingObserver = new MutationObserver(function(mutations) {
       mutations.forEach(function(mutation) {
         if (mutation.type === 'attributes' && mutation.attributeName === 'style') {
-          checkAndInitSlider();
+          checkAndEnableAutoScroll();
         }
       });
     });
@@ -866,11 +843,11 @@
     }
 
     // Initial check
-    checkAndInitSlider();
+    checkAndEnableAutoScroll();
 
     // Also check after a delay in case the section is already visible
     setTimeout(() => {
-      checkAndInitSlider();
+      checkAndEnableAutoScroll();
     }, 500);
   })();
 </script>
