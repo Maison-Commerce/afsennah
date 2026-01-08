@@ -1841,3 +1841,7 @@ height: 100%;
     width: 22px;
     height: 22px;
 }
+
+.quantity-submit-row__submit .btn.btn--large.add-to-cart {
+    background: #FBF7BD;
+}
