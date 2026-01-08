@@ -1814,11 +1814,19 @@ height: 100%;
 }
 
 .lightly-spaced-row.text-above-checkout {
+
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 8px;
 }
+
+.lightly-spaced-row.text-above-checkout .product-info-block.with-icon {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
 .lightly-spaced-row.text-above-checkout .icon,
 .lightly-spaced-row.text-above-checkout img {
     width: 22px;
