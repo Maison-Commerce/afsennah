@@ -1802,7 +1802,13 @@ height: 100%;
 }
 
 .sealsubs-container .sls-select-container select.sls-select {
-border: none !important;
-box-shadow: 0px 1px 2px 0px #1018280D !important;
-
+    border: none !important;
+    box-shadow: 0px 1px 2px 0px #1018280D !important;
+    font-family: "Gotham";
+    font-weight: 400;
+    font-style: Book;
+    font-size: 14px;
+    line-height: 150%;
+    letter-spacing: 0%;
+    color: rgba(44, 41, 38, 0.75);
 }
