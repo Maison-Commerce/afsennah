@@ -491,7 +491,7 @@ image-with-text-overlay > div > div,
 }
 
 /* Mobile: Hide desktop gallery, show slider */
-@media (max-width: 1499px) {
+@media (max-width: 768px) {
     .product-container--modern .product-gallery-desktop {
         display: none;
     }
