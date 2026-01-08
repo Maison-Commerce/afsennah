@@ -1705,18 +1705,18 @@ height: 100%;
 }
 
 
-.sls-purchase-options-container {
+[data-product] .sls-purchase-options-container {
     padding: 0;
     background: none;
     border: none !important;
     outline: none;
 }
-.sls-option-container.seal-table {
+[data-product] .sls-option-container.seal-table {
     border: 1px solid #E9EBE9;
     background: white;
 }
 
-.sls-option-container.seal-table.sls-active {
+[data-product] .sls-option-container.seal-table.sls-active {
     border: 1.5px solid #B4B4DE;
     background: #F1F1F9;
 }
