@@ -2284,3 +2284,8 @@ justify-content: space-between;
     transform: translate(-50%, -50%);
     background: rgba(233, 140, 54, 0.89);
 }
+
+
+.product-item-upsells .slider-nav {
+    width: auto
+}
