@@ -2071,8 +2071,9 @@ height: 100%;
   /* Video slider grid styles - 3 videos per view */
   .video-slider-grid {
     --product-columns-desktop: 3;
-    /* 3 слайди: (100% - 2 gaps) / 3 = ширина одного слайда */
-    grid-auto-columns: calc((100% - var(--gutter) * 2) / 3);
+    /* 3 слайди + 2 gap (8px кожен) = 100% */
+    /* Ширина слайда = (100% - 16px) / 3 - точно 3 слайди без часткового показу наступного */
+    grid-auto-columns: calc((100% - 16px) / 3);
   }
 
   .video-slider-grid .slider__item {
@@ -2087,8 +2088,8 @@ height: 100%;
   @media (max-width: 767.98px) {
     .video-slider-grid {
       --product-columns-desktop: 3;
-      /* На мобільних також 3 слайди */
-      grid-auto-columns: calc((100% - var(--gutter) * 2) / 3);
+      /* На мобільних також 3 слайди: (100% - 16px) / 3 */
+      grid-auto-columns: calc((100% - 16px) / 3);
     }
   }
 
@@ -2100,7 +2101,13 @@ height: 100%;
   .video-slider__wrapper .slider {
     overflow-x: auto;
     overflow-y: hidden;
-    scroll-padding-right: var(--gutter);
+    /* Приховуємо частковий показ наступного слайда */
+    scroll-padding-right: 0;
+  }
+  
+  /* Приховуємо overflow для точного показу тільки 3 слайдів */
+  .video-slider__wrapper .slider__grid {
+    overflow: hidden;
   }
   
  
