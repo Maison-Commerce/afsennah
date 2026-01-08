@@ -787,7 +787,48 @@
                       }
                     }
                   </style>
-
+ {% if block.settings.text_above_checkout != blank %}
+                        <div class="lightly-spaced-row text-above-checkout">
+                          {%- liquid
+                            if block.settings.enable_text_box
+                              assign box_color_brightness = block.settings.text_box_color | color_brightness
+                              if box_color_brightness > 128
+                                assign box_color_saturation = block.settings.text_box_color | color_extract: 'saturation'
+                                if box_color_saturation > 0
+                                  assign text_col = block.settings.text_box_color | color_darken: 60 | color_saturate: 30 | color_to_rgb | split: '(' | last | split: ')' | first
+                                else
+                                  assign text_col = block.settings.text_box_color | color_darken: 60 | color_to_rgb | split: '(' | last | split: ')' | first
+                                endif
+                              else
+                                assign text_col = '255,255,255'
+                              endif
+                            endif
+                          -%}
+                          <div class="product-info-block{% if block.settings.text_icon != blank or block.settings.text_custom_icon != blank %} with-icon with-icon--right{% endif %}{% if block.settings.enable_text_box %} text-box{% endif %}" {% if block.settings.enable_text_box %}style="--box-color: {{ block.settings.text_box_color }}; --box-text-color: {{ text_col }}"{% endif %}>
+                            {%- if block.settings.text_icon == blank and block.settings.text_custom_icon == blank -%}
+                              <div class="rte cf">{{ block.settings.text_above_checkout }}</div>
+                            {%- else -%}
+                              <span class="with-icon__beside rte cf">{{ block.settings.text_above_checkout }}</span>
+                              {% if block.settings.text_custom_icon == blank %}
+                                {% render 'icon', icon: block.settings.text_icon, size: block.settings.text_icon_size %}
+                              {% else %}
+                                {%- liquid
+                                  if block.settings.text_icon_size == 'large'
+                                    assign icon_sizes = '38px'
+                                    assign icon_widths = '38, 76'
+                                  else
+                                    assign icon_sizes = '16px'
+                                    assign icon_widths = '16, 32'
+                                  endif
+                                -%}
+                                <span class="icon icon--image icon--{{ block.settings.text_icon_size }}">
+                                  {%- render 'image' with block.settings.text_custom_icon, sizes: icon_sizes, widths: icon_widths -%}
+                                </span>
+                              {% endif %}
+                            {%- endif -%}
+                          </div>
+                        </div>
+                      {% endif %}
                   <!-- Regular Buy Buttons (Hidden by JS if quiz not completed) -->
                   <div class="quantity-submit-row input-row {% if enable_dynamic_payment_button %}has-spb{% endif %} js-regular-buy-buttons">
                     {% if block.settings.show_quantity_selector %}
@@ -819,9 +860,7 @@
                     </div>
                     {% if enable_dynamic_payment_button %}
                       {%- comment -%} Text block above checkout button {%- endcomment -%}
-                      2
                       {% if block.settings.text_above_checkout != blank %}
-                        1
                         <div class="lightly-spaced-row text-above-checkout">
                           {%- liquid
                             if block.settings.enable_text_box
