@@ -2072,7 +2072,8 @@ height: 100%;
   .video-slider-grid {
     --product-columns-desktop: 3;
     /* 3 слайди + 2 gap (8px кожен) = 100% */
-    /* Ширина слайда = (100% - 16px) / 3 - точно 3 слайди без часткового показу наступного */
+    /* Використовуємо стандартну формулу: (100% - (кількість gap) * gap) / кількість слайдів */
+    /* gap = 8px, між 3 слайдами = 2 gap = 16px */
     grid-auto-columns: calc((100% - 16px) / 3);
   }
 
@@ -2101,13 +2102,12 @@ height: 100%;
   .video-slider__wrapper .slider {
     overflow-x: auto;
     overflow-y: hidden;
-    /* Приховуємо частковий показ наступного слайда */
-    scroll-padding-right: 0;
   }
   
-  /* Приховуємо overflow для точного показу тільки 3 слайдів */
-  .video-slider__wrapper .slider__grid {
-    overflow: hidden;
+  /* Для video-slider з edge-peek, обмежуємо показ тільки 3 слайдами */
+  .video-slider__wrapper .slider--edge-peek {
+    /* Прибираємо додатковий padding, щоб показувати тільки 3 слайди */
+    scroll-padding-right: 0;
   }
   
  
