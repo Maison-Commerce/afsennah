@@ -2297,3 +2297,8 @@ justify-content: space-between;
 .product-item-upsells__dots {
     display: none;
 }
+
+.product-item-upsells .cart-upsell-product {
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    border-radius: 8px;
+}
