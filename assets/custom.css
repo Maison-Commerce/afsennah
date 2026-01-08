@@ -1826,6 +1826,15 @@ height: 100%;
     align-items: center;
     gap: 8px;
 }
+.lightly-spaced-row.text-above-checkout .with-icon__beside p {
+    font-family: "Gotham";
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 150%;
+    letter-spacing: 0%;
+    vertical-align: middle;
+    color: #30303B;
+}
 
 .lightly-spaced-row.text-above-checkout .icon,
 .lightly-spaced-row.text-above-checkout img {
