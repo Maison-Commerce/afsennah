@@ -525,6 +525,11 @@
                     divider.style.display = 'none';
                 }
                 
+                // Update upsell blocks text with dynamic price and product count
+                upsellBlocks.forEach(block => {
+                    updateUpsellPackageBlockText(block, additionalProducts);
+                });
+                
                 // Re-initialize upsell blocks now that products are available
                 initUpsellPackageBlocks();
             } else {
@@ -2217,6 +2222,67 @@
     // Track initialized blocks to prevent double initialization
     const initializedUpsellBlocks = new Set();
 
+    // Update upsell package block text with dynamic price and product count
+    function updateUpsellPackageBlockText(block, products) {
+        if (!products || products.length === 0) return;
+
+        // Calculate total price with 50% discount
+        let totalPrice = 0;
+        products.forEach(product => {
+            if (product.variants && product.variants.length > 0) {
+                // Use first available variant, or first variant if none available
+                const variant = product.variants.find(v => v.available) || product.variants[0];
+                if (variant && variant.price) {
+                    // Convert price from cents to dollars
+                    const priceInDollars = variant.price / 100;
+                    totalPrice += priceInDollars;
+                }
+            }
+        });
+
+        // Apply 50% discount
+        const discountedPrice = totalPrice * 0.5;
+
+        // Update button text
+        const button = block.querySelector('[data-upsell-package-button]');
+        if (button) {
+            // Get the original button text from the data attribute (set by Liquid template)
+            let baseText = button.getAttribute('data-original-text');
+            
+            // If no data attribute, try to extract from current text (remove price if present)
+            if (!baseText) {
+                const currentText = button.textContent.trim();
+                // Remove price pattern: " — $XX.XX" or " — XX" at the end
+                baseText = currentText.replace(/\s*—\s*\$?[\d,]+\.?\d*\s*$/, '').trim();
+            }
+            
+            // If still empty, use default
+            if (!baseText || baseText === '') {
+                baseText = 'Claim Ultimate Package';
+            }
+            
+            // Format the discounted price
+            const formattedPrice = formatMoney(Math.round(discountedPrice * 100));
+            
+            // Update button HTML with new price and preserve SVG
+            button.innerHTML = `${baseText} — ${formattedPrice}<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>`;
+        }
+
+        // Update description text
+        const description = block.querySelector('.maison_commerce_maison_upsell_package__description');
+        if (description) {
+            let descriptionText = description.innerHTML;
+            // Replace any number followed by "products" or standalone numbers that might be product counts
+            // Look for patterns like "7 products" or "Get all 7 products"
+            descriptionText = descriptionText.replace(/\b(\d+)\s+products?\b/g, `${products.length} products`);
+            // Also replace standalone numbers that might be product counts (e.g., "Get all 7 —")
+            descriptionText = descriptionText.replace(/\b(\d+)\b(?=\s*—)/g, products.length.toString());
+            description.innerHTML = descriptionText;
+        }
+    }
+
     // Initialize Upsell Package Blocks
     function initUpsellPackageBlocks() {
         const upsellBlocks = document.querySelectorAll('[data-upsell-package-block]');
@@ -2229,6 +2295,12 @@
             
             // Mark as initialized
             initializedUpsellBlocks.add(block);
+            
+            // Update block text with dynamic price and product count if products are available
+            const additionalProducts = window.quizRecommendationsAdditionalProducts || [];
+            if (additionalProducts.length > 0) {
+                updateUpsellPackageBlockText(block, additionalProducts);
+            }
             
             // Clear any existing interval if it exists
             if (block._upsellTimerInterval) {

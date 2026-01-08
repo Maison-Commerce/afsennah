@@ -152,7 +152,7 @@
                                     </div>
                                     <div class="maison_commerce_maison_upsell_package__content-bottom">
                                         {% if block.settings.products != blank %}
-                                            <button class="maison_commerce_maison_upsell_package__button" data-upsell-package-button data-product-handles="{% for product in block.settings.products %}{{ product.handle }}{% unless forloop.last %},{% endunless %}{% endfor %}">
+                                            <button class="maison_commerce_maison_upsell_package__button" data-upsell-package-button data-product-handles="{% for product in block.settings.products %}{{ product.handle }}{% unless forloop.last %},{% endunless %}{% endfor %}" data-original-text="{{ block.settings.button_text | default: 'Claim Ultimate Package' }}">
                                                 {{ block.settings.button_text | default: 'Claim Ultimate Package' }}
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                                                 <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
