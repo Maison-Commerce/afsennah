@@ -2340,3 +2340,6 @@ justify-content: space-between;
   width: calc(var(--gutter) * 2);
   flex-shrink: 0;
 }
+.slider__grid.product-grid.product-grid--carousel.product-grid--per-row-2 {
+    gap: 18px;
+}
