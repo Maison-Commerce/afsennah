@@ -1,5 +1,5 @@
 body {
-    letter-spacing: 0.02rem;
+    letter-spacing: 0rem;
 }
 
 .btn {
@@ -576,7 +576,7 @@ image-with-text-overlay > div > div,
         }
         .product-card-title-mobile {
             display: block;
-            font-size: 20px;
+            font-size: 14px;
         }
         .product-card-image {
             display: flex;
@@ -693,6 +693,10 @@ video-section-play-button {
     margin-top: 8px;
     width: fit-content;
 }
+
+
+.instastory-title, #instafeed, #stories {
+  display: none !important;
 
 
 /* CART DRAWER */
@@ -2154,9 +2158,9 @@ height: 100%;
 
   /* .video-slide-container-{{ block.id }} {
     --video-slide-border-radius: {{ block.settings.border_radius | default: 8 }}px;
-  } */
+  }
 
-  /* @media screen and (max-width: 768px) {
+  @media screen and (max-width: 768px) {
     .video-slide-container-{{ block.id }} {
       --video-slide-border-radius: {{ block.settings.border_radius_mobile | default: 8 }}px;
     }
