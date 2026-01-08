@@ -308,6 +308,7 @@ image-with-text-overlay > div > div,
     max-width: 100%;
     margin: 0 auto;
     overflow-x: visible;
+    display: block;
 }
 
 /* Desktop: 2 Column Gallery */
