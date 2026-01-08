@@ -2185,7 +2185,7 @@ height: 100%;
     .video-slider-grid {
       --product-columns-desktop: 3;
       /* На мобільних також 3 слайди: (100% - 16px - gutter) / 3 */
-      grid-auto-columns: calc((100% - 16px - var(--gutter, 8px)) / 3);
+      grid-auto-columns: calc((100% - 20px) / 3);
     }
   }
 
