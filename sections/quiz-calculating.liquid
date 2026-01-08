@@ -182,6 +182,7 @@
     overflow: hidden;
     max-height: 100vh;
     position: relative;
+    height: calc(100vh - 136px);
   }
 
   #shopify-section-{{ section.id }} .quiz-calculating-reviews-container {
@@ -197,6 +198,7 @@
     scrollbar-width: thin;
     scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
     padding-right: 8px;
+    will-change: scroll-position;
   }
 
   #shopify-section-{{ section.id }} .quiz-calculating-reviews-container::-webkit-scrollbar {
@@ -760,17 +762,42 @@
     // Initial update
     updateCalculatingProgress();
 
+    // Track if slider is initialized to prevent multiple initializations
+    let sliderInitialized = false;
+
     // Initialize vertical slider for reviews
     function initReviewsSlider() {
-      const reviewsContainer = document.querySelector('.quiz-calculating-reviews-container');
-      if (!reviewsContainer) return;
+      // Prevent multiple initializations
+      if (sliderInitialized) return;
+
+      // Try multiple selectors to find the container
+      const reviewsContainer = document.querySelector('.quiz-calculating-reviews-container') || 
+                               document.querySelector('[data-calculating] .quiz-calculating-reviews-container');
+      
+      if (!reviewsContainer) {
+        console.log('Reviews container not found');
+        return;
+      }
+
+      // Check if there's content to scroll
+      const hasScrollableContent = reviewsContainer.scrollHeight > reviewsContainer.clientHeight;
+      if (!hasScrollableContent) {
+        console.log('No scrollable content in reviews container');
+        return;
+      }
+
+      console.log('Initializing reviews slider');
+      sliderInitialized = true;
 
       let scrollPosition = 0;
       const scrollSpeed = 0.5; // pixels per frame
       let isPaused = false;
+      let animationFrameId = null;
 
       // Pause on hover
-      const reviewsColumn = document.querySelector('.quiz-calculating-reviews-column');
+      const reviewsColumn = document.querySelector('.quiz-calculating-reviews-column') ||
+                           document.querySelector('[data-calculating] .quiz-calculating-reviews-column');
+      
       if (reviewsColumn) {
         reviewsColumn.addEventListener('mouseenter', () => {
           isPaused = true;
@@ -782,36 +809,50 @@
 
       function scroll() {
         if (isPaused) {
-          requestAnimationFrame(scroll);
+          animationFrameId = requestAnimationFrame(scroll);
+          return;
+        }
+
+        const maxScroll = reviewsContainer.scrollHeight - reviewsContainer.clientHeight;
+        
+        // Only scroll if there's content to scroll
+        if (maxScroll <= 0) {
+          animationFrameId = requestAnimationFrame(scroll);
           return;
         }
 
         scrollPosition += scrollSpeed;
-        const maxScroll = reviewsContainer.scrollHeight - reviewsContainer.clientHeight;
         
         // Reset to top when reaching bottom for seamless loop
         if (scrollPosition >= maxScroll) {
           scrollPosition = 0;
+          reviewsContainer.scrollTop = 0;
+        } else {
+          reviewsContainer.scrollTop = scrollPosition;
         }
 
-        reviewsContainer.scrollTop = scrollPosition;
-        requestAnimationFrame(scroll);
+        animationFrameId = requestAnimationFrame(scroll);
       }
 
       // Start scrolling
-      requestAnimationFrame(scroll);
+      animationFrameId = requestAnimationFrame(scroll);
     }
 
     // Initialize slider when calculating section is visible
+    function checkAndInitSlider() {
+      const calcSection = document.querySelector('[data-calculating]');
+      if (calcSection && calcSection.style.display !== 'none' && !sliderInitialized) {
+        // Wait a bit for DOM to be ready
+        setTimeout(() => {
+          initReviewsSlider();
+        }, 300);
+      }
+    }
+
     const calculatingObserver = new MutationObserver(function(mutations) {
       mutations.forEach(function(mutation) {
         if (mutation.type === 'attributes' && mutation.attributeName === 'style') {
-          const calcSection = document.querySelector('[data-calculating]');
-          if (calcSection && calcSection.style.display !== 'none') {
-            setTimeout(() => {
-              initReviewsSlider();
-            }, 100);
-          }
+          checkAndInitSlider();
         }
       });
     });
@@ -825,12 +866,12 @@
     }
 
     // Initial check
-    const calcSectionInitial = document.querySelector('[data-calculating]');
-    if (calcSectionInitial && calcSectionInitial.style.display !== 'none') {
-      setTimeout(() => {
-        initReviewsSlider();
-      }, 100);
-    }
+    checkAndInitSlider();
+
+    // Also check after a delay in case the section is already visible
+    setTimeout(() => {
+      checkAndInitSlider();
+    }, 500);
   })();
 </script>
 
