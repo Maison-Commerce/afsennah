@@ -337,7 +337,7 @@ image-with-text-overlay > div > div,
         }
         .product-card-title-mobile {
             display: block;
-            font-size: 20px;
+            font-size: 14px;
         }
         .product-card-image {
             display: flex;
