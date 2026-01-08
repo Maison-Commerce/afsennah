@@ -2301,4 +2301,5 @@ justify-content: space-between;
 .product-item-upsells .cart-upsell-product {
     border: 1px solid rgba(0, 0, 0, 0.05);
     border-radius: 8px;
+    padding: 18px;
 }
