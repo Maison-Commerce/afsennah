@@ -191,6 +191,7 @@
     display: flex;
     width: 100%;
     height: 100%;
+    align-items: center;
     overflow: hidden;
   }
 
@@ -795,10 +796,9 @@
 
       console.log('[Auto-scroll] Calculating section found, display:', calcSection.style.display);
 
-      const reviewsContainerWrap = calcSection.querySelector('.quiz-calculating-reviews-container-wrap');
-      const reviewsContainer = calcSection.querySelector('.quiz-calculating-reviews-container');
+      const reviewsContainer = calcSection.querySelector('.quiz-calculating-reviews-container-wrap');
       
-      if (!reviewsContainerWrap || !reviewsContainer) {
+      if (!reviewsContainer) {
         console.log('[Auto-scroll] Reviews container not found');
         return;
       }
@@ -820,36 +820,6 @@
 
       console.log('[Auto-scroll] Reviews column is visible');
 
-      // Get all review cards for opacity updates
-      const reviewCards = reviewsContainer.querySelectorAll('.quiz-calculating-review-card');
-
-      // Function to update opacity based on scroll position
-      function updateCardOpacity() {
-        const containerScrollTop = reviewsContainer.scrollTop;
-        const containerHeight = reviewsContainer.clientHeight;
-        const containerCenter = containerScrollTop + containerHeight / 2;
-
-        reviewCards.forEach((card) => {
-          // Get card position relative to the scroll container
-          const cardTop = card.offsetTop;
-          const cardHeight = card.offsetHeight;
-          const cardCenter = cardTop + cardHeight / 2;
-          
-          // Calculate distance from container center (in scroll coordinates)
-          const distanceFromCenter = Math.abs(cardCenter - containerCenter);
-          const maxDistance = containerHeight / 2 + cardHeight / 2;
-          
-          // Calculate opacity: 100% at center, fading to 40% at edges
-          // Use a smoother curve for better visual effect
-          const normalizedDistance = Math.min(distanceFromCenter / maxDistance, 1);
-          // Use ease-out curve for smoother transition
-          const easedDistance = 1 - Math.pow(1 - normalizedDistance, 2);
-          const opacity = 0.4 + (0.6 * (1 - easedDistance));
-          
-          card.style.opacity = Math.max(0.4, Math.min(1, opacity));
-        });
-      }
-
       // Wait a bit for content to render
       setTimeout(() => {
         // Force a reflow to ensure accurate measurements
@@ -857,7 +827,7 @@
         
         // Check if container has scrollable content
         const scrollHeight = reviewsContainer.scrollHeight;
-        const clientHeight = reviewsContainerWrap.clientHeight;
+        const clientHeight = reviewsContainer.clientHeight;
         const maxScroll = scrollHeight - clientHeight;
         
         console.log('[Auto-scroll] scrollHeight:', scrollHeight, 'clientHeight:', clientHeight, 'maxScroll:', maxScroll);
@@ -867,7 +837,7 @@
           // Try again after a longer delay in case content is still loading
           setTimeout(() => {
             const retryScrollHeight = reviewsContainer.scrollHeight;
-            const retryClientHeight = reviewsContainerWrap.clientHeight;
+            const retryClientHeight = reviewsContainer.clientHeight;
             const retryMaxScroll = retryScrollHeight - retryClientHeight;
             console.log('[Auto-scroll] Retry - scrollHeight:', retryScrollHeight, 'clientHeight:', retryClientHeight, 'maxScroll:', retryMaxScroll);
             if (retryMaxScroll > 0) {
@@ -895,15 +865,14 @@
         // Auto-scroll function with smoother animation
         let scrollPosition = 0;
         const scrollSpeed = 0.5; // pixels per frame (slower = smoother)
-        
+
         function autoScroll() {
           const currentScrollHeight = reviewsContainer.scrollHeight;
-          const currentClientHeight = reviewsContainerWrap.clientHeight;
+          const currentClientHeight = reviewsContainer.clientHeight;
           const currentMaxScroll = currentScrollHeight - currentClientHeight;
           
           if (currentMaxScroll <= 0) return;
 
-          // Smooth scroll using requestAnimationFrame-like approach
           scrollPosition += scrollSpeed;
           
           if (scrollPosition >= currentMaxScroll) {
@@ -936,14 +905,10 @@
           
           reviewsColumn.addEventListener('mouseleave', () => {
             console.log('[Auto-scroll] Resumed after hover');
-            // Restart scrolling with current position
-            scrollPosition = reviewsContainerWrap.scrollTop;
-            scrollInterval = setInterval(autoScroll, 16);
+            // Restart scrolling
+            scrollInterval = setInterval(autoScroll, 30);
           });
         }
-
-        // Also update opacity on manual scroll (if user scrolls)
-        reviewsContainer.addEventListener('scroll', updateCardOpacity);
       }, 200);
     }
 
