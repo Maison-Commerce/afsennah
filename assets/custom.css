@@ -1385,7 +1385,7 @@ height: 100%;
     gap: 6px;
     flex-wrap: wrap;
 }
-.cart-drawer__usp-badges {
+.cart-drawer__usp-badge {
     background: #F7F7FC;
     display: flex;
     gap: 4px;
