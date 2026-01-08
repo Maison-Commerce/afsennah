@@ -368,6 +368,9 @@ image-with-text-overlay > div > div,
     display: block;
     border-radius: 8px;
 }
+.slider-slide--modern img {
+    border-radius: 12px;
+}
 
 /* Mobile: Thumbnails */
 .product-thumbnails {
