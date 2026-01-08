@@ -1426,7 +1426,7 @@
         }
 
         .product-card-image{
-            width: fit-content;
+            width: fit-content!important;
         }
 
         .product-card-header-row {
