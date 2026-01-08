@@ -1894,3 +1894,7 @@ height: 100%;
 .product-info .buy-buttons-row.block {
     margin-bottom: 0;
 }
+
+.product-form .quantity-submit-row .quantity-submit-row__submit {
+    margin-bottom: 12px;
+}
