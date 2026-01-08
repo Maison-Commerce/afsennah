@@ -1323,6 +1323,7 @@
 
         .recommendations-left {
             padding-bottom: 160px;
+            width: 100%;
         }
 
         .recommendations-right {
