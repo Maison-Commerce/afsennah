@@ -1,0 +1,535 @@
+{%- liquid
+  assign cart_total = cart.total_price
+  assign cart_total_dollars = cart_total | divided_by: 100.0
+  
+  assign free_shipping_threshold = section.settings.free_shipping_threshold
+  assign tier_1_threshold = section.settings.gift_tier_1_amount
+  assign tier_2_threshold = section.settings.gift_tier_2_amount
+  assign tier_3_threshold = section.settings.gift_tier_3_amount
+  
+  assign free_shipping_achieved = false
+  assign tier_1_achieved = false
+  assign tier_2_achieved = false
+  assign tier_3_achieved = false
+  
+  if cart_total_dollars >= free_shipping_threshold
+    assign free_shipping_achieved = true
+  endif
+  if cart_total_dollars >= tier_1_threshold
+    assign tier_1_achieved = true
+  endif
+  if cart_total_dollars >= tier_2_threshold
+    assign tier_2_achieved = true
+  endif
+  if cart_total_dollars >= tier_3_threshold
+    assign tier_3_achieved = true
+  endif
+
+
+  assign next_tier_amount = false
+  assign next_tier_label = false
+  
+  if cart_total_dollars < free_shipping_threshold
+    assign next_tier_amount = free_shipping_threshold | minus: cart_total_dollars
+    assign next_tier_label = section.settings.free_shipping_label | default: 'Free shipping'
+  elsif section.settings.gift_tier_1_label != blank and cart_total_dollars < tier_1_threshold
+    assign next_tier_amount = tier_1_threshold | minus: cart_total_dollars
+    assign next_tier_label = section.settings.gift_tier_1_label
+  elsif section.settings.gift_tier_2_label != blank and cart_total_dollars < tier_2_threshold
+    assign next_tier_amount = tier_2_threshold | minus: cart_total_dollars
+    assign next_tier_label = section.settings.gift_tier_2_label
+  elsif section.settings.gift_tier_3_label != blank and cart_total_dollars < tier_3_threshold
+    assign next_tier_amount = tier_3_threshold | minus: cart_total_dollars
+    assign next_tier_label = section.settings.gift_tier_3_label
+  endif
+-%}
+
+{%- if section.settings.enable_tiered_rewards -%}
+  <div class="tiered-rewards-bar{% if cart.items == empty %} tiered-rewards-bar--no-cart{% endif %}" 
+       data-cart-total="{{ cart_total_dollars }}"
+       data-merge-attributes="tiered-rewards"
+       data-free-shipping-threshold="{{ free_shipping_threshold }}"
+       data-tier-1-threshold="{{ tier_1_threshold }}"
+       data-tier-2-threshold="{{ tier_2_threshold }}"
+       data-tier-3-threshold="{{ tier_3_threshold }}"
+       data-free-shipping-label="{{ section.settings.free_shipping_label | default: 'Free shipping' | escape }}"
+       data-tier-1-label="{{ section.settings.gift_tier_1_label | escape }}"
+       data-tier-2-label="{{ section.settings.gift_tier_2_label | escape }}"
+       data-tier-3-label="{{ section.settings.gift_tier_3_label | escape }}"
+       data-banner-text="{{ section.settings.banner_text | default: 'Spend [AMOUNT] more to get Free [LABEL]!' | escape }}"
+       data-banner-text-achieved="{{ section.settings.banner_text_achieved | default: 'Free shipping added! Spend [AMOUNT] more to get Free [LABEL]!' | escape }}"
+       data-banner-text-all-achieved="{{ section.settings.banner_text_all_achieved | default: 'All rewards unlocked!' | escape }}">
+    
+    <div class="tiered-rewards-bar__banner" style="display: none;">
+      <span class="tiered-rewards-bar__banner-text"></span>
+    </div>
+    
+    <div class="tiered-rewards-bar__progress-grid">
+      <div class="tiered-rewards-bar__progress-container" data-total="{{ cart_total_dollars }}">
+        {%- comment -%} Segment 1: 0 to Free Shipping {%- endcomment -%}
+        <div class="tiered-rewards-bar__segment-wrap">
+          <div class="tiered-rewards-bar__segment" data-min="0" data-max="{{ free_shipping_threshold }}">
+            <div class="tiered-rewards-bar__segment-fill"></div>
+          </div>
+        </div>
+        
+        {%- comment -%} Segment 2: Free Shipping to Tier 1 {%- endcomment -%}
+        {%- if section.settings.gift_tier_1_label != blank -%}
+          <div class="tiered-rewards-bar__segment-wrap">
+            <div class="tiered-rewards-bar__segment" data-min="{{ free_shipping_threshold }}" data-max="{{ tier_1_threshold }}">
+              <div class="tiered-rewards-bar__segment-fill"></div>
+            </div>
+          </div>
+        {%- endif -%}
+        
+        {%- comment -%} Segment 3: Tier 1 to Tier 2 {%- endcomment -%}
+        {%- if section.settings.gift_tier_2_label != blank -%}
+          <div class="tiered-rewards-bar__segment-wrap">
+            <div class="tiered-rewards-bar__segment" data-min="{{ tier_1_threshold }}" data-max="{{ tier_2_threshold }}">
+              <div class="tiered-rewards-bar__segment-fill"></div>
+            </div>
+          </div>
+        {%- endif -%}
+        
+        {%- comment -%} Segment 4: Tier 2 to Tier 3 {%- endcomment -%}
+        {%- if section.settings.gift_tier_3_label != blank -%}
+          <div class="tiered-rewards-bar__segment-wrap">
+            <div class="tiered-rewards-bar__segment" data-min="{{ tier_2_threshold }}" data-max="{{ tier_3_threshold }}">
+              <div class="tiered-rewards-bar__segment-fill"></div>
+            </div>
+          </div>
+        {%- endif -%}
+      </div>
+      
+      <div class="tiered-rewards-bar__markers">
+        {%- comment -%} Free Shipping Marker {%- endcomment -%}
+        <div class="marker-wrapper">
+            <span class="tiered-rewards-bar__marker-image" data-index="0">
+            <span class="tiered-rewards-bar__marker-icon">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <g clip-path="url(#clip0_10099_15346)">
+                <path d="M10.661 18.4578C10.6609 18.4913 10.6692 18.5242 10.685 18.5537C10.7008 18.5832 10.7238 18.6082 10.7517 18.6266C10.7797 18.645 10.8118 18.6561 10.8451 18.6589C10.8785 18.6618 10.912 18.6562 10.9427 18.6429L18.4335 15.2394C18.5784 15.1743 18.7009 15.0678 18.7854 14.9332C18.8698 14.7986 18.9126 14.642 18.9082 14.4831V5.54401C18.9083 5.51056 18.9001 5.4776 18.8842 5.44812C18.8684 5.41865 18.8455 5.39359 18.8175 5.37521C18.7895 5.35684 18.7574 5.34573 18.7241 5.34289C18.6907 5.34005 18.6572 5.34557 18.6266 5.35896L10.7817 8.92332C10.7458 8.93903 10.7152 8.96492 10.6937 8.9978C10.6723 9.03068 10.6609 9.06912 10.661 9.10838V18.4578ZM14.6036 10.7176C14.6397 10.6791 14.6833 10.6484 14.7317 10.6275C14.7802 10.6065 14.8324 10.5957 14.8852 10.5957C14.938 10.5957 14.9902 10.6065 15.0386 10.6275C15.087 10.6484 15.1307 10.6791 15.1668 10.7176L16.3737 11.9245C16.4313 11.979 16.4707 12.05 16.4865 12.1277C16.5023 12.2055 16.4939 12.2862 16.4622 12.359C16.432 12.4324 16.3808 12.4953 16.3149 12.5397C16.249 12.5841 16.1715 12.608 16.0921 12.6084H15.6898C15.6364 12.6084 15.5853 12.6296 15.5475 12.6673C15.5098 12.705 15.4886 12.7562 15.4886 12.8095V14.2176C15.4886 14.3776 15.4251 14.5311 15.3119 14.6443C15.1987 14.7574 15.0452 14.821 14.8852 14.821C14.7251 14.821 14.5716 14.7574 14.4585 14.6443C14.3453 14.5311 14.2817 14.3776 14.2817 14.2176V12.8095C14.2817 12.7562 14.2605 12.705 14.2228 12.6673C14.1851 12.6296 14.1339 12.6084 14.0806 12.6084H13.6783C13.5989 12.608 13.5213 12.5841 13.4555 12.5397C13.3896 12.4953 13.3383 12.4324 13.3082 12.359C13.2765 12.2862 13.268 12.2055 13.2839 12.1277C13.2997 12.05 13.3391 11.979 13.3967 11.9245L14.6036 10.7176Z" fill="white"/>
+                <path d="M6.09896 7.59625C6.07145 7.57825 6.0393 7.56867 6.00643 7.56867C5.97356 7.56867 5.9414 7.57825 5.9139 7.59625C5.88632 7.61489 5.86379 7.64009 5.84834 7.66958C5.8329 7.69907 5.82501 7.73193 5.82539 7.76522V9.37441C5.82539 9.53446 5.76182 9.68795 5.64865 9.80112C5.53548 9.91429 5.38199 9.97786 5.22194 9.97786C5.0619 9.97786 4.90841 9.91429 4.79524 9.80112C4.68207 9.68795 4.6185 9.53446 4.6185 9.37441V7.10545C4.61695 7.06553 4.604 7.02689 4.58119 6.9941C4.55837 6.9613 4.52665 6.93573 4.48976 6.92039L0.684014 5.3112C0.653692 5.29741 0.62077 5.29028 0.587462 5.29028C0.554155 5.29028 0.521233 5.29741 0.490911 5.3112C0.463821 5.33033 0.441668 5.35563 0.42628 5.38501C0.410891 5.41438 0.402708 5.447 0.402405 5.48016V14.4836C0.403198 14.6425 0.450993 14.7975 0.539767 14.9292C0.62854 15.061 0.75432 15.1635 0.901255 15.2238L9.17252 18.6836C9.20234 18.6991 9.23546 18.7072 9.26907 18.7072C9.30268 18.7072 9.3358 18.6991 9.36562 18.6836C9.3931 18.6668 9.41572 18.6431 9.43125 18.6149C9.44677 18.5867 9.45466 18.5549 9.45413 18.5227V9.12499C9.45426 9.08573 9.44291 9.04729 9.42146 9.01441C9.40002 8.98152 9.36942 8.95564 9.33344 8.93993L6.09896 7.59625Z" fill="white"/>
+                <path d="M12.793 2.26978C12.8222 2.24936 12.8452 2.22126 12.8594 2.1886C12.8736 2.15594 12.8784 2.11999 12.8735 2.08473C12.8731 2.0466 12.8614 2.00945 12.8399 1.97795C12.8185 1.94645 12.7881 1.92201 12.7528 1.90771L9.97693 0.684725C9.87542 0.640422 9.76585 0.617554 9.6551 0.617554C9.54434 0.617554 9.43477 0.640422 9.33326 0.684725L1.60912 4.02381C1.5731 4.04167 1.54275 4.06918 1.52145 4.10328C1.50014 4.13737 1.48871 4.17671 1.48843 4.21691C1.48261 4.25815 1.49153 4.30012 1.5136 4.33544C1.53568 4.37076 1.5695 4.39717 1.60912 4.41001L4.98038 5.81806C5.007 5.82981 5.03577 5.83588 5.06487 5.83588C5.09396 5.83588 5.12273 5.82981 5.14935 5.81806L12.793 2.26978Z" fill="white"/>
+                <path d="M9.96938 7.89395C9.99447 7.90606 10.022 7.91236 10.0498 7.91236C10.0777 7.91236 10.1052 7.90606 10.1303 7.89395L17.7498 4.42613C17.7858 4.41043 17.8164 4.38454 17.8379 4.35166C17.8593 4.31877 17.8707 4.28033 17.8705 4.24108C17.8701 4.20295 17.8585 4.1658 17.837 4.1343C17.8155 4.1028 17.7852 4.07836 17.7498 4.06406L14.7648 2.76062C14.7382 2.74887 14.7094 2.7428 14.6803 2.7428C14.6512 2.7428 14.6224 2.74887 14.5958 2.76062L6.99236 6.2928C6.95638 6.3085 6.92578 6.33439 6.90434 6.36727C6.88289 6.40016 6.87154 6.4386 6.87167 6.47786C6.87499 6.51729 6.88863 6.55516 6.91123 6.58765C6.93383 6.62013 6.96459 6.64609 7.00041 6.66291L9.96938 7.89395Z" fill="white"/>
+                </g>
+                <defs>
+                <clipPath id="clip0_10099_15346">
+                <rect width="19.3103" height="19.3103" fill="white"/>
+                </clipPath>
+                </defs>
+                </svg>
+
+            </span>
+            <span class="tiered-rewards-bar__marker-price" data-price-dollars="{{ free_shipping_threshold }}">
+                {% comment %} <svg width="13" height="9" viewBox="0 0 13 9" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M11.4167 0.75L4.08333 8.08333L0.75 4.75" stroke="#1A365D" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg> {% endcomment %}
+                {{ section.settings.free_shipping_label | default: 'Free shipping' }}</span>
+            </span>
+        </div>
+        
+        {%- comment -%} Tier 1 Marker {%- endcomment -%}
+        {%- if section.settings.gift_tier_1_label != blank -%}
+          <div class="marker-wrapper">
+            <span class="tiered-rewards-bar__marker-image{% if tier_1_achieved %} active{% endif %}" data-index="1">
+                <span class="tiered-rewards-bar__marker-icon">
+                {%- if section.settings.gift_tier_1_image != blank -%}
+                {%- liquid
+                    assign icon_sizes = '40px'
+                    assign icon_widths = '40, 80'
+                    render 'image', image: section.settings.gift_tier_1_image, sizes: icon_sizes, widths: icon_widths
+                -%}
+                </span>
+                {%- else -%}
+                <span class="tiered-rewards-bar__marker-icon">
+                    {% render 'icon', icon: 'gift', size: 'small' %}
+                </span>
+                {%- endif -%}
+                <span class="tiered-rewards-bar__marker-price" data-price-dollars="{{ tier_1_threshold }}">
+                    {% comment %} <svg width="13" height="9" viewBox="0 0 13 9" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M11.4167 0.75L4.08333 8.08333L0.75 4.75" stroke="#1A365D" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg> {% endcomment %}
+
+                    {{ section.settings.gift_tier_1_label }}
+                </span>
+            </span>
+            </div>
+        {%- endif -%}
+        
+        {%- comment -%} Tier 2 Marker {%- endcomment -%}
+        {%- if section.settings.gift_tier_2_label != blank -%}
+          <div class="marker-wrapper">
+          <span class="tiered-rewards-bar__marker-image{% if tier_2_achieved %} active{% endif %}" data-index="2">
+            {%- if section.settings.gift_tier_2_image != blank -%}
+                <span class="tiered-rewards-bar__marker-icon">
+              {%- liquid
+                assign icon_sizes = '40px'
+                assign icon_widths = '40, 80'
+                render 'image', image: section.settings.gift_tier_2_image, sizes: icon_sizes, widths: icon_widths
+              -%}
+              </span>
+            {%- else -%}
+              <span class="tiered-rewards-bar__marker-icon">
+                {% render 'icon', icon: 'gift', size: 'small' %}
+              </span>
+            {%- endif -%}
+            <span class="tiered-rewards-bar__marker-price" data-price-dollars="{{ tier_2_threshold }}">
+                {% comment %} <svg width="13" height="9" viewBox="0 0 13 9" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M11.4167 0.75L4.08333 8.08333L0.75 4.75" stroke="#1A365D" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg> {% endcomment %}
+
+                {{ section.settings.gift_tier_2_label }}
+            </span>
+          </span>
+        </div>
+        {%- endif -%}
+        
+        {%- comment -%} Tier 3 Marker {%- endcomment -%}
+        {%- if section.settings.gift_tier_3_label != blank -%}
+          <div class="marker-wrapper">
+          <span class="tiered-rewards-bar__marker-image{% if tier_3_achieved %} active{% endif %}" data-index="3">
+              {%- if section.settings.gift_tier_3_image != blank -%}
+                <span class="tiered-rewards-bar__marker-icon">
+                {%- liquid
+                    assign icon_sizes = '40px'
+                    assign icon_widths = '40, 80'
+                    render 'image', image: section.settings.gift_tier_3_image, sizes: icon_sizes, widths: icon_widths
+                -%}
+              </span>
+            {%- else -%}
+              <span class="tiered-rewards-bar__marker-icon">
+                {% render 'icon', icon: 'gift', size: 'small' %}
+              </span>
+            {%- endif -%}
+            <span class="tiered-rewards-bar__marker-price" data-price-dollars="{{ tier_3_threshold }}">
+                {% comment %} <svg width="13" height="9" viewBox="0 0 13 9" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M11.4167 0.75L4.08333 8.08333L0.75 4.75" stroke="#1A365D" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg> {% endcomment %}
+
+                {{ section.settings.gift_tier_3_label }}
+            </span>
+          </span>
+          </div>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function() {
+      // Function to convert and format prices in user's currency
+      // NOTE: This function is disabled because we now show labels instead of prices
+      function convertMarkerPrices() {
+        // Do nothing - labels are displayed instead of prices
+        return;
+      }
+      
+      // Format money based on Shopify currency
+      function formatMoney(dollars) {
+        if (typeof Shopify !== 'undefined' && Shopify.formatMoney) {
+          // Convert dollars to cents for Shopify.formatMoney
+          const cents = Math.round(dollars * 100);
+          return Shopify.formatMoney(cents, Shopify.money_format || '${{amount}}');
+        }
+        return '$' + dollars.toFixed(2);
+      }
+
+      function updateBannerText() {
+        const tieredRewardsBar = document.querySelector('.tiered-rewards-bar');
+        const banner = tieredRewardsBar?.querySelector('.tiered-rewards-bar__banner');
+        const bannerText = banner?.querySelector('.tiered-rewards-bar__banner-text');
+        
+        if (!tieredRewardsBar || !banner || !bannerText) return;
+
+        // Get current cart total in user's currency
+        let cartTotalInUserCurrency = parseFloat(tieredRewardsBar.getAttribute('data-cart-total')) || 0;
+        
+        // Try to get updated total from cart drawer if available
+        const cartDrawer = document.querySelector('cart-drawer');
+        if (cartDrawer) {
+          const cartForm = cartDrawer.querySelector('cart-form');
+          if (cartForm) {
+            const cartTotalEl = cartForm.querySelector('[data-cart-total]');
+            if (cartTotalEl) {
+              cartTotalInUserCurrency = parseFloat(cartTotalEl.getAttribute('data-cart-total')) || cartTotalInUserCurrency;
+            }
+          }
+        }
+
+        // Get currency conversion rate
+        let currencyRate = 1;
+        if (typeof Shopify !== 'undefined' && Shopify.currency && Shopify.currency.rate) {
+          currencyRate = parseFloat(Shopify.currency.rate) || 1;
+        }
+
+        // Get thresholds from data attributes (in base currency)
+        const freeShippingThresholdBase = parseFloat(tieredRewardsBar.getAttribute('data-free-shipping-threshold')) || 0;
+        const tier1ThresholdBase = parseFloat(tieredRewardsBar.getAttribute('data-tier-1-threshold')) || 0;
+        const tier2ThresholdBase = parseFloat(tieredRewardsBar.getAttribute('data-tier-2-threshold')) || 0;
+        const tier3ThresholdBase = parseFloat(tieredRewardsBar.getAttribute('data-tier-3-threshold')) || 0;
+
+        // Convert thresholds to user's currency
+        const freeShippingThreshold = freeShippingThresholdBase * currencyRate;
+        const tier1Threshold = tier1ThresholdBase * currencyRate;
+        const tier2Threshold = tier2ThresholdBase * currencyRate;
+        const tier3Threshold = tier3ThresholdBase * currencyRate;
+
+        // Get labels
+        const freeShippingLabel = tieredRewardsBar.getAttribute('data-free-shipping-label') || 'Free shipping';
+        const tier1Label = tieredRewardsBar.getAttribute('data-tier-1-label') || '';
+        const tier2Label = tieredRewardsBar.getAttribute('data-tier-2-label') || '';
+        const tier3Label = tieredRewardsBar.getAttribute('data-tier-3-label') || '';
+
+        // Get banner texts
+        const bannerTextTemplate = tieredRewardsBar.getAttribute('data-banner-text') || 'Spend [AMOUNT] more to get Free [LABEL]!';
+        const bannerTextAchievedTemplate = tieredRewardsBar.getAttribute('data-banner-text-achieved') || 'Free shipping added! Spend [AMOUNT] more to get Free [LABEL]!';
+        const bannerTextAllAchieved = tieredRewardsBar.getAttribute('data-banner-text-all-achieved') || 'All rewards unlocked!';
+
+        // Check which tiers are achieved
+        const freeShippingAchieved = cartTotalInUserCurrency >= freeShippingThreshold;
+        const tier1Achieved = tier1Label && cartTotalInUserCurrency >= tier1Threshold;
+        const tier2Achieved = tier2Label && cartTotalInUserCurrency >= tier2Threshold;
+        const tier3Achieved = tier3Label && cartTotalInUserCurrency >= tier3Threshold;
+
+        // Check if all configured tiers are achieved
+        const allTiersAchieved = freeShippingAchieved &&
+          (!tier1Label || tier1Achieved) &&
+          (!tier2Label || tier2Achieved) &&
+          (!tier3Label || tier3Achieved);
+
+        // Determine next tier
+        let nextTierAmount = null;
+        let nextTierLabel = null;
+        let useAchievedText = false;
+
+        if (allTiersAchieved) {
+          // All tiers achieved - show all achieved message
+          bannerText.textContent = bannerTextAllAchieved;
+          banner.classList.add('tiered-rewards-bar__banner--all-achieved');
+          banner.style.display = '';
+          return;
+        } else {
+          banner.classList.remove('tiered-rewards-bar__banner--all-achieved');
+        }
+
+        // Find next tier
+        if (cartTotalInUserCurrency < freeShippingThreshold) {
+          nextTierAmount = freeShippingThreshold - cartTotalInUserCurrency;
+          nextTierLabel = freeShippingLabel;
+          useAchievedText = false;
+        } else if (tier1Label && cartTotalInUserCurrency < tier1Threshold) {
+          nextTierAmount = tier1Threshold - cartTotalInUserCurrency;
+          nextTierLabel = tier1Label;
+          useAchievedText = true;
+        } else if (tier2Label && cartTotalInUserCurrency < tier2Threshold) {
+          nextTierAmount = tier2Threshold - cartTotalInUserCurrency;
+          nextTierLabel = tier2Label;
+          useAchievedText = true;
+        } else if (tier3Label && cartTotalInUserCurrency < tier3Threshold) {
+          nextTierAmount = tier3Threshold - cartTotalInUserCurrency;
+          nextTierLabel = tier3Label;
+          useAchievedText = true;
+        }
+
+        // Update banner text
+        if (nextTierAmount !== null && nextTierAmount > 0) {
+          const template = useAchievedText ? bannerTextAchievedTemplate : bannerTextTemplate;
+          let text = template
+            .replace(/\[AMOUNT\]/g, formatMoney(nextTierAmount))
+            .replace(/\[LABEL\]/g, nextTierLabel);
+          
+          bannerText.textContent = text;
+          banner.style.display = '';
+        } else {
+          banner.style.display = 'none';
+        }
+      }
+
+      let isUpdating = false; // Flag to prevent infinite loops
+
+      function updateProgressBar() {
+        if (isUpdating) return; // Prevent recursive calls
+        isUpdating = true;
+        
+        try {
+          const container = document.querySelector('.tiered-rewards-bar__progress-container');
+          if (!container) {
+            isUpdating = false;
+            return;
+          }
+          
+          // Get current cart total in user's currency
+          let cartTotalInUserCurrency = parseFloat(container.getAttribute('data-total')) || 0;
+          
+          // Try to get updated total from cart drawer if available
+          const cartDrawer = document.querySelector('cart-drawer');
+          if (cartDrawer) {
+            const cartForm = cartDrawer.querySelector('cart-form');
+            if (cartForm) {
+              const cartTotalEl = cartForm.querySelector('[data-cart-total]');
+              if (cartTotalEl) {
+                cartTotalInUserCurrency = parseFloat(cartTotalEl.getAttribute('data-cart-total')) || cartTotalInUserCurrency;
+              }
+            }
+          }
+          
+          // Get currency conversion rate
+          let currencyRate = 1;
+          if (typeof Shopify !== 'undefined' && Shopify.currency && Shopify.currency.rate) {
+            currencyRate = parseFloat(Shopify.currency.rate) || 1;
+          }
+          
+          // Thresholds in base currency (USD) from customizer
+          const freeShippingThresholdBase = {{ free_shipping_threshold }};
+          const tier1ThresholdBase = {{ tier_1_threshold }};
+          const tier2ThresholdBase = {{ tier_2_threshold }};
+          const tier3ThresholdBase = {{ tier_3_threshold }};
+          
+          // Convert thresholds from base currency to user's currency
+          const freeShippingThreshold = freeShippingThresholdBase * currencyRate;
+          const tier1Threshold = tier1ThresholdBase * currencyRate;
+          const tier2Threshold = tier2ThresholdBase * currencyRate;
+          const tier3Threshold = tier3ThresholdBase * currencyRate;
+          
+          // Update data-total attribute only if value changed
+          const currentTotal = parseFloat(container.getAttribute('data-total')) || 0;
+          if (Math.abs(currentTotal - cartTotalInUserCurrency) > 0.01) {
+            container.setAttribute('data-total', cartTotalInUserCurrency);
+          }
+          
+          // Update tiered rewards bar data-total (used by updateBannerText)
+          const tieredRewardsBar = document.querySelector('.tiered-rewards-bar');
+          if (tieredRewardsBar) {
+            tieredRewardsBar.setAttribute('data-cart-total', cartTotalInUserCurrency);
+          }
+        
+        const segments = container.querySelectorAll('.tiered-rewards-bar__segment');
+        
+        // Reset all markers
+        document.querySelectorAll('.tiered-rewards-bar__marker-image').forEach(marker => {
+          marker.classList.remove('active');
+        });
+
+        // Define thresholds array for segments
+        const thresholds = [0, freeShippingThreshold, tier1Threshold, tier2Threshold, tier3Threshold];
+
+        // Update segment fills
+        segments.forEach((segment, index) => {
+          const min = thresholds[index] || 0;
+          const max = thresholds[index + 1] || 0;
+          const fillEl = segment.querySelector('.tiered-rewards-bar__segment-fill');
+          if (!fillEl) return;
+
+          let fillPercent = 0;
+          if (cartTotalInUserCurrency <= min) {
+            fillPercent = 0;
+          } else if (cartTotalInUserCurrency >= max) {
+            fillPercent = 100;
+          } else {
+            fillPercent = ((cartTotalInUserCurrency - min) / (max - min)) * 100;
+          }
+
+          fillPercent = Math.max(0, Math.min(100, fillPercent));
+          fillEl.style.width = fillPercent + '%';
+        });
+        
+        // Mark markers as active based on achieved tiers
+        // Free shipping marker (index 0) - active when cart total >= free shipping threshold
+        if (cartTotalInUserCurrency >= freeShippingThreshold) {
+          const freeShippingMarker = document.querySelector('.tiered-rewards-bar__marker-image[data-index="0"]');
+          if (freeShippingMarker) {
+            freeShippingMarker.classList.add('active');
+          }
+        }
+        
+        // Tier 1 marker (index 1) - active when cart total >= tier 1 threshold
+        if (tier1Threshold && cartTotalInUserCurrency >= tier1Threshold) {
+          const tier1Marker = document.querySelector('.tiered-rewards-bar__marker-image[data-index="1"]');
+          if (tier1Marker) {
+            tier1Marker.classList.add('active');
+          }
+        }
+        
+        // Tier 2 marker (index 2) - active when cart total >= tier 2 threshold
+        if (tier2Threshold && cartTotalInUserCurrency >= tier2Threshold) {
+          const tier2Marker = document.querySelector('.tiered-rewards-bar__marker-image[data-index="2"]');
+          if (tier2Marker) {
+            tier2Marker.classList.add('active');
+          }
+        }
+        
+        // Tier 3 marker (index 3) - active when cart total >= tier 3 threshold
+        if (tier3Threshold && cartTotalInUserCurrency >= tier3Threshold) {
+          const tier3Marker = document.querySelector('.tiered-rewards-bar__marker-image[data-index="3"]');
+          if (tier3Marker) {
+            tier3Marker.classList.add('active');
+          }
+        }
+
+          // Update banner text
+          updateBannerText();
+        } finally {
+          isUpdating = false;
+        }
+      }
+
+      let observer = null;
+
+      // Run on DOMContentLoaded
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', function() {
+          updateProgressBar();
+          initObserver();
+        });
+      } else {
+        updateProgressBar();
+        initObserver();
+      }
+
+      function initObserver() {
+        // Watch for mutations in cart drawer (but not on tiered-rewards-bar itself to avoid loops)
+        observer = new MutationObserver(function(mutations) {
+          if (isUpdating) return; // Skip if already updating
+          mutations.forEach(function(mutation) {
+            if (mutation.type === 'attributes' && mutation.attributeName === 'data-cart-total') {
+              // Only update if the change came from outside (not from tiered-rewards-bar)
+              const target = mutation.target;
+              if (target && !target.classList.contains('tiered-rewards-bar')) {
+                updateProgressBar();
+              }
+            }
+          });
+        });
+        
+        // Observe cart drawer and cart form, but not tiered-rewards-bar itself
+        const cartDrawer = document.querySelector('cart-drawer');
+        if (cartDrawer && observer) {
+          observer.observe(cartDrawer, {
+            attributes: true,
+            attributeFilter: ['data-cart-total'],
+            subtree: true
+          });
+        }
+      }
+
+      // Update when cart changes
+      document.addEventListener('cart:updated', function() {
+        updateProgressBar();
+      });
+      document.addEventListener('cart:refresh', function() {
+        updateProgressBar();
+      });
+      document.addEventListener('on:cart:after-merge', function() {
+        updateProgressBar();
+      });
+      
+      // Update progress bar when currency changes
+      if (typeof Shopify !== 'undefined' && Shopify.currency) {
+        document.addEventListener('currency:change', function() {
+          updateProgressBar();
+        });
+      }
+    })();
+  </script>
+{%- endif -%}

@@ -1,0 +1,341 @@
+{%- comment -%}
+  Product Upsell Product Block (for product page)
+  Parameters:
+  - product {Object} - Product object
+  - custom_aspect_ratio {Number} - Aspect ratio for images (optional)
+  
+  Usage:
+  {% render 'product-upsell-product', product: product %}
+{%- endcomment -%}
+
+{%- liquid
+  assign first_available_variant = product.selected_or_first_available_variant
+  assign compare_at_price = first_available_variant.compare_at_price
+  assign price = first_available_variant.price
+  
+  if custom_aspect_ratio
+    assign custom_aspect_ratio = custom_aspect_ratio | at_least: 0.6
+  endif
+-%}
+<div class="product-upsell-card" data-product-id="{{ product.id }}" data-variant-id="{{ first_available_variant.id }}">
+  <div class="product-upsell-card__content">
+    <div class="product-upsell-card__image">
+      <a href="{{ product.url }}" class="product-upsell-card__image-link">
+        {% if product.featured_media %}
+          <img
+            src="{{ product.featured_media.preview_image | image_url: width: 300 }}"
+            alt="{{ product.featured_media.alt | escape }}"
+            loading="lazy"
+            width="{{ product.featured_media.preview_image.width }}"
+            height="{{ product.featured_media.preview_image.height }}"
+          >
+        {% else %}
+          <div class="placeholder-image">{{ 'product-1' | placeholder_svg_tag }}</div>
+        {% endif %}
+      </a>
+    </div>
+    
+    <div class="product-upsell-card__info">
+      <a href="{{ product.url }}" class="product-upsell-card__title">
+        {{ product.title | escape }}
+      </a>
+      
+      {%- comment -%} Loox Reviews Rating {%- endcomment -%}
+      {%- if product.metafields.loox.avg_rating != blank -%}
+        <div class="product-upsell-card__rating">
+          {% render 'rating', product: product %}
+        </div>
+      {%- endif -%}
+      
+      <div class="product-upsell-card__price">
+        <span class="product-upsell-card__price-current">
+          {{ price | money }}
+        </span>
+        {% if compare_at_price > price %}
+          <span class="product-upsell-card__price-compare">
+            {{ compare_at_price | money }}
+          </span>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+  
+  <button type="button" class="product-upsell-card__add-btn" data-variant-id="{{ first_available_variant.id }}" aria-label="Add {{ product.title | escape }} to cart">
+    <span>Add</span>
+  </button>
+</div>
+
+<style>
+  .product-upsell-card {
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    border-radius: 8px;
+    padding: 18px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border: 1px solid #f0f0f0;
+  }
+  
+  .product-upsell-card__content {
+    display: flex;
+    flex-direction: row;
+    gap: 16px;
+    margin-bottom: 12px;
+  }
+  
+  .product-upsell-card__image {
+    flex-shrink: 0;
+    width: 70px;
+    height: 70px;
+    overflow: hidden;
+    background: #f5f5f5;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .product-upsell-card__image-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+  }
+  
+  .product-upsell-card__image img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+  }
+  
+  .product-upsell-card__image .placeholder-image {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .product-upsell-card__info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+  
+  .product-upsell-card__title {
+    font-weight: bold;
+    font-size: 16px;
+    line-height: 1.4;
+    color: #333;
+    text-decoration: none;
+    margin-bottom: 8px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  
+  .product-upsell-card__rating {
+    margin-bottom: 8px;
+  }
+  
+  .product-upsell-card__rating .loox-rating {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  
+  .product-upsell-card__price {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .product-upsell-card__price-current {
+    font-weight: bold;
+    font-size: 16px;
+    color: #000;
+  }
+  
+  .product-upsell-card__price-compare {
+    font-size: 14px;
+    color: #999;
+    text-decoration: line-through;
+  }
+  
+  .product-upsell-card__add-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 10px;
+    background: #EBEBF6;
+    border: none;
+    border-radius: 8px;
+    font-family: "Gotham";
+    font-weight: 500;
+    font-style: Medium;
+    font-size: 14px;
+    line-height: 150%;
+    letter-spacing: 0%;
+    color: #1A365D;
+
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  
+  .product-upsell-card__add-btn.loading {
+    opacity: 0.6;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+  
+  @media (max-width: 767px) {
+    .product-upsell-card {
+      padding: 18px;
+    }
+    
+    .product-upsell-card__content {
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+    
+    .product-upsell-card__image {
+      width: 70px;
+      height: 70px;
+    }
+    
+    .product-upsell-card__title {
+      font-size: 14px;
+    }
+    
+    .product-upsell-card__price-current {
+      font-size: 14px;
+    }
+    
+    .product-upsell-card__price-compare {
+      font-size: 12px;
+    }
+  }
+</style>
+
+<script>
+  (function() {
+    // Initialize product upsell add to cart buttons
+    function initProductUpsellButtons() {
+      const addButtons = document.querySelectorAll('.product-upsell-card__add-btn');
+      
+      addButtons.forEach(button => {
+        // Remove existing listeners to avoid duplicates
+        const newButton = button.cloneNode(true);
+        button.parentNode.replaceChild(newButton, button);
+        
+        newButton.addEventListener('click', async function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          
+          const productCard = this.closest('.product-upsell-card');
+          const variantId = this.dataset.variantId;
+          const productId = productCard ? productCard.dataset.productId : null;
+          
+          if (!variantId) {
+            console.warn('[Product Upsell] No variantId found');
+            return;
+          }
+          
+          // Disable button during request
+          this.classList.add('loading');
+          this.disabled = true;
+          
+          try {
+            // Add to cart using /cart/add.js
+            const response = await fetch('/cart/add.js', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                id: variantId,
+                quantity: 1
+              })
+            });
+            
+            if (!response.ok) {
+              const errorData = await response.json();
+              throw new Error(errorData.description || errorData.message || `HTTP error! Status: ${response.status}`);
+            }
+            
+            const data = await response.json();
+            
+            // Dispatch cart events
+            document.dispatchEvent(new CustomEvent('on:cart:add', {
+              bubbles: true,
+              detail: {
+                variantId: data.variant_id || variantId
+              }
+            }));
+            
+            document.dispatchEvent(new CustomEvent('on:cart:change', {
+              bubbles: true
+            }));
+            
+            // Refresh cart drawer if open
+            const cartDrawer = document.querySelector('cart-drawer');
+            if (cartDrawer) {
+              document.dispatchEvent(new CustomEvent('dispatch:cart-drawer:refresh', {
+                bubbles: true
+              }));
+            }
+            
+            // Show success state briefly
+            this.classList.remove('loading');
+            this.classList.add('is-success');
+            const originalText = this.querySelector('span').textContent;
+            this.querySelector('span').textContent = 'Added!';
+            
+            setTimeout(() => {
+              this.classList.remove('is-success');
+              this.querySelector('span').textContent = originalText;
+              this.disabled = false;
+            }, 1500);
+            
+          } catch (error) {
+            console.error('[Product Upsell] Error adding to cart:', error);
+            this.classList.remove('loading');
+            this.disabled = false;
+            
+            // Show error message
+            const errorMsg = error.message || 'Failed to add product to cart';
+            alert(errorMsg);
+          }
+        });
+      });
+    }
+    
+    // Initialize on page load
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initProductUpsellButtons);
+    } else {
+      initProductUpsellButtons();
+    }
+    
+    // Re-initialize when new products are loaded (for carousel)
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        mutation.addedNodes.forEach((node) => {
+          if (node.nodeType === 1 && (node.classList?.contains('product-upsell-card') || node.querySelector?.('.product-upsell-card'))) {
+            initProductUpsellButtons();
+          }
+        });
+      });
+    });
+    
+    observer.observe(document.body, {
+      childList: true,
+      subtree: true
+    });
+  })();
+</script>

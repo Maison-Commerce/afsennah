@@ -206,6 +206,7 @@
         "button_3ngAUT",
         "text_haxAKX"
       ],
+      "disabled": true,
       "name": "SS - Hero #24",
       "settings": {
         "layout_height": "fixed_height",
@@ -235,6 +236,456 @@
         "content_width": 1200,
         "border_thickness": 0,
         "section_radius": 34,
+        "lazy": false
+      }
+    },
+    "ss_featured_product_4_6grAGM": {
+      "type": "ss-featured-product-4",
+      "blocks": {
+        "heading_f8TaQt": {
+          "type": "heading",
+          "settings": {
+            "heading": "<p>Your Hair Didn’t Fail You.<strong> The Formula Did.</strong></p>",
+            "heading_custom": false,
+            "heading_font": "josefin_sans_n4",
+            "heading_accent_custom": true,
+            "heading_accent_font": "josefin_sans_n4",
+            "heading_size": 56,
+            "heading_size_mobile": 32,
+            "heading_advanced": false,
+            "heading_height": 130,
+            "heading_mt": 0,
+            "heading_mt_mobile": 0,
+            "heading_color": "#121212",
+            "heading_accent_color": "#f59e10"
+          }
+        },
+        "text_gKJXFY": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Custom hair & scalp treatments formulated after understanding <em>your</em> hair, not trends.</p>",
+            "text_custom": false,
+            "text_font": "josefin_sans_n4",
+            "text_size": 16,
+            "text_size_mobile": 14,
+            "text_advanced": false,
+            "text_height": 150,
+            "text_mt": 20,
+            "text_mt_mobile": 16,
+            "text_color": "#121212"
+          }
+        },
+        "author_8icNHi": {
+          "type": "author",
+          "settings": {
+            "use_author_image": true,
+            "author_image": "shopify://shop_images/meisje.png",
+            "image_width": 80,
+            "image_width_mobile": 64,
+            "image_radius": 50,
+            "image_border_thickness": 0,
+            "text": "<p>Once I understood my scalp needed a custom formula, everything changed. More Hair Growth and less hairfall within weeks!</p>",
+            "text_custom": true,
+            "text_font": "josefin_sans_n4",
+            "text_size": 24,
+            "text_size_mobile": 12,
+            "text_advanced": false,
+            "text_height": 150,
+            "author_mt": 24,
+            "author_mt_mobile": 12,
+            "author": "— Aubrey",
+            "author_custom": false,
+            "author_font": "josefin_sans_n4",
+            "author_size": 14,
+            "author_size_mobile": 12,
+            "author_advanced": false,
+            "author_height": 130,
+            "author_name_mt": 16,
+            "author_name_mt_mobile": 12,
+            "text_color": "#121212",
+            "author_color": "#121212",
+            "image_border_color": "#121212"
+          }
+        },
+        "button_ewqMD3": {
+          "type": "button",
+          "settings": {
+            "button": "GET YOUR FORMULA",
+            "url": "shopify://pages/get-your-formula",
+            "open_in_new_tab": false,
+            "button_style": "outline",
+            "button_custom": false,
+            "button_font": "josefin_sans_n4",
+            "button_size": 14,
+            "button_size_mobile": 14,
+            "button_advanced": false,
+            "button_height": 100,
+            "button_padding_horizontal": 28,
+            "button_padding_horizontal_mobile": 28,
+            "button_padding_vertical": 16,
+            "button_padding_vertical_mobile": 16,
+            "button_radius": 100,
+            "button_border_thickness": 1,
+            "button_mt": 20,
+            "button_mt_mobile": 16,
+            "button_color": "#121212",
+            "button_hover_color": "#ffffff",
+            "button_bg_color": "#feea89",
+            "button_bg_hover_color": "#f59e10",
+            "button_border_color": "#feea89",
+            "button_border_hover_color": "#f59e10"
+          }
+        },
+        "caption_gNreea": {
+          "type": "caption",
+          "settings": {
+            "icon": "earth",
+            "text": "<p>Fast delivery, within 1-2 days</p>",
+            "text_custom": false,
+            "text_font": "josefin_sans_n4",
+            "text_size": 14,
+            "text_size_mobile": 12,
+            "text_advanced": false,
+            "text_height": 150,
+            "text_mt": 20,
+            "text_mt_mobile": 16,
+            "icon_color": "#f59e10",
+            "text_color": "#121212"
+          }
+        },
+        "feature_YT8gwg": {
+          "type": "feature",
+          "settings": {
+            "icon": "leaf",
+            "text": "Natural actives, no harsh ingredients",
+            "hide_mobile": false
+          }
+        },
+        "feature_Diyjnx": {
+          "type": "feature",
+          "settings": {
+            "icon": "heart_hand",
+            "text": "Trichologist-led & lab-developed",
+            "hide_mobile": false
+          }
+        },
+        "feature_6YKUDy": {
+          "type": "feature",
+          "settings": {
+            "icon": "shield_check",
+            "text": "Custom-formulated for your scalp",
+            "hide_mobile": false
+          }
+        },
+        "feature_96fAfU": {
+          "type": "feature",
+          "settings": {
+            "icon": "target",
+            "text": "Targets the root cause, not symptoms",
+            "hide_mobile": false
+          }
+        }
+      },
+      "block_order": [
+        "heading_f8TaQt",
+        "text_gKJXFY",
+        "author_8icNHi",
+        "button_ewqMD3",
+        "caption_gNreea",
+        "feature_YT8gwg",
+        "feature_Diyjnx",
+        "feature_6YKUDy",
+        "feature_96fAfU"
+      ],
+      "name": "SS - Featured product #4",
+      "settings": {
+        "layout": "image_content",
+        "layout_mobile": "image_content",
+        "layout_advanced": false,
+        "image_width": 45,
+        "layout_gap": 80,
+        "layout_gap_mobile": 20,
+        "content_align": "left",
+        "content_align_mobile": "left",
+        "content_vertical_align": "center",
+        "source": "uploaded",
+        "video": "shopify://files/videos/VD1(No Outline).mov",
+        "video_url": "",
+        "video_ratio": "landscape",
+        "video_ratio_mobile": "landscape",
+        "video_radius": 16,
+        "video_border_thickness": 0,
+        "video_autoplay": true,
+        "video_loop": true,
+        "use_controls": true,
+        "play_icon_size": 16,
+        "play_icon_size_mobile": 16,
+        "play_padding": 14,
+        "play_padding_mobile": 14,
+        "play_radius": 100,
+        "play_border_thickness": 0,
+        "first_image": "shopify://shop_images/1_dfc4268b-d289-4ea6-b8fd-ee7272a8a36d.png",
+        "second_image": "shopify://shop_images/3_2f256cda-737b-4609-b5cf-8b8b8b941f90.png",
+        "use_third_image": true,
+        "third_image": "shopify://shop_images/2_89153d8b-df30-4f68-83ab-fa99618b8ed6.png",
+        "image_ratio": "square",
+        "image_ratio_mobile": "square",
+        "image_radius": 16,
+        "image_border_thickness": 0,
+        "features_columns": "two",
+        "features_columns_mobile": "two",
+        "features_advanced": false,
+        "features_border_thickness": 1,
+        "features_mt": 20,
+        "features_mt_mobile": 20,
+        "feature_gap": 10,
+        "feature_gap_mobile": 10,
+        "feature_mt": 10,
+        "feature_mt_mobile": 10,
+        "feature_icon_size": 20,
+        "feature_icon_size_mobile": 20,
+        "feature_text_custom": false,
+        "feature_text_font": "josefin_sans_n4",
+        "feature_text_size": 14,
+        "feature_text_size_mobile": 12,
+        "feature_text_height": 150,
+        "feature_icon_color": "#121212",
+        "feature_text_color": "#121212",
+        "features_border_color": "#dbdbdb",
+        "image_border_color": "#121212",
+        "video_border_color": "#121212",
+        "play_color": "#121212",
+        "play_hover_color": "#121212",
+        "play_bg_color": "#ffffff",
+        "play_bg_hover_color": "#f3f3f3",
+        "play_border_color": "#121212",
+        "play_border_hover_color": "#121212",
+        "background_style": "solid",
+        "background_color": "#ffffff",
+        "background_gradient": "linear-gradient(180deg, #FFFFFF 0%, #F2F2F2 100%)",
+        "border_color": "#121212",
+        "margin_top": 0,
+        "margin_bottom": 0,
+        "margin_horizontal": 0,
+        "margin_horizontal_mobile": 0,
+        "padding_top": 36,
+        "padding_bottom": 36,
+        "padding_horizontal": 5,
+        "padding_horizontal_mobile": 1.5,
+        "width": "page",
+        "content_width": 1200,
+        "border_thickness": 0,
+        "section_radius": 0,
+        "lazy": true
+      }
+    },
+    "rich_text_3dckLL": {
+      "type": "rich-text",
+      "blocks": {
+        "button_cY4cLz": {
+          "type": "button",
+          "disabled": true,
+          "settings": {
+            "button_label": "GET YOUR FORMULA",
+            "button_link": "shopify://pages/get-your-formula",
+            "button_style": "primary"
+          }
+        }
+      },
+      "block_order": [
+        "button_cY4cLz"
+      ],
+      "custom_css": [
+        "{display: none; margin-top: 0; @media (max-width: 767px) {display: block; }}",
+        ".button-row,.fully-spaced-row--medium {margin-top: 10px; margin-bottom: 0;}"
+      ],
+      "name": "Rich text",
+      "settings": {
+        "height": "medium",
+        "text_alignment": "center",
+        "full_width": false,
+        "color_scheme": "default"
+      }
+    },
+    "ss_scrolling_images_hXEfay": {
+      "type": "ss-scrolling-images",
+      "blocks": {
+        "image_KN3LAX": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/4_c30eac97-cac0-4976-83b8-2e24f98f8a5d.png",
+            "url": "shopify://pages/get-your-formula"
+          }
+        },
+        "image_FxXrfD": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/1_2c556f88-cbad-448f-8fa8-6907ec8ddec8.png",
+            "url": "shopify://pages/get-your-formula"
+          }
+        },
+        "image_iXtNRh": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/2_92e54834-f1f8-4167-98a6-0cdf96b4572a.png",
+            "url": "shopify://pages/get-your-formula"
+          }
+        },
+        "image_9k4agA": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/roller.png",
+            "url": "shopify://pages/get-your-formula"
+          }
+        }
+      },
+      "block_order": [
+        "image_KN3LAX",
+        "image_FxXrfD",
+        "image_iXtNRh",
+        "image_9k4agA"
+      ],
+      "disabled": true,
+      "name": "SS - Scrolling images",
+      "settings": {
+        "heading": "<p>Unlock Gifts as You Build Your Routine</p>",
+        "heading_custom": false,
+        "heading_font": "josefin_sans_n4",
+        "heading_size": 30,
+        "heading_height": 130,
+        "heading_align": "center",
+        "slider_speed": 20,
+        "slider_advanced": false,
+        "slider_gap": 10,
+        "slider_gap_mobile": 10,
+        "slider_mt": 32,
+        "slider_direction": "left",
+        "pause_hover": false,
+        "image_width_desktop": 300,
+        "image_width_mobile": 140,
+        "image_height_desktop": 400,
+        "image_height_mobile": 200,
+        "image_radius": 10,
+        "use_content": false,
+        "content_liquid_glass": false,
+        "content_liquid_hover": true,
+        "content_position": "center",
+        "content_max_width": 340,
+        "content_max_width_mobile": 340,
+        "content_advanced": false,
+        "content_padding_vertical": 30,
+        "content_padding_horizontal": 30,
+        "content_distance": 60,
+        "content_radius": 10,
+        "content_border_thickness": 0,
+        "use_shadow": true,
+        "text": "<p>+150.000 women started growing their hair</p>",
+        "text_custom": false,
+        "text_font": "josefin_sans_n4",
+        "text_size": 24,
+        "text_height": 90,
+        "heading_color": "#000000",
+        "content_bg": "#ffffff",
+        "content_border_color": "#000000",
+        "text_color": "#000000",
+        "background_style": "solid",
+        "background_color": "#ffffff",
+        "background_gradient": "linear-gradient(180deg, #FFFFFF 0%, #F2F2F2 100%)",
+        "border_color": "#000000",
+        "margin_top": 0,
+        "margin_bottom": 0,
+        "padding_top": 36,
+        "padding_bottom": 36,
+        "padding_horizontal": 5,
+        "padding_horizontal_mobile": 1.5,
+        "width": "full",
+        "content_width": 1200,
+        "border_thickness": 0,
+        "lazy": true
+      }
+    },
+    "ss_scrolling_collections_2_QyzCML": {
+      "type": "ss-scrolling-collections-2",
+      "blocks": {
+        "collection_9RYXRT": {
+          "type": "collection",
+          "settings": {
+            "image": "shopify://shop_images/1_4a9ea6a7-b5c8-4272-9788-7fa83b865ae0.png",
+            "text": "Free Mulberry Silk Scrunchie on orders above €150",
+            "url": "shopify://pages/get-your-formula"
+          }
+        },
+        "collection_kwekGR": {
+          "type": "collection",
+          "settings": {
+            "image": "shopify://shop_images/4_204f1130-5895-4821-9ea1-b8e380cc6d59.png",
+            "text": "Free Shipping on orders above €100",
+            "url": "shopify://pages/get-your-formula"
+          }
+        },
+        "collection_gP4G8X": {
+          "type": "collection",
+          "settings": {
+            "image": "shopify://shop_images/2_c8c3070b-de48-4a93-b430-e76a78169bd2.png",
+            "text": "Free Custom Hair Growth Oil on orders above €200",
+            "url": "shopify://pages/get-your-formula"
+          }
+        },
+        "collection_zq38tH": {
+          "type": "collection",
+          "settings": {
+            "image": "shopify://shop_images/3_1534f30c-3cb2-42ae-b664-ceaf6d76dfe3.png",
+            "text": "Free Microneedle Scalp Roller on orders above €250",
+            "url": "shopify://pages/get-your-formula"
+          }
+        }
+      },
+      "block_order": [
+        "collection_9RYXRT",
+        "collection_kwekGR",
+        "collection_gP4G8X",
+        "collection_zq38tH"
+      ],
+      "disabled": true,
+      "name": "SS - Scrolling collections #2",
+      "settings": {
+        "collections": [],
+        "scrolling_velocity": 40,
+        "scrolling_velocity_mobile": 36,
+        "reverse_direction": true,
+        "pause_hover": false,
+        "cards_gap": 12,
+        "cards_gap_mobile": 12,
+        "card_width": 300,
+        "card_width_mobile": 200,
+        "card_height": 210,
+        "card_height_mobile": 110,
+        "card_radius": 20,
+        "card_border_thickness": 1,
+        "image_width": 50,
+        "image_width_mobile": 50,
+        "text_custom": false,
+        "text_font": "josefin_sans_n4",
+        "text_size": 12,
+        "text_size_mobile": 12,
+        "text_height": 110,
+        "text_color": "#121212",
+        "card_bg_color": "#f7f6f0",
+        "card_border_color": "#f7f6f0",
+        "background_style": "solid",
+        "background_color": "#ffffff",
+        "background_gradient": "linear-gradient(180deg, #FFFFFF 0%, #F2F2F2 100%)",
+        "border_color": "#121212",
+        "margin_top": 0,
+        "margin_bottom": 0,
+        "margin_horizontal": 0,
+        "margin_horizontal_mobile": 0,
+        "padding_top": 36,
+        "padding_bottom": 36,
+        "width": "full",
+        "content_width": 1200,
+        "border_thickness": 0,
+        "section_radius": 0,
         "lazy": false
       }
     },
@@ -435,63 +886,6 @@
         "overlay_style": "shadow"
       }
     },
-    "rich_text_3dckLL": {
-      "type": "rich-text",
-      "blocks": {
-        "button_cY4cLz": {
-          "type": "button",
-          "settings": {
-            "button_label": "GET YOUR FORMULA",
-            "button_link": "shopify://pages/get-your-formula",
-            "button_style": "primary"
-          }
-        }
-      },
-      "block_order": [
-        "button_cY4cLz"
-      ],
-      "custom_css": [
-        "{display: none; margin-top: 0; @media (max-width: 767px) {display: block; }}",
-        ".button-row,.fully-spaced-row--medium {margin-top: 10px; margin-bottom: 0;}"
-      ],
-      "name": "Rich text",
-      "settings": {
-        "height": "medium",
-        "text_alignment": "center",
-        "full_width": false,
-        "color_scheme": "default"
-      }
-    },
-    "scrolling_banner_VaGMcY": {
-      "type": "scrolling-banner",
-      "blocks": {
-        "text_qpwAcd": {
-          "type": "text",
-          "settings": {
-            "text": "cruelty-free   -   carbon neutral   -   paraben free   -   sulfate free   -   phthalate free   -   free of mineral oils",
-            "color": "rgba(0,0,0,0)",
-            "link": "",
-            "use_h1": false,
-            "stencil_all_text": false,
-            "stencil_text": ""
-          }
-        }
-      },
-      "block_order": [
-        "text_qpwAcd"
-      ],
-      "name": "Scrolling banner",
-      "settings": {
-        "full_width": true,
-        "color_scheme": "default",
-        "text_size": 20,
-        "vertical_padding": 30,
-        "speed": 2.5,
-        "direction": "left",
-        "font": "base",
-        "space": 50
-      }
-    },
     "slideshow_rgpbDd": {
       "type": "slideshow",
       "blocks": {
@@ -546,7 +940,7 @@
             "collection_title": "Custom Hair Products",
             "products_to_show": 8,
             "description_title": "LIMITED TIME OFFER!",
-            "info_title": "25% OFF SITEWIDE!",
+            "info_title": "For Your  Specific Hair & Scalp Type",
             "info_description": "+ less breakage after just one use",
             "bgcolor": "#f8f6f0"
           }
@@ -570,6 +964,36 @@
       ],
       "name": "Custom Collections",
       "settings": {}
+    },
+    "scrolling_banner_VaGMcY": {
+      "type": "scrolling-banner",
+      "blocks": {
+        "text_qpwAcd": {
+          "type": "text",
+          "settings": {
+            "text": "cruelty-free   -   carbon neutral   -   paraben free   -   sulfate free   -   phthalate free   -   free of mineral oils",
+            "color": "rgba(0,0,0,0)",
+            "link": "",
+            "use_h1": false,
+            "stencil_all_text": false,
+            "stencil_text": ""
+          }
+        }
+      },
+      "block_order": [
+        "text_qpwAcd"
+      ],
+      "name": "Scrolling banner",
+      "settings": {
+        "full_width": true,
+        "color_scheme": "default",
+        "text_size": 20,
+        "vertical_padding": 30,
+        "speed": 2.5,
+        "direction": "left",
+        "font": "base",
+        "space": 50
+      }
     },
     "1759778559811cc81e": {
       "type": "_blocks",
@@ -1495,12 +1919,15 @@
   "order": [
     "background_video_BR9RpN",
     "ss_hero_24_G7kegJ",
+    "ss_featured_product_4_6grAGM",
+    "rich_text_3dckLL",
+    "ss_scrolling_images_hXEfay",
+    "ss_scrolling_collections_2_QyzCML",
     "ss_hero_26_pbUxwM",
     "image_with_text_overlay_jiPitL",
-    "rich_text_3dckLL",
-    "scrolling_banner_VaGMcY",
     "slideshow_rgpbDd",
     "custom_collections_MHpzBV",
+    "scrolling_banner_VaGMcY",
     "1759778559811cc81e",
     "scrolling_banner_7KyRw6",
     "how_it_works_q4DCTh",

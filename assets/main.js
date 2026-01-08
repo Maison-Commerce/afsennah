@@ -3324,8 +3324,22 @@ class CarouselSlider extends HTMLElement {
     // Width of gap between slides.
     this.slideGap = this.slideSpan - this.slides[0].clientWidth;
 
-    this.slidesPerPage = Math.round((this.gridWidth + this.slideGap) / this.slideSpan);
-    this.slidesToScroll = theme.settings.sliderItemsPerNav === 'page' ? this.slidesPerPage : 1;
+    // Check for custom slides per page setting (for video slider - always 3)
+    // Застосовуємо тільки для video-slider (перевіряємо клас video-slider__wrapper)
+    const isVideoSlider = this.classList.contains('video-slider__wrapper');
+    if (isVideoSlider && this.dataset.slidesPerPage) {
+      this.slidesPerPage = parseInt(this.dataset.slidesPerPage, 10);
+    } else {
+      this.slidesPerPage = Math.round((this.gridWidth + this.slideGap) / this.slideSpan);
+    }
+
+    // Check for custom slides to scroll setting (for video slider - always 3)
+    if (isVideoSlider && this.dataset.slidesToScroll) {
+      this.slidesToScroll = parseInt(this.dataset.slidesToScroll, 10);
+    } else {
+      this.slidesToScroll = theme.settings.sliderItemsPerNav === 'page' ? this.slidesPerPage : 1;
+    }
+
     this.totalPages = this.slides.length - this.slidesPerPage + 1;
 
     this.setCarouselState(this.totalPages > 1);
@@ -3410,7 +3424,20 @@ class CarouselSlider extends HTMLElement {
     if (this.gridWidth !== this.grid.clientWidth) this.handleResize();
 
     const previousIndex = this.currentIndex;
-    this.currentIndex = Math.round(Math.abs(this.slider.scrollLeft) / this.slideSpan);
+    let rawIndex = Math.round(Math.abs(this.slider.scrollLeft) / this.slideSpan);
+    
+    // Для video-slider з прокруткою на 3 слайди, вирівнюємо індекс
+    // Застосовуємо тільки для video-slider (перевіряємо клас video-slider__wrapper)
+    const isVideoSlider = this.classList.contains('video-slider__wrapper');
+    if (isVideoSlider && this.dataset.slidesToScroll && parseInt(this.dataset.slidesToScroll, 10) > 1) {
+      const slidesToScroll = parseInt(this.dataset.slidesToScroll, 10);
+      // Округлюємо до найближчої позиції, кратній slidesToScroll
+      this.currentIndex = Math.round(rawIndex / slidesToScroll) * slidesToScroll;
+      // Обмежуємо індекс межами слайдів
+      this.currentIndex = Math.max(0, Math.min(this.currentIndex, this.slides.length - this.slidesPerPage));
+    } else {
+      this.currentIndex = rawIndex;
+    }
 
     if (this.nav) {
       this.setButtonStates();
@@ -3479,13 +3506,39 @@ class CarouselSlider extends HTMLElement {
   handleNavClick(evt) {
     if (!evt.target.matches('.slider-nav__btn')) return;
 
+    let targetScrollPos;
     if ((evt.target.name === 'next' && !this.rtl) || (evt.target.name === 'prev' && this.rtl)) {
-      this.scrollPos = this.slider.scrollLeft + (this.slidesToScroll * this.slideSpan);
+      targetScrollPos = this.slider.scrollLeft + (this.slidesToScroll * this.slideSpan);
     } else {
-      this.scrollPos = this.slider.scrollLeft - (this.slidesToScroll * this.slideSpan);
+      targetScrollPos = this.slider.scrollLeft - (this.slidesToScroll * this.slideSpan);
     }
 
-    this.slider.scrollTo({ left: this.scrollPos, behavior: 'smooth' });
+    // Для video-slider з прокруткою на 3 слайди, вирівнюємо позицію
+    // Застосовуємо тільки для video-slider (перевіряємо клас video-slider__wrapper)
+    const isVideoSlider = this.classList.contains('video-slider__wrapper');
+    if (isVideoSlider && this.dataset.slidesToScroll && parseInt(this.dataset.slidesToScroll, 10) > 1) {
+      // Округлюємо до найближчої позиції, кратній slidesToScroll
+      const alignedIndex = Math.round(targetScrollPos / this.slideSpan);
+      const remainder = alignedIndex % this.slidesToScroll;
+      let finalIndex = alignedIndex;
+      
+      // Якщо не кратне, вирівнюємо
+      if (remainder !== 0) {
+        if (targetScrollPos > this.slider.scrollLeft) {
+          // Прокрутка вперед - округлюємо вгору
+          finalIndex = alignedIndex + (this.slidesToScroll - remainder);
+        } else {
+          // Прокрутка назад - округлюємо вниз
+          finalIndex = alignedIndex - remainder;
+        }
+      }
+      
+      // Обмежуємо індекс межами слайдів
+      finalIndex = Math.max(0, Math.min(finalIndex, this.slides.length - this.slidesPerPage));
+      targetScrollPos = finalIndex * this.slideSpan;
+    }
+
+    this.slider.scrollTo({ left: targetScrollPos, behavior: 'smooth' });
   }
 
   /**
@@ -3559,8 +3612,24 @@ class CarouselSlider extends HTMLElement {
    * Sets the disabled state of the nav buttons.
    */
   setButtonStates() {
-    this.prevBtn.disabled = this.getSlideVisibility(this.slides[0]) && this.slider.scrollLeft === 0;
-    this.nextBtn.disabled = this.getSlideVisibility(this.slides[this.slides.length - 1]);
+    // Для video-slider з прокруткою на 3 слайди, перевіряємо, чи можемо прокрутити ще на 3
+    // Застосовуємо тільки для video-slider (перевіряємо клас video-slider__wrapper)
+    const isVideoSlider = this.classList.contains('video-slider__wrapper');
+    if (isVideoSlider && this.dataset.slidesToScroll && parseInt(this.dataset.slidesToScroll, 10) > 1) {
+      const slidesToScroll = parseInt(this.dataset.slidesToScroll, 10);
+      const currentScrollIndex = Math.round(Math.abs(this.slider.scrollLeft) / this.slideSpan);
+      const maxScrollIndex = this.slides.length - this.slidesPerPage;
+      
+      // Кнопка "назад" вимкнена, якщо ми на початку
+      this.prevBtn.disabled = currentScrollIndex <= 0;
+      
+      // Кнопка "вперед" вимкнена, якщо не можемо прокрутити ще на slidesToScroll слайдів
+      this.nextBtn.disabled = (currentScrollIndex + slidesToScroll) > maxScrollIndex;
+    } else {
+      // Стандартна логіка для звичайних слайдерів
+      this.prevBtn.disabled = this.getSlideVisibility(this.slides[0]) && this.slider.scrollLeft === 0;
+      this.nextBtn.disabled = this.getSlideVisibility(this.slides[this.slides.length - 1]);
+    }
   }
 }
 
@@ -3859,6 +3928,9 @@ const PageHeader = class extends HTMLElement {
     // Navigation
     theme.inlineNavigationCheck();
 
+    console.log('document.querySelector(.js-cart-drawer)', document.querySelector('.js-cart-drawer'))
+    console.log('theme.settings.cartType', theme.settings.cartType)
+    console.log('this.querySelector(.cart-link)', this.querySelector('.cart-link'))
     // Reveal cart drawer
     if (theme.settings.cartType === 'drawer' && document.querySelector('.js-cart-drawer') && this.querySelector('.cart-link')) {
       theme.addDelegateEventListener(this, 'click', '.cart-link', (evt) => {

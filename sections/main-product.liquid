@@ -35,32 +35,19 @@
   </div>
 {% endif %}
 
-<product-form class="js-product product-info quickbuy-content spaced-row">
+<product-form class="js-product product-info quickbuy-content spaced-row {% if section.settings.enable_modern_gallery %} modern{% endif %}">
 
   {% comment %}
   Product Split Layout - 50/50 Desktop, Slider Mobile
 {% endcomment %}
 
-<div class="product-container">
-  <!-- Left Side: Main Product Image (Desktop Only) -->
-  {% if product.featured_media %}
-    <div class="product-main-image">
-      <img
-        src="{{ product.featured_media | image_url: width: 1000 }}"
-        alt="{{ product.featured_media.alt | escape }}"
-        width="{{ product.featured_media.width }}"
-        height="{{ product.featured_media.height }}"
-        loading="eager"
-        fetchpriority="high"
-      >
-    </div>
-  {% endif %}
-
-  <!-- Right Side: Media Slider -->
-  <div class="product-slider-container">
-    <div class="product-slider" id="productSlider">
+{% if section.settings.enable_modern_gallery %}
+  <!-- Modern Gallery Version -->
+  <div class="product-container product-container--modern">
+    <!-- Desktop: 2 Column Gallery -->
+    <div class="product-gallery-desktop">
       {% for media in product.media %}
-        <div class="slider-slide {% if forloop.first %}desktop-hide-slide{% endif %}" data-slide-index="{{ forloop.index0 }}">
+        <div class="gallery-item" data-media-index="{{ forloop.index0 }}">
           {% case media.media_type %}
             {% when 'image' %}
               <img
@@ -68,7 +55,8 @@
                 alt="{{ media.alt | escape }}"
                 width="{{ media.width }}"
                 height="{{ media.height }}"
-                loading="lazy"
+                loading="{% if forloop.index <= 4 %}eager{% else %}lazy{% endif %}"
+                {% if forloop.index <= 2 %}fetchpriority="high"{% endif %}
               >
             {% when 'video' %}
               {{ media | media_tag: autoplay: true, loop: true, muted: true }}
@@ -81,24 +69,398 @@
       {% endfor %}
     </div>
 
-    <!-- Navigation Arrows -->
-    {% if product.media.size > 1 %}
-      <button class="slider-nav prev" id="prevBtn" aria-label="Previous slide">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <polyline points="15 18 9 12 15 6"></polyline>
-        </svg>
-      </button>
-      <button class="slider-nav next" id="nextBtn" aria-label="Next slide">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <polyline points="9 18 15 12 9 6"></polyline>
-        </svg>
-      </button>
+    <!-- Mobile: Slider with Thumbnails -->
+    <div class="product-slider-container product-slider-container--modern">
+      <div class="product-slider product-slider--modern" id="productSliderModern">
+        {% for media in product.media %}
+          <div class="slider-slide slider-slide--modern" data-slide-index="{{ forloop.index0 }}">
+            {% case media.media_type %}
+              {% when 'image' %}
+                <img
+                  src="{{ media | image_url: width: 1000 }}"
+                  alt="{{ media.alt | escape }}"
+                  width="{{ media.width }}"
+                  height="{{ media.height }}"
+                  loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"
+                  {% if forloop.first %}fetchpriority="high"{% endif %}
+                >
+              {% when 'video' %}
+                {{ media | media_tag: autoplay: true, loop: true, muted: true }}
+              {% when 'external_video' %}
+                {{ media | media_tag }}
+              {% when 'model' %}
+                {{ media | media_tag }}
+            {% endcase %}
+          </div>
+        {% endfor %}
+      </div>
 
-      <!-- Dots Navigation -->
-      <div class="slider-dots" id="sliderDots"></div>
+      <!-- Navigation Arrows (Mobile) -->
+      {% if product.media.size > 1 %}
+        <button class="slider-nav prev slider-nav--modern" id="prevBtnModern" aria-label="Previous slide">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="15 18 9 12 15 6"></polyline>
+          </svg>
+        </button>
+        <button class="slider-nav next slider-nav--modern" id="nextBtnModern" aria-label="Next slide">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+        </button>
+
+        <!-- Dots Navigation -->
+        <div class="slider-dots slider-dots--modern" id="sliderDotsModern"></div>
+      {% endif %}
+    </div>
+
+    <!-- Mobile: Thumbnails -->
+    {% if product.media.size > 1 %}
+      <div class="product-thumbnails" id="productThumbnails">
+        {% for media in product.media %}
+          <button 
+            class="thumbnail-item {% if forloop.first %}active{% endif %}" 
+            data-thumbnail-index="{{ forloop.index0 }}"
+            aria-label="Go to slide {{ forloop.index }}"
+          >
+            {% if media.media_type == 'image' %}
+              <img
+                src="{{ media | image_url: width: 150 }}"
+                alt="{{ media.alt | escape }}"
+                width="80"
+                height="80"
+                loading="lazy"
+              >
+            {% else %}
+              <div class="thumbnail-placeholder">
+                {% if media.media_type == 'video' or media.media_type == 'external_video' %}
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                  </svg>
+                {% else %}
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                  </svg>
+                {% endif %}
+              </div>
+            {% endif %}
+          </button>
+        {% endfor %}
+      </div>
     {% endif %}
+
+    {%- for block in section.blocks -%}
+    {%- if block.type == 'testimonial_under_gallery' and block.settings.left_side -%}
+      {% render 'testimonial-under-gallery', block: block %}
+    {%- endif -%}
+  {%- endfor -%}
   </div>
-</div>
+
+ 
+
+  <script>
+    (function() {
+      const slider = document.getElementById('productSliderModern');
+      const prevBtn = document.getElementById('prevBtnModern');
+      const nextBtn = document.getElementById('nextBtnModern');
+      const dotsContainer = document.getElementById('sliderDotsModern');
+      const thumbnailsContainer = document.getElementById('productThumbnails');
+
+      if (!slider) return;
+
+      const allSlides = slider.querySelectorAll('.slider-slide--modern');
+      const totalSlides = allSlides.length;
+      let currentIndex = 0;
+
+      // Create dots
+      if (dotsContainer && totalSlides > 1) {
+        for (let i = 0; i < totalSlides; i++) {
+          const dot = document.createElement('button');
+          dot.className = 'slider-dot';
+          if (i === 0) dot.classList.add('active');
+          dot.setAttribute('aria-label', `Go to slide ${i + 1}`);
+          dot.addEventListener('click', () => {
+            goToSlide(i);
+          });
+          dotsContainer.appendChild(dot);
+        }
+      }
+
+      const dots = dotsContainer ? dotsContainer.querySelectorAll('.slider-dot') : [];
+      const thumbnails = thumbnailsContainer ? thumbnailsContainer.querySelectorAll('.thumbnail-item') : [];
+
+      function updateSlider() {
+        // Calculate slide width including gap
+        const isMobile = window.innerWidth <= 767;
+        let slideWidth = 0;
+        
+        if (isMobile && allSlides.length > 0) {
+          // On mobile, use 80vw + gap
+          const gap = 8; // 8px gap
+          slideWidth = window.innerWidth * 0.8 + gap;
+        } else {
+          // On desktop/tablet, use 100% of slide width
+          if (allSlides.length > 0) {
+            slideWidth = allSlides[0].offsetWidth;
+          }
+        }
+        
+        // Update slider position - move to align current slide to the left
+        slider.style.transform = `translateX(-${currentIndex * slideWidth}px)`;
+
+        // Update dots
+        dots.forEach((dot, index) => {
+          dot.classList.toggle('active', index === currentIndex);
+        });
+
+        // Update thumbnails
+        thumbnails.forEach((thumb, index) => {
+          thumb.classList.toggle('active', index === currentIndex);
+        });
+
+        // Scroll thumbnail into view
+        if (thumbnailsContainer && thumbnails[currentIndex]) {
+          const activeThumb = thumbnails[currentIndex];
+          const containerRect = thumbnailsContainer.getBoundingClientRect();
+          const thumbRect = activeThumb.getBoundingClientRect();
+          
+          if (thumbRect.left < containerRect.left) {
+            thumbnailsContainer.scrollTo({
+              left: activeThumb.offsetLeft - thumbnailsContainer.offsetLeft - 20,
+              behavior: 'smooth'
+            });
+          } else if (thumbRect.right > containerRect.right) {
+            thumbnailsContainer.scrollTo({
+              left: activeThumb.offsetLeft - thumbnailsContainer.offsetLeft + activeThumb.offsetWidth - containerRect.width + 20,
+              behavior: 'smooth'
+            });
+          }
+        }
+      }
+
+      function goToSlide(index) {
+        if (index < 0 || index >= totalSlides) return;
+        currentIndex = index;
+        updateSlider();
+      }
+
+      function nextSlide() {
+        currentIndex = (currentIndex + 1) % totalSlides;
+        updateSlider();
+      }
+
+      function prevSlide() {
+        currentIndex = (currentIndex - 1 + totalSlides) % totalSlides;
+        updateSlider();
+      }
+
+      // Navigation buttons
+      if (prevBtn) {
+        prevBtn.addEventListener('click', prevSlide);
+      }
+
+      if (nextBtn) {
+        nextBtn.addEventListener('click', nextSlide);
+      }
+
+      // Thumbnail clicks
+      thumbnails.forEach((thumb, index) => {
+        thumb.addEventListener('click', () => {
+          goToSlide(index);
+        });
+      });
+
+      // Touch/swipe support
+      let touchStartX = 0;
+      let touchEndX = 0;
+
+      slider.addEventListener('touchstart', e => {
+        touchStartX = e.changedTouches[0].screenX;
+      });
+
+      slider.addEventListener('touchend', e => {
+        touchEndX = e.changedTouches[0].screenX;
+        handleSwipe();
+      });
+
+      function handleSwipe() {
+        if (touchEndX < touchStartX - 50) {
+          nextSlide();
+        }
+        if (touchEndX > touchStartX + 50) {
+          prevSlide();
+        }
+      }
+
+      // Handle window resize
+      let resizeTimeout;
+      window.addEventListener('resize', () => {
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(() => {
+          updateSlider();
+        }, 100);
+      });
+
+      // Initialize
+      updateSlider();
+    })();
+  </script>
+{% else %}
+  <!-- Original Gallery Version -->
+  <div class="product-container">
+    <!-- Left Side: Main Product Image (Desktop Only) -->
+    {% if product.featured_media %}
+      <div class="product-main-image">
+        <img
+          src="{{ product.featured_media | image_url: width: 1000 }}"
+          alt="{{ product.featured_media.alt | escape }}"
+          width="{{ product.featured_media.width }}"
+          height="{{ product.featured_media.height }}"
+          loading="eager"
+          fetchpriority="high"
+        >
+      </div>
+    {% endif %}
+
+    <!-- Right Side: Media Slider -->
+    <div class="product-slider-container">
+      <div class="product-slider" id="productSlider">
+        {% for media in product.media %}
+          <div class="slider-slide {% if forloop.first %}desktop-hide-slide{% endif %}" data-slide-index="{{ forloop.index0 }}">
+            {% case media.media_type %}
+              {% when 'image' %}
+                <img
+                  src="{{ media | image_url: width: 1000 }}"
+                  alt="{{ media.alt | escape }}"
+                  width="{{ media.width }}"
+                  height="{{ media.height }}"
+                  loading="lazy"
+                >
+              {% when 'video' %}
+                {{ media | media_tag: autoplay: true, loop: true, muted: true }}
+              {% when 'external_video' %}
+                {{ media | media_tag }}
+              {% when 'model' %}
+                {{ media | media_tag }}
+            {% endcase %}
+          </div>
+        {% endfor %}
+      </div>
+
+      <!-- Navigation Arrows -->
+      {% if product.media.size > 1 %}
+        <button class="slider-nav prev" id="prevBtn" aria-label="Previous slide">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="15 18 9 12 15 6"></polyline>
+          </svg>
+        </button>
+        <button class="slider-nav next" id="nextBtn" aria-label="Next slide">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+        </button>
+
+        <!-- Dots Navigation -->
+        <div class="slider-dots" id="sliderDots"></div>
+      {% endif %}
+    </div>
+  </div>
+
+  <script>
+    (function() {
+      const slider = document.getElementById('productSlider');
+      const prevBtn = document.getElementById('prevBtn');
+      const nextBtn = document.getElementById('nextBtn');
+      const dotsContainer = document.getElementById('sliderDots');
+
+      if (!slider) return;
+
+      const allSlides = slider.querySelectorAll('.slider-slide');
+      const isMobile = window.innerWidth <= 1499;
+
+      // Get visible slides based on screen size
+      let visibleSlides = [];
+      let slideIndexMap = []; // Maps visible index to actual DOM index
+
+      allSlides.forEach((slide, index) => {
+        const isDesktopHidden = slide.classList.contains('desktop-hide-slide');
+        if (isMobile || !isDesktopHidden) {
+          visibleSlides.push(slide);
+          slideIndexMap.push(index);
+        }
+      });
+
+      let currentVisibleIndex = 0;
+      const totalVisibleSlides = visibleSlides.length;
+
+      // Create dots for visible slides only
+      slideIndexMap.forEach((actualIndex, visibleIndex) => {
+        const dot = document.createElement('button');
+        dot.className = 'slider-dot';
+        if (visibleIndex === 0) dot.classList.add('active');
+        dot.setAttribute('aria-label', `Go to slide ${visibleIndex + 1}`);
+        dot.addEventListener('click', () => {
+          currentVisibleIndex = visibleIndex;
+          updateSlider();
+        });
+        dotsContainer.appendChild(dot);
+      });
+
+      const dots = dotsContainer.querySelectorAll('.slider-dot');
+
+      function updateSlider() {
+        const actualSlideIndex = slideIndexMap[currentVisibleIndex];
+        slider.style.transform = `translateX(-${actualSlideIndex * 100}%)`;
+
+        dots.forEach((dot, index) => {
+          dot.classList.toggle('active', index === currentVisibleIndex);
+        });
+      }
+
+      function nextSlide() {
+        currentVisibleIndex = (currentVisibleIndex + 1) % totalVisibleSlides;
+        updateSlider();
+      }
+
+      function prevSlide() {
+        currentVisibleIndex = (currentVisibleIndex - 1 + totalVisibleSlides) % totalVisibleSlides;
+        updateSlider();
+      }
+
+      if (prevBtn) {
+        prevBtn.addEventListener('click', prevSlide);
+      }
+
+      if (nextBtn) {
+        nextBtn.addEventListener('click', nextSlide);
+      }
+
+      // Touch/swipe support
+      let touchStartX = 0;
+      let touchEndX = 0;
+
+      slider.addEventListener('touchstart', e => {
+        touchStartX = e.changedTouches[0].screenX;
+      });
+
+      slider.addEventListener('touchend', e => {
+        touchEndX = e.changedTouches[0].screenX;
+        handleSwipe();
+      });
+
+      function handleSwipe() {
+        if (touchEndX < touchStartX - 50) {
+          nextSlide();
+        }
+        if (touchEndX > touchStartX + 50) {
+          prevSlide();
+        }
+      }
+
+      // Initialize
+      updateSlider();
+    })();
+  </script>
+{% endif %}
 
 <script>
   (function() {
@@ -275,7 +637,50 @@
                 {%- endif -%}
               {%- endif -%}
             </div>
-
+            {%- when 'video_slide' -%}
+              {%- liquid
+                assign is_first_in_group = false
+                assign previous_block_index = forloop.index0 | minus: 1
+                assign previous_block = blank
+                
+                if previous_block_index >= 0 and previous_block_index < section.blocks.size
+                  assign previous_block = section.blocks[previous_block_index]
+                endif
+                
+                if forloop.index0 == 0 or previous_block.type != 'video_slide'
+                  assign is_first_in_group = true
+                  assign video_slide_count = 0
+                  assign video_slide_start_index = forloop.index0
+                  for i in (forloop.index0..section.blocks.size)
+                    if i < section.blocks.size
+                      assign check_block = section.blocks[i]
+                      if check_block.type == 'video_slide'
+                        assign video_slide_count = video_slide_count | plus: 1
+                      else
+                        break
+                      endif
+                    else
+                      break
+                    endif
+                  endfor
+                endif
+                
+                assign next_block_index = forloop.index0 | plus: 1
+                assign next_block = blank
+                if next_block_index < section.blocks.size
+                  assign next_block = section.blocks[next_block_index]
+                endif
+              -%}
+              {% render 'video-slide', 
+                block: block, 
+                section: section, 
+                block_index: forloop.index0, 
+                is_last: forloop.last, 
+                next_block: next_block,
+                is_first_in_group: is_first_in_group,
+                video_slide_count: video_slide_count,
+                video_slide_start_index: video_slide_start_index
+              %}
           {% when 'description' %}
             {%- if product.description != blank -%}
               <div class="{% unless block.settings.show_in_quickbuy %}not-in-quickbuy{% endunless %}{% if block.settings.show_in_tab %} product-info-accordion{% endif %}" {{ block.shopify_attributes }}>
@@ -418,11 +823,55 @@
                   {% if gift_card_recipient_feature_active %}
                     {% render 'gift-card-recipient', section: section %}
                   {% endif %}
-
+{% if block.settings.text_above_checkout != blank %}
+                        <div class="lightly-spaced-row text-above-checkout">
+                          {%- liquid
+                            if block.settings.enable_text_box
+                              assign box_color_brightness = block.settings.text_box_color | color_brightness
+                              if box_color_brightness > 128
+                                assign box_color_saturation = block.settings.text_box_color | color_extract: 'saturation'
+                                if box_color_saturation > 0
+                                  assign text_col = block.settings.text_box_color | color_darken: 60 | color_saturate: 30 | color_to_rgb | split: '(' | last | split: ')' | first
+                                else
+                                  assign text_col = block.settings.text_box_color | color_darken: 60 | color_to_rgb | split: '(' | last | split: ')' | first
+                                endif
+                              else
+                                assign text_col = '255,255,255'
+                              endif
+                            endif
+                          -%}
+                          <div class="product-info-block{% if block.settings.text_icon != blank or block.settings.text_custom_icon != blank %} with-icon with-icon--right{% endif %}{% if block.settings.enable_text_box %} text-box{% endif %}" {% if block.settings.enable_text_box %}style="--box-color: {{ block.settings.text_box_color }}; --box-text-color: {{ text_col }}"{% endif %}>
+                            {%- if block.settings.text_icon == blank and block.settings.text_custom_icon == blank -%}
+                              <div class="rte cf">{{ block.settings.text_above_checkout }}</div>
+                            {%- else -%}
+                              <span class="with-icon__beside rte cf">{{ block.settings.text_above_checkout }}</span>
+                              {% if block.settings.text_custom_icon == blank %}
+                                {% render 'icon', icon: block.settings.text_icon, size: block.settings.text_icon_size %}
+                              {% else %}
+                                {%- liquid
+                                  if block.settings.text_icon_size == 'large'
+                                    assign icon_sizes = '38px'
+                                    assign icon_widths = '38, 76'
+                                  else
+                                    assign icon_sizes = '16px'
+                                    assign icon_widths = '16, 32'
+                                  endif
+                                -%}
+                                <span class="icon icon--image icon--{{ block.settings.text_icon_size }}">
+                                  {%- render 'image' with block.settings.text_custom_icon, sizes: icon_sizes, widths: icon_widths -%}
+                                </span>
+                              {% endif %}
+                            {%- endif -%}
+                          </div>
+                        </div>
+                      {% endif %}
                   <!-- Quiz Incomplete CTA (Hidden by default, shown by JS if quiz not completed) -->
                   <div class="quiz-cta-wrapper {{ block.id }}-main-quiz-button" style="display: none;">
                     <a href="{{ block.settings.quiz_cta_url | default: '/pages/get-your-formula' }}" class="btn btn--wide quiz-cta-button">
-                      {{ block.settings.quiz_cta_text | default: 'Get Your Formula' }}
+                      {{ block.settings.quiz_cta_text | default: 'Get Your Formula' }}<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="#1A365D" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+
                     </a>
                   </div>
 
@@ -433,7 +882,7 @@
                       }
                     }
                   </style>
-
+                    
                   <!-- Regular Buy Buttons (Hidden by JS if quiz not completed) -->
                   <div class="quantity-submit-row input-row {% if enable_dynamic_payment_button %}has-spb{% endif %} js-regular-buy-buttons">
                     {% if block.settings.show_quantity_selector %}
@@ -464,6 +913,49 @@
                       </button>
                     </div>
                     {% if enable_dynamic_payment_button %}
+                      {%- comment -%} Text block above checkout button {%- endcomment -%}
+                      {% if block.settings.text_above_checkout != blank %}
+                        <div class="lightly-spaced-row text-above-checkout">
+                          {%- liquid
+                            if block.settings.enable_text_box
+                              assign box_color_brightness = block.settings.text_box_color | color_brightness
+                              if box_color_brightness > 128
+                                assign box_color_saturation = block.settings.text_box_color | color_extract: 'saturation'
+                                if box_color_saturation > 0
+                                  assign text_col = block.settings.text_box_color | color_darken: 60 | color_saturate: 30 | color_to_rgb | split: '(' | last | split: ')' | first
+                                else
+                                  assign text_col = block.settings.text_box_color | color_darken: 60 | color_to_rgb | split: '(' | last | split: ')' | first
+                                endif
+                              else
+                                assign text_col = '255,255,255'
+                              endif
+                            endif
+                          -%}
+                          <div class="product-info-block{% if block.settings.text_icon != blank or block.settings.text_custom_icon != blank %} with-icon with-icon--right{% endif %}{% if block.settings.enable_text_box %} text-box{% endif %}" {% if block.settings.enable_text_box %}style="--box-color: {{ block.settings.text_box_color }}; --box-text-color: {{ text_col }}"{% endif %}>
+                            {%- if block.settings.text_icon == blank and block.settings.text_custom_icon == blank -%}
+                              <div class="rte cf">{{ block.settings.text_above_checkout }}</div>
+                            {%- else -%}
+                              <span class="with-icon__beside rte cf">{{ block.settings.text_above_checkout }}</span>
+                              {% if block.settings.text_custom_icon == blank %}
+                                {% render 'icon', icon: block.settings.text_icon, size: block.settings.text_icon_size %}
+                              {% else %}
+                                {%- liquid
+                                  if block.settings.text_icon_size == 'large'
+                                    assign icon_sizes = '38px'
+                                    assign icon_widths = '38, 76'
+                                  else
+                                    assign icon_sizes = '16px'
+                                    assign icon_widths = '16, 32'
+                                  endif
+                                -%}
+                                <span class="icon icon--image icon--{{ block.settings.text_icon_size }}">
+                                  {%- render 'image' with block.settings.text_custom_icon, sizes: icon_sizes, widths: icon_widths -%}
+                                </span>
+                              {% endif %}
+                            {%- endif -%}
+                          </div>
+                        </div>
+                      {% endif %}
                       <div class="product-dynamic-payment-button">
                         <script class="dynamic-payment-button-template" type="text/template">
                           {{ form | payment_button }}
@@ -524,6 +1016,53 @@
                 }
               })();
             </script>
+
+            {%- if block.settings.show_usp_badges -%}
+              <div class="cart-drawer__usp-badges">
+                {%- if block.settings.usp_1_label != blank -%}
+                  <div class="cart-drawer__usp-badge">
+                    <div class="cart-drawer__usp-badge-icon">
+                      <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M8.8125 0C3.94549 0 0 3.94549 0 8.8125C0 13.6795 3.94549 17.625 8.8125 17.625C13.6795 17.625 17.625 13.6795 17.625 8.8125C17.625 3.94549 13.6795 0 8.8125 0Z" fill="#CCCCE8"/>
+                      <path d="M12.1456 6.49463L7.22911 11.4111L4.99435 9.17634" stroke="#1A365D" stroke-width="1.45455" stroke-linecap="square" stroke-linejoin="round"/>
+                      </svg>
+
+                    </div>
+                    <span class="cart-drawer__usp-badge-label">{{ block.settings.usp_1_label }}</span>
+                  </div>
+                {%- endif -%}
+                {%- if block.settings.usp_2_label != blank -%}
+                  <div class="cart-drawer__usp-badge">
+                    <div class="cart-drawer__usp-badge-icon">
+                      <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M8.8125 0C3.94549 0 0 3.94549 0 8.8125C0 13.6795 3.94549 17.625 8.8125 17.625C13.6795 17.625 17.625 13.6795 17.625 8.8125C17.625 3.94549 13.6795 0 8.8125 0Z" fill="#CCCCE8"/>
+                      <path d="M12.1456 6.49463L7.22911 11.4111L4.99435 9.17634" stroke="#1A365D" stroke-width="1.45455" stroke-linecap="square" stroke-linejoin="round"/>
+                      </svg>
+
+                    </div>
+                    <span class="cart-drawer__usp-badge-label">{{ block.settings.usp_2_label }}</span>
+                  </div>
+                {%- endif -%}
+                {%- if block.settings.usp_3_label != blank -%}
+                  <div class="cart-drawer__usp-badge">
+                    <div class="cart-drawer__usp-badge-icon">
+                      <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M8.8125 0C3.94549 0 0 3.94549 0 8.8125C0 13.6795 3.94549 17.625 8.8125 17.625C13.6795 17.625 17.625 13.6795 17.625 8.8125C17.625 3.94549 13.6795 0 8.8125 0Z" fill="#CCCCE8"/>
+                      <path d="M12.1456 6.49463L7.22911 11.4111L4.99435 9.17634" stroke="#1A365D" stroke-width="1.45455" stroke-linecap="square" stroke-linejoin="round"/>
+                      </svg>
+
+                    </div>
+                    <span class="cart-drawer__usp-badge-label">{{ block.settings.usp_3_label }}</span>
+                  </div>
+                {%- endif -%}
+              </div>
+            {%- endif -%}
+
+            <div class="section-footer__payment-icons">
+              {% for type in shop.enabled_payment_types %}
+                {{ type | payment_type_svg_tag: class: 'section-footer__payment-icon' }}
+              {% endfor %}
+            </div>
 
           {% when 'inventory-level' %}
             <div {% unless block.settings.show_in_quickbuy %}class="not-in-quickbuy"{% endunless %} {{ block.shopify_attributes }}>
@@ -623,8 +1162,28 @@
                       assign text_col = '255,255,255'
                     endif
                   endif
+                  
+                  assign desktop_bg = block.settings.desktop_background_color | default: '#ffffff'
+                  assign desktop_br = block.settings.desktop_border_radius | default: 0
+                  assign desktop_pad = block.settings.desktop_padding | default: 0
+                  assign mobile_bg = block.settings.mobile_background_color | default: '#ffffff'
+                  assign mobile_br = block.settings.mobile_border_radius | default: 0
+                  assign mobile_pad = block.settings.mobile_padding | default: 0
                 -%}
-                <div class="product-info-block{% if block.settings.icon != blank or block.settings.custom_icon != blank %} with-icon{% endif %}{% if block.settings.enable_box %} text-box{% endif %}" {% if block.settings.enable_box %}style="--box-color: {{ block.settings.box_color }}; --box-text-color: {{ text_col }}"{% endif %}>
+                <div class="richtext product-info-block {% if block.settings.icon != blank or block.settings.custom_icon != blank %} with-icon{% endif %}{% if block.settings.enable_box %} text-box{% endif %}" 
+                     style="
+                       {% if block.settings.enable_box %}--box-color: {{ block.settings.box_color }}; --box-text-color: {{ text_col }};{% endif %}
+                       --desktop-bg: {{ desktop_bg }};
+                       --desktop-br: {{ desktop_br }}px;
+                       --desktop-pad: {{ desktop_pad }}px;
+                       --mobile-bg: {{ mobile_bg }};
+                       --mobile-br: {{ mobile_br }}px;
+                       --mobile-pad: {{ mobile_pad }}px;
+                       background-color: var(--mobile-bg);
+                       border-radius: var(--mobile-br);
+                       padding: var(--mobile-pad);
+                     "
+                     data-block-id="{{ block.id }}">
                   {%- if block.settings.icon == blank and block.settings.custom_icon == blank -%}
                     <div class="rte cf">{{ block.settings.richtext }}</div>
                   {%- else -%}
@@ -969,6 +1528,337 @@
               </div>
             {% endif %}
 
+          {% when 'product-upsells' %}
+            {%- if block.settings.product_list != blank -%}
+              <div class="lightly-spaced-row lightish-spaced-row-above{% unless block.settings.show_in_quickbuy %} not-in-quickbuy{% endunless %}" {{ block.shopify_attributes }}>
+                <div class="product-item-upsells" data-block-id="{{ block.id }}">
+                  <cc-product-upsell data-from="{{ routes.product_recommendations_url }}?section_id=mini-related-products&limit=8&product_id={{ product.id }}">
+                    <carousel-slider class="carousel block collection-slider use-color-scheme use-color-scheme--{{ block.settings.color_scheme }}" data-dispatch-events="false">
+                      <div class="opposing-items opposing-items--valign-base very-lightly-spaced-row">
+                        <div class="opposing-items__left product-info-label">
+                          <h2>{{ block.settings.title | escape }}</h2>
+                          {% if block.settings.subtitle != blank %}
+                            <p>{{ block.settings.subtitle }}</p>
+                          {% endif %}
+                        </div>
+                        <div class="no-wrap slider-nav">
+                          <button name="prev" class="slider-nav__btn has-ltr-icon">
+                            <span class="visually-hidden">{{ 'general.slider.previous' | t }}</span>
+                           <svg width="5" height="9" viewBox="0 0 7 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M6 1L1 5.5L6 10" stroke="#192F06" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+
+                          </button>
+                          <button name="next" class="slider-nav__btn has-ltr-icon">
+                            <span class="visually-hidden">{{ 'general.slider.next' | t }}</span>
+                          <svg width="5" height="9" viewBox="0 0 7 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M1 1L6 5.5L1 10" stroke="#192F06" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+
+                          </button>
+                        </div>
+                      </div>
+                      <div class="slider slider--no-scrollbar slider--edge-peek">
+                        <ul class="slider__grid product-grid product-grid--carousel product-grid--per-row-2 product-grid--per-row-mob-2">
+                          {%- liquid
+                            if settings.prod_thumb_shape == 'portrait-23'
+                              assign chosen_aspect_ratio = 0.67
+                            elsif settings.prod_thumb_shape == 'portrait-45'
+                              assign chosen_aspect_ratio = 0.8
+                            elsif settings.prod_thumb_shape == 'square'
+                              assign chosen_aspect_ratio = 1.0
+                            elsif settings.prod_thumb_shape == 'landscape-54'
+                              assign chosen_aspect_ratio = 1.25
+                            elsif settings.prod_thumb_shape == 'landscape-32'
+                              assign chosen_aspect_ratio = 1.50
+                            elsif settings.prod_thumb_shape == 'tallest'
+                              assign chosen_aspect_ratio = 99
+                              for upsell_product in block.settings.product_list
+                                if upsell_product.featured_media.preview_image.aspect_ratio < chosen_aspect_ratio
+                                  assign chosen_aspect_ratio = upsell_product.featured_media.preview_image.aspect_ratio
+                                endif
+                              endfor
+                            else
+                              assign chosen_aspect_ratio = 0
+                              for upsell_product in block.settings.product_list
+                                if upsell_product.featured_media.preview_image.aspect_ratio > chosen_aspect_ratio
+                                  assign chosen_aspect_ratio = upsell_product.featured_media.preview_image.aspect_ratio
+                                endif
+                              endfor
+                            endif
+                          -%}
+                          {%- for upsell_product in block.settings.product_list -%}
+                            <li class="slider__item">
+                              {%- render 'product-upsell-product', product: upsell_product, custom_aspect_ratio: chosen_aspect_ratio -%}
+                            </li>
+                          {%- endfor -%}
+                        </ul>
+                      </div>
+                      <div class="product-item-upsells__dots"></div>
+                    </carousel-slider>
+                  </cc-product-upsell>
+                </div>
+              </div>
+
+              <script>
+                (function() {
+                  const blockId = '{{ block.id }}';
+                  let isInitialized = false;
+                  let cleanupFn = null;
+
+                  function initProductUpsellsDots() {
+                    if (isInitialized) return;
+
+                    const upsellsContainer = document.querySelector(`.product-item-upsells[data-block-id="${blockId}"]`);
+                    if (!upsellsContainer) return;
+
+                    const carousel = upsellsContainer.querySelector('carousel-slider');
+                    if (!carousel || !carousel.hasAttribute('loaded')) {
+                      setTimeout(initProductUpsellsDots, 100);
+                      return;
+                    }
+
+                    if (carousel.dataset.dotsInitialized === 'true') return;
+
+                    const dotsContainer = upsellsContainer.querySelector('.product-item-upsells__dots');
+                    if (!dotsContainer) return;
+
+                    const slider = carousel.querySelector('.slider');
+                    const slides = carousel.querySelectorAll('.slider__item:not([hidden])');
+                    
+                    if (slides.length < 2) {
+                      dotsContainer.style.display = 'none';
+                      return;
+                    }
+
+                    dotsContainer.style.display = 'flex';
+                    carousel.dataset.dotsInitialized = 'true';
+
+                    function getCarouselInfo() {
+                      const grid = carousel.querySelector('.slider__grid');
+                      if (!grid) return null;
+
+                      const gridWidth = grid.clientWidth;
+                      if (gridWidth === 0) return null;
+
+                      const firstSlide = slides[0];
+                      const secondSlide = slides[1];
+                      if (!firstSlide || !secondSlide) return null;
+
+                      const firstRect = firstSlide.getBoundingClientRect();
+                      const secondRect = secondSlide.getBoundingClientRect();
+                      const slideSpan = secondRect.left - firstRect.left;
+                      
+                      if (slideSpan <= 0) return null;
+
+                      const isMobile = window.innerWidth < 768;
+                      
+                      let slidesPerPage;
+                      let totalPages;
+                      
+                      if (isMobile) {
+                        // Mobile: 1.5 slides visible
+                        slidesPerPage = (gridWidth + (slideSpan - firstSlide.clientWidth)) / slideSpan;
+                        totalPages = Math.max(1, slides.length);
+                      } else {
+                        // Desktop: 2 slides per page (2 full products)
+                        slidesPerPage = 2;
+                        if (slides.length <= 2) {
+                          totalPages = 1;
+                        } else {
+                          totalPages = Math.ceil(slides.length / 2);
+                        }
+                      }
+
+                      return { slidesPerPage, totalPages, slideSpan, isMobile };
+                    }
+
+                    let carouselInfo = getCarouselInfo();
+                    if (!carouselInfo) {
+                      setTimeout(() => {
+                        carouselInfo = getCarouselInfo();
+                        if (carouselInfo) initDots();
+                      }, 200);
+                      return;
+                    }
+
+                    let { slidesPerPage, totalPages, slideSpan, isMobile } = carouselInfo;
+                    let currentPage = 0;
+
+                    function debounce(func, wait) {
+                      let timeout;
+                      return function executedFunction(...args) {
+                        const later = () => {
+                          clearTimeout(timeout);
+                          func(...args);
+                        };
+                        clearTimeout(timeout);
+                        timeout = setTimeout(later, wait);
+                      };
+                    }
+
+                    function createDots() {
+                      dotsContainer.innerHTML = '';
+                      if (totalPages <= 1) {
+                        dotsContainer.style.display = 'none';
+                        return;
+                      }
+                      dotsContainer.style.display = 'flex';
+                      
+                      for (let i = 0; i < totalPages; i++) {
+                        const dot = document.createElement('button');
+                        dot.className = 'product-item-upsells__dot';
+                        if (i === 0) dot.classList.add('active');
+                        dot.setAttribute('aria-label', `Go to page ${i + 1}`);
+                        dot.dataset.pageIndex = i;
+                        dot.addEventListener('click', (e) => {
+                          const pageIndex = parseInt(e.currentTarget.dataset.pageIndex);
+                          goToPage(pageIndex);
+                        });
+                        dotsContainer.appendChild(dot);
+                      }
+                    }
+
+                    function goToPage(pageIndex) {
+                      if (pageIndex < 0 || pageIndex >= totalPages) return;
+                      
+                      let targetSlideIndex;
+                      if (isMobile) {
+                        targetSlideIndex = Math.min(pageIndex, slides.length - 1);
+                      } else {
+                        // Desktop: 2 slides per page
+                        targetSlideIndex = pageIndex * 2;
+                        targetSlideIndex = Math.min(targetSlideIndex, slides.length - 1);
+                      }
+                      
+                      const targetSlide = slides[targetSlideIndex];
+                      if (!targetSlide) return;
+
+                      if (typeof carousel.scrollToElement === 'function') {
+                        carousel.scrollToElement(targetSlide, 'smooth');
+                      } else {
+                        const targetScroll = targetSlide.offsetLeft;
+                        slider.scrollTo({
+                          left: targetScroll,
+                          behavior: 'smooth'
+                        });
+                      }
+                      
+                      setTimeout(() => {
+                        const currentIndex = Math.round(Math.abs(slider.scrollLeft) / slideSpan) || 0;
+                        updateDotsFromIndex(currentIndex);
+                      }, 150);
+                    }
+
+                    function updateDotsFromIndex(slideIndex) {
+                      let newPage;
+                      if (isMobile) {
+                        newPage = Math.min(slideIndex, totalPages - 1);
+                      } else {
+                        // Desktop: 2 slides per page
+                        const maxScrollLeft = slider.scrollWidth - slider.clientWidth;
+                        const isAtEnd = Math.abs(slider.scrollLeft - maxScrollLeft) < 10;
+                        
+                        const lastPageStartIndex = (totalPages - 1) * 2;
+                        
+                        if (isAtEnd || slideIndex >= lastPageStartIndex || slideIndex >= slides.length - 2) {
+                          newPage = totalPages - 1;
+                        } else {
+                          newPage = Math.floor(slideIndex / 2);
+                          newPage = Math.min(newPage, totalPages - 1);
+                        }
+                      }
+                      
+                      if (newPage >= 0 && newPage < totalPages) {
+                        currentPage = newPage;
+                        const dots = dotsContainer.querySelectorAll('.product-item-upsells__dot');
+                        dots.forEach((dot, idx) => {
+                          dot.classList.toggle('active', idx === currentPage);
+                        });
+                      }
+                    }
+
+                    const selectHandler = (e) => {
+                      const slideIndex = e.detail.index;
+                      updateDotsFromIndex(slideIndex);
+                    };
+                    
+                    carousel.addEventListener('on:carousel-slider:select', selectHandler);
+                    
+                    const scrollHandler = debounce(() => {
+                      const currentIndex = Math.round(Math.abs(slider.scrollLeft) / slideSpan) || 0;
+                      const maxScrollLeft = slider.scrollWidth - slider.clientWidth;
+                      const isAtEnd = Math.abs(slider.scrollLeft - maxScrollLeft) < 10;
+                      
+                      const slideIndexToUse = isAtEnd ? Math.max(currentIndex, slides.length - 1) : currentIndex;
+                      updateDotsFromIndex(slideIndexToUse);
+                    }, 150);
+                    
+                    slider.addEventListener('scroll', scrollHandler);
+
+                    function initDots() {
+                      carouselInfo = getCarouselInfo();
+                      if (!carouselInfo) return;
+                      
+                      slidesPerPage = carouselInfo.slidesPerPage;
+                      totalPages = carouselInfo.totalPages;
+                      slideSpan = carouselInfo.slideSpan;
+                      isMobile = carouselInfo.isMobile;
+                      
+                      createDots();
+                      
+                      const currentIndex = Math.round(Math.abs(slider.scrollLeft) / slideSpan) || 0;
+                      updateDotsFromIndex(currentIndex);
+                    }
+
+                    let resizeTimeout;
+                    const resizeHandler = () => {
+                      clearTimeout(resizeTimeout);
+                      resizeTimeout = setTimeout(() => {
+                        carouselInfo = getCarouselInfo();
+                        if (carouselInfo) {
+                          slidesPerPage = carouselInfo.slidesPerPage;
+                          totalPages = carouselInfo.totalPages;
+                          slideSpan = carouselInfo.slideSpan;
+                          isMobile = carouselInfo.isMobile;
+                          createDots();
+                          const currentIndex = Math.round(Math.abs(slider.scrollLeft) / slideSpan) || 0;
+                          updateDotsFromIndex(currentIndex);
+                        }
+                      }, 250);
+                    };
+                    
+                    window.addEventListener('resize', resizeHandler);
+
+                    initDots();
+                    isInitialized = true;
+
+                    cleanupFn = () => {
+                      carousel.removeEventListener('on:carousel-slider:select', selectHandler);
+                      slider.removeEventListener('scroll', scrollHandler);
+                      window.removeEventListener('resize', resizeHandler);
+                      carousel.dataset.dotsInitialized = 'false';
+                      isInitialized = false;
+                    };
+                  }
+
+                  function startInit() {
+                    setTimeout(() => {
+                      if (!isInitialized) {
+                        initProductUpsellsDots();
+                      }
+                    }, 300);
+                  }
+
+                  if (document.readyState === 'loading') {
+                    document.addEventListener('DOMContentLoaded', startInit);
+                  } else {
+                    startInit();
+                  }
+                })();
+              </script>
+            {%- endif -%}
+
           {% when 'complementary' %}
             <cc-fetched-content class="not-in-quickbuy" data-id="{{ block.id }}" data-url="{{ routes.product_recommendations_url }}?section_id={{ section.id }}&product_id={{ product.id }}&intent=complementary" contains-product-blocks {{ block.shopify_attributes }}>
               {%- if recommendations.performed and recommendations.products_count > 0 -%}
@@ -1008,11 +1898,17 @@
                         <div class="no-wrap slider-nav">
                           <button name="prev" class="slider-nav__btn has-ltr-icon text-current">
                             <span class="visually-hidden">{{ 'general.slider.previous' | t }}</span>
-                            {% render 'icon-chevron-left' %}
+                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M10 12L6 8L10 4" stroke="#232323" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+
                           </button>
                           <button name="next" class="slider-nav__btn has-ltr-icon text-current">
                             <span class="visually-hidden">{{ 'general.slider.next' | t }}</span>
-                            {% render 'icon-chevron-right' %}
+                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M6 12L10 8L6 4" stroke="#232323" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+
                           </button>
                         </div>
                       </div>
@@ -1156,6 +2052,17 @@
       "id": "enable_sticky_columns",
       "label": "Enable sticky columns",
       "default": false
+    },
+    {
+      "type": "header",
+      "content": "Gallery"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_modern_gallery",
+      "label": "Modern product gallery",
+      "info": "Enable 2-column gallery on desktop and thumbnail navigation on mobile",
+      "default": true
     },
     {
       "type": "header",
@@ -1551,6 +2458,255 @@
         }
       ]
     },
+     {
+      "type": "video_slide",
+      "name": "Video Slide",
+      "settings": [
+        {
+          "type": "header",
+          "content": "Title Settings"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Walk It Like a Bandit",
+          "info": "Title will be shown once for all video slides in the group"
+        },
+        {
+          "type": "range",
+          "id": "title_size",
+          "min": 12,
+          "max": 48,
+          "step": 2,
+          "unit": "px",
+          "label": "Title Size",
+          "default": 24
+        },
+        {
+          "type": "header",
+          "content": "Media Settings"
+        },
+        {
+          "type": "select",
+          "id": "media_type",
+          "options": [
+            {
+              "value": "image",
+              "label": "Image"
+            },
+            {
+              "value": "video",
+              "label": "Video"
+            }
+          ],
+          "default": "image",
+          "label": "Media Type"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image",
+          "info": "Used when Media Type is set to Image"
+        },
+        {
+          "type": "video",
+          "id": "video",
+          "label": "Video",
+          "info": "Used when Media Type is set to Video (Shopify video)"
+        },
+        {
+          "type": "video_url",
+          "id": "video_url",
+          "label": "Video URL",
+          "accept": ["youtube", "vimeo"],
+          "default": "https://www.youtube.com/watch?v=_9VUPq3SxOc",
+          "info": "Used when Media Type is set to Video (External video)"
+        },
+        {
+          "type": "text",
+          "id": "video_host",
+          "label": "Video Host",
+          "default": "youtube",
+          "info": "Enter 'youtube' or 'vimeo'"
+        },
+        {
+          "type": "text",
+          "id": "video_id",
+          "label": "Video ID",
+          "info": "YouTube playlist ID (optional)"
+        },
+        {
+          "type": "image_picker",
+          "id": "poster_image",
+          "label": "Poster Image",
+          "info": "Thumbnail image for video (optional)"
+        },
+        {
+          "type": "text",
+          "id": "alt_text",
+          "label": "Alt Text",
+          "default": "Video slide"
+        },
+        {
+          "type": "header",
+          "content": "Style Settings"
+        },
+        {
+          "type": "range",
+          "id": "border_radius",
+          "min": 0,
+          "max": 100,
+          "step": 2,
+          "unit": "px",
+          "label": "Border Radius (Desktop)",
+          "default": 8
+        },
+        {
+          "type": "range",
+          "id": "border_radius_mobile",
+          "min": 0,
+          "max": 100,
+          "step": 2,
+          "unit": "px",
+          "label": "Border Radius (Mobile)",
+          "default": 8
+        }
+      ]
+    },
+    {
+      "type": "testimonial_under_gallery",
+      "name": "Testimonial Under Gallery",
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "left_side",
+          "label": "Show on Left Side (Under Gallery)",
+          "default": true
+        },
+        {
+          "type": "header",
+          "content": "Spacing & Style"
+        },
+        {
+          "type": "range",
+          "id": "padding",
+          "min": 0,
+          "max": 60,
+          "step": 2,
+          "unit": "px",
+          "label": "Padding",
+          "default": 24
+        },
+        {
+          "type": "range",
+          "id": "border_radius",
+          "min": 0,
+          "max": 40,
+          "step": 2,
+          "unit": "px",
+          "label": "Border Radius",
+          "default": 16
+        },
+        {
+          "type": "range",
+          "id": "margin_top",
+          "min": 0,
+          "max": 60,
+          "step": 2,
+          "unit": "px",
+          "label": "Margin Top",
+          "default": 20
+        },
+        {
+          "type": "color",
+          "id": "border_color",
+          "label": "Border Color",
+          "default": "#E8E8E8"
+        },
+        {
+          "type": "color",
+          "id": "background_color",
+          "label": "Background Color",
+          "default": "#F8F7F4"
+        },
+        {
+          "type": "header",
+          "content": "Rating Icons"
+        },
+        {
+          "type": "image_picker",
+          "id": "rating_icon_1",
+          "label": "Rating Icon 1"
+        },
+        {
+          "type": "image_picker",
+          "id": "rating_icon_2",
+          "label": "Rating Icon 2"
+        },
+        {
+          "type": "image_picker",
+          "id": "rating_icon_3",
+          "label": "Rating Icon 3"
+        },
+        {
+          "type": "image_picker",
+          "id": "rating_icon_4",
+          "label": "Rating Icon 4"
+        },
+        {
+          "type": "image_picker",
+          "id": "rating_icon_5",
+          "label": "Rating Icon 5"
+        },
+        {
+          "type": "header",
+          "content": "Content"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Description",
+          "default": "I've been telling all my family and friends about you!!! They are so excited and eager to get their oils too! ❤️"
+        },
+        {
+          "type": "text",
+          "id": "subtitle",
+          "label": "Subtitle (Author Name)",
+          "default": "Lauren P."
+        },
+        {
+          "type": "text",
+          "id": "verification_text",
+          "label": "Verification Text",
+          "default": "Verified Buyer"
+        },
+        {
+          "type": "image_picker",
+          "id": "verification_icon",
+          "label": "Verification Icon"
+        },
+        {
+          "type": "header",
+          "content": "Main Image"
+        },
+        {
+          "type": "image_picker",
+          "id": "main_image",
+          "label": "Main Image (Person Photo)"
+        },
+        {
+          "type": "range",
+          "id": "main_image_width",
+          "min": 100,
+          "max": 400,
+          "step": 10,
+          "unit": "px",
+          "label": "Main Image Width",
+          "default": 280
+        }
+      ]
+    },
     {
       "type": "description",
       "name": "Description",
@@ -1890,6 +3046,250 @@
       "id": "quiz_cta_url",
       "label": "Quiz CTA Button Link",
       "info": "URL to your quiz page"
+    },
+    {
+      "type": "header",
+      "content": "Text above checkout"
+    },
+    {
+      "type": "richtext",
+      "id": "text_above_checkout",
+      "label": "Text",
+      "info": "Text displayed above the checkout button"
+    },
+    {
+      "type": "select",
+      "id": "text_icon",
+      "label": "Icon",
+      "default": "",
+      "options": [
+        {
+          "value": "",
+          "label": "No icon"
+        },
+        {
+          "value": "accessible",
+          "label": "Accessible"
+        },
+        {
+          "value": "award",
+          "label": "Award"
+        },
+        {
+          "value": "beach",
+          "label": "Beach"
+        },
+        {
+          "value": "box",
+          "label": "Box"
+        },
+        {
+          "value": "briefcase",
+          "label": "Briefcase"
+        },
+        {
+          "value": "calendar",
+          "label": "Calendar"
+        },
+        {
+          "value": "chat_bubble",
+          "label": "Chat bubble"
+        },
+        {
+          "value": "check_mark",
+          "label": "Check mark"
+        },
+        {
+          "value": "check_mark_in_circle",
+          "label": "Check mark in circle"
+        },
+        {
+          "value": "clock",
+          "label": "Clock"
+        },
+        {
+          "value": "credit_card",
+          "label": "Credit card"
+        },
+        {
+          "value": "dollar_sign",
+          "label": "Dollar sign"
+        },
+        {
+          "value": "dryer",
+          "label": "Dryer"
+        },
+        {
+          "value": "eye",
+          "label": "Eye"
+        },
+        {
+          "value": "feather",
+          "label": "Feather"
+        },
+        {
+          "value": "gift",
+          "label": "Gift"
+        },
+        {
+          "value": "heart",
+          "label": "Heart"
+        },
+        {
+          "value": "iron",
+          "label": "Iron"
+        },
+        {
+          "value": "leaf",
+          "label": "Leaf"
+        },
+        {
+          "value": "leather",
+          "label": "Leather"
+        },
+        {
+          "value": "lock",
+          "label": "Lock"
+        },
+        {
+          "value": "map_pin",
+          "label": "Map pin"
+        },
+        {
+          "value": "pants",
+          "label": "Pants"
+        },
+        {
+          "value": "percent",
+          "label": "Percent"
+        },
+        {
+          "value": "plane",
+          "label": "Plane"
+        },
+        {
+          "value": "price_tag",
+          "label": "Price tag"
+        },
+        {
+          "value": "question_mark",
+          "label": "Question mark"
+        },
+        {
+          "value": "recycle",
+          "label": "Recycle"
+        },
+        {
+          "value": "return",
+          "label": "Return"
+        },
+        {
+          "value": "ruler",
+          "label": "Ruler"
+        },
+        {
+          "value": "scissors",
+          "label": "Scissors"
+        },
+        {
+          "value": "shirt",
+          "label": "Shirt"
+        },
+        {
+          "value": "shoe",
+          "label": "Shoe"
+        },
+        {
+          "value": "silhouette",
+          "label": "Silhouette"
+        },
+        {
+          "value": "star",
+          "label": "Star"
+        },
+        {
+          "value": "sun-high",
+          "label": "Sun"
+        },
+        {
+          "value": "truck",
+          "label": "Truck"
+        },
+        {
+          "value": "washing",
+          "label": "Washing"
+        },
+        {
+          "value": "world",
+          "label": "World"
+        }
+      ]
+    },
+    {
+      "type": "image_picker",
+      "id": "text_custom_icon",
+      "label": "Custom icon"
+    },
+    {
+      "type": "select",
+      "id": "text_icon_size",
+      "label": "Icon size",
+      "default": "small",
+      "options": [
+        {
+          "value": "small",
+          "label": "Small"
+        },
+        {
+          "value": "large",
+          "label": "Large"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_text_box",
+      "label": "Enable box style",
+      "default": false
+    },
+    {
+      "visible_if": "{{ block.settings.enable_text_box }}",
+      "type": "color",
+      "id": "text_box_color",
+      "label": "Box color",
+      "info": "Suggestions: Blue #e5f3ff, Teal #e0f5f5, Green #e0f4d5, Yellow #fcf1cd, Red #fbeae5",
+      "default": "#e0f4d5"
+    },
+    {
+      "type": "header",
+      "content": "USP Badges"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_usp_badges",
+      "label": "Show USP badges above checkout button",
+      "default": true
+    },
+    {
+      "visible_if": "{{ block.settings.show_usp_badges }}",
+      "type": "text",
+      "id": "usp_1_label",
+      "label": "USP 1 label",
+      "default": "Trichologist-Developed"
+    },
+    {
+      "visible_if": "{{ block.settings.show_usp_badges }}",
+      "type": "text",
+      "id": "usp_2_label",
+      "label": "USP 2 label",
+      "default": "Clean Ingredients"
+    },
+    {
+      "visible_if": "{{ block.settings.show_usp_badges }}",
+      "type": "text",
+      "id": "usp_3_label",
+      "label": "USP 3 label",
+      "default": "Cruelty-Free"
     }
   ]
 },
@@ -2609,6 +4009,66 @@
           "id": "show_in_quickbuy",
           "label": "Show in quick buy",
           "default": false
+        },
+        {
+          "type": "header",
+          "content": "Desktop Styles"
+        },
+        {
+          "type": "color",
+          "id": "desktop_background_color",
+          "label": "Background color",
+          "default": "#ffffff"
+        },
+        {
+          "type": "range",
+          "id": "desktop_border_radius",
+          "min": 0,
+          "max": 50,
+          "step": 1,
+          "unit": "px",
+          "label": "Border radius",
+          "default": 0
+        },
+        {
+          "type": "range",
+          "id": "desktop_padding",
+          "min": 0,
+          "max": 100,
+          "step": 2,
+          "unit": "px",
+          "label": "Padding",
+          "default": 0
+        },
+        {
+          "type": "header",
+          "content": "Mobile Styles"
+        },
+        {
+          "type": "color",
+          "id": "mobile_background_color",
+          "label": "Background color",
+          "default": "#ffffff"
+        },
+        {
+          "type": "range",
+          "id": "mobile_border_radius",
+          "min": 0,
+          "max": 50,
+          "step": 1,
+          "unit": "px",
+          "label": "Border radius",
+          "default": 0
+        },
+        {
+          "type": "range",
+          "id": "mobile_padding",
+          "min": 0,
+          "max": 100,
+          "step": 2,
+          "unit": "px",
+          "label": "Padding",
+          "default": 0
         }
       ]
     },
@@ -3577,6 +5037,55 @@
           "unit": "px",
           "label": "Image width",
           "default": 68
+        },
+        {
+          "type": "checkbox",
+          "id": "show_in_quickbuy",
+          "label": "Show in quick buy",
+          "default": false
+        }
+      ]
+    },
+    {
+      "type": "product-upsells",
+      "name": "Product Upsells",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading",
+          "default": "You may like"
+        },
+        {
+          "type": "text",
+          "id": "subtitle",
+          "label": "Subtitle",
+          "default": "No consultation required*"
+        },
+        {
+          "type": "product_list",
+          "id": "product_list",
+          "label": "Products"
+        },
+        {
+          "type": "select",
+          "id": "color_scheme",
+          "label": "Color scheme",
+          "default": "1",
+          "options": [
+            {
+              "value": "default",
+              "label": "Default"
+            },
+            {
+              "value": "1",
+              "label": "1"
+            },
+            {
+              "value": "2",
+              "label": "2"
+            }
+          ]
         },
         {
           "type": "checkbox",

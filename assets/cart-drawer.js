@@ -3,6 +3,7 @@
 class CartDrawer extends SideDrawer {
   connectedCallback() {
     this.bindEvents();
+    this.initUpsellButtons();
   }
 
   bindEvents() {
@@ -18,6 +19,8 @@ class CartDrawer extends SideDrawer {
     this.addEventListener('on:cart:after-merge', () => {
       theme.manuallyLoadImages(this);
       this.querySelectorAll('cc-cart-cross-sell').forEach((el) => el.init());
+      // Re-initialize upsell buttons after cart merge
+      this.initUpsellButtons();
     });
   }
 
@@ -25,6 +28,14 @@ class CartDrawer extends SideDrawer {
     document.removeEventListener('dispatch:cart-drawer:refresh', this.cartRefreshHandler);
     document.removeEventListener('dispatch:cart-drawer:open', this.openDrawerViaEventHandler);
     document.removeEventListener('dispatch:cart-drawer:close', this.closeDrawerViaEventHandler);
+    
+    // Cleanup upsell button handlers
+    if (this.upsellClickHandler) {
+      document.removeEventListener('click', this.upsellClickHandler);
+    }
+    if (this.upsellObserver) {
+      this.upsellObserver.disconnect();
+    }
   }
 
   /**
@@ -48,6 +59,186 @@ class CartDrawer extends SideDrawer {
    */
   updateFromCartChange(html) {
     this.querySelector('cart-form').refreshFromHtml(html);
+  }
+
+  /**
+   * Initialize upsell product buttons handler
+   */
+  initUpsellButtons() {
+    console.log('[Cart Upsell] Initializing upsell buttons handler');
+    
+    // Remove existing handler if any
+    if (this.upsellClickHandler) {
+      document.removeEventListener('click', this.upsellClickHandler);
+    }
+    
+    // Create click handler for upsell buttons
+    this.upsellClickHandler = (e) => {
+      const addBtn = e.target.closest('.cart-upsell-product__add-btn');
+      
+      if (!addBtn) {
+        return;
+      }
+      
+      // Only handle clicks within cart drawer
+      if (!this.contains(addBtn)) {
+        return;
+      }
+      
+      console.log('[Cart Upsell] ===== ADD BUTTON CLICKED =====');
+      
+      e.preventDefault();
+      const productCard = addBtn.closest('.cart-upsell-product');
+      const variantId = addBtn.dataset.variantId;
+      const productId = productCard ? productCard.dataset.productId : null;
+      
+      console.log('[Cart Upsell] Starting add to cart:', { variantId, productId });
+      
+      if (!variantId) {
+        console.warn('[Cart Upsell] No variantId found, aborting');
+        return;
+      }
+      
+      // Disable button during request
+      addBtn.classList.add('loading');
+      addBtn.disabled = true;
+      
+      console.log('[Cart Upsell] Sending request to /cart/add.js');
+      
+      // Add to cart using /cart/add.js
+      fetch('/cart/add.js', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          id: variantId,
+          quantity: 1
+        })
+      })
+      .then(response => {
+        console.log('[Cart Upsell] Response received:', { ok: response.ok, status: response.status, statusText: response.statusText });
+        if (!response.ok) {
+          return response.json().then(data => {
+            console.error('[Cart Upsell] Response error:', data);
+            throw new Error(data.description || data.message || `HTTP error! Status: ${response.status}`);
+          });
+        }
+        return response.json();
+      })
+      .then(data => {
+        console.log('[Cart Upsell] Response data:', data);
+        
+        // Check for errors in response
+        if (data.status) {
+          const error = typeof data.description === 'string' ? data.description : data.message;
+          console.error('[Cart Upsell] Error in response data:', error);
+          addBtn.classList.remove('loading');
+          addBtn.disabled = false;
+          return;
+        }
+        
+        console.log('[Cart Upsell] Successfully added to cart, dispatching events');
+        
+        // Dispatch cart add event first (for compatibility)
+        const addEvent = new CustomEvent('on:cart:add', {
+          bubbles: true,
+          detail: {
+            variantId: data.variant_id || variantId
+          }
+        });
+        console.log('[Cart Upsell] Dispatching on:cart:add event:', addEvent.detail);
+        document.dispatchEvent(addEvent);
+        
+        // Dispatch cart drawer refresh event
+        const refreshEvent = new CustomEvent('dispatch:cart-drawer:refresh', { bubbles: true, cancelable: false });
+        console.log('[Cart Upsell] Dispatching dispatch:cart-drawer:refresh event');
+        document.dispatchEvent(refreshEvent);
+        
+        // Also dispatch cart change event for CartForm
+        const changeEvent = new CustomEvent('on:cart:change', { bubbles: true, cancelable: false });
+        console.log('[Cart Upsell] Dispatching on:cart:change event');
+        document.dispatchEvent(changeEvent);
+        
+        // Check cart drawer state
+        const cartDrawer = document.querySelector('cart-drawer');
+        const cartForm = cartDrawer ? cartDrawer.querySelector('cart-form') : null;
+        console.log('[Cart Upsell] Cart drawer state:', {
+          cartDrawerExists: !!cartDrawer,
+          cartFormExists: !!cartForm,
+          cartFormHasRefresh: cartForm && typeof cartForm.refresh === 'function',
+          cartDrawerOpen: cartDrawer && cartDrawer.hasAttribute('open')
+        });
+        
+        // Check for UpCart
+        console.log('[Cart Upsell] UpCart check:', {
+          upcartRefreshCartExists: typeof window.upcartRefreshCart === 'function',
+          upcartRefreshCartType: typeof window.upcartRefreshCart
+        });
+        
+        // Re-enable button
+        addBtn.classList.remove('loading');
+        addBtn.disabled = false;
+        console.log('[Cart Upsell] Add to cart completed successfully');
+      })
+      .catch(error => {
+        console.error('[Cart Upsell] Error adding to cart:', error);
+        console.error('[Cart Upsell] Error details:', {
+          message: error.message,
+          stack: error.stack,
+          name: error.name
+        });
+        addBtn.classList.remove('loading');
+        addBtn.disabled = false;
+      });
+    };
+    
+    // Add click handler
+    document.addEventListener('click', this.upsellClickHandler);
+    console.log('[Cart Upsell] Click handler attached');
+    
+    // Setup MutationObserver to watch for dynamically added upsell products
+    if (this.upsellObserver) {
+      this.upsellObserver.disconnect();
+    }
+    
+    const observeTarget = this.querySelector('.cart-item-upsells') || this;
+    console.log('[Cart Upsell] Setting up MutationObserver on:', observeTarget);
+    
+    this.upsellObserver = new MutationObserver((mutations) => {
+      let hasNewButtons = false;
+      
+      mutations.forEach((mutation) => {
+        mutation.addedNodes.forEach((node) => {
+          if (node.nodeType === 1) { // Element node
+            // Check if the added node is a button or contains buttons
+            if (node.matches && node.matches('.cart-upsell-product__add-btn')) {
+              hasNewButtons = true;
+              console.log('[Cart Upsell] New button added:', node);
+            } else if (node.querySelector && node.querySelector('.cart-upsell-product__add-btn')) {
+              hasNewButtons = true;
+              const buttons = node.querySelectorAll('.cart-upsell-product__add-btn');
+              console.log('[Cart Upsell] New buttons added in container:', buttons.length, node);
+            }
+          }
+        });
+      });
+      
+      if (hasNewButtons) {
+        console.log('[Cart Upsell] New upsell buttons detected');
+      }
+    });
+    
+    this.upsellObserver.observe(observeTarget, {
+      childList: true,
+      subtree: true
+    });
+    
+    console.log('[Cart Upsell] MutationObserver active');
+    
+    // Check existing buttons
+    const buttons = this.querySelectorAll('.cart-upsell-product__add-btn');
+    console.log('[Cart Upsell] Found buttons in cart drawer:', buttons.length);
   }
 }
 

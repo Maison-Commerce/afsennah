@@ -1,13 +1,26 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "main": {
       "type": "main-product",
       "blocks": {
+        "title": {
+          "type": "title",
+          "settings": {}
+        },
         "loox_reviews_loox_rating_K6cdrY": {
-          "type": "shopify:\/\/apps\/loox-reviews\/blocks\/loox-rating\/5c3b337f-fd14-4df5-b1d6-80ec13e6e28e",
+          "type": "shopify://apps/loox-reviews/blocks/loox-rating/5c3b337f-fd14-4df5-b1d6-80ec13e6e28e",
           "settings": {
             "contentSize": 16,
-            "pattern": "",
+            "pattern": "[rating] | [count] reviews",
             "hideText": false,
             "alignment": "",
             "layout": "",
@@ -18,26 +31,29 @@
             "emptyRatingWidget": false
           }
         },
-        "title": {
-          "type": "title",
-          "settings": {}
-        },
-        "price": {
-          "type": "price",
-          "settings": {
-            "show_tax_and_shipping": false,
-            "enable_product_reviews_by_price": false
-          }
-        },
         "richtext_9PTgzC": {
           "type": "richtext",
           "settings": {
-            "richtext": "<p>{{ product.metafields.custom.productline.value }}<\/p>",
+            "richtext": "<p>{{ product.metafields.custom.productline.value }}</p>",
             "icon": "",
             "icon_size": "small",
             "enable_box": false,
             "box_color": "#e0f4d5",
-            "show_in_quickbuy": false
+            "show_in_quickbuy": false,
+            "desktop_background_color": "#ffffff",
+            "desktop_border_radius": 0,
+            "desktop_padding": 0,
+            "mobile_background_color": "#ffffff",
+            "mobile_border_radius": 0,
+            "mobile_padding": 0
+          }
+        },
+        "price": {
+          "type": "price",
+          "disabled": true,
+          "settings": {
+            "show_tax_and_shipping": false,
+            "enable_product_reviews_by_price": false
           }
         },
         "formula_button_wd8rNQ": {
@@ -59,7 +75,7 @@
           "type": "variant-picker",
           "settings": {
             "show_single": false,
-            "selector_style": "dropdown",
+            "selector_style": "listed",
             "dynamic_availability": "show",
             "enable_size_chart": false,
             "size_chart_label": "Size guide",
@@ -76,11 +92,22 @@
             "show_pickup_availability": true,
             "show_backorder_text": true,
             "quiz_cta_text": "Get Your Formula",
-            "quiz_cta_url": "shopify:\/\/pages\/get-your-formula"
+            "quiz_cta_url": "shopify://pages/get-your-formula",
+            "text_above_checkout": "<p>Delivery in <strong>1-2 business days</strong></p>",
+            "text_icon": "",
+            "text_custom_icon": "shopify://shop_images/Shipment-In-Transit--Streamline-Ultimate.svg",
+            "text_icon_size": "small",
+            "enable_text_box": false,
+            "text_box_color": "#e0f4d5",
+            "show_usp_badges": true,
+            "usp_1_label": "Trichologist-Developed",
+            "usp_2_label": "Clean Ingredients",
+            "usp_3_label": "Cruelty-Free"
           }
         },
         "text_UT9ray": {
           "type": "text",
+          "disabled": true,
           "settings": {
             "text": "Delivery in 1-2 business days",
             "icon": "plane",
@@ -92,19 +119,116 @@
         },
         "divider_Cwfcya": {
           "type": "divider",
+          "disabled": true,
           "settings": {
             "show_in_quickbuy": false
+          }
+        },
+        "video_slide_6kdLjD": {
+          "type": "video_slide",
+          "settings": {
+            "title": "Join 1500+ Happy Women",
+            "title_size": 24,
+            "media_type": "video",
+            "video": "shopify://files/videos/VD1(No Outline).mov",
+            "video_url": "https://www.youtube.com/watch?v=_9VUPq3SxOc",
+            "video_host": "youtube",
+            "video_id": "",
+            "alt_text": "Video slide",
+            "border_radius": 8,
+            "border_radius_mobile": 8
+          }
+        },
+        "video_slide_JjnLi8": {
+          "type": "video_slide",
+          "settings": {
+            "title": "Join 1500+ Happy Women",
+            "title_size": 24,
+            "media_type": "video",
+            "video": "shopify://files/videos/VD1(No Outline).mov",
+            "video_url": "https://www.youtube.com/watch?v=_9VUPq3SxOc",
+            "video_host": "youtube",
+            "video_id": "",
+            "alt_text": "Video slide",
+            "border_radius": 8,
+            "border_radius_mobile": 8
+          }
+        },
+        "video_slide_JqjU8e": {
+          "type": "video_slide",
+          "settings": {
+            "title": "Join 1500+ Happy Women",
+            "title_size": 24,
+            "media_type": "video",
+            "video": "shopify://files/videos/VD1(No Outline).mov",
+            "video_url": "https://www.youtube.com/watch?v=_9VUPq3SxOc",
+            "video_host": "youtube",
+            "video_id": "",
+            "alt_text": "Video slide",
+            "border_radius": 8,
+            "border_radius_mobile": 8
+          }
+        },
+        "video_slide_CYRENe": {
+          "type": "video_slide",
+          "settings": {
+            "title": "Join 1500+ Happy Women",
+            "title_size": 24,
+            "media_type": "video",
+            "video": "shopify://files/videos/VD1(No Outline).mov",
+            "video_url": "https://www.youtube.com/watch?v=_9VUPq3SxOc",
+            "video_host": "youtube",
+            "video_id": "",
+            "alt_text": "Video slide",
+            "border_radius": 8,
+            "border_radius_mobile": 8
+          }
+        },
+        "video_slide_bCD4fx": {
+          "type": "video_slide",
+          "settings": {
+            "title": "Join 1500+ Happy Women",
+            "title_size": 24,
+            "media_type": "video",
+            "video": "shopify://files/videos/VD1(No Outline).mov",
+            "video_url": "https://www.youtube.com/watch?v=_9VUPq3SxOc",
+            "video_host": "youtube",
+            "video_id": "",
+            "alt_text": "Video slide",
+            "border_radius": 8,
+            "border_radius_mobile": 8
+          }
+        },
+        "video_slide_n68zUW": {
+          "type": "video_slide",
+          "settings": {
+            "title": "Join 1500+ Happy Women",
+            "title_size": 24,
+            "media_type": "video",
+            "video": "shopify://files/videos/VD1(No Outline).mov",
+            "video_url": "https://www.youtube.com/watch?v=_9VUPq3SxOc",
+            "video_host": "youtube",
+            "video_id": "",
+            "alt_text": "Video slide",
+            "border_radius": 8,
+            "border_radius_mobile": 8
           }
         },
         "richtext_cyRJhp": {
           "type": "richtext",
           "settings": {
-            "richtext": "<h3><strong>Why Custom-Made Hair Products Work Better<\/strong><\/h3><p>Because your hair isn’t “one-size-fits-all.”<\/p><p>Every scalp and strand has its own balance of oils, sensitivities, and growth needs which is why generic products often fall short. <br\/><br\/>Custom-made formulas are crafted specifically for <em>your<\/em> hair type, scalp condition, and goals. They deliver the exact nutrients your hair needs no unnecessary fillers, no harsh ingredients.<\/p><p>By addressing the <em>root cause<\/em> of your concerns, personalized products help restore balance faster, enhance strength and shine, and create long-lasting results that standard products simply can’t match.<\/p>",
+            "richtext": "<h3><strong>Why Custom-Made Hair Products Work Better</strong></h3><p>Because your hair isn’t “one-size-fits-all.”</p><p>Every scalp and strand has its own balance of oils, sensitivities, and growth needs which is why generic products often fall short. <br/><br/>Custom-made formulas are crafted specifically for <em>your</em> hair type, scalp condition, and goals. They deliver the exact nutrients your hair needs no unnecessary fillers, no harsh ingredients.</p><p>By addressing the <em>root cause</em> of your concerns, personalized products help restore balance faster, enhance strength and shine, and create long-lasting results that standard products simply can’t match.</p>",
             "icon": "",
             "icon_size": "small",
             "enable_box": false,
             "box_color": "#e0f4d5",
-            "show_in_quickbuy": false
+            "show_in_quickbuy": false,
+            "desktop_background_color": "#fffef3",
+            "desktop_border_radius": 16,
+            "desktop_padding": 24,
+            "mobile_background_color": "#fffef3",
+            "mobile_border_radius": 16,
+            "mobile_padding": 24
           }
         },
         "accordion_eCyiUV": {
@@ -112,7 +236,7 @@
           "settings": {
             "title": "How to Use",
             "icon": "",
-            "content": "<p>{{ product.metafields.custom.how_to_use | metafield_tag }}<\/p>",
+            "content": "<p>{{ product.metafields.custom.how_to_use | metafield_tag }}</p>",
             "page": "",
             "custom_liquid": "",
             "open": false,
@@ -124,15 +248,51 @@
           "settings": {
             "title": "Ingredients",
             "icon": "",
-            "content": "<p>{{ product.metafields.custom.ingredients | metafield_tag }}<\/p>",
+            "content": "<p>{{ product.metafields.custom.ingredients | metafield_tag }}</p>",
             "page": "",
             "custom_liquid": "",
             "open": false,
             "show_in_quickbuy": false
           }
         },
+        "testimonial_under_gallery_yE3cQA": {
+          "type": "testimonial_under_gallery",
+          "settings": {
+            "left_side": true,
+            "padding": 16,
+            "border_radius": 16,
+            "margin_top": 42,
+            "border_color": "#f7f7fc",
+            "background_color": "#f7f7fc",
+            "rating_icon_1": "shopify://shop_images/star_3.svg",
+            "rating_icon_2": "shopify://shop_images/star_3.svg",
+            "rating_icon_3": "shopify://shop_images/star_3.svg",
+            "rating_icon_4": "shopify://shop_images/star_3.svg",
+            "rating_icon_5": "shopify://shop_images/star_3.svg",
+            "description": "I've been telling all my family and friends about you!!! They are so excited and eager to get their oils too! ❤️",
+            "subtitle": "Lauren P.",
+            "verification_text": "Verified Buyer",
+            "verification_icon": "shopify://shop_images/Check-Badge--Streamline-Ultimate_2.svg",
+            "main_image": "shopify://shop_images/Professional_headshot_portrait_of_a_confident_woman_aged_42-45_shoulder-length_brown_hair_with_subtle_highlights_warm_genuine_smile_friendly_and_approachable_expression_natural_makeup.png",
+            "main_image_width": 280
+          }
+        },
+        "product_upsells_eVNWhn": {
+          "type": "product-upsells",
+          "settings": {
+            "title": "Try both and save big",
+            "subtitle": "No consultation required*",
+            "product_list": [
+              "custom-conditioner",
+              "e-gift-card",
+              "mulberry-pillowcase"
+            ],
+            "color_scheme": "default",
+            "show_in_quickbuy": false
+          }
+        },
         "loox_reviews_loox_snippets_widget_JQFkCB": {
-          "type": "shopify:\/\/apps\/loox-reviews\/blocks\/loox-snippets-widget\/5c3b337f-fd14-4df5-b1d6-80ec13e6e28e",
+          "type": "shopify://apps/loox-reviews/blocks/loox-snippets-widget/5c3b337f-fd14-4df5-b1d6-80ec13e6e28e",
           "settings": {
             "alignment": "left",
             "max-width": "",
@@ -155,10 +315,10 @@
         }
       },
       "block_order": [
-        "loox_reviews_loox_rating_K6cdrY",
         "title",
-        "price",
+        "loox_reviews_loox_rating_K6cdrY",
         "richtext_9PTgzC",
+        "price",
         "formula_button_wd8rNQ",
         "vendor",
         "divider",
@@ -166,9 +326,17 @@
         "buy-buttons",
         "text_UT9ray",
         "divider_Cwfcya",
+        "video_slide_6kdLjD",
+        "video_slide_JjnLi8",
+        "video_slide_JqjU8e",
+        "video_slide_CYRENe",
+        "video_slide_bCD4fx",
+        "video_slide_n68zUW",
         "richtext_cyRJhp",
         "accordion_eCyiUV",
         "accordion_bjJGWh",
+        "testimonial_under_gallery_yE3cQA",
+        "product_upsells_eVNWhn",
         "loox_reviews_loox_snippets_widget_JQFkCB"
       ],
       "settings": {
@@ -177,13 +345,14 @@
         "show_location_underneath": false,
         "inventory_transfers_enable": false,
         "enable_sticky_columns": true,
+        "enable_modern_gallery": true,
         "enable_sticky_atc": false,
         "sticky_atc_position": "center",
         "sticky_atc_mobile": true,
         "sticky_atc_behavior": "add_to_cart",
         "sticky_atc_button_style": "secondary",
         "gallery_size": "large",
-        "gallery_layout": "carousel-under",
+        "gallery_layout": "columns-2",
         "enable_zoom": true,
         "show_alt_text": false,
         "alt_text_icon": "",
@@ -229,7 +398,7 @@
         "ingredient_a87QWK": {
           "type": "ingredient",
           "settings": {
-            "ingredient_image": "shopify:\/\/shop_images\/4_db19b1e5-e5a2-40d4-a63b-398fd4288eb1.png",
+            "ingredient_image": "shopify://shop_images/4_db19b1e5-e5a2-40d4-a63b-398fd4288eb1.png",
             "ingredient_name": "Hibiscus Oil",
             "ingredient_description": "We selected hibiscus oil for its rich blend of amino acids and vitamin C a rejuvenating extract that strengthens roots, boosts shine, and restores vitality to thinning, lackluster hair.",
             "card_bg_color": "#ffffff",
@@ -239,7 +408,7 @@
         "ingredient_XpT6Wq": {
           "type": "ingredient",
           "settings": {
-            "ingredient_image": "shopify:\/\/shop_images\/ingredient_4.png",
+            "ingredient_image": "shopify://shop_images/ingredient_4.png",
             "ingredient_name": "Saffron Oil",
             "ingredient_description": "We thoughtfully selected the most powerful plant-based oils to craft Afsennah’s hair elixirs rich in nutrients, free from harsh additives, and designed to nourish your scalp and transform your hair with every drop.",
             "card_bg_color": "#ffffff",
@@ -249,7 +418,7 @@
         "ingredient_PHNkeT": {
           "type": "ingredient",
           "settings": {
-            "ingredient_image": "shopify:\/\/shop_images\/ingredient_3.png",
+            "ingredient_image": "shopify://shop_images/ingredient_3.png",
             "ingredient_name": "Prickly Pear Seed Oil",
             "ingredient_description": "We thoughtfully selected the most powerful plant-based oils to craft Afsennah’s hair elixirs rich in nutrients, free from harsh additives, and designed to nourish your scalp and transform your hair with every drop.",
             "card_bg_color": "#ffffff",
@@ -259,7 +428,7 @@
         "ingredient_Uz4h4H": {
           "type": "ingredient",
           "settings": {
-            "ingredient_image": "shopify:\/\/shop_images\/ingredient_afsennah.png",
+            "ingredient_image": "shopify://shop_images/ingredient_afsennah.png",
             "ingredient_name": "Rosehip Oil",
             "ingredient_description": "We carefully chose Rosehip oil for its rich blend of vitamins, antioxidants, and fatty acids a lightweight botanical that deeply nourishes, repairs, and softens hair while restoring balance to your scalp with every use.",
             "card_bg_color": "#ffffff",
@@ -283,7 +452,7 @@
         "section_title": "Naturally powerful ingredients",
         "section_subtitle": "Your formula is uniquely yours. We target your goals with multi-benefit ingredients like:",
         "cta_text": "SEE ALL OUR INGREDIENTS",
-        "cta_url": "shopify:\/\/pages\/ingredients"
+        "cta_url": "shopify://pages/ingredients"
       }
     },
     "video_product_slider_JCam3g": {
@@ -292,60 +461,60 @@
         "video_product_card_jUV3AB": {
           "type": "video_product_card",
           "settings": {
-            "video": "shopify:\/\/files\/videos\/hair-growth-oil_R7yshec7.mp4",
+            "video": "shopify://files/videos/hair-growth-oil_R7yshec7.mp4",
             "autoplay": true,
             "loop": true,
             "muted": true,
             "controls": false,
-            "card_text": "<p>Transform thinning hair into thicker, stronger strands with every drop!<\/p>",
+            "card_text": "<p>Transform thinning hair into thicker, stronger strands with every drop!</p>",
             "product": "custom-hair-growth-oil-for-her"
           }
         },
         "video_product_card_3LBWwY": {
           "type": "video_product_card",
           "settings": {
-            "video": "shopify:\/\/files\/videos\/hair-treatment-yellow_BouNogGI.mp4",
+            "video": "shopify://files/videos/hair-treatment-yellow_BouNogGI.mp4",
             "autoplay": true,
             "loop": true,
             "muted": true,
             "controls": false,
-            "card_text": "<p>Repair, strengthen, and transform your hair  made just for you.<\/p>",
+            "card_text": "<p>Repair, strengthen, and transform your hair  made just for you.</p>",
             "product": "custom-hair-treatment"
           }
         },
         "video_product_card_nTEmGN": {
           "type": "video_product_card",
           "settings": {
-            "video": "shopify:\/\/files\/videos\/9ad83910849943d2b707235f5f144df0_Za7WQCtB.mp4",
+            "video": "shopify://files/videos/9ad83910849943d2b707235f5f144df0_Za7WQCtB.mp4",
             "autoplay": true,
             "loop": true,
             "muted": true,
             "controls": false,
-            "card_text": "<p>Lightweight leave-in oil that repairs and strengthens every strand.<\/p>",
+            "card_text": "<p>Lightweight leave-in oil that repairs and strengthens every strand.</p>",
             "product": "custom-hair-elixir"
           }
         },
         "video_product_card_MncF3B": {
           "type": "video_product_card",
           "settings": {
-            "video": "shopify:\/\/files\/videos\/scalp-tonic-on-dry-hair_h1numMhy.mp4",
+            "video": "shopify://files/videos/scalp-tonic-on-dry-hair_h1numMhy.mp4",
             "autoplay": true,
             "loop": true,
             "muted": true,
             "controls": false,
-            "card_text": "<p>Daily tonic that strengthens roots and reduces hair fall.<\/p>",
+            "card_text": "<p>Daily tonic that strengthens roots and reduces hair fall.</p>",
             "product": "custom-scalp-tonic"
           }
         },
         "video_product_card_7HGaN6": {
           "type": "video_product_card",
           "settings": {
-            "video": "shopify:\/\/files\/videos\/scalp-roller_FC1vzDv1.mp4",
+            "video": "shopify://files/videos/scalp-roller_FC1vzDv1.mp4",
             "autoplay": true,
             "loop": true,
             "muted": true,
             "controls": false,
-            "card_text": "<p>Boost absorption. Stimulate growth. Renew your scalp.<\/p>",
+            "card_text": "<p>Boost absorption. Stimulate growth. Renew your scalp.</p>",
             "product": "micro-needle-scalp-roller"
           }
         }
@@ -363,7 +532,7 @@
         "full_width": true,
         "button_text": "Get your formula",
         "quiz_cta_text": "Get Your Formula",
-        "quiz_url": "\/pages\/get-your-formula"
+        "quiz_url": "/pages/get-your-formula"
       }
     },
     "custom_content_DiwQ9R": {
@@ -381,7 +550,7 @@
             "title": "{{ product.title }}",
             "title_size": 42,
             "title_size_mobile": 24,
-            "text": "<p>hoi hoi hoi hoi <\/p>",
+            "text": "<p>hoi hoi hoi hoi </p>",
             "button_label": "",
             "button_link": "",
             "button_style": "primary"
@@ -391,8 +560,8 @@
           "type": "video",
           "settings": {
             "width": "third",
-            "video_shopify": "shopify:\/\/files\/videos\/9ad83910849943d2b707235f5f144df0.MOV",
-            "video_external": "https:\/\/www.youtube.com\/watch?v=_9VUPq3SxOc",
+            "video_shopify": "shopify://files/videos/9ad83910849943d2b707235f5f144df0.MOV",
+            "video_external": "https://www.youtube.com/watch?v=_9VUPq3SxOc",
             "video_description": "",
             "autoplay": false
           }
@@ -414,7 +583,7 @@
       "type": "apps",
       "blocks": {
         "loox_reviews_loox_dynamic_section_rpFfVd": {
-          "type": "shopify:\/\/apps\/loox-reviews\/blocks\/loox-dynamic-section\/5c3b337f-fd14-4df5-b1d6-80ec13e6e28e",
+          "type": "shopify://apps/loox-reviews/blocks/loox-dynamic-section/5c3b337f-fd14-4df5-b1d6-80ec13e6e28e",
           "settings": {
             "only_photos": false,
             "aggregated": false,
@@ -453,21 +622,21 @@
           "type": "question",
           "settings": {
             "title": "Question",
-            "answer": "<p>Answer<\/p>"
+            "answer": "<p>Answer</p>"
           }
         },
         "question_QDVkBX": {
           "type": "question",
           "settings": {
             "title": "Question",
-            "answer": "<p>Answer<\/p>"
+            "answer": "<p>Answer</p>"
           }
         },
         "question_DzYz94": {
           "type": "question",
           "settings": {
             "title": "Question",
-            "answer": "<p>Answer<\/p>"
+            "answer": "<p>Answer</p>"
           }
         }
       },

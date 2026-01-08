@@ -1,29 +1,54 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "type": "aside",
   "name": "Overlay Group",
   "sections": {
     "cart-drawer": {
       "type": "cart-drawer",
-      "disabled": true,
       "settings": {
-        "show_order_note": true,
-        "show_tax_and_shipping": true,
+        "show_order_note": false,
+        "show_tax_and_shipping": false,
         "enable_direct_cart": false,
         "cart_terms_page": "",
         "show_backorder_text": true,
         "show_inventory_notice": "low",
         "show_inventory_count": "low",
         "inventory_threshold": 10,
+        "enable_tiered_rewards": true,
+        "free_shipping_threshold": 100,
+        "free_shipping_label": "Free shipping",
+        "description_subscription": "Easily Edit, Delay, Pause, and Cancel Anytime",
+        "banner_icon": "gift",
+        "banner_text": "Spend [AMOUNT] more to get Free [LABEL]!",
+        "banner_text_achieved": "🎁 Free shipping added! Spend [AMOUNT] more to get Free [LABEL]!",
+        "banner_text_all_achieved": "🎁 All rewards unlocked!",
+        "gift_tier_1_amount": 150,
+        "gift_tier_1_label": "Mulberry Silk",
+        "gift_tier_1_image": "shopify://shop_images/Rectangle_177426.png",
+        "gift_tier_2_amount": 200,
+        "gift_tier_2_label": "Hair Growth oil (50ml)",
+        "gift_tier_2_image": "shopify://shop_images/Rectangle_177426_1.png",
+        "gift_tier_3_amount": 250,
+        "gift_tier_3_label": "Microneedle Scalp Roller",
+        "gift_tier_3_image": "shopify://shop_images/Rectangle_177424.png",
         "show_announcement": true,
         "announcement_position": "below-items",
-        "announcement_text": "<a href=\"#\" title=\"Clearance\"><strong>Summer Sale!<\/strong><\/a> Bag a bargain whilst stocks last!",
+        "announcement_text": "<a href=\"#\" title=\"Clearance\"><strong>Summer Sale!</strong></a> Bag a bargain whilst stocks last!",
         "announcement_icon": "price_tag",
         "announcement_icon_size": "small",
         "announcement_enable_box": true,
         "announcement_box_color": "#ececec",
         "empty_icon": "bag",
         "empty_heading": "Your bag is empty",
-        "empty_text": "<p>Looking for ideas?<\/p>",
+        "empty_text": "<p>Looking for ideas?</p>",
         "empty_button_text": "Start shopping",
         "empty_button_link": "",
         "empty_button_style": "primary",
@@ -33,6 +58,7 @@
         "empty_color_text": "#171717",
         "enable_cross_sells": true,
         "cross_sell_title": "You may also like",
+        "cross_sell_subtitle": "No consultation required*",
         "cross_sell_products": [],
         "enable_automatic_cross_sells": true,
         "croll_sell_color_scheme": "default"
@@ -51,7 +77,7 @@
         "text": {
           "type": "text",
           "settings": {
-            "text": "<p>Receive 15% OFF your first order and get priority access to sales & exclusive deals.<\/p>",
+            "text": "<p>Receive 15% OFF your first order and get priority access to sales & exclusive deals.</p>",
             "text_size": "small-text"
           }
         },
@@ -89,7 +115,7 @@
         "dismiss_days": 30,
         "position": "justify-end items-end",
         "text_align": "text-center",
-        "bg_image": "shopify:\/\/shop_images\/Ontwerp_zonder_titel_2_-min.png",
+        "bg_image": "shopify://shop_images/Ontwerp_zonder_titel_2_-min.png",
         "heading_color": "#ffffff",
         "text_color": "#ffffff",
         "bg_color": "#232323",

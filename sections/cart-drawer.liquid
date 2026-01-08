@@ -54,8 +54,10 @@
         <header class="cart-drawer__header cart-drawer__content-item">
           <div id="CartDrawerModal-Title" class="cart-drawer__title h4 heading-font" data-merge="header-title">
             {{ 'cart.general.title' | t }}
+
             {% if cart.items != empty %}
-              <span class="cart-drawer__title-count">({{ cart.item_count }})</span>
+              <span class="title-dot"></span>
+              <span class="cart-drawer__title-count">{{ cart.item_count }}</span>
             {% endif %}
           </div>
 
@@ -65,7 +67,11 @@
           </button>
         </header>
 
-        {%- if settings.show_free_shipping_bar -%}
+        {%- if section.settings.enable_tiered_rewards -%}
+          <div class="cart-drawer__content-item">
+            {%- render 'tiered-rewards-bar' -%}
+          </div>
+        {%- elsif settings.show_free_shipping_bar -%}
           <div class="cart-drawer__content-item">
             {%- render 'free-shipping-bar' -%}
           </div>
@@ -80,7 +86,7 @@
         <div class="cart-item-list cart-drawer__content-item">
           <div class="cart-item-list__body" data-merge-list="cart-items">
             {% for item in cart.items %}
-              <div data-merge-list-item="item-key:{{ item.key }}|{{ item.final_price }}{% for discount_allocation in item.line_level_discount_allocations %}|{{ discount_allocation.discount_application.title | escape }}{% endfor %}"
+              <div class="cart__line-item" data-merge-list-item="item-key:{{ item.key }}|{{ item.final_price }}{% for discount_allocation in item.line_level_discount_allocations %}|{{ discount_allocation.discount_application.title | escape }}{% endfor %}"
                   {% comment %} Discount items are difficult to predict - BOGOFs appear as a separate item with the same key as an existing item - simpler to always refresh {% endcomment %}
                   {%- if item.line_level_discount_allocations == empty -%}
                   data-merge-cache="{{ item.key }}|{{ item.quantity }}|{{ item.final_line_price }}|{% if item.selling_plan_allocation %}{{ item.selling_plan_allocation.selling_plan.id }}{% endif %}"
@@ -117,22 +123,38 @@
         {%- if cross_sell_product_list or cross_sell_auto -%}
           <div class="cart-item-upsells">
             <cc-cart-cross-sell{% if cross_sell_auto %} data-from="{{ routes.product_recommendations_url }}?section_id=mini-related-products&limit=8&product_id={{ cart.items.first.product.id }}"{% endif %}>
-              <carousel-slider class="carousel block collection-slider cart-drawer__content-item use-color-scheme use-color-scheme--{{ section.settings.croll_sell_color_scheme }}">
+              <carousel-slider class="carousel block collection-slider cart-drawer__content-item use-color-scheme use-color-scheme--{{ section.settings.croll_sell_color_scheme }}" data-dispatch-events="false">
                 <div class="opposing-items opposing-items--valign-base very-lightly-spaced-row">
-                  <div class="opposing-items__left product-info-label">{{ section.settings.cross_sell_title | escape }}</div>
+                  <div class="opposing-items__left product-info-label">
+                    <h2>{{ section.settings.cross_sell_title | escape }}</h2>
+                    <p>{{ section.settings.cross_sell_subtitle }}</p>
+                  </div>
                   <div class="no-wrap slider-nav">
                     <button name="prev" class="slider-nav__btn has-ltr-icon">
                       <span class="visually-hidden">{{ 'general.slider.previous' | t }}</span>
-                      {% render 'icon-chevron-left' %}
+                      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M3.4286 4.57141L1.14288 6.85713M1.14288 6.85713L3.4286 9.14284M1.14288 6.85713H12.5715" stroke="#2E432F" stroke-width="0.857143" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+
                     </button>
                     <button name="next" class="slider-nav__btn has-ltr-icon">
                       <span class="visually-hidden">{{ 'general.slider.next' | t }}</span>
-                      {% render 'icon-chevron-right' %}
+                      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <g clip-path="url(#clip0_10475_590)">
+                        <path d="M10.2857 4.57141L12.5715 6.85713M12.5715 6.85713L10.2857 9.14284M12.5715 6.85713H1.14288" stroke="#2E432F" stroke-width="0.857143" stroke-linecap="round" stroke-linejoin="round"/>
+                        </g>
+                        <defs>
+                        <clipPath id="clip0_10475_590">
+                        <rect width="13.7143" height="13.7143" fill="white"/>
+                        </clipPath>
+                        </defs>
+                      </svg>
+
                     </button>
                   </div>
                 </div>
                 <div class="slider slider--no-scrollbar slider--edge-peek">
-                  <ul class="slider__grid product-grid product-grid--carousel product-grid--per-row-2 product-grid--per-row-mob-2">
+                  <ul class="slider__grid product-grid product-grid--carousel product-grid--per-row-3 product-grid--per-row-mob-3">
                     {%- if cross_sell_product_list -%}
                       {%- liquid
                         if settings.prod_thumb_shape == 'portrait-23'
@@ -164,18 +186,371 @@
 
                       {%- for product in section.settings.cross_sell_products -%}
                         <li class="slider__item">
-                          {%- render 'product-block', product: product, manual_loading: true, no_quick_buy: true, no_swiping: true, custom_aspect_ratio: chosen_aspect_ratio -%}
+                          {%- render 'cart-upsell-product', product: product, custom_aspect_ratio: chosen_aspect_ratio -%}
                         </li>
                       {%- endfor -%}
                     {%- endif -%}
                   </ul>
                 </div>
+                <div class="cart-item-upsells__dots"></div>
               </carousel-slider>
             </cc-cart-cross-sell>
           </div>
         {%- endif -%}
       </div>
     </div>
+
+    <script>
+      (function() {
+        let isInitialized = false;
+        let cleanupFn = null;
+
+        function initCartUpsellsDots() {
+          // Prevent multiple initializations
+          if (isInitialized) return;
+
+          const cartUpsells = document.querySelector('.cart-item-upsells');
+          if (!cartUpsells) return;
+
+          const carousel = cartUpsells.querySelector('carousel-slider');
+          if (!carousel || !carousel.hasAttribute('loaded')) {
+            // Wait for carousel to initialize
+            setTimeout(initCartUpsellsDots, 100);
+            return;
+          }
+
+          // Check if already initialized for this carousel
+          if (carousel.dataset.dotsInitialized === 'true') return;
+
+          const dotsContainer = cartUpsells.querySelector('.cart-item-upsells__dots');
+          if (!dotsContainer) return;
+
+          const slider = carousel.querySelector('.slider');
+          const slides = carousel.querySelectorAll('.slider__item:not([hidden])');
+          
+          if (slides.length < 2) {
+            dotsContainer.style.display = 'none';
+            return;
+          }
+
+          dotsContainer.style.display = 'flex';
+          carousel.dataset.dotsInitialized = 'true';
+
+          // Wait for carousel to be fully initialized and get its properties
+          function getCarouselInfo() {
+            const grid = carousel.querySelector('.slider__grid');
+            if (!grid) return null;
+
+            const gridWidth = grid.clientWidth;
+            if (gridWidth === 0) return null;
+
+            const firstSlide = slides[0];
+            const secondSlide = slides[1];
+            if (!firstSlide || !secondSlide) return null;
+
+            const firstRect = firstSlide.getBoundingClientRect();
+            const secondRect = secondSlide.getBoundingClientRect();
+            const slideSpan = secondRect.left - firstRect.left;
+            
+            if (slideSpan <= 0) return null;
+
+            // Check if mobile or desktop based on grid classes
+            const isMobile = window.innerWidth < 768;
+            
+            // Calculate visible slides per page
+            // Desktop: 2.8 slides (2 full + 1 at 80%), Mobile: 1.5 slides (partial view)
+            let slidesPerPage;
+            let totalPages;
+            
+            if (isMobile) {
+              // Mobile: 1.5 slides visible (calculate based on actual width)
+              slidesPerPage = (gridWidth + (slideSpan - firstSlide.clientWidth)) / slideSpan;
+              // For mobile with 1.5 slides per view: totalPages = slides.length
+              // Each slide can be a starting point (showing 1 full + 0.5 next)
+              totalPages = Math.max(1, slides.length);
+            } else {
+              // Desktop: 2.65 slides per page (2 full + 1 at 65%)
+              slidesPerPage = 2.65;
+              // For desktop: calculate pages based on 2.65 slides per page
+              // Each page shows 2 full slides + 0.65 of next, so we scroll by 2 slides per page
+              // Pages start at indices: 0, 2, 4, 6, etc.
+              if (slides.length <= 2) {
+                totalPages = 1;
+              } else {
+                // For 7 slides: pages at 0, 2, 4 = 3 pages (showing 0-1.65, 2-3.65, 4-5.65, and last shows 6)
+                totalPages = Math.ceil((slides.length - 2) / 2) + 1;
+              }
+            }
+
+            return { slidesPerPage, totalPages, slideSpan, isMobile };
+          }
+
+          let carouselInfo = getCarouselInfo();
+          if (!carouselInfo) {
+            setTimeout(() => {
+              carouselInfo = getCarouselInfo();
+              if (carouselInfo) initDots();
+            }, 200);
+            return;
+          }
+
+          let { slidesPerPage, totalPages, slideSpan, isMobile } = carouselInfo;
+          let currentPage = 0;
+
+          // Debounce helper
+          function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+              const later = () => {
+                clearTimeout(timeout);
+                func(...args);
+              };
+              clearTimeout(timeout);
+              timeout = setTimeout(later, wait);
+            };
+          }
+
+          // Create dots
+          function createDots() {
+            dotsContainer.innerHTML = '';
+            if (totalPages <= 1) {
+              dotsContainer.style.display = 'none';
+              return;
+            }
+            dotsContainer.style.display = 'flex';
+            
+            for (let i = 0; i < totalPages; i++) {
+              const dot = document.createElement('button');
+              dot.className = 'cart-item-upsells__dot';
+              if (i === 0) dot.classList.add('active');
+              dot.setAttribute('aria-label', `Go to page ${i + 1}`);
+              dot.dataset.pageIndex = i;
+              dot.addEventListener('click', (e) => {
+                const pageIndex = parseInt(e.currentTarget.dataset.pageIndex);
+                goToPage(pageIndex);
+              });
+              dotsContainer.appendChild(dot);
+            }
+          }
+
+          // Go to specific page
+          function goToPage(pageIndex) {
+            if (pageIndex < 0 || pageIndex >= totalPages) return;
+            
+            // Calculate which slide index corresponds to this page
+            // For mobile (1.5 slides): page 0 = slide 0, page 1 = slide 1, etc.
+            // For desktop (2.65 slides): page 0 = slide 0, page 1 = slide 2, etc.
+            let targetSlideIndex;
+            if (isMobile) {
+              // Mobile: each page shows 1.5 slides, so we scroll by 1 slide per page
+              targetSlideIndex = Math.min(pageIndex, slides.length - 1);
+            } else {
+              // Desktop: each page shows 2.65 slides (2 full + 0.65)
+              // We scroll by 2 slides per page to show: 2 full + next at 65%
+              // Each page starts at slide index: 0, 2, 4, 6, etc.
+              targetSlideIndex = pageIndex * 2;
+              
+              // For last page, ensure we don't go beyond available slides
+              // If calculated index would be too high, use the pattern: last page shows last 2-3 slides
+              if (pageIndex === totalPages - 1) {
+                // Last page should show the last slides that fit the pattern
+                // Ensure we show at least 2 slides, so max index is slides.length - 2
+                const maxIndex = Math.max(0, slides.length - 2);
+                // But keep it aligned to the pattern (even numbers: 0, 2, 4, 6...)
+                if (targetSlideIndex > maxIndex) {
+                  // Find the highest even index that shows last 2-3 slides
+                  targetSlideIndex = Math.max(0, Math.floor((slides.length - 2) / 2) * 2);
+                }
+              }
+              
+              // Final safety check
+              targetSlideIndex = Math.min(targetSlideIndex, slides.length - 1);
+            }
+            
+            const targetSlide = slides[targetSlideIndex];
+            if (!targetSlide) return;
+
+            // Use carousel's scrollToElement method if available
+            if (typeof carousel.scrollToElement === 'function') {
+              carousel.scrollToElement(targetSlide, 'smooth');
+            } else {
+              // Fallback: direct scroll
+              const targetScroll = targetSlide.offsetLeft;
+              slider.scrollTo({
+                left: targetScroll,
+                behavior: 'smooth'
+              });
+            }
+            
+            // Manually update dots after a short delay to ensure scroll completes
+            setTimeout(() => {
+              const currentIndex = Math.round(Math.abs(slider.scrollLeft) / slideSpan) || 0;
+              updateDotsFromIndex(currentIndex);
+            }, 150);
+          }
+
+          // Update dots based on current slide index
+          function updateDotsFromIndex(slideIndex) {
+            let newPage;
+            if (isMobile) {
+              // Mobile: each page corresponds to one slide (with 1.5 visible)
+              newPage = Math.min(slideIndex, totalPages - 1);
+            } else {
+              // Desktop: 2.65 slides per page (2 full + 0.65)
+              // Pages are: 0 (slides 0-1.65), 1 (slides 2-3.65), 2 (slides 4-5.65), etc.
+              // Each page starts at even slide index: 0, 2, 4, 6, etc.
+              
+              // Check if we're at the end of the slider
+              const maxScrollLeft = slider.scrollWidth - slider.clientWidth;
+              const isAtEnd = Math.abs(slider.scrollLeft - maxScrollLeft) < 10; // 10px tolerance
+              
+              // Check if we're in the last page
+              // Last page shows slides starting from (totalPages - 1) * 2
+              const lastPageStartIndex = (totalPages - 1) * 2;
+              
+              if (isAtEnd || slideIndex >= lastPageStartIndex || slideIndex >= slides.length - 2) {
+                // We're in the last page (either by index or by scroll position)
+                newPage = totalPages - 1;
+              } else {
+                // Calculate page based on slide index: page = floor(slideIndex / 2)
+                newPage = Math.floor(slideIndex / 2);
+                // Ensure we don't exceed total pages
+                newPage = Math.min(newPage, totalPages - 1);
+              }
+            }
+            
+            // Always update if page changed, even if it's the same to ensure UI is correct
+            if (newPage >= 0 && newPage < totalPages) {
+              currentPage = newPage;
+              const dots = dotsContainer.querySelectorAll('.cart-item-upsells__dot');
+              dots.forEach((dot, idx) => {
+                dot.classList.toggle('active', idx === currentPage);
+              });
+            }
+          }
+
+          // Listen to carousel select events
+          const selectHandler = (e) => {
+            const slideIndex = e.detail.index;
+            updateDotsFromIndex(slideIndex);
+          };
+          
+          carousel.addEventListener('on:carousel-slider:select', selectHandler);
+          
+          // Also listen to scroll events to catch cases where select event doesn't fire
+          const scrollHandler = debounce(() => {
+            // Calculate current slide index based on scroll position
+            const currentIndex = Math.round(Math.abs(slider.scrollLeft) / slideSpan) || 0;
+            // Also check if we're at the end
+            const maxScrollLeft = slider.scrollWidth - slider.clientWidth;
+            const isAtEnd = Math.abs(slider.scrollLeft - maxScrollLeft) < 10;
+            
+            // If at end, use last slide index to ensure last page is detected
+            const slideIndexToUse = isAtEnd ? Math.max(currentIndex, slides.length - 1) : currentIndex;
+            updateDotsFromIndex(slideIndexToUse);
+          }, 150);
+          
+          slider.addEventListener('scroll', scrollHandler);
+
+          // Initialize dots
+          function initDots() {
+            carouselInfo = getCarouselInfo();
+            if (!carouselInfo) return;
+            
+            slidesPerPage = carouselInfo.slidesPerPage;
+            totalPages = carouselInfo.totalPages;
+            slideSpan = carouselInfo.slideSpan;
+            isMobile = carouselInfo.isMobile;
+            
+            createDots();
+            
+            // Set initial active dot based on current scroll position
+            const currentIndex = Math.round(Math.abs(slider.scrollLeft) / slideSpan) || 0;
+            updateDotsFromIndex(currentIndex);
+          }
+
+          // Recalculate on resize
+          let resizeTimeout;
+          const resizeHandler = () => {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(() => {
+              carouselInfo = getCarouselInfo();
+              if (carouselInfo) {
+                slidesPerPage = carouselInfo.slidesPerPage;
+                totalPages = carouselInfo.totalPages;
+                slideSpan = carouselInfo.slideSpan;
+                isMobile = carouselInfo.isMobile;
+                createDots();
+                const currentIndex = Math.round(Math.abs(slider.scrollLeft) / slideSpan) || 0;
+                updateDotsFromIndex(currentIndex);
+              }
+            }, 250);
+          };
+          
+          window.addEventListener('resize', resizeHandler);
+
+          // Initial setup
+          initDots();
+          isInitialized = true;
+
+          // Cleanup function
+          cleanupFn = () => {
+            carousel.removeEventListener('on:carousel-slider:select', selectHandler);
+            slider.removeEventListener('scroll', scrollHandler);
+            window.removeEventListener('resize', resizeHandler);
+            carousel.dataset.dotsInitialized = 'false';
+            isInitialized = false;
+          };
+        }
+
+        // Initialize when DOM is ready
+        function startInit() {
+          setTimeout(() => {
+            if (!isInitialized) {
+              initCartUpsellsDots();
+            }
+          }, 300);
+        }
+
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', startInit);
+        } else {
+          startInit();
+        }
+
+        // Re-initialize when cart drawer opens or content updates
+        document.addEventListener('DOMContentLoaded', () => {
+          const cartDrawer = document.querySelector('cart-drawer');
+          if (cartDrawer) {
+            // Reset on drawer open
+            const observer = new MutationObserver((mutations) => {
+              const shouldReset = mutations.some(mutation => {
+                return Array.from(mutation.addedNodes).some(node => 
+                  node.nodeType === 1 && 
+                  (node.classList?.contains('cart-item-upsells') || 
+                   node.querySelector?.('.cart-item-upsells'))
+                );
+              });
+              
+              if (shouldReset && cleanupFn) {
+                cleanupFn();
+                cleanupFn = null;
+                setTimeout(() => {
+                  if (!isInitialized) {
+                    initCartUpsellsDots();
+                  }
+                }, 400);
+              }
+            });
+            
+            observer.observe(cartDrawer, { 
+              childList: true, 
+              subtree: true 
+            });
+          }
+        });
+      })();
+    </script>
 
     <div class="cart-drawer__footer{% if cart.items == empty %} cart-drawer__footer--hidden{% endif %}" data-merge-attributes="footer-container">
       {%- if section.settings.announcement_position == 'above-subtotal' -%}
@@ -242,12 +617,71 @@
         </terms-agreement>
       {% endif %}
 
+      {%- if section.settings.show_usp_badges -%}
+        <div class="cart-drawer__usp-badges{% if cart.items == empty %} hidden{% endif %}">
+          {%- if section.settings.usp_1_label != blank -%}
+            <div class="cart-drawer__usp-badge">
+              <div class="cart-drawer__usp-badge-icon">
+                <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M8.8125 0C3.94549 0 0 3.94549 0 8.8125C0 13.6795 3.94549 17.625 8.8125 17.625C13.6795 17.625 17.625 13.6795 17.625 8.8125C17.625 3.94549 13.6795 0 8.8125 0Z" fill="#CCCCE8"/>
+                <path d="M12.1456 6.49463L7.22911 11.4111L4.99435 9.17634" stroke="#1A365D" stroke-width="1.45455" stroke-linecap="square" stroke-linejoin="round"/>
+                </svg>
+
+              </div>
+              <span class="cart-drawer__usp-badge-label">{{ section.settings.usp_1_label }}</span>
+            </div>
+          {%- endif -%}
+          {%- if section.settings.usp_2_label != blank -%}
+            <div class="cart-drawer__usp-badge">
+              <div class="cart-drawer__usp-badge-icon">
+                <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M8.8125 0C3.94549 0 0 3.94549 0 8.8125C0 13.6795 3.94549 17.625 8.8125 17.625C13.6795 17.625 17.625 13.6795 17.625 8.8125C17.625 3.94549 13.6795 0 8.8125 0Z" fill="#CCCCE8"/>
+                <path d="M12.1456 6.49463L7.22911 11.4111L4.99435 9.17634" stroke="#1A365D" stroke-width="1.45455" stroke-linecap="square" stroke-linejoin="round"/>
+                </svg>
+
+              </div>
+              <span class="cart-drawer__usp-badge-label">{{ section.settings.usp_2_label }}</span>
+            </div>
+          {%- endif -%}
+          {%- if section.settings.usp_3_label != blank -%}
+            <div class="cart-drawer__usp-badge">
+              <div class="cart-drawer__usp-badge-icon">
+                <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M8.8125 0C3.94549 0 0 3.94549 0 8.8125C0 13.6795 3.94549 17.625 8.8125 17.625C13.6795 17.625 17.625 13.6795 17.625 8.8125C17.625 3.94549 13.6795 0 8.8125 0Z" fill="#CCCCE8"/>
+                <path d="M12.1456 6.49463L7.22911 11.4111L4.99435 9.17634" stroke="#1A365D" stroke-width="1.45455" stroke-linecap="square" stroke-linejoin="round"/>
+                </svg>
+
+              </div>
+              <span class="cart-drawer__usp-badge-label">{{ section.settings.usp_3_label }}</span>
+            </div>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+
       <div class="checkout-buttons{% if cart.items == empty %} hidden{% endif %}" data-merge-attributes="checkout-buttons">
         {% if section.settings.enable_direct_cart %}
           <a href="{{ routes.root_url | append: '/checkout' | replace: '//', '/' }}" class="btn btn--large btn--wide">{{ 'cart.summary.checkout' | t }}</a>
         {% else %}
-          <a href="{{ routes.cart_url }}" class="btn btn--large btn--wide">{{ 'cart.summary.checkout' | t }}</a>
+          <a href="{{ routes.cart_url }}" class="btn btn--large btn--wide">
+            {{ 'cart.summary.checkout' | t }}
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <g clip-path="url(#clip0_10099_15552)">
+          <path d="M14.6249 7.125H14.0624V5.0625C14.0624 3.71984 13.5291 2.43217 12.5797 1.48277C11.6303 0.533369 10.3426 0 8.99994 0C7.65728 0 6.36961 0.533369 5.42021 1.48277C4.47081 2.43217 3.93744 3.71984 3.93744 5.0625V7.125H3.37494C2.97711 7.125 2.59558 7.28303 2.31428 7.56434C2.03297 7.84564 1.87494 8.22717 1.87494 8.625V16.5C1.87494 16.8978 2.03297 17.2794 2.31428 17.5607C2.59558 17.842 2.97711 18 3.37494 18H14.6249C15.0228 18 15.4043 17.842 15.6856 17.5607C15.9669 17.2794 16.1249 16.8978 16.1249 16.5V8.625C16.1249 8.22717 15.9669 7.84564 15.6856 7.56434C15.4043 7.28303 15.0228 7.125 14.6249 7.125ZM8.99994 13.875C8.70327 13.875 8.41326 13.787 8.16658 13.6222C7.91991 13.4574 7.72765 13.2231 7.61412 12.949C7.50059 12.6749 7.47088 12.3733 7.52876 12.0824C7.58664 11.7914 7.7295 11.5241 7.93928 11.3143C8.14906 11.1046 8.41633 10.9617 8.7073 10.9038C8.99828 10.8459 9.29987 10.8756 9.57396 10.9892C9.84805 11.1027 10.0823 11.295 10.2471 11.5416C10.412 11.7883 10.4999 12.0783 10.4999 12.375C10.4999 12.572 10.4611 12.767 10.3858 12.949C10.3104 13.131 10.1999 13.2964 10.0606 13.4357C9.92131 13.5749 9.75595 13.6854 9.57396 13.7608C9.39198 13.8362 9.19692 13.875 8.99994 13.875ZM12.1874 6.75C12.1874 6.79925 12.1777 6.84801 12.1589 6.89351C12.14 6.939 12.1124 6.98034 12.0776 7.01516C12.0428 7.04999 12.0014 7.07761 11.9559 7.09646C11.9104 7.1153 11.8617 7.125 11.8124 7.125H6.18744C6.08798 7.125 5.9926 7.08549 5.92227 7.01516C5.85195 6.94484 5.81244 6.84946 5.81244 6.75V5.0625C5.81244 4.21712 6.14826 3.40637 6.74604 2.8086C7.34381 2.21082 8.15456 1.875 8.99994 1.875C9.84532 1.875 10.6561 2.21082 11.2538 2.8086C11.8516 3.40637 12.1874 4.21712 12.1874 5.0625V6.75Z" fill="#F7F7FC"/>
+          </g>
+          <defs>
+          <clipPath id="clip0_10099_15552">
+          <rect width="18" height="18" fill="white"/>
+          </clipPath>
+          </defs>
+          </svg>
+          </a>
         {% endif %}
+      </div>
+
+      <div class="section-footer__payment-icons">
+        {% for type in shop.enabled_payment_types %}
+          {{ type | payment_type_svg_tag: class: 'section-footer__payment-icon' }}
+        {% endfor %}
       </div>
 
       {%- if section.settings.announcement_position == 'below-checkout' -%}
@@ -384,6 +818,173 @@
       "step": 1,
       "label": "Low inventory threshold",
       "default": 10
+    },
+    {
+      "type": "header",
+      "content": "Tiered Rewards Bar"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_tiered_rewards",
+      "label": "Enable tiered rewards bar",
+      "default": true
+    },
+    {
+      "visible_if": "{{ section.settings.enable_tiered_rewards }}",
+      "type": "number",
+      "id": "free_shipping_threshold",
+      "label": "Free shipping threshold ($)",
+      "default": 100,
+      "info": "Amount in dollars (e.g., 100 for $100)"
+    },
+    {
+      "type": "text",
+      "id": "free_shipping_label",
+      "label": "Free shipping label",
+      "default": "Free shipping"
+    },
+    {
+      "type": "text",
+      "id": "description_subscription",
+      "label": "Description for subscription in Line item",
+      "default": "Easily Edit, Delay, Pause, and Cancel Anytime"
+    },
+    {
+      "visible_if": "{{ section.settings.enable_tiered_rewards }}",
+      "type": "header",
+      "content": "Banner Settings"
+    },
+    {
+      "visible_if": "{{ section.settings.enable_tiered_rewards }}",
+      "type": "select",
+      "id": "banner_icon",
+      "label": "Banner icon",
+      "default": "gift",
+      "options": [
+        {
+          "value": "",
+          "label": "No icon"
+        },
+        {
+          "value": "gift",
+          "label": "Gift"
+        },
+        {
+          "value": "award",
+          "label": "Award"
+        },
+        {
+          "value": "star",
+          "label": "Star"
+        }
+      ]
+    },
+    {
+      "visible_if": "{{ section.settings.enable_tiered_rewards }}",
+      "type": "image_picker",
+      "id": "banner_custom_icon",
+      "label": "Banner custom icon"
+    },
+    {
+      "visible_if": "{{ section.settings.enable_tiered_rewards }}",
+      "type": "text",
+      "id": "banner_text",
+      "label": "Banner text (before achievement)",
+      "default": "Spend [AMOUNT] more to get Free [LABEL]!",
+      "info": "Use [AMOUNT] for amount and [LABEL] for next tier label"
+    },
+    {
+      "visible_if": "{{ section.settings.enable_tiered_rewards }}",
+      "type": "text",
+      "id": "banner_text_achieved",
+      "label": "Banner text (after free shipping)",
+      "default": "Free shipping added! Spend [AMOUNT] more to get Free [LABEL]!",
+      "info": "Use [AMOUNT] for amount and [LABEL] for next tier label"
+    },
+    {
+      "visible_if": "{{ section.settings.enable_tiered_rewards }}",
+      "type": "text",
+      "id": "banner_text_all_achieved",
+      "label": "Banner text (all achieved)",
+      "default": "All rewards unlocked!"
+    },
+    {
+      "visible_if": "{{ section.settings.enable_tiered_rewards }}",
+      "type": "header",
+      "content": "Gift Tier 1"
+    },
+    {
+      "visible_if": "{{ section.settings.enable_tiered_rewards }}",
+      "type": "number",
+      "id": "gift_tier_1_amount",
+      "label": "Gift tier 1 threshold ($)",
+      "default": 150,
+      "info": "Amount in dollars"
+    },
+    {
+      "visible_if": "{{ section.settings.enable_tiered_rewards }}",
+      "type": "text",
+      "id": "gift_tier_1_label",
+      "label": "Gift tier 1 label",
+      "default": "Mulberry Silk"
+    },
+    {
+      "visible_if": "{{ section.settings.enable_tiered_rewards }}",
+      "type": "image_picker",
+      "id": "gift_tier_1_image",
+      "label": "Gift tier 1 image"
+    },
+    {
+      "visible_if": "{{ section.settings.enable_tiered_rewards }}",
+      "type": "header",
+      "content": "Gift Tier 2"
+    },
+    {
+      "visible_if": "{{ section.settings.enable_tiered_rewards }}",
+      "type": "number",
+      "id": "gift_tier_2_amount",
+      "label": "Gift tier 2 threshold ($)",
+      "default": 200,
+      "info": "Amount in dollars"
+    },
+    {
+      "visible_if": "{{ section.settings.enable_tiered_rewards }}",
+      "type": "text",
+      "id": "gift_tier_2_label",
+      "label": "Gift tier 2 label",
+      "default": "Hair Growth oil (50ml)"
+    },
+    {
+      "visible_if": "{{ section.settings.enable_tiered_rewards }}",
+      "type": "image_picker",
+      "id": "gift_tier_2_image",
+      "label": "Gift tier 2 image"
+    },
+    {
+      "visible_if": "{{ section.settings.enable_tiered_rewards }}",
+      "type": "header",
+      "content": "Gift Tier 3"
+    },
+    {
+      "visible_if": "{{ section.settings.enable_tiered_rewards }}",
+      "type": "number",
+      "id": "gift_tier_3_amount",
+      "label": "Gift tier 3 threshold ($)",
+      "default": 250,
+      "info": "Amount in dollars"
+    },
+    {
+      "visible_if": "{{ section.settings.enable_tiered_rewards }}",
+      "type": "text",
+      "id": "gift_tier_3_label",
+      "label": "Gift tier 3 label",
+      "default": "Microneedle Scalp Roller"
+    },
+    {
+      "visible_if": "{{ section.settings.enable_tiered_rewards }}",
+      "type": "image_picker",
+      "id": "gift_tier_3_image",
+      "label": "Gift tier 3 image"
     },
     {
       "type": "header",
@@ -731,6 +1332,37 @@
     },
     {
       "type": "header",
+      "content": "USP Badges"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_usp_badges",
+      "label": "Show USP badges above checkout button",
+      "default": true
+    },
+    {
+      "visible_if": "{{ section.settings.show_usp_badges }}",
+      "type": "text",
+      "id": "usp_1_label",
+      "label": "USP 1 label",
+      "default": "Trichologist-Developed"
+    },
+    {
+      "visible_if": "{{ section.settings.show_usp_badges }}",
+      "type": "text",
+      "id": "usp_2_label",
+      "label": "USP 2 label",
+      "default": "Clean Ingredients"
+    },
+    {
+      "visible_if": "{{ section.settings.show_usp_badges }}",
+      "type": "text",
+      "id": "usp_3_label",
+      "label": "USP 3 label",
+      "default": "Cruelty-Free"
+    },
+    {
+      "type": "header",
       "content": "Recommended products"
     },
     {
@@ -744,6 +1376,12 @@
       "id": "cross_sell_title",
       "label": "Heading",
       "default": "You may like"
+    },
+    {
+      "type": "text",
+      "id": "cross_sell_subtitle",
+      "label": "Subtitle",
+      "default": "No consultation required*"
     },
     {
       "type": "product_list",
