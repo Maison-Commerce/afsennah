@@ -154,6 +154,13 @@
         margin: 0 auto;
     }
 
+    .maison-quiz-recom-text{
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+        align-items: center;
+    }
+
     .gift-progress-subtitle p{
         margin: 0;
     }
