@@ -2141,9 +2141,14 @@
             "description": "<p>Get all 7 products — more than our top 3 bestsellers — with <strong>50% off</strong>. This is a one-time purchase with no subscription. A limited-time offer we may not keep for long.</p>",
             "discount_percent": 50,
             "products": [
-              "mulberry-pillowcase",
-              "mulberry-silk-scrunchies-set",
-              "microfiber-towel-set"
+              "custom-hair-growth-oil-for-her",
+              "custom-hair-treatment",
+              "custom-scalp-tonic",
+              "micro-needle-scalp-roller",
+              "liquid-hair-growth-vitamins",
+              "custom-shampoo-for-her",
+              "custom-hair-elixir",
+              "custom-conditioner"
             ],
             "button_text": "Claim Ultimate Package — $75",
             "footer_text": "No subscription • One-time payment • Limited availability",
