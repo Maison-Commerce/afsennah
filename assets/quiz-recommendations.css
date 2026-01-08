@@ -161,6 +161,18 @@
         align-items: center;
     }
 
+    .maison-quiz-recom-text-title{
+        color: var(--Text-Primary, #232323);
+        text-align: center;
+
+        font-family: "Vanilla Ravioli";
+        font-size: 32px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 41.6px;
+        text-transform: capitalize;
+    }
+
     .gift-progress-subtitle p{
         margin: 0;
     }
