@@ -859,20 +859,28 @@
         // Disable smooth scrolling for auto-scroll (it interferes with programmatic scrolling)
         reviewsContainer.style.scrollBehavior = 'auto';
 
-        // Auto-scroll function with seamless looping
+        // Auto-scroll function - continuous scroll without looping
         function autoScroll() {
-          const currentScrollHeight = reviewsContainer.scrollHeight;
-          const currentClientHeight = reviewsContainer.clientHeight;
+          const scrollableContainer = calcSection.querySelector('.quiz-calculating-reviews-container');
+          if (!scrollableContainer) return;
+          
+          const currentScrollHeight = scrollableContainer.scrollHeight;
+          const currentClientHeight = scrollableContainer.clientHeight;
           const currentMaxScroll = currentScrollHeight - currentClientHeight;
           
           if (currentMaxScroll <= 0) return;
 
-          // Scroll down
-          if (reviewsContainer.scrollTop < currentMaxScroll - 1) {
-            reviewsContainer.scrollTop += 1;
-          } else {
-            // Reset to top when reaching bottom for seamless loop
-            reviewsContainer.scrollTop = 0;
+          // Scroll down smoothly
+          scrollableContainer.scrollTop += 0.5;
+          
+          // Stop at bottom, don't loop
+          if (scrollableContainer.scrollTop >= currentMaxScroll) {
+            scrollableContainer.scrollTop = currentMaxScroll;
+            // Stop the interval when we reach the bottom
+            if (scrollInterval) {
+              clearInterval(scrollInterval);
+              scrollInterval = null;
+            }
           }
         }
 
