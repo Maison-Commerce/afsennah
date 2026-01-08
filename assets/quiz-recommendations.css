@@ -173,6 +173,17 @@
         text-transform: capitalize;
     }
 
+    .maison-quiz-recom-text-subtitle{
+        color: var(--Text-Primary, #272727);
+        text-align: center;
+
+        font-family: Gotham;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 150%; /* 24px */
+    }
+
     .gift-progress-subtitle p{
         margin: 0;
     }
