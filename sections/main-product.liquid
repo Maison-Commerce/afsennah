@@ -1073,6 +1073,7 @@
                     endif
                   endif
                 -%}
+                1
                 <div class="product-info-block{% if block.settings.icon != blank or block.settings.custom_icon != blank %} with-icon{% endif %}{% if block.settings.enable_box %} text-box{% endif %}" {% if block.settings.enable_box %}style="--box-color: {{ block.settings.box_color }}; --box-text-color: {{ text_col }}"{% endif %}>
                   {%- if block.settings.icon == blank and block.settings.custom_icon == blank -%}
                     <div class="rte cf">{{ block.settings.richtext }}</div>
