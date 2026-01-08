@@ -1422,8 +1422,7 @@
         }
 
         .product-card-header-row {
-            flex-direction: column;
-            gap: 12px;
+            gap: 16px;
         }
 
         .product-card-image {
