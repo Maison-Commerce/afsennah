@@ -1587,7 +1587,7 @@ height: 100%;
 /* Custom styles for product-item-upsells slider (2 products in view) */
 .product-item-upsells .product-grid--carousel {
   --product-columns-desktop: 2;
-  grid-auto-columns: calc((100% - var(--gutter)) / 2);
+  grid-auto-columns: calc((100% - 18px) / 2);
 }
 
 .product-item-upsells .product-grid--carousel .slider__item {
