@@ -31,13 +31,6 @@
             "emptyRatingWidget": false
           }
         },
-        "price": {
-          "type": "price",
-          "settings": {
-            "show_tax_and_shipping": false,
-            "enable_product_reviews_by_price": false
-          }
-        },
         "richtext_9PTgzC": {
           "type": "richtext",
           "settings": {
@@ -47,6 +40,13 @@
             "enable_box": false,
             "box_color": "#e0f4d5",
             "show_in_quickbuy": false
+          }
+        },
+        "price": {
+          "type": "price",
+          "settings": {
+            "show_tax_and_shipping": false,
+            "enable_product_reviews_by_price": false
           }
         },
         "formula_button_wd8rNQ": {
@@ -166,8 +166,8 @@
       "block_order": [
         "title",
         "loox_reviews_loox_rating_K6cdrY",
-        "price",
         "richtext_9PTgzC",
+        "price",
         "formula_button_wd8rNQ",
         "vendor",
         "divider",
