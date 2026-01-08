@@ -1881,6 +1881,11 @@ height: 100%;
     }
 }
 
+.product-info .section-footer__payment-icons {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
 .product-info .section-footer__payment-icon {
     width: 29px;
 }
