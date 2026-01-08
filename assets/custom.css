@@ -1677,10 +1677,13 @@ height: 100%;
 .option-selector__btns .opt-btn:checked+.opt-label {
     background: #F7F7FC;
     border: 1.5px solid #B4B4DE;
+    box-shadow: none;
 }
 .option-selector__btns .opt-label {
     background: white;
     border: 1px solid rgba(0, 0, 0, 0.08);
     padding: 8px 16px;
     border-radius: 8px;
+    box-shadow: none;
+    outline: none;
 }
