@@ -2277,6 +2277,7 @@
                     try {
                         // Use the products from Section 2
                         const products = additionalProducts;
+                        console.log('Upsell Package: Adding products to cart:', products.length, 'products');
 
                         // Prepare cart items for Shopify API
                         const itemsToAdd = [];
@@ -2290,63 +2291,84 @@
                             }
                         }
 
+                        console.log('Upsell Package: Prepared items to add:', itemsToAdd.length, 'items');
+
                         if (itemsToAdd.length === 0) {
                             throw new Error('No valid products found');
                         }
 
-                        // Add all products to cart via Shopify API
-                        const response = await fetch('/cart/add.js', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                            },
-                            body: JSON.stringify({ items: itemsToAdd })
-                        });
-
-                        if (response.ok) {
-                            // Reload cart from Shopify to sync
-                            const cartResponse = await fetch('/cart.js');
-                            const cart = await cartResponse.json();
-                            
-                            // Update local cartItems array
-                            cartItems.length = 0;
-                            for (const item of cart.items) {
-                                // Find the product from Section 2 products
-                                const product = products.find(p => {
-                                    // Match by handle or variant ID
-                                    return p.handle === item.handle || 
-                                           p.variants.some(v => v.id === item.variant_id);
-                                });
-                                if (product) {
-                                    cartItems.push({
-                                        variantId: item.variant_id,
-                                        quantity: item.quantity,
-                                        product: product,
-                                        sellingPlanId: item.selling_plan_allocation ? item.selling_plan_allocation.selling_plan_id : null,
-                                        isGift: false,
-                                        isBogoFree: false
-                                    });
-                                }
-                            }
-                            
-                            // Update cart display and related functions
-                            updateCartDisplay();
-                            updateGiftTiers();
-                            updateProductCardButtons();
-                            
-                            // Trigger cart update event
-                            document.dispatchEvent(new CustomEvent('cart:updated'));
-
-                            // Show success feedback
-                            button.innerHTML = 'Added to Cart!';
-                            setTimeout(() => {
-                                button.innerHTML = originalText;
-                                button.disabled = false;
-                            }, 2000);
-                        } else {
-                            const errorData = await response.json();
-                            throw new Error(errorData.description || 'Failed to add products to cart');
+                        // Shopify's cart/add.js API can handle multiple items, but let's add them in batches
+                        // to ensure all items are added successfully (Shopify typically allows up to 250 items per request)
+                        const BATCH_SIZE = 50; // Safe batch size
+                        const batches = [];
+                        for (let i = 0; i < itemsToAdd.length; i += BATCH_SIZE) {
+                            batches.push(itemsToAdd.slice(i, i + BATCH_SIZE));
                         }
+
+                        console.log('Upsell Package: Adding items in', batches.length, 'batches');
+
+                        // Add all batches sequentially
+                        for (let i = 0; i < batches.length; i++) {
+                            const batch = batches[i];
+                            const response = await fetch('/cart/add.js', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                },
+                                body: JSON.stringify({ items: batch })
+                            });
+
+                            if (!response.ok) {
+                                const errorData = await response.json().catch(() => ({ description: 'Unknown error' }));
+                                console.error(`Failed to add batch ${i + 1}:`, errorData);
+                                throw new Error(errorData.description || `Failed to add batch ${i + 1}`);
+                            }
+                        }
+
+                        // All batches added successfully
+                        console.log('Upsell Package: All batches added successfully');
+                        
+                        // Reload cart from Shopify to sync
+                        const cartResponse = await fetch('/cart.js');
+                        const cart = await cartResponse.json();
+                        
+                        console.log('Upsell Package: Cart reloaded, items in cart:', cart.items.length);
+                        
+                        // Update local cartItems array
+                        cartItems.length = 0;
+                        for (const item of cart.items) {
+                            // Find the product from Section 2 products
+                            const product = products.find(p => {
+                                // Match by handle or variant ID
+                                return p.handle === item.handle || 
+                                       p.variants.some(v => v.id === item.variant_id);
+                            });
+                            if (product) {
+                                cartItems.push({
+                                    variantId: item.variant_id,
+                                    quantity: item.quantity,
+                                    product: product,
+                                    sellingPlanId: item.selling_plan_allocation ? item.selling_plan_allocation.selling_plan_id : null,
+                                    isGift: false,
+                                    isBogoFree: false
+                                });
+                            }
+                        }
+                        
+                        // Update cart display and related functions
+                        updateCartDisplay();
+                        updateGiftTiers();
+                        updateProductCardButtons();
+                        
+                        // Trigger cart update event
+                        document.dispatchEvent(new CustomEvent('cart:updated'));
+
+                        // Show success feedback
+                        button.innerHTML = 'Added to Cart!';
+                        setTimeout(() => {
+                            button.innerHTML = originalText;
+                            button.disabled = false;
+                        }, 2000);
                     } catch (error) {
                         console.error('Error adding products to cart:', error);
                         button.innerHTML = originalText;
