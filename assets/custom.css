@@ -479,7 +479,7 @@ image-with-text-overlay > div > div,
 }
 
 /* Desktop: Hide mobile slider, show gallery */
-@media (min-width: 1500px) {
+@media (min-width: 768px) {
     .product-container--modern .product-gallery-desktop {
         display: grid;
     }
