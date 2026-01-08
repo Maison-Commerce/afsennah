@@ -2270,9 +2270,13 @@
                                 const availableVariant = product.variants.find(v => v.available);
                                 
                                 if (availableVariant) {
+                                    // Always add as one-time purchase (no subscription)
+                                    // By omitting 'selling_plan', Shopify defaults to one-time purchase
                                     itemsToAdd.push({
                                         id: availableVariant.id,
                                         quantity: 1
+                                        // Note: Not including 'selling_plan' ensures one-time purchase
+                                        // even if the product has subscription options available
                                     });
                                 } else {
                                     // No available variants - skip this product
