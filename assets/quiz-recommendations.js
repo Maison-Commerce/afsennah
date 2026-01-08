@@ -99,6 +99,7 @@
                                 tier.variantId = product.variants[0].id;
                             }
                             renderGiftTiers();
+                            updateShippingStatus();
                         }
                     })
                     .catch(err => console.error(`Error fetching gift product ${handle}:`, err));
@@ -107,6 +108,7 @@
 
         // Initial render
         renderGiftTiers();
+        updateShippingStatus();
     }
 
     function getCartTotalForGifts() {
@@ -157,6 +159,22 @@
     function updateGiftTiers() {
         if (!giftTiersEnabled || giftTiers.length === 0) return;
         renderGiftTiers();
+        updateShippingStatus();
+    }
+
+    // Update shipping status based on Tier 0 (free shipping) unlock status
+    function updateShippingStatus() {
+        const shippingStatusEl = document.getElementById('shipping-status');
+        if (!shippingStatusEl) return;
+        
+        // Find Tier 0 (free shipping tier)
+        const tier0 = giftTiers.find(tier => tier.tier === 0 && tier.isFreeShipping);
+        
+        if (tier0 && tier0.unlocked) {
+            shippingStatusEl.textContent = 'Free';
+        } else {
+            shippingStatusEl.textContent = 'Paid';
+        }
     }
 
     function renderGiftTiers() {
@@ -1955,6 +1973,9 @@
         setTimeout(() => {
             updateCurrencyConverter();
         }, 100);
+        
+        // Update shipping status
+        updateShippingStatus();
     }
 
     const cartToggle = document.querySelector('[data-cart-toggle]');
