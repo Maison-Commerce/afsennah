@@ -2098,13 +2098,7 @@ height: 100%;
     scroll-padding-right: var(--gutter);
   }
   
-  /* Add padding at the end to show last slide fully */
-  .video-slider__wrapper .slider__grid::after {
-    content: " ";
-    display: block;
-    width: calc(var(--gutter) * 2);
-    flex-shrink: 0;
-  }
+ 
 
   .video-slide-title {
     margin-bottom: 1rem;
