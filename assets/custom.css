@@ -1763,3 +1763,15 @@ height: 100%;
     margin-bottom: 8px;
     margin-top: 8px;
 }
+
+.sls-selling-plan-description-content {
+    font-family: "Gotham";
+    font-weight: 400;
+    font-style: Book;
+    font-size: 12px;
+    line-height: 150%;
+    letter-spacing: 0%;
+    text-align: center;
+    vertical-align: middle;
+    color: rgba(35, 35, 35, 0.75);
+}
