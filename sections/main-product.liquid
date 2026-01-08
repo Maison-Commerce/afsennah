@@ -35,7 +35,7 @@
   </div>
 {% endif %}
 
-<product-form class="js-product product-info quickbuy-content spaced-row">
+<product-form class="js-product product-info quickbuy-content spaced-row {% if section.settings.enable_modern_gallery %} modern{% endif %}">
 
   {% comment %}
   Product Split Layout - 50/50 Desktop, Slider Mobile
