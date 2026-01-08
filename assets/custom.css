@@ -1786,3 +1786,12 @@ height: 100%;
     letter-spacing: 0%;
 
 }
+.sls-original-price {
+    font-family: "Gotham";
+    font-weight: 400;
+    font-style: Book;
+    font-size: 14px;
+    line-height: 150%;
+    letter-spacing: 0%;
+    color: #627690;
+}
