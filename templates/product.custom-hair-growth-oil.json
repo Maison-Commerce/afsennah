@@ -282,7 +282,11 @@
           "settings": {
             "title": "Try both and save big",
             "subtitle": "No consultation required*",
-            "product_list": "{{ product.metafields[\"shopify--discovery--product_recommendation\"].related_products.value }}",
+            "product_list": [
+              "custom-conditioner",
+              "e-gift-card",
+              "mulberry-pillowcase"
+            ],
             "color_scheme": "1",
             "show_in_quickbuy": false
           }
