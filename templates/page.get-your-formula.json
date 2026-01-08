@@ -2130,6 +2130,32 @@
     },
     "quiz_recommendations_xc9HX6": {
       "type": "quiz-recommendations",
+      "blocks": {
+        "upsell_package_JYzfde": {
+          "type": "upsell_package",
+          "settings": {
+            "product_image": "shopify://shop_images/Frame_1484580966.png",
+            "flame_icon": "shopify://shop_images/Matches-Fire--Streamline-Ultimate.svg",
+            "header_text": "LIMITED-TIME CRAZY DEAL",
+            "title": "Ultimate Hair Care Package",
+            "description": "<p>Get all 7 products — more than our top 3 bestsellers — with <strong>50% off</strong>. This is a one-time purchase with no subscription. A limited-time offer we may not keep for long.</p>",
+            "discount_percent": 50,
+            "products": [
+              "mulberry-pillowcase",
+              "mulberry-silk-scrunchies-set",
+              "microfiber-towel-set"
+            ],
+            "button_text": "Claim Ultimate Package",
+            "footer_text": "No subscription • One-time payment • Limited availability",
+            "countdown_hours": 0,
+            "countdown_minutes": 9,
+            "countdown_seconds": 57
+          }
+        }
+      },
+      "block_order": [
+        "upsell_package_JYzfde"
+      ],
       "name": "Quiz Recommendations",
       "settings": {
         "title": "WINTER SALE 25% OFF SITEWIDE!",
@@ -2153,6 +2179,8 @@
         "gift_progress_bar_color": "#d4ff6a",
         "gift_progress_bar_bg_color": "#e5e7eb",
         "gift_milestone_color": "#d4ff6a",
+        "tier0_free_shipping_enabled": true,
+        "tier0_free_shipping_text": "Free Shipping",
         "tier1_threshold": 150,
         "tier1_gift_female": "mulberry-silk-scrunchies-set-sca_clone_freegift",
         "tier1_variant_female": "",
