@@ -147,6 +147,21 @@
             "show_in_quickbuy": false
           }
         },
+        "testimonial_under_gallery_xiAKw3": {
+          "type": "testimonial_under_gallery",
+          "settings": {
+            "left_side": true,
+            "padding": 24,
+            "border_radius": 16,
+            "margin_top": 20,
+            "border_color": "#e8e8e8",
+            "background_color": "#f8f7f4",
+            "description": "Finalmente, tranquillità nella mia cucina! Niente più preoccupazioni per i batteri nascosti nei graffi. Il titanio è così facile da pulire e rimane impeccabile.",
+            "subtitle": "SOFIA MARINO, CUOCA CASALINGA",
+            "verification_text": "Acquirente Verificato",
+            "main_image_width": 280
+          }
+        },
         "loox_reviews_loox_snippets_widget_JQFkCB": {
           "type": "shopify://apps/loox-reviews/blocks/loox-snippets-widget/5c3b337f-fd14-4df5-b1d6-80ec13e6e28e",
           "settings": {
@@ -185,6 +200,7 @@
         "richtext_cyRJhp",
         "accordion_eCyiUV",
         "accordion_bjJGWh",
+        "testimonial_under_gallery_xiAKw3",
         "loox_reviews_loox_snippets_widget_JQFkCB"
       ],
       "settings": {
