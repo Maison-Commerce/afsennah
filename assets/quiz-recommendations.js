@@ -203,10 +203,16 @@
             tierPositionMap.set(tier.tier, position);
         });
 
+        // Check if cart is empty (no items at all)
+        const hasCartItems = cartItems.some(item => !item.isGift && !item.isBogoFree && item.quantity > 0);
+        
         // Update progress bar based on milestone positions
         let progressBarWidth = 0;
         
-        if (allUnlocked) {
+        // If cart is completely empty, progress bar should be 0
+        if (!hasCartItems) {
+            progressBarWidth = 0;
+        } else if (allUnlocked) {
             // All tiers unlocked - fill to 100% immediately
             progressBarWidth = 100;
         } else if (tiersWithProducts.length === 0) {
@@ -220,9 +226,18 @@
                 // No tiers unlocked yet - progress from 0% to first milestone
                 const firstTier = tiersWithProducts[0];
                 const firstPosition = tierPositionMap.get(firstTier.tier);
-                const progressToFirst = Math.min((cartTotal / firstTier.threshold) * firstPosition, firstPosition);
-                // Don't go past the first milestone until it's unlocked
-                progressBarWidth = Math.min(progressToFirst, firstPosition);
+                
+                // Handle tier 0 (free shipping) with threshold 0
+                if (firstTier.threshold === 0) {
+                    // Tier 0 should unlock when cart has items, so if we're here, it means cart is empty
+                    // But we already checked hasCartItems above, so this shouldn't happen
+                    // However, if threshold is 0, we can't divide by it, so set progress to 0
+                    progressBarWidth = 0;
+                } else {
+                    const progressToFirst = Math.min((cartTotal / firstTier.threshold) * firstPosition, firstPosition);
+                    // Don't go past the first milestone until it's unlocked
+                    progressBarWidth = Math.min(progressToFirst, firstPosition);
+                }
             } else {
                 // At least one tier unlocked
                 const lastUnlockedTier = unlockedTiersWithProducts[unlockedTiersWithProducts.length - 1];
