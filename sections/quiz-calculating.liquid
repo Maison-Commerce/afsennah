@@ -857,7 +857,7 @@
         
         // Check if container has scrollable content
         const scrollHeight = reviewsContainer.scrollHeight;
-        const clientHeight = reviewsContainer.clientHeight;
+        const clientHeight = reviewsContainerWrap.clientHeight;
         const maxScroll = scrollHeight - clientHeight;
         
         console.log('[Auto-scroll] scrollHeight:', scrollHeight, 'clientHeight:', clientHeight, 'maxScroll:', maxScroll);
@@ -867,7 +867,7 @@
           // Try again after a longer delay in case content is still loading
           setTimeout(() => {
             const retryScrollHeight = reviewsContainer.scrollHeight;
-            const retryClientHeight = reviewsContainer.clientHeight;
+            const retryClientHeight = reviewsContainerWrap.clientHeight;
             const retryMaxScroll = retryScrollHeight - retryClientHeight;
             console.log('[Auto-scroll] Retry - scrollHeight:', retryScrollHeight, 'clientHeight:', retryClientHeight, 'maxScroll:', retryMaxScroll);
             if (retryMaxScroll > 0) {
