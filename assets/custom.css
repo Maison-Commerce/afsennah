@@ -1645,6 +1645,29 @@ height: 100%;
   margin-left: auto;
 }
 
+.product-item-upsells .slider-nav__btn {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #ffffff;
+  border: 1px solid #e0e0e0;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.product-item-upsells .slider-nav__btn:hover {
+  background: #f5f5f5;
+  border-color: #d0d0d0;
+}
+
+.product-item-upsells .slider-nav__btn svg {
+  width: 14px;
+  height: 14px;
+}
+
 /* Ensure cart-upsell-product works well in product upsells slider */
 .product-item-upsells .slider__item {
   display: flex;
