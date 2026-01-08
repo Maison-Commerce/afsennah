@@ -1793,4 +1793,9 @@ height: 100%;
     line-height: 150%;
     letter-spacing: 0%;
     color: #627690 !important;
+    font-style: normal !important;
+}
+
+.sls-total-price {
+    flex-direction: row-reverse;
 }
