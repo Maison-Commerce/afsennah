@@ -817,7 +817,10 @@
                   <!-- Quiz Incomplete CTA (Hidden by default, shown by JS if quiz not completed) -->
                   <div class="quiz-cta-wrapper {{ block.id }}-main-quiz-button" style="display: none;">
                     <a href="{{ block.settings.quiz_cta_url | default: '/pages/get-your-formula' }}" class="btn btn--wide quiz-cta-button">
-                      {{ block.settings.quiz_cta_text | default: 'Get Your Formula' }}
+                      {{ block.settings.quiz_cta_text | default: 'Get Your Formula' }}<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="#1A365D" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+
                     </a>
                   </div>
 
