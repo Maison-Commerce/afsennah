@@ -251,11 +251,20 @@
   /* Video slider wrapper spacing */
   .video-slider__wrapper {
     margin-bottom: 2rem;
-    overflow: hidden;
   }
 
   .video-slider__wrapper .slider {
-    overflow: hidden;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-padding-right: var(--gutter);
+  }
+  
+  /* Add padding at the end to show last slide fully */
+  .video-slider__wrapper .slider__grid::after {
+    content: " ";
+    display: block;
+    width: calc(var(--gutter) * 2);
+    flex-shrink: 0;
   }
 
   .video-slide-title {
