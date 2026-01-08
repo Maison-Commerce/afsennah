@@ -515,6 +515,7 @@ image-with-text-overlay > div > div,
     
     .product-container--modern .product-slider--modern {
         /* padding: 0 10%; */
+        gap: 8px;
     }
     
     .product-container--modern .slider-slide--modern {
