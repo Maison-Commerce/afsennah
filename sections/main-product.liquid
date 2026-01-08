@@ -819,7 +819,9 @@
                     </div>
                     {% if enable_dynamic_payment_button %}
                       {%- comment -%} Text block above checkout button {%- endcomment -%}
+                      2
                       {% if block.settings.text_above_checkout != blank %}
+                        1
                         <div class="lightly-spaced-row text-above-checkout">
                           {%- liquid
                             if block.settings.enable_text_box
