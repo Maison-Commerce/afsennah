@@ -638,38 +638,49 @@
               {%- endif -%}
             </div>
             {%- when 'video_slide' -%}
+              {%- liquid
+                assign is_first_in_group = false
+                assign previous_block_index = forloop.index0 | minus: 1
+                assign previous_block = blank
                 
-                  {%- liquid
-                  assign is_first_in_group = false
-                  
-                  if forloop.index0 == 0 or previous_block.type != 'video_slide'
-                    assign is_first_in_group = true
-                    assign video_slide_count = 0
-                    assign video_slide_start_index = forloop.index0
-                    for i in (forloop.index0..section.blocks.size)
-                      if i < section.blocks.size
-                        assign check_block = section.blocks[i]
-                        if check_block.type == 'video_slide'
-                          assign video_slide_count = video_slide_count | plus: 1
-                        else
-                          break
-                        endif
+                if previous_block_index >= 0 and previous_block_index < section.blocks.size
+                  assign previous_block = section.blocks[previous_block_index]
+                endif
+                
+                if forloop.index0 == 0 or previous_block.type != 'video_slide'
+                  assign is_first_in_group = true
+                  assign video_slide_count = 0
+                  assign video_slide_start_index = forloop.index0
+                  for i in (forloop.index0..section.blocks.size)
+                    if i < section.blocks.size
+                      assign check_block = section.blocks[i]
+                      if check_block.type == 'video_slide'
+                        assign video_slide_count = video_slide_count | plus: 1
                       else
                         break
                       endif
-                    endfor
-                  endif
-                -%}
-                {% render 'video-slide', 
-                  block: block, 
-                  section: section, 
-                  block_index: forloop.index0, 
-                  is_last: forloop.last, 
-                  next_block: next_block,
-                  is_first_in_group: is_first_in_group,
-                  video_slide_count: video_slide_count,
-                  video_slide_start_index: video_slide_start_index
-                %}
+                    else
+                      break
+                    endif
+                  endfor
+                endif
+                
+                assign next_block_index = forloop.index0 | plus: 1
+                assign next_block = blank
+                if next_block_index < section.blocks.size
+                  assign next_block = section.blocks[next_block_index]
+                endif
+              -%}
+              {% render 'video-slide', 
+                block: block, 
+                section: section, 
+                block_index: forloop.index0, 
+                is_last: forloop.last, 
+                next_block: next_block,
+                is_first_in_group: is_first_in_group,
+                video_slide_count: video_slide_count,
+                video_slide_start_index: video_slide_start_index
+              %}
           {% when 'description' %}
             {%- if product.description != blank -%}
               <div class="{% unless block.settings.show_in_quickbuy %}not-in-quickbuy{% endunless %}{% if block.settings.show_in_tab %} product-info-accordion{% endif %}" {{ block.shopify_attributes }}>
@@ -2223,12 +2234,6 @@
           "unit": "px",
           "label": "Border Radius (Mobile)",
           "default": 8
-        },
-        {
-          "type": "checkbox",
-          "id": "in_wrapper",
-          "label": "In wrapper",
-          "default": true
         }
       ]
     },
