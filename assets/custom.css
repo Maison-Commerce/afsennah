@@ -2313,3 +2313,7 @@ justify-content: space-between;
 .product-upsell-card__rating {
     margin-bottom: 4px;
 }
+
+.product-upsell-card__title {
+    margin: 0;
+}
