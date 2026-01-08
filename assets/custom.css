@@ -1880,6 +1880,7 @@ height: 100%;
         padding: var(--mobile-pad) !important;
     }
 }
+.product-form .quantity-submit-row .quantity-submit-row__submit,
 
 .product-info .section-footer__payment-icons {
     display: flex;
@@ -1888,4 +1889,8 @@ height: 100%;
 }
 .product-info .section-footer__payment-icon {
     width: 29px;
+}
+
+.product-info .buy-buttons-row.block {
+    margin-bottom: 0;
 }
