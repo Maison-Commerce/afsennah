@@ -229,6 +229,9 @@
                         </defs>
                     </svg>
                 </button>
+                {% if section.settings.checkout_subtext != blank %}
+                    <div class="checkout-subtext">{{ section.settings.checkout_subtext }}</div>
+                {% endif %}
             </div>
         </div>
     </div>
