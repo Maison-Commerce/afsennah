@@ -132,6 +132,11 @@
                     variantPrice = calculateSubscriptionPrice(variantPrice, sellingPlan);
                 }
             }
+            
+            // Apply upsell discount (50% off) if applicable
+            if (item.isUpsellDiscount) {
+                variantPrice = variantPrice * 0.5; // 50% discount
+            }
 
             total += variantPrice * item.quantity;
         });
@@ -1610,19 +1615,32 @@
                     totalDiscount += productDiscount + subscriptionDiscount;
                 }
             } else {
-                // For one-time items, check for compare_at_price (product discount)
+                // For one-time items, check for upsell discount first, then compare_at_price
                 const variant = item.product.variants.find(v => v.id === parseInt(item.variantId));
-                const compareAtPrice = variant && variant.compare_at_price && variant.compare_at_price > variantPrice 
-                    ? variant.compare_at_price 
-                    : null;
                 
-                if (compareAtPrice) {
-                    // If there's a product discount, add original price to subtotal and discount to totalDiscount
-                    subtotal += compareAtPrice * item.quantity;
-                    totalDiscount += (compareAtPrice - variantPrice) * item.quantity;
+                // Check if this item has upsell discount (50% off)
+                if (item.isUpsellDiscount) {
+                    // Apply 50% discount
+                    const originalPrice = variantPrice;
+                    const discountedPrice = variantPrice * 0.5; // 50% discount
+                    subtotal += originalPrice * item.quantity;
+                    totalDiscount += (originalPrice - discountedPrice) * item.quantity;
+                    // Store discounted price for display
+                    item._upsellDiscountedPrice = discountedPrice;
                 } else {
-                    // No discount, just add price to subtotal
-                    subtotal += variantPrice * item.quantity;
+                    // Check for compare_at_price (product discount)
+                    const compareAtPrice = variant && variant.compare_at_price && variant.compare_at_price > variantPrice 
+                        ? variant.compare_at_price 
+                        : null;
+                    
+                    if (compareAtPrice) {
+                        // If there's a product discount, add original price to subtotal and discount to totalDiscount
+                        subtotal += compareAtPrice * item.quantity;
+                        totalDiscount += (compareAtPrice - variantPrice) * item.quantity;
+                    } else {
+                        // No discount, just add price to subtotal
+                        subtotal += variantPrice * item.quantity;
+                    }
                 }
                 
                 onetimeItems.push(item);
@@ -1731,10 +1749,22 @@
                 variantPrice = variant.price;
             }
             const price = variantPrice;
-            const itemTotal = price * item.quantity;
+            
+            // Check if this item has upsell discount (50% off)
+            let itemTotal;
+            let originalTotal;
+            
+            if (item.isUpsellDiscount) {
+                // Apply 50% discount
+                originalTotal = price * item.quantity;
+                itemTotal = originalTotal * 0.5; // 50% discount
+            } else {
+                itemTotal = price * item.quantity;
+                originalTotal = null;
+            }
 
-            // Check for compare_at_price (product discount)
-            const hasCompareAtPrice = variant && variant.compare_at_price && variant.compare_at_price > price;
+            // Check for compare_at_price (product discount) - only if no upsell discount
+            const hasCompareAtPrice = !item.isUpsellDiscount && variant && variant.compare_at_price && variant.compare_at_price > price;
             const compareAtTotal = hasCompareAtPrice ? variant.compare_at_price * item.quantity : null;
 
             // Get variant title if there are multiple variants
@@ -1745,7 +1775,15 @@
 
             // Determine price HTML
             let priceHTML = '';
-            if (hasCompareAtPrice) {
+            if (item.isUpsellDiscount) {
+                // Show discounted price with original price crossed out
+                priceHTML = `
+                    <div class="cart-item-price">
+                        <span>${formatMoney(itemTotal)}</span>
+                        <span class="cart-item-price-original">${formatMoney(originalTotal)}</span>
+                    </div>
+                `;
+            } else if (hasCompareAtPrice) {
                 priceHTML = `
                     <div class="cart-item-price">
                         <span>${formatMoney(itemTotal)}</span>
@@ -2242,11 +2280,14 @@
             if (button) {
                 button.addEventListener('click', async (e) => {
                     e.preventDefault();
-                    const productHandles = button.dataset.productHandles;
-                    if (!productHandles) return;
-
-                    const handles = productHandles.split(',').map(h => h.trim()).filter(h => h);
-                    if (handles.length === 0) return;
+                    
+                    // Get products from Section 2 (Additional Recommendations)
+                    const additionalProducts = window.quizRecommendationsAdditionalProducts || [];
+                    
+                    if (additionalProducts.length === 0) {
+                        alert('No products available to add to cart.');
+                        return;
+                    }
 
                     // Disable button during processing
                     button.disabled = true;
@@ -2254,11 +2295,8 @@
                     button.innerHTML = 'Adding to Cart...';
 
                     try {
-                        // Fetch all products
-                        const productPromises = handles.map(handle => 
-                            fetch(`/products/${handle}.js`).then(res => res.json())
-                        );
-                        const products = await Promise.all(productPromises);
+                        // Use the products from Section 2
+                        const products = additionalProducts;
 
                         // Prepare cart items for Shopify API - only include available products
                         const itemsToAdd = [];
@@ -2276,7 +2314,11 @@
                                     // Prepare item data - explicitly set as one-time purchase
                                     const itemData = {
                                         id: availableVariant.id,
-                                        quantity: 1
+                                        quantity: 1,
+                                        properties: {
+                                            '_upsell_discount': '50',
+                                            '_upsell_discount_type': 'percentage'
+                                        }
                                     };
                                     
                                     // Explicitly ensure one-time purchase by NOT including selling_plan
@@ -2287,6 +2329,8 @@
                                     if (hasSubscription) {
                                         console.log(`Product "${product.title}" has subscription options, but adding as ONE-TIME PURCHASE (no selling_plan)`);
                                     }
+                                    
+                                    console.log(`Adding "${product.title}" with 50% discount property`);
                                     
                                     itemsToAdd.push(itemData);
                                 } else {
@@ -2338,13 +2382,18 @@
                                 // Find the product from our fetched products
                                 const product = products.find(p => p.handle === item.handle);
                                 if (product) {
+                                    // Check if this item has the upsell discount property
+                                    const hasUpsellDiscount = item.properties && 
+                                        item.properties._upsell_discount === '50';
+                                    
                                     cartItems.push({
                                         variantId: item.variant_id,
                                         quantity: item.quantity,
                                         product: product,
                                         sellingPlanId: item.selling_plan_allocation ? item.selling_plan_allocation.selling_plan_id : null,
                                         isGift: false,
-                                        isBogoFree: false
+                                        isBogoFree: false,
+                                        isUpsellDiscount: hasUpsellDiscount || false
                                     });
                                 }
                             }
