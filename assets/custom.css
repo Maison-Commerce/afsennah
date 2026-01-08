@@ -1648,6 +1648,13 @@ height: 100%;
     display: grid;
     grid-template-columns: 1fr 0.8fr;
 }
+
+@media (min-width: 768px) {
+    .product-info.modern .product-column-right {
+        width: calc(100% - 35px)
+    }
+}
+
 @media (max-width: 768px) {
 
     .product-info.modern {
