@@ -1057,6 +1057,12 @@ video-section-play-button {
 .cart-drawer .section-footer__payment-icon {
     width: 32px;
 }
+.cart-drawer .section-footer__payment-icons {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 8px;
+}
 .subscription-description {
     border-radius:8px;
     background: #F7F7FC;
