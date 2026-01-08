@@ -1962,7 +1962,6 @@ height: 100%;
 
 }
 
-
 @media (min-width: 768px) {
     .richtext.product-info-block[data-block-id] {
         background-color: var(--desktop-bg) !important;
