@@ -1777,7 +1777,7 @@ height: 100%;
 }
 
 .sls-price {
-    color: #1A365D;
+    color: #1A365D !important;
     font-family: "Gotham";
     font-weight: 500;
     font-style: Medium;
