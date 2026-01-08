@@ -2110,6 +2110,128 @@
         }
       ]
     },
+     {
+      "type": "video_slide",
+      "name": "Video Slide",
+      "settings": [
+        {
+          "type": "header",
+          "content": "Title Settings"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Walk It Like a Bandit",
+          "info": "Title will be shown once for all video slides in the group"
+        },
+        {
+          "type": "range",
+          "id": "title_size",
+          "min": 12,
+          "max": 48,
+          "step": 2,
+          "unit": "px",
+          "label": "Title Size",
+          "default": 24
+        },
+        {
+          "type": "header",
+          "content": "Media Settings"
+        },
+        {
+          "type": "select",
+          "id": "media_type",
+          "options": [
+            {
+              "value": "image",
+              "label": "Image"
+            },
+            {
+              "value": "video",
+              "label": "Video"
+            }
+          ],
+          "default": "image",
+          "label": "Media Type"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image",
+          "info": "Used when Media Type is set to Image"
+        },
+        {
+          "type": "video",
+          "id": "video",
+          "label": "Video",
+          "info": "Used when Media Type is set to Video (Shopify video)"
+        },
+        {
+          "type": "video_url",
+          "id": "video_url",
+          "label": "Video URL",
+          "accept": ["youtube", "vimeo"],
+          "default": "https://www.youtube.com/watch?v=_9VUPq3SxOc",
+          "info": "Used when Media Type is set to Video (External video)"
+        },
+        {
+          "type": "text",
+          "id": "video_host",
+          "label": "Video Host",
+          "default": "youtube",
+          "info": "Enter 'youtube' or 'vimeo'"
+        },
+        {
+          "type": "text",
+          "id": "video_id",
+          "label": "Video ID",
+          "info": "YouTube playlist ID (optional)"
+        },
+        {
+          "type": "image_picker",
+          "id": "poster_image",
+          "label": "Poster Image",
+          "info": "Thumbnail image for video (optional)"
+        },
+        {
+          "type": "text",
+          "id": "alt_text",
+          "label": "Alt Text",
+          "default": "Video slide"
+        },
+        {
+          "type": "header",
+          "content": "Style Settings"
+        },
+        {
+          "type": "range",
+          "id": "border_radius",
+          "min": 0,
+          "max": 100,
+          "step": 2,
+          "unit": "px",
+          "label": "Border Radius (Desktop)",
+          "default": 8
+        },
+        {
+          "type": "range",
+          "id": "border_radius_mobile",
+          "min": 0,
+          "max": 100,
+          "step": 2,
+          "unit": "px",
+          "label": "Border Radius (Mobile)",
+          "default": 8
+        },
+        {
+          "type": "checkbox",
+          "id": "in_wrapper",
+          "label": "In wrapper",
+          "default": true
+        }
+      ]
+    },
     {
       "type": "testimonial_under_gallery",
       "name": "Testimonial Under Gallery",
