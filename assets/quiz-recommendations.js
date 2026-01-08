@@ -1202,17 +1202,9 @@
                     const currentQty = productStates[product.id].quantity || 1;
                     const selectedVariantId = parseInt(card.dataset.variantId);
 
-                    console.log('Purchase option changed:', {
-                        productId: product.id,
-                        variantId: selectedVariantId,
-                        sellingPlanId: sellingPlanId,
-                        quantity: currentQty,
-                        section: section
-                    });
 
                     // Only update cart if product is in cart (check by variantId)
                     const itemInCart = cartItems.find(item => item.variantId === selectedVariantId);
-                    console.log('Item in cart:', itemInCart ? 'Yes' : 'No');
 
                     if (itemInCart) {
                         // Create updated product with selected variant info
@@ -1340,7 +1332,6 @@
             }
         }
 
-        console.log('Cart updated. Current cart items:', cartItems.length);
 
         updateCartDisplay();
         
@@ -1445,19 +1436,13 @@
         // This function removes a product from cart AND updates the product card state
         // It's used by both the product card remove button and the cart item remove button
 
-        console.log('=== removeProductFromCart START ===');
-        console.log('Product:', product.title, 'ID:', product.id);
-        console.log('Variant ID:', variantId);
-
         // Find the product card - try multiple selectors
         let productCard = document.querySelector(`[data-product-id="${product.id}"]`);
 
         // If it's a custom element, look for the actual recommended-product-card inside it
         if (productCard && productCard.tagName === 'PRODUCT-BLOCK') {
-            console.log('Found PRODUCT-BLOCK, looking for recommended-product-card inside...');
             const innerCard = productCard.querySelector('.recommended-product-card');
             if (innerCard) {
-                console.log('Found inner recommended-product-card');
                 productCard = innerCard;
             }
         }
