@@ -1731,3 +1731,14 @@ height: 100%;
 .sls-option-container.seal-table.sls-active .sls-custom-radio {
     background: #1A365D;
 }
+
+.sls-selling-plan-group-name {
+    font-family: "Gotham";
+    font-weight: 500;
+    font-style: Medium;
+    font-size: 16px;
+    line-height: 150%;
+    letter-spacing: 0%;
+    vertical-align: middle;
+    color: #1D211E;
+}
