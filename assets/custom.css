@@ -1703,3 +1703,11 @@ height: 100%;
     min-height: 40px;
     text-transform: none;
 }
+
+
+.sls-purchase-options-container {
+    padding: 0;
+    background: none;
+    border: none !important;
+    outline: none;
+}
