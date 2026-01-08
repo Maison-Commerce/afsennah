@@ -772,22 +772,7 @@
                   {% if gift_card_recipient_feature_active %}
                     {% render 'gift-card-recipient', section: section %}
                   {% endif %}
-
-                  <!-- Quiz Incomplete CTA (Hidden by default, shown by JS if quiz not completed) -->
-                  <div class="quiz-cta-wrapper {{ block.id }}-main-quiz-button" style="display: none;">
-                    <a href="{{ block.settings.quiz_cta_url | default: '/pages/get-your-formula' }}" class="btn btn--wide quiz-cta-button">
-                      {{ block.settings.quiz_cta_text | default: 'Get Your Formula' }}
-                    </a>
-                  </div>
-
-                  <style>
-                    @media (max-width: 767px) {
-                      .{{ block.id }}-main-quiz-button {
-                        display: none!important;
-                      }
-                    }
-                  </style>
- {% if block.settings.text_above_checkout != blank %}
+{% if block.settings.text_above_checkout != blank %}
                         <div class="lightly-spaced-row text-above-checkout">
                           {%- liquid
                             if block.settings.enable_text_box
@@ -829,6 +814,21 @@
                           </div>
                         </div>
                       {% endif %}
+                  <!-- Quiz Incomplete CTA (Hidden by default, shown by JS if quiz not completed) -->
+                  <div class="quiz-cta-wrapper {{ block.id }}-main-quiz-button" style="display: none;">
+                    <a href="{{ block.settings.quiz_cta_url | default: '/pages/get-your-formula' }}" class="btn btn--wide quiz-cta-button">
+                      {{ block.settings.quiz_cta_text | default: 'Get Your Formula' }}
+                    </a>
+                  </div>
+
+                  <style>
+                    @media (max-width: 767px) {
+                      .{{ block.id }}-main-quiz-button {
+                        display: none!important;
+                      }
+                    }
+                  </style>
+                    
                   <!-- Regular Buy Buttons (Hidden by JS if quiz not completed) -->
                   <div class="quantity-submit-row input-row {% if enable_dynamic_payment_button %}has-spb{% endif %} js-regular-buy-buttons">
                     {% if block.settings.show_quantity_selector %}
