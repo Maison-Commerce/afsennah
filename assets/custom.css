@@ -1863,3 +1863,20 @@ height: 100%;
     gap: 12px;
 
 }
+
+
+@media (min-width: 768px) {
+    .richtext.product-info-block[data-block-id] {
+        background-color: var(--desktop-bg) !important;
+        border-radius: var(--desktop-br) !important;
+        padding: var(--desktop-pad) !important;
+    }
+}
+
+@media (max-width: 767px) {
+    .richtext.product-info-block[data-block-id] {
+        background-color: var(--mobile-bg) !important;
+        border-radius: var(--mobile-br) !important;
+        padding: var(--mobile-pad) !important;
+    }
+}
