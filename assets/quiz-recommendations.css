@@ -1367,6 +1367,14 @@
             line-height: 21px;
         }
 
+        .subscription-frequency-selector {
+            min-width: 220px;
+        }
+
+        .product-options-group{
+            flex-wrap: wrap;
+        }
+
         .mobile-sticky-bar-price {
             color: #1A365D;
             font-family: 'Gotham', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
