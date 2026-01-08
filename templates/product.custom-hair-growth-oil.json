@@ -156,9 +156,15 @@
             "margin_top": 20,
             "border_color": "#e8e8e8",
             "background_color": "#f8f7f4",
+            "rating_icon_1": "shopify://shop_images/star_3.svg",
+            "rating_icon_2": "shopify://shop_images/star_3.svg",
+            "rating_icon_3": "shopify://shop_images/star_3.svg",
+            "rating_icon_4": "shopify://shop_images/star_3.svg",
+            "rating_icon_5": "shopify://shop_images/star_3.svg",
             "description": "I've been telling all my family and friends about you!!! They are so excited and eager to get their oils too! ❤️",
             "subtitle": "Lauren P.",
             "verification_text": "Verified Buyer",
+            "main_image": "shopify://shop_images/Professional_headshot_portrait_of_a_confident_woman_aged_42-45_shoulder-length_brown_hair_with_subtle_highlights_warm_genuine_smile_friendly_and_approachable_expression_natural_makeup.png",
             "main_image_width": 280
           }
         },
