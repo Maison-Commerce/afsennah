@@ -1589,7 +1589,7 @@
                           -%}
                           {%- for upsell_product in block.settings.product_list -%}
                             <li class="slider__item">
-                              {%- render 'cart-upsell-product', product: upsell_product, custom_aspect_ratio: chosen_aspect_ratio -%}
+                              {%- render 'product-upsell-product', product: upsell_product, custom_aspect_ratio: chosen_aspect_ratio -%}
                             </li>
                           {%- endfor -%}
                         </ul>
