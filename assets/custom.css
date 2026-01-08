@@ -2108,3 +2108,14 @@ height: 100%;
 .product-info carousel-slider .video-slider-grid {
     gap: 8px;
 }
+
+.product-info .video-slider__wrapper .opposing-items {
+display: flex;
+align-items: center;
+justify-content: space-between;
+}
+
+.product-info .video-slider__wrapper .opposing-items .slider-nav {
+    position: relative;
+    transform: none;
+}
