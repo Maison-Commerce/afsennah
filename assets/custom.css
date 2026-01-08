@@ -1711,3 +1711,8 @@ height: 100%;
     border: none !important;
     outline: none;
 }
+
+.sls-option-container.seal-table {
+    border: 1.5px solid #B4B4DE;
+    background: #F1F1F9;
+}
