@@ -1423,6 +1423,10 @@
             font-size: 14px;
         }
 
+        .option-label{
+            font-size: 12px;
+        }
+
         .option-price-original{
             font-size: 12px;
         }
