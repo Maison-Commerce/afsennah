@@ -1056,6 +1056,7 @@ video-section-play-button {
 }
 .cart-drawer .section-footer__payment-icon {
     width: 32px;
+    margin: 0;
 }
 .cart-drawer .section-footer__payment-icons {
     display: flex;
