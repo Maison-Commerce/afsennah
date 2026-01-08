@@ -120,6 +120,8 @@
                         <div class="gift-progress-section" 
                             data-gift-progress-section
                             data-gift-tiers-enabled="true"
+                            data-tier0-enabled="{{ section.settings.tier0_free_shipping_enabled | default: true }}"
+                            data-tier0-text="{{ section.settings.tier0_free_shipping_text | default: 'Free Shipping' }}"
                             data-tier1-threshold="{{ section.settings.tier1_threshold | default: 100 }}"
                             data-tier1-female="{{ section.settings.tier1_gift_female.handle | default: '' }}"
                             data-tier1-variant-female="{{ section.settings.tier1_variant_female | default: '' }}"
@@ -370,6 +372,24 @@
             "id": "gift_milestone_color",
             "label": "Milestone Reached Color",
             "default": "#d4ff6a"
+        },
+        {
+            "type": "header",
+            "content": "Tier 0: Free Shipping"
+        },
+        {
+            "type": "checkbox",
+            "id": "tier0_free_shipping_enabled",
+            "label": "Enable Free Shipping Gift",
+            "default": true,
+            "info": "Free shipping gift activates when cart has at least 1 item"
+        },
+        {
+            "type": "text",
+            "id": "tier0_free_shipping_text",
+            "label": "Free Shipping Text",
+            "default": "Free Shipping",
+            "info": "Text to display for free shipping gift"
         },
         {
             "type": "header",
