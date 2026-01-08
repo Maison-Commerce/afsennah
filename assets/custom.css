@@ -2147,3 +2147,6 @@ justify-content: space-between;
 .video-slider-grid .slider__item {
     height: 550px;
 }
+.video-slide-video-wrapper {
+   height: 550px;
+}
