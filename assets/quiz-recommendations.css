@@ -1360,7 +1360,7 @@
 
         .mobile-sticky-bar-label {
             color: var(--Text-Primary, #2F3936);
-             font-family: 'Gotham', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            font-family: 'Gotham', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
             font-size: 14px;
             font-style: normal;
             font-weight: 500;
@@ -1368,9 +1368,12 @@
         }
 
         .mobile-sticky-bar-price {
-            font-size: 20px;
-            font-weight: 700;
             color: #1A365D;
+            font-family: 'Gotham', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            font-size: 16px;
+            font-style: normal;
+            font-weight: 500;
+            line-height: 24px;
         }
 
         .mobile-sticky-bar-checkout {
