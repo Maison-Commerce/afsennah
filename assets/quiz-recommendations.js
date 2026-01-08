@@ -2173,14 +2173,27 @@
                     
                     let totalSeconds = hours * 3600 + minutes * 60 + seconds;
                     
+                    // Store interval ID to clear it later
+                    let intervalId = null;
+                    
                     const updateTimer = () => {
-                        if (totalSeconds <= 0) {
-                            hoursEl.textContent = '00';
-                            minutesEl.textContent = '00';
-                            secondsEl.textContent = '00';
+                        // Decrement first
+                        totalSeconds--;
+                        
+                        // Check if timer has expired
+                        if (totalSeconds < 0) {
+                            // Clear the interval
+                            if (intervalId) {
+                                clearInterval(intervalId);
+                                intervalId = null;
+                            }
+                            
+                            // Hide the entire block
+                            block.style.display = 'none';
                             return;
                         }
                         
+                        // Calculate and display time
                         const h = Math.floor(totalSeconds / 3600);
                         const m = Math.floor((totalSeconds % 3600) / 60);
                         const s = totalSeconds % 60;
@@ -2188,12 +2201,19 @@
                         hoursEl.textContent = String(h).padStart(2, '0');
                         minutesEl.textContent = String(m).padStart(2, '0');
                         secondsEl.textContent = String(s).padStart(2, '0');
-                        
-                        totalSeconds--;
                     };
                     
-                    updateTimer();
-                    setInterval(updateTimer, 1000);
+                    // Initial display
+                    const h = Math.floor(totalSeconds / 3600);
+                    const m = Math.floor((totalSeconds % 3600) / 60);
+                    const s = totalSeconds % 60;
+                    
+                    hoursEl.textContent = String(h).padStart(2, '0');
+                    minutesEl.textContent = String(m).padStart(2, '0');
+                    secondsEl.textContent = String(s).padStart(2, '0');
+                    
+                    // Start the interval - update every second
+                    intervalId = setInterval(updateTimer, 1000);
                 }
             }
 
