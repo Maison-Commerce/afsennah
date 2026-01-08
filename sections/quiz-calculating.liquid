@@ -937,7 +937,7 @@
           reviewsColumn.addEventListener('mouseleave', () => {
             console.log('[Auto-scroll] Resumed after hover');
             // Restart scrolling with current position
-            scrollPosition = reviewsContainer.scrollTop;
+            scrollPosition = reviewsContainerWrap.scrollTop;
             scrollInterval = setInterval(autoScroll, 16);
           });
         }
