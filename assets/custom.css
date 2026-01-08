@@ -1673,3 +1673,12 @@ height: 100%;
 .product-title {
     margin-bottom: 10px;
 }
+
+.option-selector__btns .opt-btn:checked+.opt-label {
+    background: #F7F7FC;
+    border: 1.5px solid #B4B4DE;
+}
+.option-selector__btns .opt-label {
+    background: #F7F7FC;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+}
