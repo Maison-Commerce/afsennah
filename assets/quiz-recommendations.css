@@ -1426,6 +1426,10 @@
         .option-price-original{
             font-size: 12px;
         }
+
+        .subscription-discount-badge{
+            font-size: 10px;
+        }
     }
 
     @media (max-width: 1249px) {
