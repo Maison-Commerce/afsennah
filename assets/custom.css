@@ -1720,3 +1720,11 @@ height: 100%;
     border: 1.5px solid #B4B4DE !important;
     background: #F1F1F9 !important;
 }
+
+.sealsubs-target-element .sls-option[type="radio"]:checked + .sls-custom-radio::after {
+    box-shadow: inset 1em 1em #F1F1F9;
+}
+
+.sls-option-container.seal-table.sls-active .sls-custom-radio {
+    background: #1A365D;
+}
