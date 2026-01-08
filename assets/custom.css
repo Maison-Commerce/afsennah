@@ -2103,3 +2103,8 @@ height: 100%;
   .video-slide-title {
     margin-bottom: 1rem;
   }
+
+
+.product-info carousel-slider .video-slider-grid {
+    gap: 8px;
+}
