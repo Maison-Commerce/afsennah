@@ -1875,7 +1875,7 @@ height: 100%;
 
 .sls-price {
     color: #1A365D !important;
-    font-family: "Gotham";
+    font-family: 'Avenir Next', sans-serif;
     font-weight: 500;
     font-style: Medium;
     font-size: 16px;
@@ -1884,7 +1884,7 @@ height: 100%;
 
 }
 .sls-original-price {
-    font-family: "Gotham";
+    font-family: 'Avenir Next', sans-serif;
     font-weight: 400;
     font-size: 14px !important;
     line-height: 150%;
