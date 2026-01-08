@@ -1421,6 +1421,14 @@
             flex-direction: column;
         }
 
+        .product-card-title-wrapper{
+            flex: none;
+        }
+
+        .product-card-image{
+            fit-content;
+        }
+
         .product-card-header-row {
             gap: 16px;
         }
