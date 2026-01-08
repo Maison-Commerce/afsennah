@@ -568,7 +568,6 @@
         // Section 3: Accessories (manual product list from settings)
         // accessoryHandles will be passed from inline script
         const accessoryHandles = window.quizRecommendationsConfig?.accessoryHandles || [];
-        console.log('Accessory handles (Section 3):', accessoryHandles);
         
         // Get the accessories section element and divider
         const accessoriesSection = document.querySelector('[data-section="accessories"]');
@@ -589,14 +588,12 @@
                 const handle = typeof item === 'string' ? item : (item?.handle || null);
                 if (!handle) return Promise.resolve(null);
                 
-                console.log('Fetching accessory product:', handle);
                 return fetch(`/products/${handle}.js`)
                     .then(response => response.ok ? response.json() : null)
                     .catch(() => null);
             });
 
             Promise.all(accessoryPromises).then(accessories => {
-                console.log('Fetched accessories:', accessories);
                 const validAccessories = accessories.filter(product => product !== null);
                 
                 validAccessories.forEach((product) => {
@@ -674,7 +671,7 @@
                     : 'USD';
                 Currency.convertAll(shopCurrency, '[name=currencies]');
             } catch (e) {
-                console.log('Currency conversion update failed:', e);
+
             }
         }
         // Also try alternate method for different currency converter apps
