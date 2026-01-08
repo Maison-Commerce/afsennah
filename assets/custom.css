@@ -2098,6 +2098,7 @@ height: 100%;
   /* Video slider wrapper spacing */
   .video-slider__wrapper {
     margin-bottom: 2rem;
+    overflow: hidden
   }
 
   .video-slider__wrapper .slider {
