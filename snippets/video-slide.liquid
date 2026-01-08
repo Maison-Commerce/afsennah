@@ -27,7 +27,7 @@
 -%}
 
 {%- if is_first_in_group -%}
-  <carousel-slider class="carousel block collection-slider video-slider__wrapper" data-dispatch-events="false">
+  <carousel-slider class="carousel block collection-slider video-slider__wrapper" data-dispatch-events="false" data-slides-per-page="3" data-slides-to-scroll="3">
     <div class="opposing-items opposing-items--valign-base very-lightly-spaced-row">
       <div class="opposing-items__left">
         {%- if block.settings.title != blank -%}

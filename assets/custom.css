@@ -2071,18 +2071,23 @@ height: 100%;
   /* Video slider grid styles - 3 videos per view */
   .video-slider-grid {
     --product-columns-desktop: 3;
+    /* 3 слайди: (100% - 2 gaps) / 3 = ширина одного слайда */
     grid-auto-columns: calc((100% - var(--gutter) * 2) / 3);
   }
 
   .video-slider-grid .slider__item {
     display: flex;
     flex-direction: column;
+    /* Переконаємося, що слайди не стискаються */
+    min-width: 0;
+    flex-shrink: 0;
   }
 
   /* Mobile styles - 3 videos per view */
   @media (max-width: 767.98px) {
     .video-slider-grid {
       --product-columns-desktop: 3;
+      /* На мобільних також 3 слайди */
       grid-auto-columns: calc((100% - var(--gutter) * 2) / 3);
     }
   }
