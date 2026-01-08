@@ -1880,3 +1880,7 @@ height: 100%;
         padding: var(--mobile-pad) !important;
     }
 }
+
+.product-info .section-footer__payment-icon {
+    width: 29px;
+}
