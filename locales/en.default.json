@@ -87,6 +87,7 @@
       "barcode": "Barcode:",
       "choose_a": "Choose a",
       "description": "Description",
+      "size_option_label": "SELECT YOUR SIZE:",
       "from": "From",
       "include_taxes": "Tax included",
       "media": {

@@ -149,7 +149,13 @@
           <fieldset class="option-selector" data-selector-type="listed" data-option="{{ option.name | escape }}">
             {%- if show_size_chart -%}
               <div class="flex justify-between">
-                <legend class="label">{{- option.name -}}</legend>
+                <legend class="label">
+                  {% if option.name contains 'size'%}
+                    {{ 'products.product.size_option_label' | t }}
+                  {% else %}
+                    {{- option.name -}}
+                  {% endif %}
+                </legend>
                 {{ size_chart_link }}
               </div>
             {%- else -%}
