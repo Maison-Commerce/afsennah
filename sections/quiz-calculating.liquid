@@ -820,38 +820,6 @@
 
       console.log('[Auto-scroll] Reviews column is visible');
 
-      // Get the actual scrollable container for opacity updates
-      const scrollableContainer = calcSection.querySelector('.quiz-calculating-reviews-container');
-      
-      // Get all review cards for opacity updates
-      const reviewCards = scrollableContainer ? scrollableContainer.querySelectorAll('.quiz-calculating-review-card') : [];
-
-      // Function to update opacity based on scroll position
-      function updateCardOpacity() {
-        if (!scrollableContainer || reviewCards.length === 0) return;
-        
-        const containerScrollTop = scrollableContainer.scrollTop;
-        const containerHeight = scrollableContainer.clientHeight;
-        const containerCenter = containerScrollTop + containerHeight / 2;
-
-        reviewCards.forEach((card) => {
-          // Get card position relative to the scroll container
-          const cardTop = card.offsetTop;
-          const cardHeight = card.offsetHeight;
-          const cardCenter = cardTop + cardHeight / 2;
-          
-          // Calculate distance from container center
-          const distanceFromCenter = Math.abs(cardCenter - containerCenter);
-          const maxDistance = containerHeight / 2 + cardHeight / 2;
-          
-          // Calculate opacity: 100% at center, fading to 40% at edges
-          const normalizedDistance = Math.min(distanceFromCenter / maxDistance, 1);
-          const opacity = 0.4 + (0.6 * (1 - normalizedDistance));
-          
-          card.style.opacity = Math.max(0.4, Math.min(1, opacity));
-        });
-      }
-
       // Wait a bit for content to render
       setTimeout(() => {
         // Force a reflow to ensure accurate measurements
@@ -891,10 +859,7 @@
         // Disable smooth scrolling for auto-scroll (it interferes with programmatic scrolling)
         reviewsContainer.style.scrollBehavior = 'auto';
 
-        // Initial opacity update
-        updateCardOpacity();
-
-        // Auto-scroll function
+        // Auto-scroll function with seamless looping
         function autoScroll() {
           const currentScrollHeight = reviewsContainer.scrollHeight;
           const currentClientHeight = reviewsContainer.clientHeight;
@@ -909,12 +874,9 @@
             // Reset to top when reaching bottom for seamless loop
             reviewsContainer.scrollTop = 0;
           }
-          
-          // Update opacity on each scroll frame
-          updateCardOpacity();
         }
 
-        // Start auto-scrolling every 30ms (faster scroll)
+        // Start auto-scrolling every 30ms
         scrollInterval = setInterval(autoScroll, 30);
         console.log('[Auto-scroll] Interval started:', scrollInterval);
 
@@ -926,8 +888,6 @@
               clearInterval(scrollInterval);
               scrollInterval = null;
             }
-            // Update opacity when paused
-            updateCardOpacity();
           });
           
           reviewsColumn.addEventListener('mouseleave', () => {
@@ -935,11 +895,6 @@
             // Restart scrolling
             scrollInterval = setInterval(autoScroll, 30);
           });
-        }
-
-        // Also update opacity on manual scroll (if user scrolls)
-        if (scrollableContainer) {
-          scrollableContainer.addEventListener('scroll', updateCardOpacity);
         }
       }, 200);
     }
