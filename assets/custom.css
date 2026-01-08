@@ -1812,3 +1812,14 @@ height: 100%;
     letter-spacing: 0%;
     color: rgba(44, 41, 38, 0.75);
 }
+
+.lightly-spaced-row.text-above-checkout {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+}
+.lightly-spaced-row.text-above-checkout img {
+    width: 22px;
+    height: 22px;
+}
