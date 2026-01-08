@@ -1059,6 +1059,7 @@ video-section-play-button {
     margin: 0;
 }
 .cart-drawer .section-footer__payment-icons {
+    margin-top: 12px;
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
