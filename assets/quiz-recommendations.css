@@ -285,6 +285,20 @@
         opacity: 0.5;
     }
 
+    .gift-milestone-icon {
+        width: 24px;
+        height: 24px;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 1;
+    }
+
+    .gift-milestone.reached .gift-milestone-icon {
+        opacity: 1;
+    }
+
     .gift-milestone.reached {
         border-color: #1A365D;
         background: #1A365D;
