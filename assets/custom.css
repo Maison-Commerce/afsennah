@@ -2187,6 +2187,9 @@ height: 100%;
       /* На мобільних також 3 слайди: (100% - 16px - gutter) / 3 */
       grid-auto-columns: calc((100% - 20px) / 3);
     }
+    .video-slider-grid .slider__item {
+        height: 50vw;
+    }
   }
 
   /* Video slider wrapper spacing */
