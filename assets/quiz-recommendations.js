@@ -1829,7 +1829,7 @@
     const cartHeader = document.querySelector('[data-cart-header]');
 
     function initCartState() {
-        if (cartSummary && window.innerWidth <= 1024) {
+        if (cartSummary && window.innerWidth <= 1250) {
             cartSummary.classList.add('collapsed');
         }
     }
@@ -1838,7 +1838,7 @@
         initCartState();
 
         window.addEventListener('resize', () => {
-            if (window.innerWidth <= 1024) {
+            if (window.innerWidth <= 1250) {
                 if (!cartSummary.classList.contains('collapsed')) {
                     cartSummary.classList.add('collapsed');
                 }
