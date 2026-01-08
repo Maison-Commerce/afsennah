@@ -209,6 +209,7 @@
     scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
     padding-right: 8px;
     will-change: scroll-position;
+    height: fit-content;
   }
 
   #shopify-section-{{ section.id }} .quiz-calculating-reviews-container::-webkit-scrollbar {
@@ -794,7 +795,7 @@
 
       console.log('[Auto-scroll] Calculating section found, display:', calcSection.style.display);
 
-      const reviewsContainer = calcSection.querySelector('.quiz-calculating-reviews-container');
+      const reviewsContainer = calcSection.querySelector('.quiz-calculating-reviews-container-wrap');
       
       if (!reviewsContainer) {
         console.log('[Auto-scroll] Reviews container not found');
