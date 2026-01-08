@@ -1755,3 +1755,11 @@ height: 100%;
     color: #FFFFFF !important;
     padding: 7px 12px !important;
 }
+.selling-plan-group-options-name-select {
+    width: 100%;
+    justify-content: space-between;
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+    margin-top: 8px;
+}
