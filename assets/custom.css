@@ -369,7 +369,7 @@ image-with-text-overlay > div > div,
     border-radius: 8px;
 }
 .slider-slide--modern img {
-    border-radius: 12px;
+    border-radius: 24px;
 }
 
 /* Mobile: Thumbnails */
