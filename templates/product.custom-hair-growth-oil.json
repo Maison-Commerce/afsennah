@@ -98,7 +98,11 @@
             "text_custom_icon": "shopify://shop_images/Shipment-In-Transit--Streamline-Ultimate.svg",
             "text_icon_size": "small",
             "enable_text_box": false,
-            "text_box_color": "#e0f4d5"
+            "text_box_color": "#e0f4d5",
+            "show_usp_badges": true,
+            "usp_1_label": "Trichologist-Developed",
+            "usp_2_label": "Clean Ingredients",
+            "usp_3_label": "Cruelty-Free"
           }
         },
         "text_UT9ray": {
@@ -118,6 +122,21 @@
           "disabled": true,
           "settings": {
             "show_in_quickbuy": false
+          }
+        },
+        "video_slide_6kdLjD": {
+          "type": "video_slide",
+          "settings": {
+            "title": "",
+            "title_size": 24,
+            "media_type": "image",
+            "video": "shopify://files/videos/VD1(No Outline).mov",
+            "video_url": "https://www.youtube.com/watch?v=_9VUPq3SxOc",
+            "video_host": "youtube",
+            "video_id": "",
+            "alt_text": "Video slide",
+            "border_radius": 8,
+            "border_radius_mobile": 8
           }
         },
         "richtext_cyRJhp": {
@@ -218,6 +237,7 @@
         "buy-buttons",
         "text_UT9ray",
         "divider_Cwfcya",
+        "video_slide_6kdLjD",
         "richtext_cyRJhp",
         "accordion_eCyiUV",
         "accordion_bjJGWh",
