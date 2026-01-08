@@ -1551,4 +1551,218 @@
         text-align: center;
         margin-top: 8px;
     }
-</style>
+
+    /* Upsell Package Block Styles */
+    .maison_commerce_maison_upsell_package__block {
+        border-radius: 16px;
+        overflow: hidden;
+        background: #fffbc0;
+        margin-top: 32px;
+        margin-bottom: 32px;
+    }
+
+    .maison_commerce_maison_upsell_package__header {
+        background: #1A365D;
+        color: white;
+        padding: 8px 16px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 10px;
+        border-radius: 16px 16px 0 0;
+    }
+
+    .maison_commerce_maison_upsell_package__header-left {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        flex-shrink: 0;
+    }
+
+    .maison_commerce_maison_upsell_package__flame-icon {
+        width: 16px;
+        height: 16px;
+        flex-shrink: 0;
+    }
+
+    .maison_commerce_maison_upsell_package__header-text {
+        font-family: 'Gotham', sans-serif;
+        font-size: 14px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        white-space: nowrap;
+    }
+
+    .maison_commerce_maison_upsell_package__timer {
+        background: rgba(217, 218, 244, 0.2);
+        border-radius: 90px;
+        padding: 0 8px;
+        font-family: 'Gotham', sans-serif;
+        font-size: 14px;
+        font-weight: 900;
+        color: #fffbc0;
+        height: 23px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        white-space: nowrap;
+        flex-shrink: 0;
+    }
+
+    .maison_commerce_maison_upsell_package__timer .timer-value {
+        line-height: 1;
+    }
+
+    .maison_commerce_maison_upsell_package__content {
+        padding: 18px;
+        display: flex;
+        flex-direction: column;
+        gap: 18px;
+        align-items: center;
+    }
+
+    .maison_commerce_maison_upsell_package__image {
+        width: 100%;
+    }
+
+    .maison_commerce_maison_upsell_package__image img {
+        width: 100%;
+        height: auto;
+        object-fit: contain;
+        display: block;
+    }
+
+    .maison_commerce_maison_upsell_package__discount-badge {
+        background: #E98C36;
+        color: white;
+        padding: 4px 12px;
+        border-radius: 48px;
+        font-family: 'Gotham', sans-serif;
+        font-size: 10px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        display: inline-block;
+        align-self: center;
+    }
+
+    .maison_commerce_maison_upsell_package__text-content {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        text-align: center;
+    }
+
+    .maison_commerce_maison_upsell_package__title {
+        font-family: 'Vanilla Ravioli', serif;
+        font-size: 20px;
+        font-weight: 400;
+        color: #232323;
+        margin: 0;
+        line-height: 1.4;
+    }
+
+    .maison_commerce_maison_upsell_package__description {
+        font-family: 'Gotham', sans-serif;
+        font-size: 14px;
+        color: rgba(35, 35, 35, 0.75);
+        line-height: 1.5;
+    }
+
+    .maison_commerce_maison_upsell_package__description p {
+        margin: 0 0 8px 0;
+    }
+
+    .maison_commerce_maison_upsell_package__description p:last-child {
+        margin-bottom: 0;
+    }
+
+    .maison_commerce_maison_upsell_package__description strong {
+        font-weight: 700;
+    }
+
+    .maison_commerce_maison_upsell_package__button {
+        background: #ffffff;
+        color: #1A365D;
+        border: none;
+        padding: 16px 32px;
+        border-radius: 12px;
+        font-family: 'Gotham', sans-serif;
+        font-size: 16px;
+        font-weight: 500;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        transition: all 0.2s;
+        width: 100%;
+    }
+
+    .maison_commerce_maison_upsell_package__button:hover {
+        opacity: 0.9;
+        transform: translateY(-1px);
+    }
+
+    .maison_commerce_maison_upsell_package__button:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+    }
+
+    .maison_commerce_maison_upsell_package__button svg {
+        width: 24px;
+        height: 24px;
+        flex-shrink: 0;
+    }
+
+    .maison_commerce_maison_upsell_package__footer {
+        font-family: 'Gotham', sans-serif;
+        font-size: 12px;
+        color: #8E8C6B;
+        text-align: center;
+    }
+
+    /* Mobile Styles for Upsell Package */
+    @media (max-width: 767px) {
+        .maison_commerce_maison_upsell_package__header {
+            padding: 8px 16px;
+            gap: 4px;
+        }
+
+        .maison_commerce_maison_upsell_package__header-left {
+            flex: 1;
+            justify-content: center;
+        }
+
+        .maison_commerce_maison_upsell_package__timer {
+            flex: 1;
+            justify-content: center;
+        }
+
+        .maison_commerce_maison_upsell_package__content {
+            padding: 18px;
+        }
+
+        .maison_commerce_maison_upsell_package__title {
+            font-size: 18px;
+        }
+
+        .maison_commerce_maison_upsell_package__description {
+            font-size: 13px;
+        }
+
+        .maison_commerce_maison_upsell_package__button {
+            padding: 16px 32px;
+            font-size: 14px;
+        }
+
+        .maison_commerce_maison_upsell_package__footer {
+            font-size: 12px;
+        }
+
+        .maison_commerce_maison_upsell_package__discount-badge {
+            font-size: 10px;
+            padding: 4px 12px;
+        }
+    }

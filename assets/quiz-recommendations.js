@@ -2154,6 +2154,148 @@
         });
     });
 
+    // Initialize Upsell Package Blocks
+    function initUpsellPackageBlocks() {
+        const upsellBlocks = document.querySelectorAll('[data-upsell-package-block]');
+        
+        upsellBlocks.forEach(block => {
+            // Initialize countdown timer
+            const timer = block.querySelector('[data-countdown-timer]');
+            if (timer) {
+                const hoursEl = timer.querySelector('[data-timer-hours]');
+                const minutesEl = timer.querySelector('[data-timer-minutes]');
+                const secondsEl = timer.querySelector('[data-timer-seconds]');
+                
+                if (hoursEl && minutesEl && secondsEl) {
+                    const hours = parseInt(block.dataset.countdownHours) || 0;
+                    const minutes = parseInt(block.dataset.countdownMinutes) || 9;
+                    const seconds = parseInt(block.dataset.countdownSeconds) || 57;
+                    
+                    let totalSeconds = hours * 3600 + minutes * 60 + seconds;
+                    
+                    const updateTimer = () => {
+                        if (totalSeconds <= 0) {
+                            hoursEl.textContent = '00';
+                            minutesEl.textContent = '00';
+                            secondsEl.textContent = '00';
+                            return;
+                        }
+                        
+                        const h = Math.floor(totalSeconds / 3600);
+                        const m = Math.floor((totalSeconds % 3600) / 60);
+                        const s = totalSeconds % 60;
+                        
+                        hoursEl.textContent = String(h).padStart(2, '0');
+                        minutesEl.textContent = String(m).padStart(2, '0');
+                        secondsEl.textContent = String(s).padStart(2, '0');
+                        
+                        totalSeconds--;
+                    };
+                    
+                    updateTimer();
+                    setInterval(updateTimer, 1000);
+                }
+            }
+
+            // Initialize button click handler
+            const button = block.querySelector('[data-upsell-package-button]');
+            if (button) {
+                button.addEventListener('click', async (e) => {
+                    e.preventDefault();
+                    const productHandles = button.dataset.productHandles;
+                    if (!productHandles) return;
+
+                    const handles = productHandles.split(',').map(h => h.trim()).filter(h => h);
+                    if (handles.length === 0) return;
+
+                    // Disable button during processing
+                    button.disabled = true;
+                    const originalText = button.innerHTML;
+                    button.innerHTML = 'Adding to Cart...';
+
+                    try {
+                        // Fetch all products
+                        const productPromises = handles.map(handle => 
+                            fetch(`/products/${handle}.js`).then(res => res.json())
+                        );
+                        const products = await Promise.all(productPromises);
+
+                        // Prepare cart items for Shopify API
+                        const itemsToAdd = [];
+                        for (const product of products) {
+                            if (product && product.variants && product.variants.length > 0) {
+                                const variant = product.variants[0];
+                                itemsToAdd.push({
+                                    id: variant.id,
+                                    quantity: 1
+                                });
+                            }
+                        }
+
+                        if (itemsToAdd.length === 0) {
+                            throw new Error('No valid products found');
+                        }
+
+                        // Add all products to cart via Shopify API
+                        const response = await fetch('/cart/add.js', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({ items: itemsToAdd })
+                        });
+
+                        if (response.ok) {
+                            // Reload cart from Shopify to sync
+                            const cartResponse = await fetch('/cart.js');
+                            const cart = await cartResponse.json();
+                            
+                            // Update local cartItems array
+                            cartItems.length = 0;
+                            for (const item of cart.items) {
+                                // Find the product from our fetched products
+                                const product = products.find(p => p.handle === item.handle);
+                                if (product) {
+                                    cartItems.push({
+                                        variantId: item.variant_id,
+                                        quantity: item.quantity,
+                                        product: product,
+                                        sellingPlanId: item.selling_plan_allocation ? item.selling_plan_allocation.selling_plan_id : null,
+                                        isGift: false,
+                                        isBogoFree: false
+                                    });
+                                }
+                            }
+                            
+                            // Update cart display and related functions
+                            updateCartDisplay();
+                            updateGiftTiers();
+                            updateProductCardButtons();
+                            
+                            // Trigger cart update event
+                            document.dispatchEvent(new CustomEvent('cart:updated'));
+
+                            // Show success feedback
+                            button.innerHTML = 'Added to Cart!';
+                            setTimeout(() => {
+                                button.innerHTML = originalText;
+                                button.disabled = false;
+                            }, 2000);
+                        } else {
+                            const errorData = await response.json();
+                            throw new Error(errorData.description || 'Failed to add products to cart');
+                        }
+                    } catch (error) {
+                        console.error('Error adding products to cart:', error);
+                        button.innerHTML = originalText;
+                        button.disabled = false;
+                        alert('There was an error adding products to cart. Please try again.');
+                    }
+                });
+            }
+        });
+    }
+
     const recommendationsSection = document.querySelector('[data-recommendations]');
     if (recommendationsSection) {
         const observer = new MutationObserver(function(mutations) {
@@ -2161,6 +2303,7 @@
                 if (mutation.attributeName === 'style') {
                     if (recommendationsSection.style.display !== 'none') {
                         initRecommendations();
+                        initUpsellPackageBlocks();
                         observer.disconnect();
                     }
                 }
@@ -2171,9 +2314,15 @@
 
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', () => {
-            setTimeout(initRecommendations, 100);
+            setTimeout(() => {
+                initRecommendations();
+                initUpsellPackageBlocks();
+            }, 100);
         });
     } else {
-        setTimeout(initRecommendations, 100);
+        setTimeout(() => {
+            initRecommendations();
+            initUpsellPackageBlocks();
+        }, 100);
     }
 })();
