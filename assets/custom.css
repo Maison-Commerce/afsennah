@@ -1749,7 +1749,7 @@ height: 100%;
     font-weight: 700;
     font-style: Bold;
     font-size: 12px;
-    line-height: 100%;
+    line-height: 1;
     letter-spacing: 0%;
     color: #FFFFFF !important;
     padding: 7px 12px !important;
