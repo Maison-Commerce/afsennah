@@ -1475,26 +1475,16 @@
                 });
             }
 
-            console.log('Add button found:', !!addBtn, addBtn);
-            console.log('Remove button found:', !!removeBtn, removeBtn);
-
             if (addBtn) {
-                console.log('Add button display BEFORE:', addBtn.style.display);
                 addBtn.style.display = 'inline-flex';
-                console.log('Add button display AFTER:', addBtn.style.display);
             }
             if (removeBtn) {
-                console.log('Remove button display BEFORE:', removeBtn.style.display);
                 removeBtn.style.display = 'none';
-                console.log('Remove button display AFTER:', removeBtn.style.display);
             }
         } else {
-            console.log('FAILED: productCard or productStates not found');
-            if (!productCard) console.log('- Product card is null');
-            if (!productStates[product.id]) console.log('- productStates[product.id] is null');
+            if (!productCard) 
+            if (!productStates[product.id])
         }
-
-        console.log('=== removeProductFromCart END ===');
 
         // Remove from cart
         updateCartItem(variantId, 0, product, null);
@@ -2395,8 +2385,6 @@
                     
                     // Split handles and fetch products
                     const handles = productHandles.split(',').map(h => h.trim()).filter(h => h);
-                    console.log('Upsell Package Button Clicked');
-                    console.log('Product handles from block:', handles);
                     
                     if (handles.length === 0) {
                         console.error('No product handles found');
