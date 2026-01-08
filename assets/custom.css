@@ -294,7 +294,7 @@ image-with-text-overlay > div > div,
     }
     .product-slider {
         max-width: 80%;
-        margin-left: 10%;
+        margin-left: 20px;
         padding-top: 20px;
     }
     .slider-slide {
