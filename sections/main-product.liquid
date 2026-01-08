@@ -41,37 +41,13 @@
   Product Split Layout - 50/50 Desktop, Slider Mobile
 {% endcomment %}
 
-<div class="product-container">
-  <!-- Desktop: 2 Column Gallery -->
-  <div class="product-gallery-desktop">
-    {% for media in product.media %}
-      <div class="gallery-item" data-media-index="{{ forloop.index0 }}">
-        {% case media.media_type %}
-          {% when 'image' %}
-            <img
-              src="{{ media | image_url: width: 1000 }}"
-              alt="{{ media.alt | escape }}"
-              width="{{ media.width }}"
-              height="{{ media.height }}"
-              loading="{% if forloop.index <= 4 %}eager{% else %}lazy{% endif %}"
-              {% if forloop.index <= 2 %}fetchpriority="high"{% endif %}
-            >
-          {% when 'video' %}
-            {{ media | media_tag: autoplay: true, loop: true, muted: true }}
-          {% when 'external_video' %}
-            {{ media | media_tag }}
-          {% when 'model' %}
-            {{ media | media_tag }}
-        {% endcase %}
-      </div>
-    {% endfor %}
-  </div>
-
-  <!-- Mobile: Slider with Thumbnails -->
-  <div class="product-slider-container">
-    <div class="product-slider" id="productSlider">
+{% if section.settings.enable_modern_gallery %}
+  <!-- Modern Gallery Version -->
+  <div class="product-container product-container--modern">
+    <!-- Desktop: 2 Column Gallery -->
+    <div class="product-gallery-desktop">
       {% for media in product.media %}
-        <div class="slider-slide" data-slide-index="{{ forloop.index0 }}">
+        <div class="gallery-item" data-media-index="{{ forloop.index0 }}">
           {% case media.media_type %}
             {% when 'image' %}
               <img
@@ -79,8 +55,8 @@
                 alt="{{ media.alt | escape }}"
                 width="{{ media.width }}"
                 height="{{ media.height }}"
-                loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"
-                {% if forloop.first %}fetchpriority="high"{% endif %}
+                loading="{% if forloop.index <= 4 %}eager{% else %}lazy{% endif %}"
+                {% if forloop.index <= 2 %}fetchpriority="high"{% endif %}
               >
             {% when 'video' %}
               {{ media | media_tag: autoplay: true, loop: true, muted: true }}
@@ -93,59 +69,366 @@
       {% endfor %}
     </div>
 
-    <!-- Navigation Arrows (Mobile) -->
-    {% if product.media.size > 1 %}
-      <button class="slider-nav prev" id="prevBtn" aria-label="Previous slide">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <polyline points="15 18 9 12 15 6"></polyline>
-        </svg>
-      </button>
-      <button class="slider-nav next" id="nextBtn" aria-label="Next slide">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <polyline points="9 18 15 12 9 6"></polyline>
-        </svg>
-      </button>
+    <!-- Mobile: Slider with Thumbnails -->
+    <div class="product-slider-container product-slider-container--modern">
+      <div class="product-slider product-slider--modern" id="productSliderModern">
+        {% for media in product.media %}
+          <div class="slider-slide slider-slide--modern" data-slide-index="{{ forloop.index0 }}">
+            {% case media.media_type %}
+              {% when 'image' %}
+                <img
+                  src="{{ media | image_url: width: 1000 }}"
+                  alt="{{ media.alt | escape }}"
+                  width="{{ media.width }}"
+                  height="{{ media.height }}"
+                  loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"
+                  {% if forloop.first %}fetchpriority="high"{% endif %}
+                >
+              {% when 'video' %}
+                {{ media | media_tag: autoplay: true, loop: true, muted: true }}
+              {% when 'external_video' %}
+                {{ media | media_tag }}
+              {% when 'model' %}
+                {{ media | media_tag }}
+            {% endcase %}
+          </div>
+        {% endfor %}
+      </div>
 
-      <!-- Dots Navigation -->
-      <div class="slider-dots" id="sliderDots"></div>
+      <!-- Navigation Arrows (Mobile) -->
+      {% if product.media.size > 1 %}
+        <button class="slider-nav prev slider-nav--modern" id="prevBtnModern" aria-label="Previous slide">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="15 18 9 12 15 6"></polyline>
+          </svg>
+        </button>
+        <button class="slider-nav next slider-nav--modern" id="nextBtnModern" aria-label="Next slide">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+        </button>
+
+        <!-- Dots Navigation -->
+        <div class="slider-dots slider-dots--modern" id="sliderDotsModern"></div>
+      {% endif %}
+    </div>
+
+    <!-- Mobile: Thumbnails -->
+    {% if product.media.size > 1 %}
+      <div class="product-thumbnails" id="productThumbnails">
+        {% for media in product.media %}
+          <button 
+            class="thumbnail-item {% if forloop.first %}active{% endif %}" 
+            data-thumbnail-index="{{ forloop.index0 }}"
+            aria-label="Go to slide {{ forloop.index }}"
+          >
+            {% if media.media_type == 'image' %}
+              <img
+                src="{{ media | image_url: width: 150 }}"
+                alt="{{ media.alt | escape }}"
+                width="80"
+                height="80"
+                loading="lazy"
+              >
+            {% else %}
+              <div class="thumbnail-placeholder">
+                {% if media.media_type == 'video' or media.media_type == 'external_video' %}
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                  </svg>
+                {% else %}
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                  </svg>
+                {% endif %}
+              </div>
+            {% endif %}
+          </button>
+        {% endfor %}
+      </div>
     {% endif %}
   </div>
 
-  <!-- Mobile: Thumbnails -->
-  {% if product.media.size > 1 %}
-    <div class="product-thumbnails" id="productThumbnails">
-      {% for media in product.media %}
-        <button 
-          class="thumbnail-item {% if forloop.first %}active{% endif %}" 
-          data-thumbnail-index="{{ forloop.index0 }}"
-          aria-label="Go to slide {{ forloop.index }}"
+  <script>
+    (function() {
+      const slider = document.getElementById('productSliderModern');
+      const prevBtn = document.getElementById('prevBtnModern');
+      const nextBtn = document.getElementById('nextBtnModern');
+      const dotsContainer = document.getElementById('sliderDotsModern');
+      const thumbnailsContainer = document.getElementById('productThumbnails');
+
+      if (!slider) return;
+
+      const allSlides = slider.querySelectorAll('.slider-slide--modern');
+      const totalSlides = allSlides.length;
+      let currentIndex = 0;
+
+      // Create dots
+      if (dotsContainer && totalSlides > 1) {
+        for (let i = 0; i < totalSlides; i++) {
+          const dot = document.createElement('button');
+          dot.className = 'slider-dot';
+          if (i === 0) dot.classList.add('active');
+          dot.setAttribute('aria-label', `Go to slide ${i + 1}`);
+          dot.addEventListener('click', () => {
+            goToSlide(i);
+          });
+          dotsContainer.appendChild(dot);
+        }
+      }
+
+      const dots = dotsContainer ? dotsContainer.querySelectorAll('.slider-dot') : [];
+      const thumbnails = thumbnailsContainer ? thumbnailsContainer.querySelectorAll('.thumbnail-item') : [];
+
+      function updateSlider() {
+        // Update slider position
+        slider.style.transform = `translateX(-${currentIndex * 100}%)`;
+
+        // Update dots
+        dots.forEach((dot, index) => {
+          dot.classList.toggle('active', index === currentIndex);
+        });
+
+        // Update thumbnails
+        thumbnails.forEach((thumb, index) => {
+          thumb.classList.toggle('active', index === currentIndex);
+        });
+
+        // Scroll thumbnail into view
+        if (thumbnailsContainer && thumbnails[currentIndex]) {
+          const activeThumb = thumbnails[currentIndex];
+          const containerRect = thumbnailsContainer.getBoundingClientRect();
+          const thumbRect = activeThumb.getBoundingClientRect();
+          
+          if (thumbRect.left < containerRect.left) {
+            thumbnailsContainer.scrollTo({
+              left: activeThumb.offsetLeft - thumbnailsContainer.offsetLeft - 20,
+              behavior: 'smooth'
+            });
+          } else if (thumbRect.right > containerRect.right) {
+            thumbnailsContainer.scrollTo({
+              left: activeThumb.offsetLeft - thumbnailsContainer.offsetLeft + activeThumb.offsetWidth - containerRect.width + 20,
+              behavior: 'smooth'
+            });
+          }
+        }
+      }
+
+      function goToSlide(index) {
+        if (index < 0 || index >= totalSlides) return;
+        currentIndex = index;
+        updateSlider();
+      }
+
+      function nextSlide() {
+        currentIndex = (currentIndex + 1) % totalSlides;
+        updateSlider();
+      }
+
+      function prevSlide() {
+        currentIndex = (currentIndex - 1 + totalSlides) % totalSlides;
+        updateSlider();
+      }
+
+      // Navigation buttons
+      if (prevBtn) {
+        prevBtn.addEventListener('click', prevSlide);
+      }
+
+      if (nextBtn) {
+        nextBtn.addEventListener('click', nextSlide);
+      }
+
+      // Thumbnail clicks
+      thumbnails.forEach((thumb, index) => {
+        thumb.addEventListener('click', () => {
+          goToSlide(index);
+        });
+      });
+
+      // Touch/swipe support
+      let touchStartX = 0;
+      let touchEndX = 0;
+
+      slider.addEventListener('touchstart', e => {
+        touchStartX = e.changedTouches[0].screenX;
+      });
+
+      slider.addEventListener('touchend', e => {
+        touchEndX = e.changedTouches[0].screenX;
+        handleSwipe();
+      });
+
+      function handleSwipe() {
+        if (touchEndX < touchStartX - 50) {
+          nextSlide();
+        }
+        if (touchEndX > touchStartX + 50) {
+          prevSlide();
+        }
+      }
+
+      // Initialize
+      updateSlider();
+    })();
+  </script>
+{% else %}
+  <!-- Original Gallery Version -->
+  <div class="product-container">
+    <!-- Left Side: Main Product Image (Desktop Only) -->
+    {% if product.featured_media %}
+      <div class="product-main-image">
+        <img
+          src="{{ product.featured_media | image_url: width: 1000 }}"
+          alt="{{ product.featured_media.alt | escape }}"
+          width="{{ product.featured_media.width }}"
+          height="{{ product.featured_media.height }}"
+          loading="eager"
+          fetchpriority="high"
         >
-          {% if media.media_type == 'image' %}
-            <img
-              src="{{ media | image_url: width: 150 }}"
-              alt="{{ media.alt | escape }}"
-              width="80"
-              height="80"
-              loading="lazy"
-            >
-          {% else %}
-            <div class="thumbnail-placeholder">
-              {% if media.media_type == 'video' or media.media_type == 'external_video' %}
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <polygon points="5 3 19 12 5 21 5 3"></polygon>
-                </svg>
-              {% else %}
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
-                </svg>
-              {% endif %}
-            </div>
-          {% endif %}
+      </div>
+    {% endif %}
+
+    <!-- Right Side: Media Slider -->
+    <div class="product-slider-container">
+      <div class="product-slider" id="productSlider">
+        {% for media in product.media %}
+          <div class="slider-slide {% if forloop.first %}desktop-hide-slide{% endif %}" data-slide-index="{{ forloop.index0 }}">
+            {% case media.media_type %}
+              {% when 'image' %}
+                <img
+                  src="{{ media | image_url: width: 1000 }}"
+                  alt="{{ media.alt | escape }}"
+                  width="{{ media.width }}"
+                  height="{{ media.height }}"
+                  loading="lazy"
+                >
+              {% when 'video' %}
+                {{ media | media_tag: autoplay: true, loop: true, muted: true }}
+              {% when 'external_video' %}
+                {{ media | media_tag }}
+              {% when 'model' %}
+                {{ media | media_tag }}
+            {% endcase %}
+          </div>
+        {% endfor %}
+      </div>
+
+      <!-- Navigation Arrows -->
+      {% if product.media.size > 1 %}
+        <button class="slider-nav prev" id="prevBtn" aria-label="Previous slide">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="15 18 9 12 15 6"></polyline>
+          </svg>
         </button>
-      {% endfor %}
+        <button class="slider-nav next" id="nextBtn" aria-label="Next slide">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+        </button>
+
+        <!-- Dots Navigation -->
+        <div class="slider-dots" id="sliderDots"></div>
+      {% endif %}
     </div>
-  {% endif %}
-</div>
+  </div>
+
+  <script>
+    (function() {
+      const slider = document.getElementById('productSlider');
+      const prevBtn = document.getElementById('prevBtn');
+      const nextBtn = document.getElementById('nextBtn');
+      const dotsContainer = document.getElementById('sliderDots');
+
+      if (!slider) return;
+
+      const allSlides = slider.querySelectorAll('.slider-slide');
+      const isMobile = window.innerWidth <= 1499;
+
+      // Get visible slides based on screen size
+      let visibleSlides = [];
+      let slideIndexMap = []; // Maps visible index to actual DOM index
+
+      allSlides.forEach((slide, index) => {
+        const isDesktopHidden = slide.classList.contains('desktop-hide-slide');
+        if (isMobile || !isDesktopHidden) {
+          visibleSlides.push(slide);
+          slideIndexMap.push(index);
+        }
+      });
+
+      let currentVisibleIndex = 0;
+      const totalVisibleSlides = visibleSlides.length;
+
+      // Create dots for visible slides only
+      slideIndexMap.forEach((actualIndex, visibleIndex) => {
+        const dot = document.createElement('button');
+        dot.className = 'slider-dot';
+        if (visibleIndex === 0) dot.classList.add('active');
+        dot.setAttribute('aria-label', `Go to slide ${visibleIndex + 1}`);
+        dot.addEventListener('click', () => {
+          currentVisibleIndex = visibleIndex;
+          updateSlider();
+        });
+        dotsContainer.appendChild(dot);
+      });
+
+      const dots = dotsContainer.querySelectorAll('.slider-dot');
+
+      function updateSlider() {
+        const actualSlideIndex = slideIndexMap[currentVisibleIndex];
+        slider.style.transform = `translateX(-${actualSlideIndex * 100}%)`;
+
+        dots.forEach((dot, index) => {
+          dot.classList.toggle('active', index === currentVisibleIndex);
+        });
+      }
+
+      function nextSlide() {
+        currentVisibleIndex = (currentVisibleIndex + 1) % totalVisibleSlides;
+        updateSlider();
+      }
+
+      function prevSlide() {
+        currentVisibleIndex = (currentVisibleIndex - 1 + totalVisibleSlides) % totalVisibleSlides;
+        updateSlider();
+      }
+
+      if (prevBtn) {
+        prevBtn.addEventListener('click', prevSlide);
+      }
+
+      if (nextBtn) {
+        nextBtn.addEventListener('click', nextSlide);
+      }
+
+      // Touch/swipe support
+      let touchStartX = 0;
+      let touchEndX = 0;
+
+      slider.addEventListener('touchstart', e => {
+        touchStartX = e.changedTouches[0].screenX;
+      });
+
+      slider.addEventListener('touchend', e => {
+        touchEndX = e.changedTouches[0].screenX;
+        handleSwipe();
+      });
+
+      function handleSwipe() {
+        if (touchEndX < touchStartX - 50) {
+          nextSlide();
+        }
+        if (touchEndX > touchStartX + 50) {
+          prevSlide();
+        }
+      }
+
+      // Initialize
+      updateSlider();
+    })();
+  </script>
+{% endif %}
 
 <script>
   (function() {
@@ -153,82 +436,61 @@
     const prevBtn = document.getElementById('prevBtn');
     const nextBtn = document.getElementById('nextBtn');
     const dotsContainer = document.getElementById('sliderDots');
-    const thumbnailsContainer = document.getElementById('productThumbnails');
 
     if (!slider) return;
 
     const allSlides = slider.querySelectorAll('.slider-slide');
-    const totalSlides = allSlides.length;
-    let currentIndex = 0;
+    const isMobile = window.innerWidth <= 1499;
 
-    // Create dots
-    if (dotsContainer && totalSlides > 1) {
-      for (let i = 0; i < totalSlides; i++) {
-        const dot = document.createElement('button');
-        dot.className = 'slider-dot';
-        if (i === 0) dot.classList.add('active');
-        dot.setAttribute('aria-label', `Go to slide ${i + 1}`);
-        dot.addEventListener('click', () => {
-          goToSlide(i);
-        });
-        dotsContainer.appendChild(dot);
+    // Get visible slides based on screen size
+    let visibleSlides = [];
+    let slideIndexMap = []; // Maps visible index to actual DOM index
+
+    allSlides.forEach((slide, index) => {
+      const isDesktopHidden = slide.classList.contains('desktop-hide-slide');
+      if (isMobile || !isDesktopHidden) {
+        visibleSlides.push(slide);
+        slideIndexMap.push(index);
       }
-    }
+    });
 
-    const dots = dotsContainer ? dotsContainer.querySelectorAll('.slider-dot') : [];
-    const thumbnails = thumbnailsContainer ? thumbnailsContainer.querySelectorAll('.thumbnail-item') : [];
+    let currentVisibleIndex = 0;
+    const totalVisibleSlides = visibleSlides.length;
+
+    // Create dots for visible slides only
+    slideIndexMap.forEach((actualIndex, visibleIndex) => {
+      const dot = document.createElement('button');
+      dot.className = 'slider-dot';
+      if (visibleIndex === 0) dot.classList.add('active');
+      dot.setAttribute('aria-label', `Go to slide ${visibleIndex + 1}`);
+      dot.addEventListener('click', () => {
+        currentVisibleIndex = visibleIndex;
+        updateSlider();
+      });
+      dotsContainer.appendChild(dot);
+    });
+
+    const dots = dotsContainer.querySelectorAll('.slider-dot');
 
     function updateSlider() {
-      // Update slider position
-      slider.style.transform = `translateX(-${currentIndex * 100}%)`;
+      const actualSlideIndex = slideIndexMap[currentVisibleIndex];
+      slider.style.transform = `translateX(-${actualSlideIndex * 100}%)`;
 
-      // Update dots
       dots.forEach((dot, index) => {
-        dot.classList.toggle('active', index === currentIndex);
+        dot.classList.toggle('active', index === currentVisibleIndex);
       });
-
-      // Update thumbnails
-      thumbnails.forEach((thumb, index) => {
-        thumb.classList.toggle('active', index === currentIndex);
-      });
-
-      // Scroll thumbnail into view
-      if (thumbnailsContainer && thumbnails[currentIndex]) {
-        const activeThumb = thumbnails[currentIndex];
-        const containerRect = thumbnailsContainer.getBoundingClientRect();
-        const thumbRect = activeThumb.getBoundingClientRect();
-        
-        if (thumbRect.left < containerRect.left) {
-          thumbnailsContainer.scrollTo({
-            left: activeThumb.offsetLeft - thumbnailsContainer.offsetLeft - 20,
-            behavior: 'smooth'
-          });
-        } else if (thumbRect.right > containerRect.right) {
-          thumbnailsContainer.scrollTo({
-            left: activeThumb.offsetLeft - thumbnailsContainer.offsetLeft + activeThumb.offsetWidth - containerRect.width + 20,
-            behavior: 'smooth'
-          });
-        }
-      }
-    }
-
-    function goToSlide(index) {
-      if (index < 0 || index >= totalSlides) return;
-      currentIndex = index;
-      updateSlider();
     }
 
     function nextSlide() {
-      currentIndex = (currentIndex + 1) % totalSlides;
+      currentVisibleIndex = (currentVisibleIndex + 1) % totalVisibleSlides;
       updateSlider();
     }
 
     function prevSlide() {
-      currentIndex = (currentIndex - 1 + totalSlides) % totalSlides;
+      currentVisibleIndex = (currentVisibleIndex - 1 + totalVisibleSlides) % totalVisibleSlides;
       updateSlider();
     }
 
-    // Navigation buttons
     if (prevBtn) {
       prevBtn.addEventListener('click', prevSlide);
     }
@@ -236,13 +498,6 @@
     if (nextBtn) {
       nextBtn.addEventListener('click', nextSlide);
     }
-
-    // Thumbnail clicks
-    thumbnails.forEach((thumb, index) => {
-      thumb.addEventListener('click', () => {
-        goToSlide(index);
-      });
-    });
 
     // Touch/swipe support
     let touchStartX = 0;
@@ -1231,6 +1486,17 @@
       "id": "enable_sticky_columns",
       "label": "Enable sticky columns",
       "default": false
+    },
+    {
+      "type": "header",
+      "content": "Gallery"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_modern_gallery",
+      "label": "Modern product gallery",
+      "info": "Enable 2-column gallery on desktop and thumbnail navigation on mobile",
+      "default": true
     },
     {
       "type": "header",
