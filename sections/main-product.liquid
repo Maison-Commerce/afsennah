@@ -181,8 +181,23 @@
       const thumbnails = thumbnailsContainer ? thumbnailsContainer.querySelectorAll('.thumbnail-item') : [];
 
       function updateSlider() {
-        // Update slider position
-        slider.style.transform = `translateX(-${currentIndex * 100}%)`;
+        // Calculate slide width including gap
+        const isMobile = window.innerWidth <= 767;
+        let slideWidth = 0;
+        
+        if (isMobile && allSlides.length > 0) {
+          // On mobile, use 80vw + gap
+          const gap = 8; // 8px gap
+          slideWidth = window.innerWidth * 0.8 + gap;
+        } else {
+          // On desktop/tablet, use 100% of slide width
+          if (allSlides.length > 0) {
+            slideWidth = allSlides[0].offsetWidth;
+          }
+        }
+        
+        // Update slider position - move to align current slide to the left
+        slider.style.transform = `translateX(-${currentIndex * slideWidth}px)`;
 
         // Update dots
         dots.forEach((dot, index) => {
@@ -267,6 +282,15 @@
           prevSlide();
         }
       }
+
+      // Handle window resize
+      let resizeTimeout;
+      window.addEventListener('resize', () => {
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(() => {
+          updateSlider();
+        }, 100);
+      });
 
       // Initialize
       updateSlider();
