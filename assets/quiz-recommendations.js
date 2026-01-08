@@ -2154,11 +2154,28 @@
         });
     });
 
+    // Track initialized blocks to prevent double initialization
+    const initializedUpsellBlocks = new Set();
+
     // Initialize Upsell Package Blocks
     function initUpsellPackageBlocks() {
         const upsellBlocks = document.querySelectorAll('[data-upsell-package-block]');
         
         upsellBlocks.forEach(block => {
+            // Skip if already initialized
+            if (initializedUpsellBlocks.has(block)) {
+                return;
+            }
+            
+            // Mark as initialized
+            initializedUpsellBlocks.add(block);
+            
+            // Clear any existing interval if it exists
+            if (block._upsellTimerInterval) {
+                clearInterval(block._upsellTimerInterval);
+                block._upsellTimerInterval = null;
+            }
+            
             // Initialize countdown timer
             const timer = block.querySelector('[data-countdown-timer]');
             if (timer) {
@@ -2173,7 +2190,7 @@
                     
                     let totalSeconds = hours * 3600 + minutes * 60 + seconds;
                     
-                    // Store interval ID to clear it later
+                    // Store interval ID on the block element for cleanup
                     let intervalId = null;
                     
                     const updateTimer = () => {
@@ -2214,6 +2231,9 @@
                     
                     // Start the interval - update every second
                     intervalId = setInterval(updateTimer, 1000);
+                    
+                    // Store interval ID on block for cleanup
+                    block._upsellTimerInterval = intervalId;
                 }
             }
 
