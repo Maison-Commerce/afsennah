@@ -1663,15 +1663,13 @@
         text-transform: uppercase;
         letter-spacing: 0.5px;
         display: inline-block;
-        align-self: center;
     }
 
     .maison_commerce_maison_upsell_package__text-content {
         display: flex;
-        flex-direction: column;
         gap: 12px;
         width: 100%;
-        align-items: flex-start;
+        align-items: center;
         text-align: center;
     }
 
