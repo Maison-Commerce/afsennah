@@ -180,9 +180,9 @@
     padding: 70px 62px;
     display: none;
     overflow: hidden;
-    max-height: auto;
+    max-height: 100vh;
     position: relative;
-    height: auto;
+    height: calc(100vh - 136px);
   }
 
   #shopify-section-{{ section.id }} .quiz-calculating-reviews-container {
@@ -769,80 +769,131 @@
 
     function enableAutoScroll() {
       // Prevent multiple initializations
-      if (autoScrollInitialized) return;
+      if (autoScrollInitialized) {
+        console.log('Auto-scroll already initialized');
+        return;
+      }
 
       // Try to find the container with multiple selectors
       const calcSection = document.querySelector('[data-calculating]');
       if (!calcSection) {
-        console.log('Calculating section not found');
+        console.log('[Auto-scroll] Calculating section not found');
         return;
       }
+
+      console.log('[Auto-scroll] Calculating section found, display:', calcSection.style.display);
 
       const reviewsContainer = calcSection.querySelector('.quiz-calculating-reviews-container');
       
       if (!reviewsContainer) {
-        console.log('Reviews container not found');
+        console.log('[Auto-scroll] Reviews container not found');
         return;
       }
 
-      // Check if container has scrollable content
-      const maxScroll = reviewsContainer.scrollHeight - reviewsContainer.clientHeight;
-      if (maxScroll <= 0) {
-        console.log('No scrollable content. scrollHeight:', reviewsContainer.scrollHeight, 'clientHeight:', reviewsContainer.clientHeight);
-        return;
-      }
+      console.log('[Auto-scroll] Reviews container found');
 
-      console.log('Initializing auto-scroll. Max scroll:', maxScroll);
-      autoScrollInitialized = true;
-
-      // Clear any existing interval
-      if (scrollInterval) {
-        clearInterval(scrollInterval);
-      }
-
-      // Disable smooth scrolling for auto-scroll (it interferes with programmatic scrolling)
-      reviewsContainer.style.scrollBehavior = 'auto';
-
-      // Auto-scroll function
-      function autoScroll() {
-        const currentMaxScroll = reviewsContainer.scrollHeight - reviewsContainer.clientHeight;
-        
-        if (currentMaxScroll <= 0) return;
-
-        // Scroll down
-        if (reviewsContainer.scrollTop < currentMaxScroll - 1) {
-          reviewsContainer.scrollTop += 1;
-        } else {
-          // Reset to top when reaching bottom for seamless loop
-          reviewsContainer.scrollTop = 0;
-        }
-      }
-
-      // Start auto-scrolling every 30ms (faster scroll)
-      scrollInterval = setInterval(autoScroll, 30);
-
-      // Pause on hover
+      // Check if reviews column is visible (only on desktop)
       const reviewsColumn = calcSection.querySelector('.quiz-calculating-reviews-column');
-      
-      if (reviewsColumn) {
-        reviewsColumn.addEventListener('mouseenter', () => {
-          if (scrollInterval) {
-            clearInterval(scrollInterval);
-            scrollInterval = null;
-          }
-        });
-        
-        reviewsColumn.addEventListener('mouseleave', () => {
-          // Restart scrolling
-          scrollInterval = setInterval(autoScroll, 30);
-        });
+      if (!reviewsColumn) {
+        console.log('[Auto-scroll] Reviews column not found');
+        return;
       }
+
+      const columnStyle = window.getComputedStyle(reviewsColumn);
+      if (columnStyle.display === 'none') {
+        console.log('[Auto-scroll] Reviews column is hidden (mobile view) - auto-scroll disabled');
+        return;
+      }
+
+      console.log('[Auto-scroll] Reviews column is visible');
+
+      // Wait a bit for content to render
+      setTimeout(() => {
+        // Force a reflow to ensure accurate measurements
+        reviewsContainer.offsetHeight;
+        
+        // Check if container has scrollable content
+        const scrollHeight = reviewsContainer.scrollHeight;
+        const clientHeight = reviewsContainer.clientHeight;
+        const maxScroll = scrollHeight - clientHeight;
+        
+        console.log('[Auto-scroll] scrollHeight:', scrollHeight, 'clientHeight:', clientHeight, 'maxScroll:', maxScroll);
+        
+        if (maxScroll <= 0) {
+          console.log('[Auto-scroll] No scrollable content - not starting');
+          // Try again after a longer delay in case content is still loading
+          setTimeout(() => {
+            const retryScrollHeight = reviewsContainer.scrollHeight;
+            const retryClientHeight = reviewsContainer.clientHeight;
+            const retryMaxScroll = retryScrollHeight - retryClientHeight;
+            console.log('[Auto-scroll] Retry - scrollHeight:', retryScrollHeight, 'clientHeight:', retryClientHeight, 'maxScroll:', retryMaxScroll);
+            if (retryMaxScroll > 0) {
+              autoScrollInitialized = false; // Reset flag to allow retry
+              enableAutoScroll();
+            }
+          }, 1000);
+          return;
+        }
+
+        console.log('[Auto-scroll] Starting auto-scroll with maxScroll:', maxScroll);
+        autoScrollInitialized = true;
+
+        // Clear any existing interval
+        if (scrollInterval) {
+          clearInterval(scrollInterval);
+        }
+
+        // Disable smooth scrolling for auto-scroll (it interferes with programmatic scrolling)
+        reviewsContainer.style.scrollBehavior = 'auto';
+
+        // Auto-scroll function
+        function autoScroll() {
+          const currentScrollHeight = reviewsContainer.scrollHeight;
+          const currentClientHeight = reviewsContainer.clientHeight;
+          const currentMaxScroll = currentScrollHeight - currentClientHeight;
+          
+          if (currentMaxScroll <= 0) return;
+
+          // Scroll down
+          if (reviewsContainer.scrollTop < currentMaxScroll - 1) {
+            reviewsContainer.scrollTop += 1;
+          } else {
+            // Reset to top when reaching bottom for seamless loop
+            reviewsContainer.scrollTop = 0;
+          }
+        }
+
+        // Start auto-scrolling every 30ms (faster scroll)
+        scrollInterval = setInterval(autoScroll, 30);
+        console.log('[Auto-scroll] Interval started:', scrollInterval);
+
+        // Pause on hover (reviewsColumn already found above)
+        if (reviewsColumn) {
+          reviewsColumn.addEventListener('mouseenter', () => {
+            console.log('[Auto-scroll] Paused on hover');
+            if (scrollInterval) {
+              clearInterval(scrollInterval);
+              scrollInterval = null;
+            }
+          });
+          
+          reviewsColumn.addEventListener('mouseleave', () => {
+            console.log('[Auto-scroll] Resumed after hover');
+            // Restart scrolling
+            scrollInterval = setInterval(autoScroll, 30);
+          });
+        }
+      }, 200);
     }
 
     // Initialize auto-scroll when calculating section is visible
     function checkAndEnableAutoScroll() {
       const calcSection = document.querySelector('[data-calculating]');
-      if (calcSection && calcSection.style.display !== 'none' && !autoScrollInitialized) {
+      const isVisible = calcSection && calcSection.style.display !== 'none';
+      console.log('[Auto-scroll] Checking... visible:', isVisible, 'initialized:', autoScrollInitialized);
+      
+      if (isVisible && !autoScrollInitialized) {
+        console.log('[Auto-scroll] Section visible, will initialize');
         // Wait a bit longer for DOM to be ready and content to load
         setTimeout(() => {
           enableAutoScroll();
@@ -861,6 +912,13 @@
     setTimeout(() => {
       checkAndEnableAutoScroll();
     }, 2000);
+
+    // Also listen for window resize in case user resizes to desktop view
+    window.addEventListener('resize', () => {
+      setTimeout(() => {
+        checkAndEnableAutoScroll();
+      }, 300);
+    });
   })();
 </script>
 
