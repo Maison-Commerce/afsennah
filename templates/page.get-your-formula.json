@@ -2132,8 +2132,8 @@
       "type": "quiz-recommendations",
       "name": "Quiz Recommendations",
       "settings": {
-        "title": "Your Personalized Recommendations",
-        "subtitle": "",
+        "title": "WINTER SALE 25% OFF SITEWIDE!",
+        "subtitle": "<p>Your hair story is about to change. These products were chosen to help you grow, heal, and fall in love with your hair again. They’re already waiting in your basket. All that’s left is to begin.</p>",
         "product_sort_order": [
           "custom-hair-growth-oil-for-her",
           "custom-hair-treatment",
