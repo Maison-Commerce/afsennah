@@ -1898,3 +1898,214 @@ height: 100%;
 .product-form .quantity-submit-row .quantity-submit-row__submit {
     margin-bottom: 12px;
 }
+
+
+.video-slide-container {
+    position: relative;
+    overflow: hidden;
+    border-radius: var(--video-slide-border-radius, 8px);
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .video-slide-image-wrapper {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    border-radius: var(--video-slide-border-radius, 8px);
+    aspect-ratio: 16 / 9;
+  }
+
+  .video-slide-image {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: var(--video-slide-border-radius, 8px);
+  }
+
+  .video-slide-container img,
+  .video-slide-container video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    border-radius: var(--video-slide-border-radius, 8px);
+  }
+
+  .video-slide-video-wrapper {
+    position: relative;
+    width: 100%;
+    border-radius: var(--video-slide-border-radius, 8px);
+    overflow: hidden;
+    aspect-ratio: 16 / 9;
+  }
+  
+  .video-slide-video-wrapper video,
+  .video-slide-video-wrapper iframe {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .video-slide-poster {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+  }
+
+  .video-slide-poster-button {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(255, 255, 255, 0.9);
+    border: 0.1rem solid rgba(0, 0, 0, 0.1);
+    border-radius: 50%;
+    color: rgb(var(--color-foreground));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 6.2rem;
+    width: 6.2rem;
+    z-index: 1;
+    transition: transform var(--duration-short, 0.3s) ease, color var(--duration-short, 0.3s) ease;
+    pointer-events: none;
+  }
+
+  .video-slide-poster {
+    pointer-events: auto;
+    cursor: pointer;
+  }
+
+  .video-slide-poster-button--image {
+    top: auto;
+    left: 1rem;
+    bottom: 1rem;
+    transform: none;
+    height: 4.4rem;
+    width: 4.4rem;
+    background-color: rgba(0, 0, 0, 0.6);
+    border: none;
+  }
+
+  .video-slide-poster-button:hover {
+    transform: translate(-50%, -50%) scale(1.1);
+  }
+
+  .video-slide-poster-button--image:hover {
+    transform: scale(1.1);
+    background-color: rgba(0, 0, 0, 0.8);
+  }
+
+  .video-slide-poster-button .icon {
+    width: 2rem;
+    height: 2rem;
+  }
+
+  .video-slide-poster-button--image .icon {
+    width: 1.6rem;
+    height: 1.6rem;
+    color: white;
+  }
+
+  .video-slide-poster-button .icon-play {
+    margin-left: 0.2rem;
+  }
+
+  .video-slide-deferred-media {
+    position: relative;
+    width: 100%;
+    border-radius: var(--video-slide-border-radius, 8px);
+    overflow: hidden;
+    --ratio-percent: 56.25%;
+    padding-bottom: calc(var(--ratio-percent) - var(--media-border-width, 0px));
+  }
+
+  .video-slide-deferred-media.deferred-media {
+    box-shadow: var(--media-shadow-horizontal-offset) var(--media-shadow-vertical-offset) var(--media-shadow-blur-radius)
+      rgba(var(--color-shadow), var(--media-shadow-opacity));
+  }
+
+  .video-slide-poster {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+  }
+
+  .video-slide-poster img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .video-slide-deferred-media video,
+  .video-slide-deferred-media iframe {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+  }
+
+  .video-slide-deferred-media video {
+    background: #000000;
+    object-fit: cover;
+  }
+
+  .video-slide-container-{{ block.id }} {
+    --video-slide-border-radius: {{ block.settings.border_radius | default: 8 }}px;
+  }
+
+  @media screen and (max-width: 768px) {
+    .video-slide-container-{{ block.id }} {
+      --video-slide-border-radius: {{ block.settings.border_radius_mobile | default: 8 }}px;
+    }
+  }
+
+  /* Video slider grid styles - 3 videos per view */
+  .video-slider-grid {
+    --product-columns-desktop: 3;
+    grid-auto-columns: calc((100% - var(--gutter) * 2) / 3);
+  }
+
+  .video-slider-grid .slider__item {
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Mobile styles - 3 videos per view */
+  @media (max-width: 767.98px) {
+    .video-slider-grid {
+      --product-columns-desktop: 3;
+      grid-auto-columns: calc((100% - var(--gutter) * 2) / 3);
+    }
+  }
+
+  /* Video slider wrapper spacing */
+  .video-slider__wrapper {
+    margin-bottom: 2rem;
+  }
+
+  .video-slider__wrapper .slider {
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-padding-right: var(--gutter);
+  }
+  
+  /* Add padding at the end to show last slide fully */
+  .video-slider__wrapper .slider__grid::after {
+    content: " ";
+    display: block;
+    width: calc(var(--gutter) * 2);
+    flex-shrink: 0;
+  }
+
+  .video-slide-title {
+    margin-bottom: 1rem;
+  }

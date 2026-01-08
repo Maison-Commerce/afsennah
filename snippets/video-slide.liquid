@@ -60,7 +60,7 @@
       <ul class="slider__grid product-grid product-grid--carousel product-grid--per-row-3 product-grid--per-row-mob-3 video-slider-grid">
 {%- endif -%}
 
-<style>
+{% comment %} <style>
   .video-slide-container {
     position: relative;
     overflow: hidden;
@@ -270,7 +270,7 @@
   .video-slide-title {
     margin-bottom: 1rem;
   }
-</style>
+</style> {% endcomment %}
 
 <li
   id="Slide-{{ section.id }}-video-{{ block.id }}"
