@@ -131,42 +131,39 @@
                                 <!-- Main Content -->
                                 <div class="maison_commerce_maison_upsell_package__content">
                                     <div class="maison_commerce_maison_upsell_package__content-main">
-
+                                        {% if block.settings.product_image != blank %}
+                                            <div class="maison_commerce_maison_upsell_package__image">
+                                                <img src="{{ block.settings.product_image | image_url: width: 800 }}" alt="{{ block.settings.title }}">
+                                            </div>
+                                        {% endif %}
+                                        <div>
+                                            <div class="maison_commerce_maison_upsell_package__text-content">
+                                                {% if block.settings.title != blank %}
+                                                    <h3 class="maison_commerce_maison_upsell_package__title">{{ block.settings.title }}</h3>
+                                                {% endif %}
+                                                {% if block.settings.discount_percent > 0 %}
+                                                    <div class="maison_commerce_maison_upsell_package__discount-badge">SAVE {{ block.settings.discount_percent }}%</div>
+                                                {% endif %}
+                                            </div>
+                                            {% if block.settings.description != blank %}
+                                                <div class="maison_commerce_maison_upsell_package__description">{{ block.settings.description }}</div>
+                                            {% endif %}
+                                        </div>
                                     </div>
                                     <div class="maison_commerce_maison_upsell_package__content-bottom">
-                                        
-                                    </div>
-                                    {% if block.settings.product_image != blank %}
-                                        <div class="maison_commerce_maison_upsell_package__image">
-                                            <img src="{{ block.settings.product_image | image_url: width: 800 }}" alt="{{ block.settings.title }}">
-                                        </div>
-                                    {% endif %}
-
-                                    {% if block.settings.discount_percent > 0 %}
-                                        <div class="maison_commerce_maison_upsell_package__discount-badge">SAVE {{ block.settings.discount_percent }}%</div>
-                                    {% endif %}
-
-                                    <div class="maison_commerce_maison_upsell_package__text-content">
-                                        {% if block.settings.title != blank %}
-                                            <h3 class="maison_commerce_maison_upsell_package__title">{{ block.settings.title }}</h3>
+                                        {% if block.settings.products != blank %}
+                                            <button class="maison_commerce_maison_upsell_package__button" data-upsell-package-button data-product-handles="{% for product in block.settings.products %}{{ product.handle }}{% unless forloop.last %},{% endunless %}{% endfor %}">
+                                                {{ block.settings.button_text | default: 'Claim Ultimate Package' }}
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                                <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                                </svg>
+                                            </button>
                                         {% endif %}
-                                        {% if block.settings.description != blank %}
-                                            <div class="maison_commerce_maison_upsell_package__description">{{ block.settings.description }}</div>
+
+                                        {% if block.settings.footer_text != blank %}
+                                            <div class="maison_commerce_maison_upsell_package__footer">{{ block.settings.footer_text }}</div>
                                         {% endif %}
                                     </div>
-
-                                    {% if block.settings.products != blank %}
-                                        <button class="maison_commerce_maison_upsell_package__button" data-upsell-package-button data-product-handles="{% for product in block.settings.products %}{{ product.handle }}{% unless forloop.last %},{% endunless %}{% endfor %}">
-                                            {{ block.settings.button_text | default: 'Claim Ultimate Package' }}
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                                            <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                            </svg>
-                                        </button>
-                                    {% endif %}
-
-                                    {% if block.settings.footer_text != blank %}
-                                        <div class="maison_commerce_maison_upsell_package__footer">{{ block.settings.footer_text }}</div>
-                                    {% endif %}
                                 </div>
                             </div>
                     {% endcase %}
