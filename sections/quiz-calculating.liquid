@@ -856,8 +856,8 @@
         reviewsContainer.offsetHeight;
         
         // Check if container has scrollable content
-        const scrollHeight = reviewsContainer.scrollHeight;
-        const clientHeight = reviewsContainer.clientHeight;
+        const scrollHeight = reviewsContainerWrap.scrollHeight;
+        const clientHeight = reviewsContainerWrap.clientHeight;
         const maxScroll = scrollHeight - clientHeight;
         
         console.log('[Auto-scroll] scrollHeight:', scrollHeight, 'clientHeight:', clientHeight, 'maxScroll:', maxScroll);
