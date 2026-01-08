@@ -1666,3 +1666,7 @@ height: 100%;
 .loox-rating .loox-icon {
     color: #E98C36 !important;
 }
+
+.product-title {
+    margin-bottom: 10px;
+}
