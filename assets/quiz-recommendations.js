@@ -2260,23 +2260,43 @@
                         );
                         const products = await Promise.all(productPromises);
 
-                        // Prepare cart items for Shopify API
+                        // Prepare cart items for Shopify API - only include available products
                         const itemsToAdd = [];
+                        const skippedProducts = [];
+                        
                         for (const product of products) {
                             if (product && product.variants && product.variants.length > 0) {
-                                const variant = product.variants[0];
-                                itemsToAdd.push({
-                                    id: variant.id,
-                                    quantity: 1
-                                });
+                                // Find the first available variant
+                                const availableVariant = product.variants.find(v => v.available);
+                                
+                                if (availableVariant) {
+                                    itemsToAdd.push({
+                                        id: availableVariant.id,
+                                        quantity: 1
+                                    });
+                                } else {
+                                    // No available variants - skip this product
+                                    skippedProducts.push(product.title || product.handle);
+                                    console.log(`Skipping sold-out product: ${product.title || product.handle}`);
+                                }
+                            } else {
+                                skippedProducts.push(product?.title || product?.handle || 'Unknown product');
+                                console.log(`Skipping product with no variants: ${product?.title || product?.handle || 'Unknown product'}`);
                             }
                         }
 
                         if (itemsToAdd.length === 0) {
-                            throw new Error('No valid products found');
+                            throw new Error('No available products found to add to cart');
                         }
 
-                        // Add all products to cart via Shopify API
+                        // Log skipped products if any
+                        if (skippedProducts.length > 0) {
+                            console.log(`Skipped ${skippedProducts.length} unavailable product(s):`, skippedProducts);
+                        }
+
+                        console.log(`Adding ${itemsToAdd.length} available product(s) to cart`);
+
+                        // Add all available products to cart via Shopify API
                         const response = await fetch('/cart/add.js', {
                             method: 'POST',
                             headers: {
