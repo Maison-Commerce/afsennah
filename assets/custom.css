@@ -1663,6 +1663,9 @@ height: 100%;
     }
 }
 
+.loox-rating {
+    margin-bottom: 16px;
+}
 .loox-rating .loox-icon {
     color: #E98C36 !important;
 }
