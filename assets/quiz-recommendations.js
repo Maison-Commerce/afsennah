@@ -185,7 +185,7 @@
         let progressBarWidth = 0;
         
         if (allUnlocked) {
-            // All tiers unlocked - fill to 100%
+            // All tiers unlocked - fill to 100% immediately
             progressBarWidth = 100;
         } else if (tiersWithProducts.length === 0) {
             // No products configured
@@ -199,29 +199,42 @@
                 const firstTier = tiersWithProducts[0];
                 const firstPosition = tierPositionMap.get(firstTier.tier);
                 const progressToFirst = Math.min((cartTotal / firstTier.threshold) * firstPosition, firstPosition);
-                progressBarWidth = progressToFirst;
+                // Don't go past the first milestone until it's unlocked
+                progressBarWidth = Math.min(progressToFirst, firstPosition);
             } else {
                 // At least one tier unlocked
                 const lastUnlockedTier = unlockedTiersWithProducts[unlockedTiersWithProducts.length - 1];
                 const lastUnlockedPosition = tierPositionMap.get(lastUnlockedTier.tier);
                 
+                // Check if this is the last tier (all tiers after this are also unlocked or this is the last tier)
+                const isLastTier = tiersWithProducts.indexOf(lastUnlockedTier) === tiersWithProducts.length - 1;
+                
                 // Find next tier to unlock
                 const nextTierWithProduct = tiersWithProducts.find(t => !t.unlocked && t.threshold > lastUnlockedTier.threshold);
                 
-                if (!nextTierWithProduct) {
-                    // No more tiers to unlock - fill to 100%
+                if (!nextTierWithProduct || isLastTier) {
+                    // No more tiers to unlock OR this is the last tier - fill to 100% immediately
                     progressBarWidth = 100;
                 } else {
                     // Interpolate between last unlocked position and next milestone position
                     // But don't exceed the next milestone position until it's actually unlocked
                     const nextPosition = tierPositionMap.get(nextTierWithProduct.tier);
-                    const progressRange = nextPosition - lastUnlockedPosition;
                     const thresholdRange = nextTierWithProduct.threshold - lastUnlockedTier.threshold;
                     const progressAmount = cartTotal - lastUnlockedTier.threshold;
-                    const progressRatio = Math.min(Math.max(progressAmount / thresholdRange, 0), 0.99); // Cap at 0.99 to never reach next milestone until unlocked
-                    progressBarWidth = lastUnlockedPosition + (progressRange * progressRatio);
-                    // Ensure we never exceed the next milestone position
-                    progressBarWidth = Math.min(progressBarWidth, nextPosition - 0.1); // Leave small gap before next milestone
+                    
+                    // Only progress if we're making progress toward the next threshold
+                    if (progressAmount >= thresholdRange) {
+                        // We've reached the threshold, but tier might not be marked unlocked yet
+                        // Don't go past the next milestone position
+                        progressBarWidth = Math.min(nextPosition, 100);
+                    } else {
+                        // Interpolate between last unlocked position and next milestone position
+                        const progressRange = nextPosition - lastUnlockedPosition;
+                        const progressRatio = Math.min(Math.max(progressAmount / thresholdRange, 0), 0.98); // Cap at 0.98 to never reach next milestone until unlocked
+                        progressBarWidth = lastUnlockedPosition + (progressRange * progressRatio);
+                        // Ensure we never exceed the next milestone position
+                        progressBarWidth = Math.min(progressBarWidth, nextPosition);
+                    }
                 }
             }
         }
