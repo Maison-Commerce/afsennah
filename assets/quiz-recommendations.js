@@ -257,35 +257,37 @@
         } else if (nextTier) {
             const remaining = nextTier.threshold - cartTotal;
             const lastUnlockedTier = giftTiers.filter(t => t.unlocked).pop();
+            const hasUnlockedGifts = lastUnlockedTier && lastUnlockedTier.product;
             
             // Get gift names
-            const currentGiftName = lastUnlockedTier && lastUnlockedTier.product ? getGiftName(lastUnlockedTier) : '';
+            const currentGiftName = hasUnlockedGifts ? getGiftName(lastUnlockedTier) : '';
             const nextGiftName = nextTier && nextTier.product ? getGiftName(nextTier) : '';
             
-            // Use the richtext template and replace all placeholders
-            let headerText = giftProgressText
-                .replace('[[remaining]]', formatCurrency(remaining))
-                .replace('[[current]]', formatCurrency(cartTotal))
-                .replace('[[next_tier]]', formatCurrency(nextTier.threshold))
-                .replace('[[current_gift]]', currentGiftName)
-                .replace('[[next_gift]]', nextGiftName);
+            let headerText;
+            
+            if (!hasUnlockedGifts) {
+                // No gifts unlocked yet - show simplified format: "Spend [[remaining]] more to get [[next_gift]]"
+                headerText = `<p>Spend ${formatCurrency(remaining)} more to get ${nextGiftName}</p>`;
+            } else {
+                // Use the richtext template and replace all placeholders
+                headerText = giftProgressText
+                    .replace('[[remaining]]', formatCurrency(remaining))
+                    .replace('[[current]]', formatCurrency(cartTotal))
+                    .replace('[[next_tier]]', formatCurrency(nextTier.threshold))
+                    .replace('[[current_gift]]', currentGiftName)
+                    .replace('[[next_gift]]', nextGiftName);
+            }
             
             progressLabel.innerHTML = headerText;
         } else {
             const firstTier = giftTiers[0];
             const remaining = firstTier ? firstTier.threshold - cartTotal : 0;
             
-            // Get gift names
-            const currentGiftName = ''; // No gift unlocked yet
+            // Get gift names - no gifts unlocked yet
             const nextGiftName = firstTier && firstTier.product ? getGiftName(firstTier) : '';
             
-            // Use the richtext template and replace all placeholders
-            progressLabel.innerHTML = giftProgressText
-                .replace('[[remaining]]', formatCurrency(remaining))
-                .replace('[[current]]', formatCurrency(cartTotal))
-                .replace('[[next_tier]]', formatCurrency(firstTier ? firstTier.threshold : 0))
-                .replace('[[current_gift]]', currentGiftName)
-                .replace('[[next_gift]]', nextGiftName);
+            // No gifts unlocked yet - show simplified format: "Spend [[remaining]] more to get [[next_gift]]"
+            progressLabel.innerHTML = `<p>Spend ${formatCurrency(remaining)} more to get ${nextGiftName}</p>`;
         }
 
 
