@@ -1447,22 +1447,13 @@
             }
         }
 
-        console.log('Product card found:', !!productCard);
-
-        if (productCard) {
-            console.log('Product card element:', productCard);
-            console.log('Product card tag:', productCard.tagName);
-            console.log('Product card classes before:', productCard.className);
-        }
 
         if (productCard && productStates[product.id]) {
-            console.log('ProductState exists:', productStates[product.id]);
 
             // Update state
             productStates[product.id].removed = true;
             productCard.classList.add('removed');
 
-            console.log('Product card classes after:', productCard.className);
 
             // Update buttons - search more deeply
             let addBtn = productCard.querySelector('[data-add-btn]');
@@ -1470,20 +1461,15 @@
 
             // If not found, search globally by product ID and button attributes
             if (!addBtn || !removeBtn) {
-                console.log('Buttons not found in productCard, searching globally...');
                 const allCards = document.querySelectorAll(`[data-product-id="${product.id}"]`);
-                console.log('Found', allCards.length, 'elements with product ID');
 
                 allCards.forEach((card, index) => {
-                    console.log(`Card ${index}:`, card.tagName, card.className);
                     const tempAdd = card.querySelector('[data-add-btn]');
                     const tempRemove = card.querySelector('[data-remove-btn]');
                     if (tempAdd) {
-                        console.log(`  - Found add button in card ${index}`);
                         addBtn = tempAdd;
                     }
                     if (tempRemove) {
-                        console.log(`  - Found remove button in card ${index}`);
                         removeBtn = tempRemove;
                     }
                 });
