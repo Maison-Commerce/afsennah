@@ -170,6 +170,7 @@ image-with-text-overlay > div > div,
     position: relative;
     overflow: hidden;
     aspect-ratio: 1/1.25;
+    height: 85vw;
 }
 
 .product-slider {
