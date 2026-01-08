@@ -1721,11 +1721,11 @@ height: 100%;
     background: #F1F1F9 !important;
 }
 
-.sealsubs-target-element .sls-option[type="radio"] + .sls-custom-radio::after {
-    box-shadow: inset 6px 6px #F1F1F9;
+.sealsubs-target-element .sls-custom-radio::after {
+    box-shadow: inset 6px 6px #F1F1F9 !important;
 }
 .sealsubs-target-element .sls-option[type="radio"]:checked + .sls-custom-radio::after {
-    box-shadow: inset 6px 6px #F1F1F9;
+    box-shadow: inset 6px 6px #F1F1F9 !important;
 }
 
 .sls-option-container.seal-table.sls-active .sls-custom-radio {
