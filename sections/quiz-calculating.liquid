@@ -806,8 +806,8 @@
     const calculatingObserver = new MutationObserver(function(mutations) {
       mutations.forEach(function(mutation) {
         if (mutation.type === 'attributes' && mutation.attributeName === 'style') {
-          const calculatingSection = document.querySelector('[data-calculating]');
-          if (calculatingSection && calculatingSection.style.display !== 'none') {
+          const calcSection = document.querySelector('[data-calculating]');
+          if (calcSection && calcSection.style.display !== 'none') {
             setTimeout(() => {
               initReviewsSlider();
             }, 100);
@@ -816,16 +816,17 @@
       });
     });
 
-    const calculatingSection = document.querySelector('[data-calculating]');
-    if (calculatingSection) {
-      calculatingObserver.observe(calculatingSection, {
+    const calcSectionForObserver = document.querySelector('[data-calculating]');
+    if (calcSectionForObserver) {
+      calculatingObserver.observe(calcSectionForObserver, {
         attributes: true,
         attributeFilter: ['style']
       });
     }
 
     // Initial check
-    if (calculatingSection && calculatingSection.style.display !== 'none') {
+    const calcSectionInitial = document.querySelector('[data-calculating]');
+    if (calcSectionInitial && calcSectionInitial.style.display !== 'none') {
       setTimeout(() => {
         initReviewsSlider();
       }, 100);
