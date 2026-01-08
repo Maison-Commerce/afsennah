@@ -503,7 +503,7 @@ image-with-text-overlay > div > div,
     }
     
     .product-container--modern .slider-slide--modern {
-        min-width: 80%;
+        max-width: 80vw;
         padding: 0;
     }
 }
@@ -522,7 +522,7 @@ image-with-text-overlay > div > div,
     }
     
     .product-container--modern .slider-slide--modern {
-        min-width: 80%;
+        max-width: 80vw;
         padding: 0;
     }
     
