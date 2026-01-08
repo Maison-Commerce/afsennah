@@ -866,8 +866,8 @@
           console.log('[Auto-scroll] No scrollable content - not starting');
           // Try again after a longer delay in case content is still loading
           setTimeout(() => {
-            const retryScrollHeight = reviewsContainerWrap.scrollHeight;
-            const retryClientHeight = reviewsContainerWrap.clientHeight;
+            const retryScrollHeight = reviewsContainer.scrollHeight;
+            const retryClientHeight = reviewsContainer.clientHeight;
             const retryMaxScroll = retryScrollHeight - retryClientHeight;
             console.log('[Auto-scroll] Retry - scrollHeight:', retryScrollHeight, 'clientHeight:', retryClientHeight, 'maxScroll:', retryMaxScroll);
             if (retryMaxScroll > 0) {
