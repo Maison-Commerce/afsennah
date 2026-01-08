@@ -180,9 +180,9 @@
     padding: 70px 62px;
     display: none;
     overflow: hidden;
-    max-height: auto;
+    max-height: 100vh;
     position: relative;
-    height: auto;
+    height: calc(100vh - 136px);
   }
 
   #shopify-section-{{ section.id }} .quiz-calculating-reviews-container {
@@ -191,7 +191,8 @@
     gap: 24px;
     align-items: center;
     justify-content: flex-start;
-    height: 100%;
+    flex: 1;
+    min-height: 0;
     overflow-y: auto;
     overflow-x: hidden;
     scroll-behavior: smooth;
@@ -606,7 +607,8 @@
   /* Mobile Styles */
   @media (min-width: 1025px) {
     #shopify-section-{{ section.id }} .quiz-calculating-reviews-column {
-      display: block;
+      display: flex;
+      flex-direction: column;
     }
   }
 
