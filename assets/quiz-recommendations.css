@@ -1422,5 +1422,8 @@
         font-weight: 400;
         line-height: 18px;
         text-transform: capitalize;
+        margin: 0 auto;
+        text-align: center;
+        margin-top: 8px;
     }
 </style>
