@@ -722,7 +722,7 @@
 .recommended-products-list {
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 24px;
 }
 
 .recommended-product-card {
