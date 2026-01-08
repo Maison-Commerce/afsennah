@@ -747,6 +747,7 @@
       mutations.forEach(function(mutation) {
         if (mutation.type === 'attributes' && mutation.attributeName === 'style') {
           updateCalculatingProgress();
+          checkAndEnableAutoScroll();
         }
       });
     });
@@ -764,42 +765,64 @@
 
     // Enable auto-scroll for reviews container
     let scrollInterval = null;
+    let autoScrollInitialized = false;
 
     function enableAutoScroll() {
-      const reviewsContainer = document.querySelector('.quiz-calculating-reviews-container') || 
-                               document.querySelector('[data-calculating] .quiz-calculating-reviews-container');
+      // Prevent multiple initializations
+      if (autoScrollInitialized) return;
+
+      // Try to find the container with multiple selectors
+      const calcSection = document.querySelector('[data-calculating]');
+      if (!calcSection) {
+        console.log('Calculating section not found');
+        return;
+      }
+
+      const reviewsContainer = calcSection.querySelector('.quiz-calculating-reviews-container');
       
-      if (!reviewsContainer) return;
+      if (!reviewsContainer) {
+        console.log('Reviews container not found');
+        return;
+      }
+
+      // Check if container has scrollable content
+      const maxScroll = reviewsContainer.scrollHeight - reviewsContainer.clientHeight;
+      if (maxScroll <= 0) {
+        console.log('No scrollable content. scrollHeight:', reviewsContainer.scrollHeight, 'clientHeight:', reviewsContainer.clientHeight);
+        return;
+      }
+
+      console.log('Initializing auto-scroll. Max scroll:', maxScroll);
+      autoScrollInitialized = true;
 
       // Clear any existing interval
       if (scrollInterval) {
         clearInterval(scrollInterval);
       }
 
-      // Enable smooth scrolling
-      reviewsContainer.style.scrollBehavior = 'smooth';
+      // Disable smooth scrolling for auto-scroll (it interferes with programmatic scrolling)
+      reviewsContainer.style.scrollBehavior = 'auto';
 
       // Auto-scroll function
       function autoScroll() {
-        const maxScroll = reviewsContainer.scrollHeight - reviewsContainer.clientHeight;
+        const currentMaxScroll = reviewsContainer.scrollHeight - reviewsContainer.clientHeight;
         
-        if (maxScroll <= 0) return;
+        if (currentMaxScroll <= 0) return;
 
         // Scroll down
-        if (reviewsContainer.scrollTop < maxScroll) {
+        if (reviewsContainer.scrollTop < currentMaxScroll - 1) {
           reviewsContainer.scrollTop += 1;
         } else {
-          // Reset to top when reaching bottom
+          // Reset to top when reaching bottom for seamless loop
           reviewsContainer.scrollTop = 0;
         }
       }
 
-      // Start auto-scrolling every 50ms
-      scrollInterval = setInterval(autoScroll, 50);
+      // Start auto-scrolling every 30ms (faster scroll)
+      scrollInterval = setInterval(autoScroll, 30);
 
       // Pause on hover
-      const reviewsColumn = document.querySelector('.quiz-calculating-reviews-column') ||
-                           document.querySelector('[data-calculating] .quiz-calculating-reviews-column');
+      const reviewsColumn = calcSection.querySelector('.quiz-calculating-reviews-column');
       
       if (reviewsColumn) {
         reviewsColumn.addEventListener('mouseenter', () => {
@@ -811,7 +834,7 @@
         
         reviewsColumn.addEventListener('mouseleave', () => {
           // Restart scrolling
-          scrollInterval = setInterval(autoScroll, 50);
+          scrollInterval = setInterval(autoScroll, 30);
         });
       }
     }
@@ -819,36 +842,25 @@
     // Initialize auto-scroll when calculating section is visible
     function checkAndEnableAutoScroll() {
       const calcSection = document.querySelector('[data-calculating]');
-      if (calcSection && calcSection.style.display !== 'none') {
+      if (calcSection && calcSection.style.display !== 'none' && !autoScrollInitialized) {
+        // Wait a bit longer for DOM to be ready and content to load
         setTimeout(() => {
           enableAutoScroll();
-        }, 300);
+        }, 500);
       }
-    }
-
-    const calculatingObserver = new MutationObserver(function(mutations) {
-      mutations.forEach(function(mutation) {
-        if (mutation.type === 'attributes' && mutation.attributeName === 'style') {
-          checkAndEnableAutoScroll();
-        }
-      });
-    });
-
-    const calcSectionForObserver = document.querySelector('[data-calculating]');
-    if (calcSectionForObserver) {
-      calculatingObserver.observe(calcSectionForObserver, {
-        attributes: true,
-        attributeFilter: ['style']
-      });
     }
 
     // Initial check
     checkAndEnableAutoScroll();
 
-    // Also check after a delay in case the section is already visible
+    // Also check after delays in case the section is already visible
     setTimeout(() => {
       checkAndEnableAutoScroll();
-    }, 500);
+    }, 1000);
+
+    setTimeout(() => {
+      checkAndEnableAutoScroll();
+    }, 2000);
   })();
 </script>
 
