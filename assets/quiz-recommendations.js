@@ -1746,7 +1746,7 @@
         }
 
         // Enable/disable checkout button based on cart state
-        const checkoutBtns = document.querySelectorAll('[data-checkout-btn], .quiz-btn-checkout');
+        const checkoutBtns = document.querySelectorAll('[data-checkout-btn], .quiz-btn-checkout, .mobile-sticky-bar-checkout');
         checkoutBtns.forEach(btn => {
             if (!hasItemsToDisplay) {
                 btn.disabled = true;
@@ -1779,6 +1779,12 @@
         // Update total price section
         if (totalCurrentEl) {
             totalCurrentEl.innerHTML = formatMoney(total);
+        }
+
+        // Update mobile sticky bar total
+        const mobileTotalEl = document.querySelector('[data-mobile-total-current]');
+        if (mobileTotalEl) {
+            mobileTotalEl.innerHTML = formatMoney(total);
         }
 
         // Show original total if there's a discount
