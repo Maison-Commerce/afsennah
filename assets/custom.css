@@ -1844,4 +1844,7 @@ height: 100%;
 
 .quantity-submit-row__submit .btn.btn--large.add-to-cart {
     background: #FBF7BD;
+    border-radius: 12px !important;
+    padding: 16px;
+    border-color: FBF7BD;
 }
