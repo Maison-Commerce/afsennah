@@ -818,6 +818,49 @@
                       </button>
                     </div>
                     {% if enable_dynamic_payment_button %}
+                      {%- comment -%} Text block above checkout button {%- endcomment -%}
+                      {% if block.settings.text_above_checkout != blank %}
+                        <div class="lightly-spaced-row text-above-checkout">
+                          {%- liquid
+                            if block.settings.enable_text_box
+                              assign box_color_brightness = block.settings.text_box_color | color_brightness
+                              if box_color_brightness > 128
+                                assign box_color_saturation = block.settings.text_box_color | color_extract: 'saturation'
+                                if box_color_saturation > 0
+                                  assign text_col = block.settings.text_box_color | color_darken: 60 | color_saturate: 30 | color_to_rgb | split: '(' | last | split: ')' | first
+                                else
+                                  assign text_col = block.settings.text_box_color | color_darken: 60 | color_to_rgb | split: '(' | last | split: ')' | first
+                                endif
+                              else
+                                assign text_col = '255,255,255'
+                              endif
+                            endif
+                          -%}
+                          <div class="product-info-block{% if block.settings.text_icon != blank or block.settings.text_custom_icon != blank %} with-icon{% endif %}{% if block.settings.enable_text_box %} text-box{% endif %}" {% if block.settings.enable_text_box %}style="--box-color: {{ block.settings.text_box_color }}; --box-text-color: {{ text_col }}"{% endif %}>
+                            {%- if block.settings.text_icon == blank and block.settings.text_custom_icon == blank -%}
+                              {{- block.settings.text_above_checkout -}}
+                            {%- else -%}
+                              {% if block.settings.text_custom_icon == blank %}
+                                {% render 'icon', icon: block.settings.text_icon, size: block.settings.text_icon_size %}
+                              {% else %}
+                                {%- liquid
+                                  if block.settings.text_icon_size == 'large'
+                                    assign icon_sizes = '38px'
+                                    assign icon_widths = '38, 76'
+                                  else
+                                    assign icon_sizes = '16px'
+                                    assign icon_widths = '16, 32'
+                                  endif
+                                -%}
+                                <span class="icon icon--image icon--{{ block.settings.text_icon_size }}">
+                                  {%- render 'image' with block.settings.text_custom_icon, sizes: icon_sizes, widths: icon_widths -%}
+                                </span>
+                              {% endif %}
+                              <span class="with-icon__beside">{{ block.settings.text_above_checkout }}</span>
+                            {%- endif -%}
+                          </div>
+                        </div>
+                      {% endif %}
                       <div class="product-dynamic-payment-button">
                         <script class="dynamic-payment-button-template" type="text/template">
                           {{ form | payment_button }}
@@ -2255,6 +2298,219 @@
       "id": "quiz_cta_url",
       "label": "Quiz CTA Button Link",
       "info": "URL to your quiz page"
+    },
+    {
+      "type": "header",
+      "content": "Text above checkout"
+    },
+    {
+      "type": "text",
+      "id": "text_above_checkout",
+      "label": "Text",
+      "info": "Text displayed above the checkout button"
+    },
+    {
+      "type": "select",
+      "id": "text_icon",
+      "label": "Icon",
+      "default": "",
+      "options": [
+        {
+          "value": "",
+          "label": "No icon"
+        },
+        {
+          "value": "accessible",
+          "label": "Accessible"
+        },
+        {
+          "value": "award",
+          "label": "Award"
+        },
+        {
+          "value": "beach",
+          "label": "Beach"
+        },
+        {
+          "value": "box",
+          "label": "Box"
+        },
+        {
+          "value": "briefcase",
+          "label": "Briefcase"
+        },
+        {
+          "value": "calendar",
+          "label": "Calendar"
+        },
+        {
+          "value": "chat_bubble",
+          "label": "Chat bubble"
+        },
+        {
+          "value": "check_mark",
+          "label": "Check mark"
+        },
+        {
+          "value": "check_mark_in_circle",
+          "label": "Check mark in circle"
+        },
+        {
+          "value": "clock",
+          "label": "Clock"
+        },
+        {
+          "value": "credit_card",
+          "label": "Credit card"
+        },
+        {
+          "value": "dollar_sign",
+          "label": "Dollar sign"
+        },
+        {
+          "value": "dryer",
+          "label": "Dryer"
+        },
+        {
+          "value": "eye",
+          "label": "Eye"
+        },
+        {
+          "value": "feather",
+          "label": "Feather"
+        },
+        {
+          "value": "gift",
+          "label": "Gift"
+        },
+        {
+          "value": "heart",
+          "label": "Heart"
+        },
+        {
+          "value": "iron",
+          "label": "Iron"
+        },
+        {
+          "value": "leaf",
+          "label": "Leaf"
+        },
+        {
+          "value": "leather",
+          "label": "Leather"
+        },
+        {
+          "value": "lock",
+          "label": "Lock"
+        },
+        {
+          "value": "map_pin",
+          "label": "Map pin"
+        },
+        {
+          "value": "pants",
+          "label": "Pants"
+        },
+        {
+          "value": "percent",
+          "label": "Percent"
+        },
+        {
+          "value": "plane",
+          "label": "Plane"
+        },
+        {
+          "value": "price_tag",
+          "label": "Price tag"
+        },
+        {
+          "value": "question_mark",
+          "label": "Question mark"
+        },
+        {
+          "value": "recycle",
+          "label": "Recycle"
+        },
+        {
+          "value": "return",
+          "label": "Return"
+        },
+        {
+          "value": "ruler",
+          "label": "Ruler"
+        },
+        {
+          "value": "scissors",
+          "label": "Scissors"
+        },
+        {
+          "value": "shirt",
+          "label": "Shirt"
+        },
+        {
+          "value": "shoe",
+          "label": "Shoe"
+        },
+        {
+          "value": "silhouette",
+          "label": "Silhouette"
+        },
+        {
+          "value": "star",
+          "label": "Star"
+        },
+        {
+          "value": "sun-high",
+          "label": "Sun"
+        },
+        {
+          "value": "truck",
+          "label": "Truck"
+        },
+        {
+          "value": "washing",
+          "label": "Washing"
+        },
+        {
+          "value": "world",
+          "label": "World"
+        }
+      ]
+    },
+    {
+      "type": "image_picker",
+      "id": "text_custom_icon",
+      "label": "Custom icon"
+    },
+    {
+      "type": "select",
+      "id": "text_icon_size",
+      "label": "Icon size",
+      "default": "small",
+      "options": [
+        {
+          "value": "small",
+          "label": "Small"
+        },
+        {
+          "value": "large",
+          "label": "Large"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_text_box",
+      "label": "Enable box style",
+      "default": false
+    },
+    {
+      "visible_if": "{{ block.settings.enable_text_box }}",
+      "type": "color",
+      "id": "text_box_color",
+      "label": "Box color",
+      "info": "Suggestions: Blue #e5f3ff, Teal #e0f5f5, Green #e0f4d5, Yellow #fcf1cd, Red #fbeae5",
+      "default": "#e0f4d5"
     }
   ]
 },
