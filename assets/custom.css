@@ -1701,4 +1701,5 @@ height: 100%;
 }
 .opt-label {
     min-height: 40px;
+    text-transform: none;
 }
