@@ -1422,7 +1422,7 @@
         }
 
         .product-card-title-wrapper{
-            flex: none;
+            flex: auto;
         }
 
         .product-card-image{
