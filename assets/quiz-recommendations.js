@@ -508,12 +508,34 @@
             const additionalProducts = products.slice(3).filter(p => p !== null);
             console.log('Additional products (Section 2):', additionalProducts.length, 'products');
             
-            additionalProducts.forEach((product) => {
-                productStates[product.id] = { removed: false, quantity: 1 };
-                const productCard = createProductCard(product, 'additional');
-                additionalContainer.appendChild(productCard);
-                // NOT auto-added to cart
-            });
+            // Store additional products globally for upsell package blocks
+            window.quizRecommendationsAdditionalProducts = additionalProducts;
+            console.log('Stored additional products for upsell package:', additionalProducts.length, 'products');
+            
+            // Check if there are any upsell package blocks - if so, hide Section 2
+            const upsellBlocks = document.querySelectorAll('[data-upsell-package-block]');
+            const section2Element = document.querySelector('[data-section="additional"]');
+            
+            if (upsellBlocks.length > 0 && section2Element) {
+                // Hide Section 2 if upsell blocks exist
+                section2Element.style.display = 'none';
+                // Also hide the divider before Section 3 if Section 2 is hidden
+                const divider = section2Element.previousElementSibling;
+                if (divider && divider.classList.contains('section-divider')) {
+                    divider.style.display = 'none';
+                }
+                
+                // Re-initialize upsell blocks now that products are available
+                initUpsellPackageBlocks();
+            } else {
+                // Show Section 2 normally if no upsell blocks
+                additionalProducts.forEach((product) => {
+                    productStates[product.id] = { removed: false, quantity: 1 };
+                    const productCard = createProductCard(product, 'additional');
+                    additionalContainer.appendChild(productCard);
+                    // NOT auto-added to cart
+                });
+            }
 
             // Add legacy gift product if exists (only if tiered gifts are NOT enabled)
             if (giftProductHandle && !giftTiersEnabled) {
@@ -2284,8 +2306,13 @@
                     // Get products from Section 2 (Additional Recommendations)
                     const additionalProducts = window.quizRecommendationsAdditionalProducts || [];
                     
+                    console.log('Upsell Package Button Clicked');
+                    console.log('Available products:', additionalProducts.length);
+                    console.log('Products:', additionalProducts);
+                    
                     if (additionalProducts.length === 0) {
-                        alert('No products available to add to cart.');
+                        console.error('No products available. Products may not be loaded yet.');
+                        alert('Products are still loading. Please wait a moment and try again.');
                         return;
                     }
 
