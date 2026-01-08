@@ -150,6 +150,8 @@
         font-style: normal;
         font-weight: 400;
         line-height: 18px;
+        max-width: 316px;
+        margin: 0 auto;
     }
 
     .gift-progress-subtitle p{
