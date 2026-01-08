@@ -2333,3 +2333,10 @@ justify-content: space-between;
     letter-spacing: 0%;
     color: #2E432F;
 }
+/* Add padding at the end to show last slide fully */
+.product-item-upsells .slider__grid::after {
+  content: " ";
+  display: block;
+  width: calc(var(--gutter) * 2);
+  flex-shrink: 0;
+}
