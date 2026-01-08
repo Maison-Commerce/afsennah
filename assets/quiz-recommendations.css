@@ -9,13 +9,13 @@
     }
 
     .recommendations-left {
-        width: 50%;
+        width: 55%;
         padding: 44px 60px;
         background: var(--Color-Brand-2-300, #F1F1F9);
     }
 
     .recommendations-right {
-        width: 50%;
+        width: 45%;
         padding: 44px 60px;
         background: var(--Color-Brand-2-1800, #B4B4DE);
     }
