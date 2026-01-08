@@ -159,6 +159,7 @@
         flex-direction: column;
         gap: 24px;
         align-items: center;
+        margin-bottom: 24px;
     }
 
     .maison-quiz-recom-text-title{
@@ -171,6 +172,7 @@
         font-weight: 400;
         line-height: 41.6px;
         text-transform: capitalize;
+        margin: 0;
     }
 
     .maison-quiz-recom-text-subtitle{
