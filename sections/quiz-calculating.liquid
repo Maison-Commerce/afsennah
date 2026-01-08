@@ -859,7 +859,13 @@
         // Disable smooth scrolling for auto-scroll (it interferes with programmatic scrolling)
         reviewsContainer.style.scrollBehavior = 'auto';
 
-        // Auto-scroll function
+        // Initial opacity update
+        updateCardOpacity();
+
+        // Auto-scroll function with smoother animation
+        let scrollPosition = 0;
+        const scrollSpeed = 0.5; // pixels per frame (slower = smoother)
+
         function autoScroll() {
           const currentScrollHeight = reviewsContainer.scrollHeight;
           const currentClientHeight = reviewsContainer.clientHeight;
@@ -867,17 +873,22 @@
           
           if (currentMaxScroll <= 0) return;
 
-          // Scroll down
-          if (reviewsContainer.scrollTop < currentMaxScroll - 1) {
-            reviewsContainer.scrollTop += 1;
-          } else {
+          scrollPosition += scrollSpeed;
+          
+          if (scrollPosition >= currentMaxScroll) {
             // Reset to top when reaching bottom for seamless loop
+            scrollPosition = 0;
             reviewsContainer.scrollTop = 0;
+          } else {
+            reviewsContainer.scrollTop = scrollPosition;
           }
+          
+          // Update opacity on each scroll frame
+          updateCardOpacity();
         }
 
-        // Start auto-scrolling every 30ms (faster scroll)
-        scrollInterval = setInterval(autoScroll, 30);
+        // Start auto-scrolling every 16ms (~60fps for smoother animation)
+        scrollInterval = setInterval(autoScroll, 16);
         console.log('[Auto-scroll] Interval started:', scrollInterval);
 
         // Pause on hover (reviewsColumn already found above)
@@ -888,6 +899,8 @@
               clearInterval(scrollInterval);
               scrollInterval = null;
             }
+            // Update opacity one more time when paused
+            updateCardOpacity();
           });
           
           reviewsColumn.addEventListener('mouseleave', () => {
