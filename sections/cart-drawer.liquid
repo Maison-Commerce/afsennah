@@ -617,6 +617,44 @@
         </terms-agreement>
       {% endif %}
 
+      {%- if section.settings.show_usp_badges -%}
+        <div class="cart-drawer__usp-badges{% if cart.items == empty %} hidden{% endif %}">
+          {%- if section.settings.usp_1_label != blank -%}
+            <div class="cart-drawer__usp-badge">
+              <div class="cart-drawer__usp-badge-icon">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <circle cx="8" cy="8" r="8" fill="#B8A9E8"/>
+                  <path d="M5 8L7 10L11 6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <span class="cart-drawer__usp-badge-label">{{ section.settings.usp_1_label }}</span>
+            </div>
+          {%- endif -%}
+          {%- if section.settings.usp_2_label != blank -%}
+            <div class="cart-drawer__usp-badge">
+              <div class="cart-drawer__usp-badge-icon">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <circle cx="8" cy="8" r="8" fill="#B8A9E8"/>
+                  <path d="M5 8L7 10L11 6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <span class="cart-drawer__usp-badge-label">{{ section.settings.usp_2_label }}</span>
+            </div>
+          {%- endif -%}
+          {%- if section.settings.usp_3_label != blank -%}
+            <div class="cart-drawer__usp-badge">
+              <div class="cart-drawer__usp-badge-icon">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <circle cx="8" cy="8" r="8" fill="#B8A9E8"/>
+                  <path d="M5 8L7 10L11 6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <span class="cart-drawer__usp-badge-label">{{ section.settings.usp_3_label }}</span>
+            </div>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+
       <div class="checkout-buttons{% if cart.items == empty %} hidden{% endif %}" data-merge-attributes="checkout-buttons">
         {% if section.settings.enable_direct_cart %}
           <a href="{{ routes.root_url | append: '/checkout' | replace: '//', '/' }}" class="btn btn--large btn--wide">{{ 'cart.summary.checkout' | t }}</a>
@@ -1288,6 +1326,37 @@
       "type": "color",
       "id": "empty_color_text",
       "label": "Text"
+    },
+    {
+      "type": "header",
+      "content": "USP Badges"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_usp_badges",
+      "label": "Show USP badges above checkout button",
+      "default": true
+    },
+    {
+      "visible_if": "{{ section.settings.show_usp_badges }}",
+      "type": "text",
+      "id": "usp_1_label",
+      "label": "USP 1 label",
+      "default": "Trichologist-Developed"
+    },
+    {
+      "visible_if": "{{ section.settings.show_usp_badges }}",
+      "type": "text",
+      "id": "usp_2_label",
+      "label": "USP 2 label",
+      "default": "Clean Ingredients"
+    },
+    {
+      "visible_if": "{{ section.settings.show_usp_badges }}",
+      "type": "text",
+      "id": "usp_3_label",
+      "label": "USP 3 label",
+      "default": "Cruelty-Free"
     },
     {
       "type": "header",
