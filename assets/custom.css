@@ -2324,3 +2324,12 @@ justify-content: space-between;
     letter-spacing: 0%;
     color: #141405;
 }
+
+.product-upsell-card__price {
+    font-family: "Neue Haas Grotesk Display Pro";
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 150%;
+    letter-spacing: 0%;
+    color: #2E432F;
+}
