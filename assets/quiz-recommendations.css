@@ -767,6 +767,7 @@
     .product-options-group {
         display: flex;
         gap: 32px;
+        font-family: 'Gotham', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
     }
 
     .product-quantity-selector {
