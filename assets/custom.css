@@ -2577,3 +2577,6 @@ cart-drawer .cart-upsell-product {
     display: flex;
     align-items: center;
 }
+.content-header__leftside {
+    display: flex;
+}
