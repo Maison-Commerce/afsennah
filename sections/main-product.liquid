@@ -1390,11 +1390,32 @@
                           return amount + ' ' + currencyCode;
                         }
 
+                        // Debounce for updatePrices to avoid multiple calls
+                        let updatePricesTimeout = null;
+                        
                         // Update prices
                         function updatePrices() {
                           console.log('[Subscription Picker] updatePrices called');
                           if (!form || !productData || !picker) {
                             console.log('[Subscription Picker] Missing form, productData or picker in updatePrices');
+                            return;
+                          }
+                          
+                          // Clear previous timeout
+                          if (updatePricesTimeout) {
+                            clearTimeout(updatePricesTimeout);
+                          }
+                          
+                          // Debounce update to avoid race conditions
+                          updatePricesTimeout = setTimeout(function() {
+                            updatePricesImmediate();
+                          }, 50);
+                        }
+                        
+                        function updatePricesImmediate() {
+                          console.log('[Subscription Picker] updatePricesImmediate called');
+                          if (!form || !productData || !picker) {
+                            console.log('[Subscription Picker] Missing form, productData or picker in updatePricesImmediate');
                             return;
                           }
                           const variantIdInput = form.querySelector('[name="id"]');
@@ -1438,29 +1459,22 @@
                           const subscriptionCompareEl = picker.querySelector('[data-subscription-compare]');
                           const currentIntervalSelect = picker.querySelector('[data-interval-select]');
 
-                          // Update one-time price - always update based on current variant
+                          // Update one-time price - always use variant price from productData (not Seal Subscriptions DOM)
+                          // This ensures correct price for current variant without delay
                           if (oneTimePriceEl) {
-                            const sealSubsOneTimePrice = document.querySelector('.sls-one-time-price .sls-price .money');
-                            if (sealSubsOneTimePrice) {
-                              oneTimePriceEl.innerHTML = sealSubsOneTimePrice.outerHTML;
-                            } else {
-                              // Use variant price from productData
-                              const priceCents = variant.price;
-                              const priceFormatted = formatMoney(priceCents);
-                              oneTimePriceEl.innerHTML = '<span class="money">' + priceFormatted + '</span>';
-                            }
+                            const priceCents = variant.price;
+                            const priceFormatted = formatMoney(priceCents);
+                            oneTimePriceEl.innerHTML = '<span class="money">' + priceFormatted + '</span>';
+                            console.log('[Subscription Picker] Updated one-time price to:', priceFormatted, 'for variant:', variantId);
                           }
-                          // Update one-time compare price - always update for one-time purchase
+                          // Update one-time compare price - always use variant compare_at_price from productData
                           if (oneTimeCompareEl) {
-                            const sealSubsOneTimeCompare = document.querySelector('.sls-one-time-price .sls-original-price .money');
-                            if (sealSubsOneTimeCompare) {
-                              oneTimeCompareEl.innerHTML = sealSubsOneTimeCompare.outerHTML;
-                              oneTimeCompareEl.style.display = '';
-                            } else if (variant.compare_at_price && variant.compare_at_price > variant.price) {
+                            if (variant.compare_at_price && variant.compare_at_price > variant.price) {
                               const comparePriceCents = variant.compare_at_price;
                               const comparePriceFormatted = formatMoney(comparePriceCents);
                               oneTimeCompareEl.innerHTML = '<span class="money">' + comparePriceFormatted + '</span>';
                               oneTimeCompareEl.style.display = '';
+                              console.log('[Subscription Picker] Updated one-time compare price to:', comparePriceFormatted, 'for variant:', variantId);
                             } else {
                               oneTimeCompareEl.style.display = 'none';
                             }
