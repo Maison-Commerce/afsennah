@@ -126,6 +126,14 @@
         overflow: hidden;
     }
 
+    /* Mobile Gift Progress Section - Hidden on Desktop */
+    .gift-progress-section-mobile {
+        display: none;
+        margin-bottom: 24px;
+        border-radius: 12px;
+        padding: 0;
+    }
+
     .gift-progress-header{
         margin-bottom: 12px;
     }
@@ -1348,6 +1356,15 @@
         }
 
         .recommendations-right {
+            display: none;
+        }
+
+        /* Show mobile gift progress section, hide desktop one */
+        .gift-progress-section-mobile {
+            display: block;
+        }
+
+        .recommendations-right .gift-progress-section {
             display: none;
         }
 
