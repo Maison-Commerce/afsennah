@@ -2179,7 +2179,7 @@
         "section3_description": "",
         "accessories_products": [],
         "gift_tiers_enabled": true,
-        "gift_progress_text": "<p>[[current_gift]] added! <br/>Spend [[remaining]] more to get [[next_gift]]</p>",
+        "gift_progress_text": "<p>🎁 [[current_gift]] added! <br/>Spend [[remaining]] more to get [[next_gift]]</p>",
         "gift_complete_text": "You've unlocked all free gifts!",
         "gift_progress_bar_color": "#d4ff6a",
         "gift_progress_bar_bg_color": "#e5e7eb",
