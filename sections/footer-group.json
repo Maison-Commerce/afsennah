@@ -303,7 +303,7 @@
         "menu_link_padding_vertical": 8,
         "menu_link_padding_vertical_mobile": 4,
         "show_newsletter": true,
-        "newsletter_width": 300,
+        "newsletter_width": 390,
         "newsletter_heading": "Join Our Community",
         "newsletter_description": "Sign up for updates and exclusive offers!",
         "newsletter_placeholder": "Enter your email",
