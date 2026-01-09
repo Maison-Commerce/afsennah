@@ -1089,8 +1089,12 @@
                                   console.log('[Subscription Picker] Updating prices and selling plan immediately after data extraction');
                                   updatePrices();
                                   updateSellingPlan();
+                                  // Also update expandable state after data is loaded
+                                  if (typeof updateExpandableState === 'function') {
+                                    updateExpandableState();
+                                  }
                                 }
-                              }, 100);
+                              }, 150);
                             }
                             
                             return true;
@@ -1572,10 +1576,27 @@
                           // Event listeners
                           console.log('[Subscription Picker] Setting up event listeners, radio buttons:', radioButtons.length);
                           
-                          // Set initial state - show expandable content for active option
+                          // Set initial state - show expandable content for active option immediately
+                          const activeOption = picker.querySelector('.subscription-option--active');
+                          if (activeOption) {
+                            const expandable = activeOption.querySelector('.subscription-option__expandable');
+                            if (expandable) {
+                              // Set initial state without transition for immediate display
+                              expandable.style.transition = 'none';
+                              expandable.style.maxHeight = expandable.scrollHeight + 'px';
+                              expandable.style.opacity = '1';
+                              expandable.style.marginTop = '16px';
+                              // Restore transition after a brief moment
+                              setTimeout(function() {
+                                expandable.style.transition = '';
+                              }, 50);
+                            }
+                          }
+                          
+                          // Update all states with animation after initial setup
                           setTimeout(function() {
                             updateExpandableState();
-                          }, 100);
+                          }, 200);
                           
                           radioButtons.forEach(radio => {
                             radio.addEventListener('change', function() {
@@ -1693,6 +1714,8 @@
                             setTimeout(function() {
                               updatePrices();
                               updateSellingPlan();
+                              // Also update expandable state
+                              updateExpandableState();
                             }, 50);
                           }
                         }
