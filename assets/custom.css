@@ -2542,3 +2542,12 @@ cart-drawer .cart-upsell-product {
     letter-spacing: 0;
 
 }
+
+.richtext.product-info-block p {
+    font-family: "Gotham";
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 150%;
+    letter-spacing: 0%;
+    color: rgba(28, 28, 28, 0.75);
+}
