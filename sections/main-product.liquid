@@ -829,7 +829,11 @@
 
                   {%- comment -%} Custom Subscription Picker {%- endcomment -%}
                   {%- if product.selling_plan_groups.size > 0 and block.settings.enable_subscription_picker -%}
-                    <div class="custom-subscription-picker" data-block-id="{{ block.id }}" data-form-id="{{ product_form_id }}" style="display: none;">
+                    <div class="custom-subscription-picker" 
+                         data-block-id="{{ block.id }}" 
+                         data-form-id="{{ product_form_id }}" 
+                         data-use-custom-benefits="{{ block.settings.use_custom_benefits }}"
+                         style="display: none;">
                     {%- liquid
                       assign first_group = product.selling_plan_groups.first
                       assign default_selling_plan = first_group.selling_plans.first
@@ -929,8 +933,10 @@
                             {% endif %}
                             
                             <div class="subscription-option__benefits" data-subscription-benefits>
-                              {% if block.settings.subscription_benefits != blank %}
-                                {{ block.settings.subscription_benefits }}
+                              {% if block.settings.use_custom_benefits %}
+                                {% if block.settings.subscription_benefits != blank %}
+                                  {{ block.settings.subscription_benefits }}
+                                {% endif %}
                               {% endif %}
                             </div>
                           </div>
@@ -1166,17 +1172,50 @@
                           }
 
                           // Update subscription benefits/description from Seal Subscriptions
+                          // Only if custom benefits are not enabled
                           const benefitsEl = picker.querySelector('[data-subscription-benefits]');
                           if (benefitsEl) {
-                            const sealSubsDescription = document.querySelector('.sls-selling-plan-description-content');
-                            if (sealSubsDescription) {
-                              benefitsEl.innerHTML = '<p>' + sealSubsDescription.textContent.trim() + '</p>';
-                            } else if (productData.selling_plans.length > 0) {
-                              const description = productData.selling_plans[0].description || '';
-                              if (description) {
-                                benefitsEl.innerHTML = '<p>' + description + '</p>';
+                            const useCustomBenefits = picker.dataset.useCustomBenefits === 'true';
+                            
+                            if (!useCustomBenefits) {
+                              const sealSubsDescription = document.querySelector('.sls-selling-plan-description-content');
+                              if (sealSubsDescription) {
+                                // Convert description to list format with checkmarks
+                                const descriptionText = sealSubsDescription.textContent.trim();
+                                if (descriptionText) {
+                                  // Try to split by sentences or new lines
+                                  const sentences = descriptionText.split(/[.!?]\s+/).filter(s => s.trim().length > 0);
+                                  if (sentences.length > 0) {
+                                    let listHtml = '<ul>';
+                                    sentences.forEach(sentence => {
+                                      listHtml += '<li>' + sentence.trim() + '</li>';
+                                    });
+                                    listHtml += '</ul>';
+                                    benefitsEl.innerHTML = listHtml;
+                                  } else {
+                                    benefitsEl.innerHTML = '<p>' + descriptionText + '</p>';
+                                  }
+                                }
+                              } else if (productData.selling_plans.length > 0) {
+                                const description = productData.selling_plans[0].description || '';
+                                if (description) {
+                                  const sentences = description.split(/[.!?]\s+/).filter(s => s.trim().length > 0);
+                                  if (sentences.length > 0) {
+                                    let listHtml = '<ul>';
+                                    sentences.forEach(sentence => {
+                                      listHtml += '<li>' + sentence.trim() + '</li>';
+                                    });
+                                    listHtml += '</ul>';
+                                    benefitsEl.innerHTML = listHtml;
+                                  } else {
+                                    benefitsEl.innerHTML = '<p>' + description + '</p>';
+                                  }
+                                }
                               }
+                            } else {
+                              console.log('[Subscription Picker] Using custom benefits, keeping original content');
                             }
+                            // If custom benefits are enabled, keep the original content from Liquid
                           }
 
                           // Update subscription details from Seal Subscriptions
@@ -1939,16 +1978,109 @@
                       .subscription-option__benefits li {
                         display: flex;
                         align-items: flex-start;
-                        gap: 8px;
-                        margin-bottom: 8px;
+                        gap: 12px;
+                        margin-bottom: 12px;
+                        position: relative;
                       }
 
+                      /* Default checkmark icon if no custom icon */
                       .subscription-option__benefits li::before {
                         content: '✓';
                         color: #1A365D;
                         font-weight: bold;
                         flex-shrink: 0;
                         margin-top: 2px;
+                        width: 20px;
+                        height: 20px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        background: #F5F3FF;
+                        border-radius: 50%;
+                        font-size: 12px;
+                      }
+
+                      /* Hide default checkmark if custom icon/SVG is present */
+                      .subscription-option__benefits li:has(svg)::before {
+                        display: none;
+                      }
+
+                      /* Style for SVG icons in benefits - must be first child */
+                      .subscription-option__benefits li > svg:first-child {
+                        width: 20px;
+                        height: 20px;
+                        flex-shrink: 0;
+                        margin-top: 2px;
+                      }
+
+                      /* Style for custom icon wrapper */
+                      .subscription-option__benefits li .benefit-icon {
+                        width: 20px;
+                        height: 20px;
+                        flex-shrink: 0;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        margin-top: 2px;
+                      }
+
+                      /* Hide default checkmark if custom icon wrapper is present */
+                      .subscription-option__benefits li:has(.benefit-icon)::before {
+                        display: none;
+                      }
+
+                      /* Default checkmark icon if no custom icon */
+                      .subscription-option__benefits li::before {
+                        content: '✓';
+                        color: #1A365D;
+                        font-weight: bold;
+                        flex-shrink: 0;
+                        margin-top: 2px;
+                        width: 20px;
+                        height: 20px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        background: #F5F3FF;
+                        border-radius: 50%;
+                        font-size: 12px;
+                      }
+
+                      /* Hide default checkmark if custom icon/SVG is present */
+                      .subscription-option__benefits li:has(svg)::before,
+                      .subscription-option__benefits li:has(.benefit-icon)::before {
+                        display: none;
+                      }
+
+                      /* Fallback for browsers without :has() support */
+                      @supports not selector(:has(*)) {
+                        .subscription-option__benefits li svg ~ *::before {
+                          display: none;
+                        }
+                      }
+
+                      /* Style for SVG icons in benefits */
+                      .subscription-option__benefits li svg {
+                        width: 20px;
+                        height: 20px;
+                        flex-shrink: 0;
+                        margin-top: 2px;
+                      }
+
+                      /* Style for custom icon wrapper */
+                      .subscription-option__benefits li .benefit-icon {
+                        width: 20px;
+                        height: 20px;
+                        flex-shrink: 0;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        margin-top: 2px;
+                      }
+
+                      /* Style for benefit text */
+                      .subscription-option__benefits li > *:not(svg):not(.benefit-icon) {
+                        flex: 1;
                       }
 
                       .subscription-picker__details {
@@ -4330,15 +4462,23 @@
     {
       "visible_if": "{{ block.settings.enable_subscription_picker }}",
       "type": "header",
-      "content": "Subscription Benefits"
+      "content": "Subscription Benefits with Icons"
     },
     {
       "visible_if": "{{ block.settings.enable_subscription_picker }}",
       "type": "richtext",
       "id": "subscription_benefits",
-      "label": "Subscription Benefits",
+      "label": "Subscription Benefits (with Icons)",
       "default": "<ul><li>Save 30% on Every Custom Formula</li><li>Pause, Skip, or Cancel After 3 Deliveries</li><li>Free Shipping + Never Run Out During Your Hair Journey</li></ul>",
-      "info": "List of benefits shown under Subscribe & Save option. Use HTML list format."
+      "info": "List of benefits shown under Subscribe & Save option. Use HTML list format. You can add SVG icons inside <li> tags as the first element. Example: <ul><li><svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M10 0L12.5 7.5L20 10L12.5 12.5L10 20L7.5 12.5L0 10L7.5 7.5L10 0Z\" fill=\"#1A365D\"/></svg>Save 30% on Every Custom Formula</li><li><svg>...</svg>Another benefit</li></ul>"
+    },
+    {
+      "visible_if": "{{ block.settings.enable_subscription_picker }}",
+      "type": "checkbox",
+      "id": "use_custom_benefits",
+      "label": "Use Custom Benefits (Override Seal Subscriptions)",
+      "default": false,
+      "info": "If enabled, custom benefits from above will be used instead of data from Seal Subscriptions app"
     },
     {
       "visible_if": "{{ block.settings.enable_subscription_picker }}",
