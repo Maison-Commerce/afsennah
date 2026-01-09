@@ -96,7 +96,7 @@
 
   /* Announcement Item */
   .maison_commerce_maison_header_announcement_bar__item {
-    display: flex!important;
+    display: flex;
     align-items: center;
     gap: {{ section.settings.icon_text_gap }}px;
     flex-shrink: 0;
@@ -147,8 +147,8 @@
 
   /* Divider */
   .maison_commerce_maison_header_announcement_bar__divider {
-    width: 1px!important;
-    height: {{ section.settings.divider_height }}px!important;
+    width: {{ section.settings.divider_width }}px;
+    height: {{ section.settings.divider_height }}px;
     background-color: {{ section.settings.divider_color }};
     flex-shrink: 0;
   }
