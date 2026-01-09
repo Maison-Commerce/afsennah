@@ -2390,3 +2390,11 @@ cart-drawer .cart-upsell-product__price,
 cart-drawer .cart-upsell-product__price .cart-upsell-product__price-current {
     font-size: 12px;
 }
+cart-drawer .cart-upsell-product__add-btn {
+    font-family: "Neue Haas Grotesk Display Pro";
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 150%;
+    letter-spacing: 0%;
+}
+
