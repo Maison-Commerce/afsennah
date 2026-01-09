@@ -1468,7 +1468,10 @@
                             console.log('[Subscription Picker] Updated one-time price to:', priceFormatted, 'for variant:', variantId);
                           }
                           // Update one-time compare price - always use variant compare_at_price from productData
+                          // Always update, even if compare_at_price equals price (then hide it)
                           if (oneTimeCompareEl) {
+                            console.log('[Subscription Picker] Checking compare_at_price for variant:', variantId, 'compare_at_price:', variant.compare_at_price, 'price:', variant.price);
+                            // Always clear and update, don't rely on previous state
                             if (variant.compare_at_price && variant.compare_at_price > variant.price) {
                               const comparePriceCents = variant.compare_at_price;
                               const comparePriceFormatted = formatMoney(comparePriceCents);
@@ -1476,7 +1479,10 @@
                               oneTimeCompareEl.style.display = '';
                               console.log('[Subscription Picker] Updated one-time compare price to:', comparePriceFormatted, 'for variant:', variantId);
                             } else {
+                              // Clear content and hide if compare_at_price is not greater than price
+                              oneTimeCompareEl.innerHTML = '';
                               oneTimeCompareEl.style.display = 'none';
+                              console.log('[Subscription Picker] Hiding one-time compare price (compare_at_price:', variant.compare_at_price, '<= price:', variant.price, ')');
                             }
                           }
 
