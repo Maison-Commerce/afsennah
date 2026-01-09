@@ -1229,6 +1229,11 @@ video-section-play-button {
     .tiered-rewards-bar {
         margin-top: 0;
     }
+    .tiered-rewards-bar__marker-price {
+        font-size: 8px;
+        line-height: 150%;
+    }
+
     
     .tiered-rewards-bar__banner {
         margin-bottom: 0;
