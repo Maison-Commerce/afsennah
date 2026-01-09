@@ -804,7 +804,7 @@
             {% if block.settings.sub-block-label != blank%}
               <h2 class="subscription-title">{{ block.settings.sub-block-label }}</h2>
             {% endif %}
-            <buy-buttons class="buy-buttons-row block" {{ block.shopify_attributes }}>
+            <buy-buttons class="buy-buttons-row block {% if block.settings.sub-block-label != blank%} mt-0{% endif %}" {{ block.shopify_attributes }}>
               {% form 'product', product, id: product_form_id, class: 'form js-product-form', data-product-id: product.id %}
                 <input type="hidden" name="id" value="{{ current_variant.id }}">
 

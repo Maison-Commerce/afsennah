@@ -2523,3 +2523,6 @@ cart-drawer .cart-upsell-product {
     letter-spacing: 0%;
     color: #1D211E;
 }
+.buy-buttons-row.block.mt-0 {
+    margin-top: 0;
+}
