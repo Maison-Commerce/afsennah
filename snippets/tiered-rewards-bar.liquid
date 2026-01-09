@@ -237,12 +237,33 @@
       
       // Format money based on Shopify currency
       function formatMoney(dollars) {
-        if (typeof Shopify !== 'undefined' && Shopify.formatMoney) {
-          // Convert dollars to cents for Shopify.formatMoney
-          const cents = Math.round(dollars * 100);
-          return Shopify.formatMoney(cents, Shopify.money_format || '${{amount}}');
+        // Get active currency from Shopify object
+        const activeCurrency = (typeof Shopify !== 'undefined' && Shopify.currency && Shopify.currency.active)
+          ? Shopify.currency.active
+          : 'USD';
+        
+        // Convert dollars to decimal amount
+        const amount = dollars;
+        
+        // Format using Intl.NumberFormat which handles currency symbols automatically
+        try {
+          return new Intl.NumberFormat('en', {
+            style: 'currency',
+            currency: activeCurrency,
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+          }).format(amount);
+        } catch (e) {
+          // Fallback if currency code is invalid or Intl.NumberFormat not available
+          console.warn('Currency formatting failed for', activeCurrency, e);
+          // Try Shopify.formatMoney as fallback
+          if (typeof Shopify !== 'undefined' && Shopify.formatMoney) {
+            const cents = Math.round(dollars * 100);
+            return Shopify.formatMoney(cents, Shopify.money_format || '${{amount}}');
+          }
+          // Last resort fallback
+          return activeCurrency + ' ' + amount.toFixed(2);
         }
-        return '$' + dollars.toFixed(2);
       }
 
       function updateBannerText() {
