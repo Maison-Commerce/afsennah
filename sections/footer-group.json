@@ -139,21 +139,21 @@
           "type": "menu",
           "settings": {
             "menu_title": "Quick links",
-            "menu": "footer"
+            "menu": "maison-quick-links"
           }
         },
         "menu_aNMxGJ": {
           "type": "menu",
           "settings": {
             "menu_title": "Store",
-            "menu": "customer-account-main-menu"
+            "menu": "maison-store"
           }
         },
         "menu_fCyMVV": {
           "type": "menu",
           "settings": {
             "menu_title": "Help",
-            "menu": "footer"
+            "menu": "maison-help"
           }
         },
         "payment_icon_qDxk4V": {
