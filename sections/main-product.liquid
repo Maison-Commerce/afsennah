@@ -927,7 +927,7 @@
                             <div class="subscription-option__expandable" data-subscription-expandable>
                               {% if first_group.selling_plans.size > 1 %}
                                 <div class="subscription-option__interval">
-                                  <label class="subscription-interval-label" data-interval-label>{{ block.settings.interval_label | default: 'Deliver & Pay every' }}</label>
+                                  {% comment %} <label class="subscription-interval-label" data-interval-label>{{ block.settings.interval_label | default: 'Deliver & Pay every' }}</label> {% endcomment %}
                                   <select class="subscription-interval-select" name="subscription_interval_{{ block.id }}" data-interval-select>
                                     {% for plan in first_group.selling_plans %}
                                       <option value="{{ plan.id }}" 
@@ -1962,14 +1962,14 @@
                         gap: 8px;
                         font-size: 16px;
                         font-weight: 600;
-                        margin-bottom: 12px;
+                        margin-bottom: 0;
                         cursor: pointer;
                         color: #1D211E;
 
 
 
                         font-family: "Avenir Next";
-                        font-weight: 500;
+                        font-weight: 600;
                         font-style: Medium;
                         font-size: 16px;
                         line-height: 150%;
