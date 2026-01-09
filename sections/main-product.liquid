@@ -961,10 +961,17 @@
 
                     <script>
                       (function() {
+                        console.log('[Subscription Picker] Script started');
                         const blockId = '{{ block.id }}';
                         const formId = '{{ product_form_id }}';
+                        console.log('[Subscription Picker] Block ID:', blockId, 'Form ID:', formId);
+                        
                         const picker = document.querySelector('.custom-subscription-picker[data-block-id="' + blockId + '"]');
-                        if (!picker) return;
+                        if (!picker) {
+                          console.warn('[Subscription Picker] Picker not found, exiting');
+                          return;
+                        }
+                        console.log('[Subscription Picker] Picker found:', picker);
 
                         let productData = null;
                         let sealSubsData = null;
@@ -976,7 +983,9 @@
 
                         // Hide Seal Subscriptions block
                         function hideSealSubscriptions() {
+                          console.log('[Subscription Picker] hideSealSubscriptions called');
                           const sealSubsElements = document.querySelectorAll('.sealsubs-target-element.sealsubs-full, .sealsubs-container');
+                          console.log('[Subscription Picker] Found Seal Subscriptions elements:', sealSubsElements.length);
                           sealSubsElements.forEach(el => {
                             if (el) {
                               el.style.display = 'none';
@@ -987,35 +996,52 @@
 
                         // Parse data from Seal Subscriptions
                         function parseSealSubscriptionsData() {
+                          console.log('[Subscription Picker] parseSealSubscriptionsData called');
                           const sealSubsElement = document.querySelector('.sealsubs-target-element.sealsubs-full[data-product]');
-                          if (!sealSubsElement) return null;
+                          if (!sealSubsElement) {
+                            console.log('[Subscription Picker] Seal Subscriptions element not found');
+                            return null;
+                          }
+                          console.log('[Subscription Picker] Seal Subscriptions element found:', sealSubsElement);
 
                           try {
                             const productJson = sealSubsElement.getAttribute('data-product');
-                            if (!productJson) return null;
+                            if (!productJson) {
+                              console.log('[Subscription Picker] No data-product attribute');
+                              return null;
+                            }
+                            console.log('[Subscription Picker] Product JSON length:', productJson.length);
 
                             const data = JSON.parse(productJson);
+                            console.log('[Subscription Picker] Parsed data:', data);
                             return data;
                           } catch (e) {
-                            console.error('Error parsing Seal Subscriptions data:', e);
+                            console.error('[Subscription Picker] Error parsing Seal Subscriptions data:', e);
                             return null;
                           }
                         }
 
                         // Extract data from Seal Subscriptions and update our picker
                         function extractDataFromSealSubs() {
+                          console.log('[Subscription Picker] extractDataFromSealSubs called');
                           sealSubsData = parseSealSubscriptionsData();
-                          if (!sealSubsData) return false;
+                          if (!sealSubsData) {
+                            console.log('[Subscription Picker] No Seal Subscriptions data found');
+                            return false;
+                          }
 
                           // Extract selling plan groups
                           if (sealSubsData.selling_plan_groups && sealSubsData.selling_plan_groups.length > 0) {
                             const group = sealSubsData.selling_plan_groups[0];
+                            console.log('[Subscription Picker] Found selling plan group:', group);
                             
                             // Extract selling plans
                             const sellingPlans = group.selling_plans || [];
+                            console.log('[Subscription Picker] Selling plans count:', sellingPlans.length);
                             
                             // Extract variants with allocations
                             const variants = sealSubsData.variants || [];
+                            console.log('[Subscription Picker] Variants count:', variants.length);
 
                             // Update productData
                             productData = {
@@ -1038,17 +1064,23 @@
                               groupName: group.name || 'Subscribe & save',
                               intervalLabel: (group.options && group.options[0] && group.options[0].name) || 'Deliver & Pay every'
                             };
+                            console.log('[Subscription Picker] Product data updated:', productData);
 
                             // Update UI with extracted data
                             updatePickerFromSealSubs();
                             return true;
                           }
+                          console.log('[Subscription Picker] No selling plan groups found');
                           return false;
                         }
 
                         // Update picker UI with Seal Subscriptions data
                         function updatePickerFromSealSubs() {
-                          if (!productData || !picker) return;
+                          console.log('[Subscription Picker] updatePickerFromSealSubs called');
+                          if (!productData || !picker) {
+                            console.log('[Subscription Picker] Missing productData or picker');
+                            return;
+                          }
 
                           // Update subscription label from Seal Subscriptions
                           const subscribeLabel = picker.querySelector('[data-subscribe-label]');
@@ -1142,13 +1174,21 @@
 
                         // Update selling plan input
                         function updateSellingPlan() {
-                          if (!picker || !form) return;
+                          console.log('[Subscription Picker] updateSellingPlan called');
+                          if (!picker || !form) {
+                            console.log('[Subscription Picker] Missing picker or form in updateSellingPlan');
+                            return;
+                          }
                           const selectedOption = picker.querySelector('.subscription-radio:checked');
-                          if (!selectedOption || !sellingPlanInput) return;
+                          if (!selectedOption || !sellingPlanInput) {
+                            console.log('[Subscription Picker] No selected option or sellingPlanInput');
+                            return;
+                          }
 
                           const currentIntervalSelect = picker.querySelector('[data-interval-select]');
                           if (selectedOption.value === 'subscription' && currentIntervalSelect) {
                             const planId = currentIntervalSelect.options[currentIntervalSelect.selectedIndex].dataset.planId;
+                            console.log('[Subscription Picker] Setting selling plan ID:', planId);
                             sellingPlanInput.value = planId || '';
                             
                             // Also update Seal Subscriptions hidden input if it exists
@@ -1157,6 +1197,7 @@
                               sealSubsSellingPlanInput.value = planId || '';
                             }
                           } else {
+                            console.log('[Subscription Picker] Clearing selling plan (one-time purchase)');
                             sellingPlanInput.value = '';
                             
                             // Also update Seal Subscriptions hidden input
@@ -1183,13 +1224,25 @@
 
                         // Update prices
                         function updatePrices() {
-                          if (!form || !productData || !picker) return;
+                          console.log('[Subscription Picker] updatePrices called');
+                          if (!form || !productData || !picker) {
+                            console.log('[Subscription Picker] Missing form, productData or picker in updatePrices');
+                            return;
+                          }
                           const variantIdInput = form.querySelector('[name="id"]');
-                          if (!variantIdInput || !variantIdInput.value) return;
+                          if (!variantIdInput || !variantIdInput.value) {
+                            console.log('[Subscription Picker] No variant ID input or value');
+                            return;
+                          }
                           
                           const variantId = parseInt(variantIdInput.value);
+                          console.log('[Subscription Picker] Current variant ID:', variantId);
                           const variant = productData.variants.find(v => v.id === variantId);
-                          if (!variant) return;
+                          if (!variant) {
+                            console.log('[Subscription Picker] Variant not found in productData');
+                            return;
+                          }
+                          console.log('[Subscription Picker] Found variant:', variant);
 
                           const selectedOption = picker.querySelector('.subscription-radio:checked');
                           if (!selectedOption) return;
@@ -1264,20 +1317,25 @@
                         }
 
                         function initSubscriptionPicker() {
+                          console.log('[Subscription Picker] initSubscriptionPicker called, isInitialized:', isInitialized);
                           if (isInitialized || !picker || !picker.parentNode) {
+                            console.log('[Subscription Picker] Already initialized or picker removed');
                             return;
                           }
 
                           form = document.getElementById(formId);
                           if (!form) {
+                            console.log('[Subscription Picker] Form not found:', formId);
                             return;
                           }
+                          console.log('[Subscription Picker] Form found:', form);
 
                           // Hide Seal Subscriptions block
                           hideSealSubscriptions();
 
                           // Try to extract data from Seal Subscriptions
                           const hasSealSubsData = extractDataFromSealSubs();
+                          console.log('[Subscription Picker] Has Seal Subscriptions data:', hasSealSubsData);
 
                           // If no Seal Subscriptions data, use default product data
                           if (!hasSealSubsData) {
@@ -1335,8 +1393,10 @@
                           const options = picker.querySelectorAll('.subscription-option');
 
                           // Event listeners
+                          console.log('[Subscription Picker] Setting up event listeners, radio buttons:', radioButtons.length);
                           radioButtons.forEach(radio => {
                             radio.addEventListener('change', function() {
+                              console.log('[Subscription Picker] Radio changed to:', this.value);
                               options.forEach(opt => opt.classList.remove('subscription-option--active'));
                               this.closest('.subscription-option').classList.add('subscription-option--active');
                               updateSellingPlan();
@@ -1347,12 +1407,14 @@
                               if (this.value === 'one-time') {
                                 const sealSubsOneTime = Array.from(sealSubsRadios).find(r => r.dataset.type === 'one_time');
                                 if (sealSubsOneTime) {
+                                  console.log('[Subscription Picker] Syncing with Seal Subscriptions one-time');
                                   sealSubsOneTime.checked = true;
                                   sealSubsOneTime.dispatchEvent(new Event('change', { bubbles: true }));
                                 }
                               } else if (this.value === 'subscription') {
                                 const sealSubsSub = Array.from(sealSubsRadios).find(r => r.dataset.type === 'subscription');
                                 if (sealSubsSub) {
+                                  console.log('[Subscription Picker] Syncing with Seal Subscriptions subscription');
                                   sealSubsSub.checked = true;
                                   sealSubsSub.dispatchEvent(new Event('change', { bubbles: true }));
                                 }
@@ -1361,23 +1423,30 @@
                           });
 
                           if (intervalSelect) {
+                            console.log('[Subscription Picker] Setting up interval select listener');
                             intervalSelect.addEventListener('change', function() {
+                              console.log('[Subscription Picker] Interval changed to:', this.value);
                               updateSellingPlan();
                               updatePrices();
                               
                               // Sync with Seal Subscriptions interval select
                               const sealSubsInterval = document.querySelector('.sls-select[name="subs_interval"]');
                               if (sealSubsInterval) {
+                                console.log('[Subscription Picker] Syncing interval with Seal Subscriptions');
                                 sealSubsInterval.value = this.value;
                                 sealSubsInterval.dispatchEvent(new Event('change', { bubbles: true }));
                               }
                             });
+                          } else {
+                            console.log('[Subscription Picker] No interval select found');
                           }
 
                           // Listen for variant changes
                           const productSection = form.closest('.js-product');
                           if (productSection) {
+                            console.log('[Subscription Picker] Setting up variant change listener');
                             productSection.addEventListener('on:variant:change', function(evt) {
+                              console.log('[Subscription Picker] Variant changed event:', evt.detail);
                               if (evt.detail && evt.detail.variant) {
                                 updatePrices();
                               }
@@ -1386,8 +1455,13 @@
 
                           const variantInput = form.querySelector('[name="id"]');
                           if (variantInput) {
-                            variantInput.addEventListener('change', updatePrices);
+                            console.log('[Subscription Picker] Setting up variant input observer');
+                            variantInput.addEventListener('change', function() {
+                              console.log('[Subscription Picker] Variant input changed');
+                              updatePrices();
+                            });
                             const observer = new MutationObserver(function() {
+                              console.log('[Subscription Picker] Variant input mutation detected');
                               updatePrices();
                             });
                             observer.observe(variantInput, { attributes: true, attributeFilter: ['value'] });
@@ -1395,25 +1469,34 @@
 
                           // Mark as initialized
                           isInitialized = true;
+                          console.log('[Subscription Picker] Initialization complete');
                         }
 
                         // Setup MutationObserver on buy-buttons container
                         function setupObserver() {
-                          if (observerActive) return;
+                          console.log('[Subscription Picker] setupObserver called, observerActive:', observerActive);
+                          if (observerActive) {
+                            console.log('[Subscription Picker] Observer already active, skipping');
+                            return;
+                          }
                           
                           const buyButtonsContainer = picker.closest('buy-buttons') || picker.parentElement;
                           if (!buyButtonsContainer) {
+                            console.log('[Subscription Picker] Buy buttons container not found, retrying...');
                             setTimeout(setupObserver, 100);
                             return;
                           }
+                          console.log('[Subscription Picker] Buy buttons container found:', buyButtonsContainer);
 
                           observerActive = true;
 
                           // Create observer for Seal Subscriptions injection
                           const sealSubsObserver = new MutationObserver(function(mutations) {
+                            console.log('[Subscription Picker] MutationObserver triggered, mutations:', mutations.length);
                             let shouldUpdate = false;
                             
                             mutations.forEach(function(mutation) {
+                              console.log('[Subscription Picker] Mutation type:', mutation.type, 'addedNodes:', mutation.addedNodes.length);
                               // Check if Seal Subscriptions element was added
                               if (mutation.addedNodes.length > 0) {
                                 mutation.addedNodes.forEach(function(node) {
@@ -1423,6 +1506,7 @@
                                       node.classList.contains('sealsubs-container') ||
                                       node.querySelector('.sealsubs-target-element')
                                     )) {
+                                      console.log('[Subscription Picker] Seal Subscriptions element detected in mutation');
                                       shouldUpdate = true;
                                     }
                                   }
@@ -1431,19 +1515,23 @@
                               
                               // Check for data-product attribute changes
                               if (mutation.type === 'attributes' && mutation.attributeName === 'data-product') {
+                                console.log('[Subscription Picker] data-product attribute changed');
                                 shouldUpdate = true;
                               }
                             });
 
                             if (shouldUpdate) {
+                              console.log('[Subscription Picker] Update needed, processing...');
                               // Hide Seal Subscriptions
                               hideSealSubscriptions();
                               
                               // Extract and update data
                               if (extractDataFromSealSubs()) {
                                 if (!isInitialized) {
+                                  console.log('[Subscription Picker] Initializing picker after data extraction');
                                   initSubscriptionPicker();
                                 } else {
+                                  console.log('[Subscription Picker] Updating prices and selling plan');
                                   updatePrices();
                                   updateSellingPlan();
                                 }
@@ -1452,6 +1540,7 @@
                           });
 
                           // Observe buy-buttons container for changes
+                          console.log('[Subscription Picker] Starting to observe buy-buttons container');
                           sealSubsObserver.observe(buyButtonsContainer, {
                             childList: true,
                             subtree: true,
@@ -1465,23 +1554,37 @@
                           // Try to extract data if Seal Subscriptions is already injected
                           const sealSubsElement = document.querySelector('.sealsubs-target-element.sealsubs-full[data-product]');
                           if (sealSubsElement) {
+                            console.log('[Subscription Picker] Seal Subscriptions already present, extracting data');
                             hideSealSubscriptions();
                             if (extractDataFromSealSubs()) {
                               initSubscriptionPicker();
                             }
+                          } else {
+                            console.log('[Subscription Picker] Seal Subscriptions not found yet');
                           }
                         }
 
                         // Initialize when DOM is ready
+                        console.log('[Subscription Picker] DOM ready state:', document.readyState);
                         if (document.readyState === 'loading') {
+                          console.log('[Subscription Picker] Waiting for DOMContentLoaded');
                           document.addEventListener('DOMContentLoaded', function() {
+                            console.log('[Subscription Picker] DOMContentLoaded fired');
                             setupObserver();
-                            setTimeout(initSubscriptionPicker, 300);
+                            setTimeout(function() {
+                              console.log('[Subscription Picker] Initializing picker after delay');
+                              initSubscriptionPicker();
+                            }, 300);
                           });
                         } else {
+                          console.log('[Subscription Picker] DOM already ready, initializing immediately');
                           setupObserver();
-                          setTimeout(initSubscriptionPicker, 300);
+                          setTimeout(function() {
+                            console.log('[Subscription Picker] Initializing picker after delay');
+                            initSubscriptionPicker();
+                          }, 300);
                         }
+                        console.log('[Subscription Picker] Script setup complete');
                       })();
                     </script>
 
