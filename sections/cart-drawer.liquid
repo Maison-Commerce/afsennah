@@ -576,6 +576,7 @@
             {{ 'cart.summary.subtotal' | t }}:
             <div class="price">
               <span>
+                {{ cart.original_total_price }}
                 {% unless cart.original_total_price == cart.total_price %}
                   {{ cart.original_total_price }}
                 {% endunless %}
