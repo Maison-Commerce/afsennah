@@ -2590,8 +2590,8 @@ cart-drawer .cart-upsell-product {
 
 .subscription-option__badge {
     position: absolute;
-    top: -20px;
-    right: 0;
+    top: -21px;
+    right: -2px;
     background: #D0D0EA;
     border-radius: 0;
     border-top-left-radius: 8px;
