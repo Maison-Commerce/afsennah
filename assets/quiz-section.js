@@ -376,7 +376,8 @@
             const backBtns = step.querySelectorAll('[data-back-btn]');
             backBtns.forEach(backBtn => {
                 if (backBtn) {
-                    backBtn.style.display = this.currentStepIndex > 0 ? 'flex' : 'none';
+                    // Always show back button, even at index 0 (will go back to intro)
+                    backBtn.style.display = 'flex';
                 }
             });
 
@@ -448,9 +449,39 @@
             currentStep.classList.remove('active');
 
             setTimeout(() => {
-                this.currentStepIndex--;
-                this.showCurrentStep();
+                // If we're at the first step (index 0), go back to intro
+                if (this.currentStepIndex === 0) {
+                    this.showIntro();
+                } else {
+                    this.currentStepIndex--;
+                    this.showCurrentStep();
+                }
             }, 300);
+        },
+
+        showIntro() {
+            // Hide all quiz steps
+            this.steps.forEach(s => s.style.display = 'none');
+            
+            // Hide calculating and results if visible
+            const calculating = document.querySelector('[data-calculating]');
+            if (calculating) {
+                calculating.style.display = 'none';
+            }
+            
+            const results = document.querySelector('[data-results]');
+            if (results) {
+                results.style.display = 'none';
+            }
+            
+            // Show intro section
+            const intro = document.querySelector('[data-quiz-intro]');
+            if (intro) {
+                intro.style.display = 'block';
+                setTimeout(() => intro.classList.add('active'), 50);
+            }
+            
+            this.scrollToTop();
         },
 
         showCalculating() {
