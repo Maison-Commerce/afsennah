@@ -574,13 +574,20 @@
           {%- endif -%}
           <div class="subtotal h4 heading-font opposing-items">
             {{ 'cart.summary.subtotal' | t }}:
-            <span class="theme-money">
-              {%- if settings.cart_currency_code_enabled -%}
-                {{- cart.total_price | money_with_currency -}}
-              {%- else -%}
-                {{- cart.total_price | money -}}
-              {%- endif -%}
-            </span>
+            <div class="price">
+              <span>
+                {% unless cart.original_total_price == cart.total_price %}
+                  {{ cart.original_total_price }}
+                {% endunless %}
+              </span>
+              <span class="theme-money">
+                {%- if settings.cart_currency_code_enabled -%}
+                  {{- cart.total_price | money_with_currency -}}
+                {%- else -%}
+                  {{- cart.total_price | money -}}
+                {%- endif -%}
+              </span>
+            </div>
           </div>
 
           <div class="lightly-spaced-row">
