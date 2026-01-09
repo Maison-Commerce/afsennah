@@ -2424,3 +2424,10 @@ cart-drawer .cart-upsell-product {
     display: flex;
     align-items: center;
 }
+
+.tiered-rewards-bar__marker-image .tiered-rewards-bar__marker-price svg {
+    display: none;
+}
+.tiered-rewards-bar__marker-image.active .tiered-rewards-bar__marker-price svg {
+    display: flex;
+}
