@@ -2580,7 +2580,6 @@ cart-drawer .cart-upsell-product {
 }
 .content-header__leftside {
     display: flex;
-    align-items: center;
     gap: 8px;
 }
 .subscription-option__price,
