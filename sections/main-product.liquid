@@ -1089,11 +1089,12 @@
                               picker.style.display = '';
                               console.log('[Subscription Picker] Showing picker after data extraction');
                               
-                              // Update selling plan immediately after showing picker
-                              // Prices are already updated in updatePickerFromSealSubs()
+                              // Update selling plan and prices immediately after showing picker
+                              // Prices are updated in updatePickerFromSealSubs(), but also call updatePrices as fallback
                               setTimeout(function() {
                                 if (form && productData) {
-                                  console.log('[Subscription Picker] Updating selling plan immediately after data extraction');
+                                  console.log('[Subscription Picker] Updating selling plan and prices immediately after data extraction');
+                                  updatePrices(); // This will set compare_at_price if not already set
                                   updateSellingPlan();
                                   // Also update expandable state after data is loaded
                                   if (typeof updateExpandableState === 'function') {
@@ -1234,6 +1235,18 @@
                               oneTimeCompareEl.innerHTML = sealSubsOneTimeCompare.outerHTML;
                               oneTimeCompareEl.style.display = '';
                               console.log('[Subscription Picker] Updated one-time compare price from Seal Subscriptions');
+                            } else if (productData && productData.variants.length > 0) {
+                              // Fallback: use variant compare_at_price from productData
+                              const variant = productData.variants[0];
+                              if (variant.compare_at_price && variant.compare_at_price > variant.price) {
+                                const comparePriceCents = variant.compare_at_price;
+                                const comparePriceFormatted = formatMoney(comparePriceCents);
+                                oneTimeCompareEl.innerHTML = '<span class="money">' + comparePriceFormatted + '</span>';
+                                oneTimeCompareEl.style.display = '';
+                                console.log('[Subscription Picker] Updated one-time compare price from productData');
+                              } else {
+                                oneTimeCompareEl.style.display = 'none';
+                              }
                             }
                           }
                           
@@ -1426,7 +1439,8 @@
                           const currentIntervalSelect = picker.querySelector('[data-interval-select]');
 
                           // Update one-time price - try to get from Seal Subscriptions first
-                          if (oneTimePriceEl) {
+                          // Only update if not already set from Seal Subscriptions
+                          if (oneTimePriceEl && !oneTimePriceEl.querySelector('.money')) {
                             const sealSubsOneTimePrice = document.querySelector('.sls-one-time-price .sls-price .money');
                             if (sealSubsOneTimePrice) {
                               oneTimePriceEl.innerHTML = sealSubsOneTimePrice.outerHTML;
@@ -1436,6 +1450,7 @@
                               oneTimePriceEl.innerHTML = '<span class="money">' + priceFormatted + '</span>';
                             }
                           }
+                          // Update one-time compare price - always update for one-time purchase
                           if (oneTimeCompareEl) {
                             const sealSubsOneTimeCompare = document.querySelector('.sls-one-time-price .sls-original-price .money');
                             if (sealSubsOneTimeCompare) {
