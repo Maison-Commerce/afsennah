@@ -1553,19 +1553,19 @@
                           intervalSelect = picker.querySelector('[data-interval-select]');
                           const options = picker.querySelectorAll('.subscription-option');
 
-                          // Function to update expandable state
+                          // Function to update expandable state (only for opacity and margin, max-height handled by CSS)
                           function updateExpandableState() {
                             options.forEach(opt => {
                               const expandable = opt.querySelector('.subscription-option__expandable');
                               if (expandable) {
+                                // Remove any inline styles that might interfere
+                                expandable.style.maxHeight = '';
                                 if (opt.classList.contains('subscription-option--active')) {
-                                  // Show expandable content
-                                  expandable.style.maxHeight = expandable.scrollHeight + 'px';
+                                  // Show expandable content (max-height handled by CSS)
                                   expandable.style.opacity = '1';
                                   expandable.style.marginTop = '16px';
                                 } else {
-                                  // Hide expandable content
-                                  expandable.style.maxHeight = '0';
+                                  // Hide expandable content (max-height handled by CSS)
                                   expandable.style.opacity = '0';
                                   expandable.style.marginTop = '0';
                                 }
@@ -1576,27 +1576,10 @@
                           // Event listeners
                           console.log('[Subscription Picker] Setting up event listeners, radio buttons:', radioButtons.length);
                           
-                          // Set initial state - show expandable content for active option immediately
-                          const activeOption = picker.querySelector('.subscription-option--active');
-                          if (activeOption) {
-                            const expandable = activeOption.querySelector('.subscription-option__expandable');
-                            if (expandable) {
-                              // Set initial state without transition for immediate display
-                              expandable.style.transition = 'none';
-                              expandable.style.maxHeight = expandable.scrollHeight + 'px';
-                              expandable.style.opacity = '1';
-                              expandable.style.marginTop = '16px';
-                              // Restore transition after a brief moment
-                              setTimeout(function() {
-                                expandable.style.transition = '';
-                              }, 50);
-                            }
-                          }
-                          
-                          // Update all states with animation after initial setup
+                          // Set initial state - CSS handles max-height, we only set opacity and margin
                           setTimeout(function() {
                             updateExpandableState();
-                          }, 200);
+                          }, 100);
                           
                           radioButtons.forEach(radio => {
                             radio.addEventListener('change', function() {
