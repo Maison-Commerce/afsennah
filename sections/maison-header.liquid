@@ -96,7 +96,7 @@
             endfor
             assign cart_hash = cart_hash | remove_first: ',' | sha256
           -%}
-          <a href="{{ routes.cart_url }}" data-hash="{{ cart_hash }}" class="maison_commerce_maison_header__icon-link maison_commerce_maison_header__cart-link cart-link">
+          <a href="{{ routes.cart_url }}" data-hash="{{ cart_hash }}" class="maison_commerce_maison_header__icon-link maison_commerce_maison_header__cart-link cart-link" @click.prevent="openCartDrawer($event)">
             <div class="cart-link__icon">
               {% render 'icon-bag' %}
             </div>
@@ -1520,6 +1520,21 @@
             }, 500);
           }
         }
+      },
+
+      openCartDrawer(event) {
+        const cartDrawer = document.querySelector('.js-cart-drawer');
+        if (cartDrawer) {
+          if (cartDrawer.open && typeof cartDrawer.open === 'function') {
+            cartDrawer.open(event.target);
+          } else if (cartDrawer.dispatchEvent) {
+            // Fallback: dispatch event if open method doesn't exist
+            cartDrawer.dispatchEvent(new CustomEvent('dispatch:cart-drawer:open', {
+              bubbles: true,
+              detail: { opener: event.target }
+            }));
+          }
+        }
       }
     };
   }
@@ -1551,6 +1566,29 @@
                 searchInput.focus();
               }
             }, 500);
+          }
+        });
+      }
+
+      // Handle cart link click to open cart drawer
+      const cartDrawer = document.querySelector('.js-cart-drawer');
+      if (cartDrawer && theme && theme.settings && theme.settings.cartType === 'drawer') {
+        header.addEventListener('click', function(evt) {
+          const cartLink = evt.target.closest('.cart-link');
+          if (cartLink) {
+            evt.preventDefault();
+            evt.stopPropagation();
+            
+            // Open cart drawer
+            if (cartDrawer.open) {
+              cartDrawer.open(evt.target);
+            } else if (cartDrawer.dispatchEvent) {
+              // Fallback: dispatch event if open method doesn't exist
+              cartDrawer.dispatchEvent(new CustomEvent('dispatch:cart-drawer:open', {
+                bubbles: true,
+                detail: { opener: evt.target }
+              }));
+            }
           }
         });
       }
