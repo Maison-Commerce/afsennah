@@ -885,17 +885,18 @@
                           {% if show_most_popular and most_popular_text != blank %}
                             <div class="subscription-option__badge">{{ most_popular_text }}</div>
                           {% endif %}
-                          <div class="subscription-option__radio">
-                            <input type="radio" 
-                                   name="subscription_type_{{ block.id }}" 
-                                   id="subscription-{{ block.id }}" 
-                                   value="subscription" 
-                                   {% if default_selection == 'subscription' %}checked{% endif %}
-                                   class="subscription-radio">
-                          </div>
+                        
                           <div class="subscription-option__content">
                             <div class="subscription-option__content-header">
-                              <span class="subscription-radio-custom"></span>
+                                <div class="subscription-option__radio">
+                                  <input type="radio" 
+                                        name="subscription_type_{{ block.id }}" 
+                                        id="subscription-{{ block.id }}" 
+                                        value="subscription" 
+                                        {% if default_selection == 'subscription' %}checked{% endif %}
+                                        class="subscription-radio">
+                                    <span class="subscription-radio-custom"></span>
+                                </div>
                               <label class="subscription-option__label" for="subscription-{{ block.id }}" data-subscribe-label>
                                 {{ subscribe_label }}
                                 {% if block.settings.savings_badge_text != blank %}
