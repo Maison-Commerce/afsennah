@@ -807,21 +807,83 @@
           return;
         }
 
-        // Initialize Swiper
+        // Initialize Swiper with smooth endless scrolling
         reviewsSwiper = new Swiper('#quiz-calculating-reviews-{{ section.id }}', {
           direction: 'vertical',
           slidesPerView: 'auto',
           spaceBetween: 24,
           loop: true,
-          autoplay: {
-            delay: 3000,
-            disableOnInteraction: false,
-            pauseOnMouseEnter: true
-          },
-          speed: 500,
+          loopAdditionalSlides: 10,
+          loopedSlides: 10,
+          autoplay: false, // We'll use custom smooth scroll instead
+          speed: 0,
           allowTouchMove: false,
-          grabCursor: false
+          grabCursor: false,
+          freeMode: false,
+          effect: 'slide',
+          watchSlidesProgress: true,
+          watchSlidesVisibility: true
         });
+
+        // Smooth continuous endless scrolling
+        let smoothScrollAnimation = null;
+        let isScrolling = false;
+        let isPaused = false;
+        
+        function startSmoothScroll() {
+          if (isScrolling || !reviewsSwiper || !reviewsSwiper.initialized) return;
+          
+          isScrolling = true;
+          const scrollSpeed = 0.5; // pixels per frame - adjust for speed
+          
+          function animate() {
+            if (!reviewsSwiper || !reviewsSwiper.initialized || !reviewsSwiper.el) {
+              isScrolling = false;
+              return;
+            }
+            
+            if (!isPaused) {
+              const wrapper = reviewsSwiper.wrapperEl;
+              if (wrapper) {
+                const currentTranslate = reviewsSwiper.getTranslate();
+                const maxTranslate = reviewsSwiper.maxTranslate();
+                const minTranslate = reviewsSwiper.minTranslate();
+                
+                let newTranslate = currentTranslate - scrollSpeed;
+                
+                // Seamless loop - reset to top when reaching bottom
+                if (newTranslate <= maxTranslate) {
+                  newTranslate = minTranslate;
+                }
+                
+                reviewsSwiper.setTranslate(newTranslate);
+              }
+            }
+            
+            smoothScrollAnimation = requestAnimationFrame(animate);
+          }
+          
+          smoothScrollAnimation = requestAnimationFrame(animate);
+        }
+        
+        // Start smooth scrolling after initialization
+        setTimeout(() => {
+          startSmoothScroll();
+        }, 500);
+        
+        // Pause/resume on hover
+        const swiperContainer = document.getElementById('quiz-calculating-reviews-{{ section.id }}');
+        const reviewsColumn = calcSection.querySelector('.quiz-calculating-reviews-column');
+        
+        if (swiperContainer && reviewsColumn) {
+          reviewsColumn.addEventListener('mouseenter', () => {
+            isPaused = true;
+          });
+          
+          reviewsColumn.addEventListener('mouseleave', () => {
+            isPaused = false;
+          });
+        }
 
         swiperInitialized = true;
         console.log('[Swiper] Reviews Swiper initialized');
