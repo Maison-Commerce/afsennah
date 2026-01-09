@@ -1145,6 +1145,7 @@
         align-items: center;
         gap: 8px;
         margin-top: 0;
+        font-family: 'Avenir Next', sans-serif;
     }
 
     .cart-item-price-original {
