@@ -856,7 +856,7 @@
       "info": "Amount in dollars (e.g., 100 for $100)"
     },
     {
-      "type": "text",
+      "type": "inline_richtext",
       "id": "free_shipping_label",
       "label": "Free shipping label",
       "default": "Free shipping"
@@ -905,26 +905,26 @@
     },
     {
       "visible_if": "{{ section.settings.enable_tiered_rewards }}",
-      "type": "text",
+      "type": "richtext",
       "id": "banner_text",
       "label": "Banner text (before achievement)",
-      "default": "Spend [AMOUNT] more to get Free [LABEL]!",
+      "default": "<p>Spend [AMOUNT] more to get Free [LABEL]!</p>",
       "info": "Use [AMOUNT] for amount and [LABEL] for next tier label"
     },
     {
       "visible_if": "{{ section.settings.enable_tiered_rewards }}",
-      "type": "text",
+      "type": "richtext",
       "id": "banner_text_achieved",
       "label": "Banner text (after free shipping)",
-      "default": "Free shipping added! Spend [AMOUNT] more to get Free [LABEL]!",
+      "default": "<p>Free shipping added! Spend [AMOUNT] more to get Free [LABEL]!</p>",
       "info": "Use [AMOUNT] for amount and [LABEL] for next tier label"
     },
     {
       "visible_if": "{{ section.settings.enable_tiered_rewards }}",
-      "type": "text",
+      "type": "richtext",
       "id": "banner_text_all_achieved",
       "label": "Banner text (all achieved)",
-      "default": "All rewards unlocked!"
+      "default": "<p>All rewards unlocked!</p>"
     },
     {
       "visible_if": "{{ section.settings.enable_tiered_rewards }}",
@@ -941,7 +941,7 @@
     },
     {
       "visible_if": "{{ section.settings.enable_tiered_rewards }}",
-      "type": "text",
+      "type": "inline_richtext",
       "id": "gift_tier_1_label",
       "label": "Gift tier 1 label",
       "default": "Mulberry Silk"
@@ -967,7 +967,7 @@
     },
     {
       "visible_if": "{{ section.settings.enable_tiered_rewards }}",
-      "type": "text",
+      "type": "inline_richtext",
       "id": "gift_tier_2_label",
       "label": "Gift tier 2 label",
       "default": "Hair Growth oil (50ml)"
@@ -993,7 +993,7 @@
     },
     {
       "visible_if": "{{ section.settings.enable_tiered_rewards }}",
-      "type": "text",
+      "type": "inline_richtext",
       "id": "gift_tier_3_label",
       "label": "Gift tier 3 label",
       "default": "Microneedle Scalp Roller"
