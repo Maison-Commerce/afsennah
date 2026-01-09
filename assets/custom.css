@@ -2526,3 +2526,12 @@ cart-drawer .cart-upsell-product {
 .buy-buttons-row.block.mt-12 {
     margin-top: 12px;
 }
+
+.template-product .product-title {
+    font-family: "Vanilla RavioliDemo";
+    font-weight: 400;
+    font-size: 32px;
+    line-height: 130%;
+    letter-spacing: 0%;
+
+}
