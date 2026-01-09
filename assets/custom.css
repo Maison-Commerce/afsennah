@@ -2478,6 +2478,9 @@ cart-drawer .cart-upsell-product {
     .video-slide-title {
         font-size: 18px;
     }
+    .buy-buttons-main-quiz-button {
+        display: flex !important;
+    }
 }
 
 
