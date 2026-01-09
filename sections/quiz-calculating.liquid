@@ -32,38 +32,41 @@
       <div class="quiz-calculating-reviews-column">
         <div class="quiz-calculating-reviews-container-wrap swiper" id="quiz-calculating-reviews-{{ section.id }}">
           <div class="quiz-calculating-reviews-container swiper-wrapper">
-            {% for block in section.blocks %}
-              <div class="quiz-calculating-review-card swiper-slide" {{ block.shopify_attributes }}>
-                <div class="quiz-calculating-review-content">
-                  <div class="quiz-calculating-review-stars">
-                    {% for i in (1..5) %}
-                      <svg width="16" height="16" viewBox="0 0 20 20" fill="none">
-                        <path d="M10 1.66669L12.575 6.88335L18.3333 7.72502L14.1667 11.7834L15.15 17.5167L10 14.8084L4.85 17.5167L5.83333 11.7834L1.66667 7.72502L7.425 6.88335L10 1.66669Z" fill="#E98C36" stroke="#E98C36" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            {% comment %} Duplicate reviews multiple times for seamless infinite loop {% endcomment %}
+            {% for i in (1..5) %}
+              {% for block in section.blocks %}
+                <div class="quiz-calculating-review-card swiper-slide" {% if i == 1 %}{{ block.shopify_attributes }}{% endif %}>
+                  <div class="quiz-calculating-review-content">
+                    <div class="quiz-calculating-review-stars">
+                      {% for j in (1..5) %}
+                        <svg width="16" height="16" viewBox="0 0 20 20" fill="none">
+                          <path d="M10 1.66669L12.575 6.88335L18.3333 7.72502L14.1667 11.7834L15.15 17.5167L10 14.8084L4.85 17.5167L5.83333 11.7834L1.66667 7.72502L7.425 6.88335L10 1.66669Z" fill="#E98C36" stroke="#E98C36" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                      {% endfor %}
+                    </div>
+                    <div class="quiz-calculating-review-text">{{ block.settings.review_text }}</div>
+                    <div class="quiz-calculating-review-author">
+                      <span class="quiz-calculating-review-author-name">{{ block.settings.author_name }}</span>
+                      <svg width="4" height="4" viewBox="0 0 4 4" fill="none" class="quiz-calculating-review-dot">
+                        <circle cx="2" cy="2" r="2" fill="#2C2926"/>
                       </svg>
-                    {% endfor %}
-                  </div>
-                  <div class="quiz-calculating-review-text">{{ block.settings.review_text }}</div>
-                  <div class="quiz-calculating-review-author">
-                    <span class="quiz-calculating-review-author-name">{{ block.settings.author_name }}</span>
-                    <svg width="4" height="4" viewBox="0 0 4 4" fill="none" class="quiz-calculating-review-dot">
-                      <circle cx="2" cy="2" r="2" fill="#2C2926"/>
-                    </svg>
-                    <div class="quiz-calculating-review-verified">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
-                        <g clip-path="url(#clip0_10099_17521{{ forloop.index }})">
-                          <path d="M15.1466 6.89999L13.9199 5.91332C13.8216 5.83481 13.7453 5.73209 13.6985 5.61523C13.6518 5.49836 13.6362 5.37136 13.6533 5.24666L13.8199 3.68666C13.8431 3.47937 13.8194 3.26953 13.7506 3.07262C13.6819 2.87571 13.5698 2.69675 13.4226 2.54895C13.2754 2.40114 13.097 2.28826 12.9003 2.21864C12.7037 2.14901 12.494 2.12441 12.2866 2.14666L10.7199 2.31332C10.5952 2.33042 10.4682 2.31483 10.3514 2.26808C10.2345 2.22134 10.1318 2.14504 10.0533 2.04666L9.08661 0.839991C8.95144 0.684533 8.78449 0.559886 8.59702 0.474468C8.40956 0.38905 8.20595 0.344849 7.99995 0.344849C7.79394 0.344849 7.59033 0.38905 7.40287 0.474468C7.2154 0.559886 7.04845 0.684533 6.91328 0.839991L5.92661 2.06666C5.8481 2.16504 5.74538 2.24134 5.62852 2.28808C5.51165 2.33483 5.38465 2.35042 5.25995 2.33332L3.71328 2.16666C3.50589 2.14441 3.29616 2.16901 3.09955 2.23864C2.90294 2.30826 2.72447 2.42114 2.5773 2.56895C2.43014 2.71675 2.31804 2.89571 2.24926 3.09262C2.18049 3.28953 2.1568 3.49937 2.17995 3.70666L2.34661 5.26666C2.36371 5.39136 2.34812 5.51836 2.30137 5.63523C2.25463 5.75209 2.17833 5.85481 2.07995 5.93332L0.853279 6.89999C0.690594 7.03055 0.5593 7.19597 0.469084 7.38405C0.378867 7.57213 0.332031 7.77806 0.332031 7.98666C0.332031 8.19525 0.378867 8.40119 0.469084 8.58927C0.5593 8.77734 0.690594 8.94276 0.853279 9.07332L2.07995 10.06C2.17782 10.1389 2.25375 10.2417 2.30045 10.3585C2.34715 10.4752 2.36305 10.602 2.34661 10.7267L2.17995 12.2933C2.15684 12.5002 2.18082 12.7096 2.25009 12.9058C2.31936 13.1021 2.43212 13.2801 2.57995 13.4267C2.72435 13.5774 2.90214 13.6921 3.09899 13.7616C3.29584 13.8311 3.50625 13.8534 3.71328 13.8267L5.27995 13.66C5.40465 13.6429 5.53165 13.6585 5.64852 13.7052C5.76538 13.752 5.8681 13.8283 5.94661 13.9267L6.93328 15.1533C7.06384 15.316 7.22926 15.4473 7.41734 15.5375C7.60542 15.6277 7.81135 15.6746 8.01995 15.6746C8.22854 15.6746 8.43448 15.6277 8.62255 15.5375C8.81063 15.4473 8.97605 15.316 9.10661 15.1533L10.0933 13.9267C10.1718 13.8283 10.2745 13.752 10.3914 13.7052C10.5082 13.6585 10.6352 13.6429 10.7599 13.66L12.3266 13.8267C12.5336 13.8534 12.7441 13.8311 12.9409 13.7616C13.1378 13.6921 13.3155 13.5774 13.4599 13.4267C13.6078 13.2801 13.7205 13.1021 13.7898 12.9058C13.8591 12.7096 13.8831 12.5002 13.8599 12.2933L13.6933 10.7267C13.6768 10.602 13.6927 10.4752 13.7394 10.3585C13.7861 10.2417 13.8621 10.1389 13.9599 10.06L15.1866 9.07332C15.3493 8.94276 15.4806 8.77734 15.5708 8.58927C15.661 8.40119 15.7079 8.19525 15.7079 7.98666C15.7079 7.77806 15.661 7.57213 15.5708 7.38405C15.4806 7.19597 15.3493 7.03055 15.1866 6.89999H15.1466ZM8.26661 10.0333C8.16388 10.167 8.03399 10.2774 7.88549 10.3573C7.73699 10.4371 7.57325 10.4846 7.40507 10.4966C7.23689 10.5085 7.06808 10.4847 6.90977 10.4267C6.75146 10.3687 6.60724 10.2778 6.48661 10.16L4.85995 8.53332C4.79779 8.47117 4.74848 8.39737 4.71484 8.31616C4.6812 8.23494 4.66388 8.1479 4.66388 8.05999C4.66388 7.88246 4.73441 7.71219 4.85995 7.58666C4.98548 7.46112 5.15574 7.3906 5.33328 7.3906C5.51081 7.3906 5.68108 7.46112 5.80661 7.58666L7.33328 9.08666L9.93995 5.61332C10.046 5.47188 10.204 5.37836 10.379 5.35336C10.554 5.32835 10.7318 5.3739 10.8733 5.47999C11.0147 5.58608 11.1082 5.74401 11.1332 5.91904C11.1583 6.09408 11.1127 6.27188 11.0066 6.41332L8.26661 10.0333Z" fill="#1A365D"/>
-                        </g>
-                        <defs>
-                          <clipPath id="clip0_10099_17521{{ forloop.index }}">
-                            <rect width="16" height="16" fill="white"/>
-                          </clipPath>
-                        </defs>
-                      </svg>
-                      <span class="quiz-calculating-review-verified-text">Verified Buyer</span>
+                      <div class="quiz-calculating-review-verified">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+                          <g clip-path="url(#clip0_10099_17521{{ forloop.index }}_{{ i }})">
+                            <path d="M15.1466 6.89999L13.9199 5.91332C13.8216 5.83481 13.7453 5.73209 13.6985 5.61523C13.6518 5.49836 13.6362 5.37136 13.6533 5.24666L13.8199 3.68666C13.8431 3.47937 13.8194 3.26953 13.7506 3.07262C13.6819 2.87571 13.5698 2.69675 13.4226 2.54895C13.2754 2.40114 13.097 2.28826 12.9003 2.21864C12.7037 2.14901 12.494 2.12441 12.2866 2.14666L10.7199 2.31332C10.5952 2.33042 10.4682 2.31483 10.3514 2.26808C10.2345 2.22134 10.1318 2.14504 10.0533 2.04666L9.08661 0.839991C8.95144 0.684533 8.78449 0.559886 8.59702 0.474468C8.40956 0.38905 8.20595 0.344849 7.99995 0.344849C7.79394 0.344849 7.59033 0.38905 7.40287 0.474468C7.2154 0.559886 7.04845 0.684533 6.91328 0.839991L5.92661 2.06666C5.8481 2.16504 5.74538 2.24134 5.62852 2.28808C5.51165 2.33483 5.38465 2.35042 5.25995 2.33332L3.71328 2.16666C3.50589 2.14441 3.29616 2.16901 3.09955 2.23864C2.90294 2.30826 2.72447 2.42114 2.5773 2.56895C2.43014 2.71675 2.31804 2.89571 2.24926 3.09262C2.18049 3.28953 2.1568 3.49937 2.17995 3.70666L2.34661 5.26666C2.36371 5.39136 2.34812 5.51836 2.30137 5.63523C2.25463 5.75209 2.17833 5.85481 2.07995 5.93332L0.853279 6.89999C0.690594 7.03055 0.5593 7.19597 0.469084 7.38405C0.378867 7.57213 0.332031 7.77806 0.332031 7.98666C0.332031 8.19525 0.378867 8.40119 0.469084 8.58927C0.5593 8.77734 0.690594 8.94276 0.853279 9.07332L2.07995 10.06C2.17782 10.1389 2.25375 10.2417 2.30045 10.3585C2.34715 10.4752 2.36305 10.602 2.34661 10.7267L2.17995 12.2933C2.15684 12.5002 2.18082 12.7096 2.25009 12.9058C2.31936 13.1021 2.43212 13.2801 2.57995 13.4267C2.72435 13.5774 2.90214 13.6921 3.09899 13.7616C3.29584 13.8311 3.50625 13.8534 3.71328 13.8267L5.27995 13.66C5.40465 13.6429 5.53165 13.6585 5.64852 13.7052C5.76538 13.752 5.8681 13.8283 5.94661 13.9267L6.93328 15.1533C7.06384 15.316 7.22926 15.4473 7.41734 15.5375C7.60542 15.6277 7.81135 15.6746 8.01995 15.6746C8.22854 15.6746 8.43448 15.6277 8.62255 15.5375C8.81063 15.4473 8.97605 15.316 9.10661 15.1533L10.0933 13.9267C10.1718 13.8283 10.2745 13.752 10.3914 13.7052C10.5082 13.6585 10.6352 13.6429 10.7599 13.66L12.3266 13.8267C12.5336 13.8534 12.7441 13.8311 12.9409 13.7616C13.1378 13.6921 13.3155 13.5774 13.4599 13.4267C13.6078 13.2801 13.7205 13.1021 13.7898 12.9058C13.8591 12.7096 13.8831 12.5002 13.8599 12.2933L13.6933 10.7267C13.6768 10.602 13.6927 10.4752 13.7394 10.3585C13.7861 10.2417 13.8621 10.1389 13.9599 10.06L15.1866 9.07332C15.3493 8.94276 15.4806 8.77734 15.5708 8.58927C15.661 8.40119 15.7079 8.19525 15.7079 7.98666C15.7079 7.77806 15.661 7.57213 15.5708 7.38405C15.4806 7.19597 15.3493 7.03055 15.1866 6.89999H15.1466ZM8.26661 10.0333C8.16388 10.167 8.03399 10.2774 7.88549 10.3573C7.73699 10.4371 7.57325 10.4846 7.40507 10.4966C7.23689 10.5085 7.06808 10.4847 6.90977 10.4267C6.75146 10.3687 6.60724 10.2778 6.48661 10.16L4.85995 8.53332C4.79779 8.47117 4.74848 8.39737 4.71484 8.31616C4.6812 8.23494 4.66388 8.1479 4.66388 8.05999C4.66388 7.88246 4.73441 7.71219 4.85995 7.58666C4.98548 7.46112 5.15574 7.3906 5.33328 7.3906C5.51081 7.3906 5.68108 7.46112 5.80661 7.58666L7.33328 9.08666L9.93995 5.61332C10.046 5.47188 10.204 5.37836 10.379 5.35336C10.554 5.32835 10.7318 5.3739 10.8733 5.47999C11.0147 5.58608 11.1082 5.74401 11.1332 5.91904C11.1583 6.09408 11.1127 6.27188 11.0066 6.41332L8.26661 10.0333Z" fill="#1A365D"/>
+                          </g>
+                          <defs>
+                            <clipPath id="clip0_10099_17521{{ forloop.index }}_{{ i }}">
+                              <rect width="16" height="16" fill="white"/>
+                            </clipPath>
+                          </defs>
+                        </svg>
+                        <span class="quiz-calculating-review-verified-text">Verified Buyer</span>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
+              {% endfor %}
             {% endfor %}
           </div>
         </div>
@@ -813,10 +816,8 @@
           direction: 'vertical',
           slidesPerView: 'auto',
           spaceBetween: 24,
-          loop: true,
-          loopAdditionalSlides: 10,
-          loopedSlides: 10,
-          autoplay: false, // We'll use custom smooth scroll instead
+          loop: false, // Disable Swiper's loop, we'll handle it manually
+          autoplay: false,
           speed: 0,
           allowTouchMove: false,
           grabCursor: false,
@@ -830,12 +831,35 @@
         let smoothScrollAnimation = null;
         let isScrolling = false;
         let isPaused = false;
+        const scrollSpeed = 0.5; // pixels per frame - adjust for speed
+        let oneSetHeight = null; // Cache the height of one set of reviews
+        
+        function calculateOneSetHeight() {
+          if (oneSetHeight !== null) return oneSetHeight;
+          
+          const slides = reviewsSwiper.slides;
+          if (!slides || slides.length === 0) return 0;
+          
+          const originalBlockCount = {{ section.blocks.size }};
+          oneSetHeight = 0;
+          
+          // Sum height of first set of slides (original reviews)
+          for (let i = 0; i < originalBlockCount; i++) {
+            if (slides[i]) {
+              oneSetHeight += slides[i].offsetHeight + 24; // 24 is spaceBetween
+            }
+          }
+          
+          return oneSetHeight;
+        }
         
         function startSmoothScroll() {
           if (isScrolling || !reviewsSwiper || !reviewsSwiper.initialized) return;
           
           isScrolling = true;
-          const scrollSpeed = 0.5; // pixels per frame - adjust for speed
+          
+          // Calculate one set height once
+          const setHeight = calculateOneSetHeight();
           
           function animate() {
             if (!reviewsSwiper || !reviewsSwiper.initialized || !reviewsSwiper.el) {
@@ -845,16 +869,16 @@
             
             if (!isPaused) {
               const wrapper = reviewsSwiper.wrapperEl;
-              if (wrapper) {
-                const currentTranslate = reviewsSwiper.getTranslate();
-                const maxTranslate = reviewsSwiper.maxTranslate();
-                const minTranslate = reviewsSwiper.minTranslate();
+              if (wrapper && setHeight > 0) {
+                let currentTranslate = reviewsSwiper.getTranslate();
                 
+                // Calculate new translate position
                 let newTranslate = currentTranslate - scrollSpeed;
                 
-                // Seamless loop - reset to top when reaching bottom
-                if (newTranslate <= maxTranslate) {
-                  newTranslate = minTranslate;
+                // Seamless loop: when we've scrolled past one full set, reset seamlessly
+                // Since content is duplicated, resetting by one set height is invisible
+                if (newTranslate <= -setHeight) {
+                  newTranslate = newTranslate + setHeight;
                 }
                 
                 reviewsSwiper.setTranslate(newTranslate);
