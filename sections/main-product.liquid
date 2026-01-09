@@ -1426,14 +1426,88 @@
                         // Update product title from Seal Subscriptions (if available)
                         function updateProductTitleFromSealSubs() {
                           console.log('[Product Data] updateProductTitleFromSealSubs called');
-                          if (!sealSubsData || !sealSubsData.title) {
-                            console.log('[Product Data] No title in Seal Subscriptions data, keeping Shopify title');
-                            return; // Залишаємо title з Shopify
+                          console.log('[Product Data] sealSubsData:', sealSubsData);
+                          
+                          // Шукаємо title в різних місцях:
+                          // 1. В data-product JSON
+                          // 2. В HTML елементі sealsubs-target-element (всі атрибути)
+                          // 3. В дочірніх елементах sealsubs
+                          
+                          let productTitle = null;
+                          
+                          // Перевіряємо data-product JSON
+                          if (sealSubsData && sealSubsData.title) {
+                            productTitle = sealSubsData.title;
+                            console.log('[Product Data] Found title in Seal Subscriptions data:', productTitle);
+                          } else {
+                            // Шукаємо в HTML елементі sealsubs
+                            const sealSubsElement = document.querySelector('.sealsubs-target-element.sealsubs-full[data-product]');
+                            if (sealSubsElement) {
+                              console.log('[Product Data] Seal Subscriptions element found, checking for title...');
+                              console.log('[Product Data] Element attributes:', Array.from(sealSubsElement.attributes).map(a => a.name + '=' + a.value));
+                              
+                              // Перевіряємо всі можливі атрибути з title
+                              const possibleTitleAttrs = ['data-title', 'data-product-title', 'title', 'data-name'];
+                              for (const attr of possibleTitleAttrs) {
+                                const attrValue = sealSubsElement.getAttribute(attr);
+                                if (attrValue) {
+                                  productTitle = attrValue;
+                                  console.log('[Product Data] Found title in ' + attr + ' attribute:', productTitle);
+                                  break;
+                                }
+                              }
+                              
+                              // Якщо не знайдено в атрибутах, шукаємо в дочірніх елементах
+                              if (!productTitle) {
+                                const titleSelectors = [
+                                  'h1', 'h2', 'h3', 
+                                  '.product-title', 
+                                  '[data-product-title]',
+                                  '.sls-product-title',
+                                  '.product-name',
+                                  '[data-name]'
+                                ];
+                                
+                                for (const selector of titleSelectors) {
+                                  const titleInElement = sealSubsElement.querySelector(selector);
+                                  if (titleInElement) {
+                                    productTitle = titleInElement.textContent.trim();
+                                    console.log('[Product Data] Found title in sealsubs element using selector "' + selector + '":', productTitle);
+                                    break;
+                                  }
+                                }
+                              }
+                              
+                              // Якщо все ще не знайдено, перевіряємо весь текстовий вміст першого дочірнього елемента
+                              if (!productTitle) {
+                                const firstChild = sealSubsElement.firstElementChild;
+                                if (firstChild) {
+                                  const textContent = firstChild.textContent.trim();
+                                  if (textContent && textContent.length > 0 && textContent.length < 200) {
+                                    // Якщо текст виглядає як title (не дуже довгий)
+                                    productTitle = textContent;
+                                    console.log('[Product Data] Found title in first child text content:', productTitle);
+                                  }
+                                }
+                              }
+                            } else {
+                              console.log('[Product Data] Seal Subscriptions element not found');
+                            }
                           }
+                          
+                          // Якщо title не знайдено, залишаємо з Shopify
+                          if (!productTitle) {
+                            console.log('[Product Data] No title found in Seal Subscriptions, keeping Shopify title');
+                            return;
+                          }
+                          
+                          // Оновлюємо title на сторінці
                           const titleEl = document.querySelector('.product-title');
                           if (titleEl) {
-                            console.log('[Product Data] Updating product title from Seal Subscriptions');
-                            titleEl.textContent = sealSubsData.title;
+                            console.log('[Product Data] Updating product title from Seal Subscriptions:', productTitle);
+                            titleEl.textContent = productTitle;
+                          } else {
+                            console.warn('[Product Data] Product title element not found on page');
                           }
                         }
 
