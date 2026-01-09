@@ -52,13 +52,17 @@
        data-tier-1-threshold="{{ tier_1_threshold }}"
        data-tier-2-threshold="{{ tier_2_threshold }}"
        data-tier-3-threshold="{{ tier_3_threshold }}"
-       data-free-shipping-label="{{ section.settings.free_shipping_label | default: 'Free shipping' | escape }}"
-       data-tier-1-label="{{ section.settings.gift_tier_1_label | escape }}"
-       data-tier-2-label="{{ section.settings.gift_tier_2_label | escape }}"
-       data-tier-3-label="{{ section.settings.gift_tier_3_label | escape }}"
-       data-banner-text="{{ section.settings.banner_text | default: 'Spend [AMOUNT] more to get Free [LABEL]!' | escape }}"
-       data-banner-text-achieved="{{ section.settings.banner_text_achieved | default: 'Free shipping added! Spend [AMOUNT] more to get Free [LABEL]!' | escape }}"
-       data-banner-text-all-achieved="{{ section.settings.banner_text_all_achieved | default: 'All rewards unlocked!' | escape }}">
+       data-free-shipping-label="{{ section.settings.free_shipping_label | default: 'Free shipping' | strip_html }}"
+       data-free-shipping-label-html="{{ section.settings.free_shipping_label | default: 'Free shipping' }}"
+       data-tier-1-label="{{ section.settings.gift_tier_1_label | strip_html }}"
+       data-tier-1-label-html="{{ section.settings.gift_tier_1_label }}"
+       data-tier-2-label="{{ section.settings.gift_tier_2_label | strip_html }}"
+       data-tier-2-label-html="{{ section.settings.gift_tier_2_label }}"
+       data-tier-3-label="{{ section.settings.gift_tier_3_label | strip_html }}"
+       data-tier-3-label-html="{{ section.settings.gift_tier_3_label }}"
+       data-banner-text-html="{{ section.settings.banner_text | default: '<p>Spend [AMOUNT] more to get Free [LABEL]!</p>' }}"
+       data-banner-text-achieved-html="{{ section.settings.banner_text_achieved | default: '<p>Free shipping added! Spend [AMOUNT] more to get Free [LABEL]!</p>' }}"
+       data-banner-text-all-achieved-html="{{ section.settings.banner_text_all_achieved | default: '<p>All rewards unlocked!</p>' }}">
     
     <div class="tiered-rewards-bar__banner" style="display: none;">
       <span class="tiered-rewards-bar__banner-text"></span>
@@ -281,16 +285,22 @@
         const tier2Threshold = tier2ThresholdBase * currencyRate;
         const tier3Threshold = tier3ThresholdBase * currencyRate;
 
-        // Get labels
+        // Get labels (strip_html version for checking blank)
         const freeShippingLabel = tieredRewardsBar.getAttribute('data-free-shipping-label') || 'Free shipping';
         const tier1Label = tieredRewardsBar.getAttribute('data-tier-1-label') || '';
         const tier2Label = tieredRewardsBar.getAttribute('data-tier-2-label') || '';
         const tier3Label = tieredRewardsBar.getAttribute('data-tier-3-label') || '';
+        
+        // Get labels HTML version for substitution
+        const freeShippingLabelHtml = tieredRewardsBar.getAttribute('data-free-shipping-label-html') || 'Free shipping';
+        const tier1LabelHtml = tieredRewardsBar.getAttribute('data-tier-1-label-html') || '';
+        const tier2LabelHtml = tieredRewardsBar.getAttribute('data-tier-2-label-html') || '';
+        const tier3LabelHtml = tieredRewardsBar.getAttribute('data-tier-3-label-html') || '';
 
-        // Get banner texts
-        const bannerTextTemplate = tieredRewardsBar.getAttribute('data-banner-text') || 'Spend [AMOUNT] more to get Free [LABEL]!';
-        const bannerTextAchievedTemplate = tieredRewardsBar.getAttribute('data-banner-text-achieved') || 'Free shipping added! Spend [AMOUNT] more to get Free [LABEL]!';
-        const bannerTextAllAchieved = tieredRewardsBar.getAttribute('data-banner-text-all-achieved') || 'All rewards unlocked!';
+        // Get banner texts (HTML format)
+        const bannerTextTemplate = tieredRewardsBar.getAttribute('data-banner-text-html') || '<p>Spend [AMOUNT] more to get Free [LABEL]!</p>';
+        const bannerTextAchievedTemplate = tieredRewardsBar.getAttribute('data-banner-text-achieved-html') || '<p>Free shipping added! Spend [AMOUNT] more to get Free [LABEL]!</p>';
+        const bannerTextAllAchieved = tieredRewardsBar.getAttribute('data-banner-text-all-achieved-html') || '<p>All rewards unlocked!</p>';
 
         // Check which tiers are achieved
         const freeShippingAchieved = cartTotalInUserCurrency >= freeShippingThreshold;
@@ -311,7 +321,7 @@
 
         if (allTiersAchieved) {
           // All tiers achieved - show all achieved message
-          bannerText.textContent = bannerTextAllAchieved;
+          bannerText.innerHTML = bannerTextAllAchieved;
           banner.classList.add('tiered-rewards-bar__banner--all-achieved');
           banner.style.display = '';
           return;
@@ -322,19 +332,19 @@
         // Find next tier
         if (cartTotalInUserCurrency < freeShippingThreshold) {
           nextTierAmount = freeShippingThreshold - cartTotalInUserCurrency;
-          nextTierLabel = freeShippingLabel;
+          nextTierLabel = freeShippingLabelHtml;
           useAchievedText = false;
         } else if (tier1Label && cartTotalInUserCurrency < tier1Threshold) {
           nextTierAmount = tier1Threshold - cartTotalInUserCurrency;
-          nextTierLabel = tier1Label;
+          nextTierLabel = tier1LabelHtml;
           useAchievedText = true;
         } else if (tier2Label && cartTotalInUserCurrency < tier2Threshold) {
           nextTierAmount = tier2Threshold - cartTotalInUserCurrency;
-          nextTierLabel = tier2Label;
+          nextTierLabel = tier2LabelHtml;
           useAchievedText = true;
         } else if (tier3Label && cartTotalInUserCurrency < tier3Threshold) {
           nextTierAmount = tier3Threshold - cartTotalInUserCurrency;
-          nextTierLabel = tier3Label;
+          nextTierLabel = tier3LabelHtml;
           useAchievedText = true;
         }
 
@@ -345,7 +355,7 @@
             .replace(/\[AMOUNT\]/g, formatMoney(nextTierAmount))
             .replace(/\[LABEL\]/g, nextTierLabel);
           
-          bannerText.textContent = text;
+          bannerText.innerHTML = text;
           banner.style.display = '';
         } else {
           banner.style.display = 'none';
