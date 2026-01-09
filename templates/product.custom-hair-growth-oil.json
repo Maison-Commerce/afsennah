@@ -124,6 +124,61 @@
             "show_in_quickbuy": false
           }
         },
+        "richtext_cyRJhp": {
+          "type": "richtext",
+          "settings": {
+            "richtext": "<h3><strong>Why Custom-Made Hair Products Work Better</strong></h3><p>Because your hair isn’t “one-size-fits-all.”</p><p>Every scalp and strand has its own balance of oils, sensitivities, and growth needs which is why generic products often fall short. <br/><br/>Custom-made formulas are crafted specifically for <em>your</em> hair type, scalp condition, and goals. They deliver the exact nutrients your hair needs no unnecessary fillers, no harsh ingredients.</p><p>By addressing the <em>root cause</em> of your concerns, personalized products help restore balance faster, enhance strength and shine, and create long-lasting results that standard products simply can’t match.</p>",
+            "icon": "",
+            "icon_size": "small",
+            "enable_box": false,
+            "box_color": "#e0f4d5",
+            "show_in_quickbuy": false,
+            "desktop_background_color": "#fffef3",
+            "desktop_border_radius": 16,
+            "desktop_padding": 24,
+            "mobile_background_color": "#fffef3",
+            "mobile_border_radius": 16,
+            "mobile_padding": 24
+          }
+        },
+        "accordion_eCyiUV": {
+          "type": "accordion",
+          "settings": {
+            "title": "How to Use",
+            "icon": "",
+            "content": "<p>{{ product.metafields.custom.how_to_use | metafield_tag }}</p>",
+            "page": "",
+            "custom_liquid": "",
+            "open": false,
+            "show_in_quickbuy": false
+          }
+        },
+        "accordion_bjJGWh": {
+          "type": "accordion",
+          "settings": {
+            "title": "Ingredients",
+            "icon": "",
+            "content": "<p>{{ product.metafields.custom.ingredients | metafield_tag }}</p>",
+            "page": "",
+            "custom_liquid": "",
+            "open": false,
+            "show_in_quickbuy": false
+          }
+        },
+        "product_upsells_eVNWhn": {
+          "type": "product-upsells",
+          "settings": {
+            "title": "Try both and save big",
+            "subtitle": "No consultation required*",
+            "product_list": [
+              "custom-conditioner",
+              "e-gift-card",
+              "mulberry-pillowcase"
+            ],
+            "color_scheme": "default",
+            "show_in_quickbuy": false
+          }
+        },
         "video_slide_6kdLjD": {
           "type": "video_slide",
           "settings": {
@@ -214,61 +269,6 @@
             "border_radius_mobile": 8
           }
         },
-        "richtext_cyRJhp": {
-          "type": "richtext",
-          "settings": {
-            "richtext": "<h3><strong>Why Custom-Made Hair Products Work Better</strong></h3><p>Because your hair isn’t “one-size-fits-all.”</p><p>Every scalp and strand has its own balance of oils, sensitivities, and growth needs which is why generic products often fall short. <br/><br/>Custom-made formulas are crafted specifically for <em>your</em> hair type, scalp condition, and goals. They deliver the exact nutrients your hair needs no unnecessary fillers, no harsh ingredients.</p><p>By addressing the <em>root cause</em> of your concerns, personalized products help restore balance faster, enhance strength and shine, and create long-lasting results that standard products simply can’t match.</p>",
-            "icon": "",
-            "icon_size": "small",
-            "enable_box": false,
-            "box_color": "#e0f4d5",
-            "show_in_quickbuy": false,
-            "desktop_background_color": "#fffef3",
-            "desktop_border_radius": 16,
-            "desktop_padding": 24,
-            "mobile_background_color": "#fffef3",
-            "mobile_border_radius": 16,
-            "mobile_padding": 24
-          }
-        },
-        "accordion_eCyiUV": {
-          "type": "accordion",
-          "settings": {
-            "title": "How to Use",
-            "icon": "",
-            "content": "<p>{{ product.metafields.custom.how_to_use | metafield_tag }}</p>",
-            "page": "",
-            "custom_liquid": "",
-            "open": false,
-            "show_in_quickbuy": false
-          }
-        },
-        "accordion_bjJGWh": {
-          "type": "accordion",
-          "settings": {
-            "title": "Ingredients",
-            "icon": "",
-            "content": "<p>{{ product.metafields.custom.ingredients | metafield_tag }}</p>",
-            "page": "",
-            "custom_liquid": "",
-            "open": false,
-            "show_in_quickbuy": false
-          }
-        },
-        "product_upsells_eVNWhn": {
-          "type": "product-upsells",
-          "settings": {
-            "title": "Try both and save big",
-            "subtitle": "No consultation required*",
-            "product_list": [
-              "custom-conditioner",
-              "e-gift-card",
-              "mulberry-pillowcase"
-            ],
-            "color_scheme": "default",
-            "show_in_quickbuy": false
-          }
-        },
         "testimonial_under_gallery_yE3cQA": {
           "type": "testimonial_under_gallery",
           "settings": {
@@ -327,16 +327,16 @@
         "buy-buttons",
         "text_UT9ray",
         "divider_Cwfcya",
+        "richtext_cyRJhp",
+        "accordion_eCyiUV",
+        "accordion_bjJGWh",
+        "product_upsells_eVNWhn",
         "video_slide_6kdLjD",
         "video_slide_JjnLi8",
         "video_slide_JqjU8e",
         "video_slide_CYRENe",
         "video_slide_bCD4fx",
         "video_slide_n68zUW",
-        "richtext_cyRJhp",
-        "accordion_eCyiUV",
-        "accordion_bjJGWh",
-        "product_upsells_eVNWhn",
         "testimonial_under_gallery_yE3cQA",
         "loox_reviews_loox_snippets_widget_JQFkCB"
       ],
