@@ -1230,6 +1230,9 @@ video-section-play-button {
         width: 32px;
         height: 32px;
     }
+    .tiered-rewards-bar__marker-icon {
+        border-radius: 13px;
+    }
     .tiered-rewards-bar__marker-price {
         font-size: 12px;
         line-height: 12px;
