@@ -1447,6 +1447,16 @@ video-section-play-button {
     color: #2C2926;
     margin: 0;
 }
+.cart-item-upsells .opposing-items__left.product-info-label h2 {
+    font-family: "Neue Haas Grotesk Display Pro";
+    font-weight: 600;
+    font-style: 65 Medium;
+    font-size: 16px;
+    line-height: 150%;
+    letter-spacing: 0%;
+    vertical-align: middle;
+    color: #2C2926;
+}
 .opposing-items__left.product-info-label p {
     font-family: "Neue Haas Grotesk Display Pro";
     font-weight: 500;
