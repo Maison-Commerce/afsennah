@@ -69,7 +69,7 @@
         "body_color": "#2f3936bf",
         "feature_text_color": "#15130e",
         "primary_button_text": "Take Your Free Hair Quiz",
-        "primary_button_url": "#",
+        "primary_button_url": "shopify://pages/get-your-formula",
         "primary_button_bg_color": "#fbf7bd",
         "primary_button_font_size_desktop": 16,
         "primary_button_font_size_mobile": 14,
