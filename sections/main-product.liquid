@@ -968,9 +968,6 @@
 
                         let productData = null;
                         let sealSubsData = null;
-                        let sellingPlanInput = null;
-                        let form = null;
-                        let intervalSelect = null;
 
                         // Hide Seal Subscriptions block
                         function hideSealSubscriptions() {
@@ -1138,135 +1135,12 @@
                           }
                         }
 
-                        // Update selling plan input
-                        function updateSellingPlan() {
-                          if (!picker || !form) return;
-                          const selectedOption = picker.querySelector('.subscription-radio:checked');
-                          if (!selectedOption || !sellingPlanInput) return;
-
-                          const currentIntervalSelect = picker.querySelector('[data-interval-select]');
-                          if (selectedOption.value === 'subscription' && currentIntervalSelect) {
-                            const planId = currentIntervalSelect.options[currentIntervalSelect.selectedIndex].dataset.planId;
-                            sellingPlanInput.value = planId || '';
-                            
-                            // Also update Seal Subscriptions hidden input if it exists
-                            const sealSubsSellingPlanInput = form.querySelector('[data-sls-selling_plan]');
-                            if (sealSubsSellingPlanInput) {
-                              sealSubsSellingPlanInput.value = planId || '';
-                            }
-                          } else {
-                            sellingPlanInput.value = '';
-                            
-                            // Also update Seal Subscriptions hidden input
-                            const sealSubsSellingPlanInput = form.querySelector('[data-sls-selling_plan]');
-                            if (sealSubsSellingPlanInput) {
-                              sealSubsSellingPlanInput.value = '';
-                            }
-                          }
-                        }
-
-                        // Format money helper
-                        function formatMoney(cents) {
-                          if (typeof theme !== 'undefined' && theme.moneyFormat) {
-                            const amountPlaceholder = String.fromCharCode(123, 123) + 'amount' + String.fromCharCode(125, 125);
-                            return theme.moneyFormat.replace(amountPlaceholder, (cents / 100).toFixed(2));
-                          }
-                          const currencyCode = '{{ cart.currency.iso_code }}';
-                          const amount = (cents / 100).toFixed(2);
-                          if (currencyCode === 'EUR') {
-                            return amount.replace('.', ',') + ' ' + currencyCode;
-                          }
-                          return amount + ' ' + currencyCode;
-                        }
-
-                        // Update prices
-                        function updatePrices() {
-                          if (!form || !productData || !picker) return;
-                          const variantIdInput = form.querySelector('[name="id"]');
-                          if (!variantIdInput || !variantIdInput.value) return;
-                          
-                          const variantId = parseInt(variantIdInput.value);
-                          const variant = productData.variants.find(v => v.id === variantId);
-                          if (!variant) return;
-
-                          const selectedOption = picker.querySelector('.subscription-radio:checked');
-                          if (!selectedOption) return;
-
-                          const oneTimePriceEl = picker.querySelector('[data-one-time-price]');
-                          const oneTimeCompareEl = picker.querySelector('[data-one-time-compare]');
-                          const subscriptionPriceEl = picker.querySelector('[data-subscription-price]');
-                          const subscriptionCompareEl = picker.querySelector('[data-subscription-compare]');
-                          const currentIntervalSelect = picker.querySelector('[data-interval-select]');
-
-                          // Update one-time price - try to get from Seal Subscriptions first
-                          if (oneTimePriceEl) {
-                            const sealSubsOneTimePrice = document.querySelector('.sls-one-time-price .sls-price .money');
-                            if (sealSubsOneTimePrice) {
-                              oneTimePriceEl.innerHTML = sealSubsOneTimePrice.outerHTML;
-                            } else {
-                              const priceCents = variant.price;
-                              const priceFormatted = formatMoney(priceCents);
-                              oneTimePriceEl.innerHTML = '<span class="money">' + priceFormatted + '</span>';
-                            }
-                          }
-                          if (oneTimeCompareEl) {
-                            const sealSubsOneTimeCompare = document.querySelector('.sls-one-time-price .sls-original-price .money');
-                            if (sealSubsOneTimeCompare) {
-                              oneTimeCompareEl.innerHTML = sealSubsOneTimeCompare.outerHTML;
-                              oneTimeCompareEl.style.display = '';
-                            } else if (variant.compare_at_price && variant.compare_at_price > variant.price) {
-                              const comparePriceCents = variant.compare_at_price;
-                              const comparePriceFormatted = formatMoney(comparePriceCents);
-                              oneTimeCompareEl.innerHTML = '<span class="money">' + comparePriceFormatted + '</span>';
-                              oneTimeCompareEl.style.display = '';
-                            } else {
-                              oneTimeCompareEl.style.display = 'none';
-                            }
-                          }
-
-                          // Update subscription price - try to get from Seal Subscriptions first
-                          if (selectedOption.value === 'subscription' && currentIntervalSelect && subscriptionPriceEl) {
-                            const planId = parseInt(currentIntervalSelect.options[currentIntervalSelect.selectedIndex].dataset.planId);
-                            
-                            // Try to get price from Seal Subscriptions
-                            const sealSubsSubPrice = document.querySelector('.sls-selling-plan-group-price .sls-price .money');
-                            if (sealSubsSubPrice) {
-                              subscriptionPriceEl.innerHTML = sealSubsSubPrice.outerHTML;
-                            } else {
-                              const allocation = variant.selling_plan_allocations.find(a => a.selling_plan_id === planId);
-                              if (allocation) {
-                                const subPriceCents = allocation.price;
-                                const subPriceFormatted = formatMoney(subPriceCents);
-                                subscriptionPriceEl.innerHTML = '<span class="money">' + subPriceFormatted + '</span>';
-                              }
-                            }
-
-                            if (subscriptionCompareEl) {
-                              const sealSubsSubCompare = document.querySelector('.sls-selling-plan-group-price .sls-original-price .money');
-                              if (sealSubsSubCompare) {
-                                subscriptionCompareEl.innerHTML = sealSubsSubCompare.outerHTML;
-                                subscriptionCompareEl.style.display = '';
-                              } else {
-                                const allocation = variant.selling_plan_allocations.find(a => a.selling_plan_id === planId);
-                                if (allocation && allocation.compare_at_price && allocation.compare_at_price > allocation.price) {
-                                  const subComparePriceCents = allocation.compare_at_price;
-                                  const subComparePriceFormatted = formatMoney(subComparePriceCents);
-                                  subscriptionCompareEl.innerHTML = '<span class="money">' + subComparePriceFormatted + '</span>';
-                                  subscriptionCompareEl.style.display = '';
-                                } else {
-                                  subscriptionCompareEl.style.display = 'none';
-                                }
-                              }
-                            }
-                          }
-                        }
-
                         function initSubscriptionPicker() {
                           if (!picker || !picker.parentNode) {
                             return;
                           }
 
-                          form = document.getElementById(formId);
+                          const form = document.getElementById(formId);
                           if (!form) {
                             setTimeout(initSubscriptionPicker, 100);
                             return;
@@ -1300,27 +1174,25 @@
                                 {% endfor %}
                               ],
                               selling_plans: [
-                                {%- if first_group and first_group.selling_plans -%}
-                                  {% for plan in first_group.selling_plans %}
-                                  {
-                                    id: {{ plan.id }},
-                                    name: {{ plan.name | json }},
-                                    options: [
-                                      {% for option in plan.options %}
-                                      {
-                                        name: {{ option.name | json }},
-                                        value: {{ option.value | json }}
-                                      }{% unless forloop.last %},{% endunless %}
-                                      {% endfor %}
-                                    ]
-                                  }{% unless forloop.last %},{% endunless %}
-                                  {% endfor %}
-                                {%- endif -%}
+                                {% for plan in first_group.selling_plans %}
+                                {
+                                  id: {{ plan.id }},
+                                  name: {{ plan.name | json }},
+                                  options: [
+                                    {% for option in plan.options %}
+                                    {
+                                      name: {{ option.name | json }},
+                                      value: {{ option.value | json }}
+                                    }{% unless forloop.last %},{% endunless %}
+                                    {% endfor %}
+                                  ]
+                                }{% unless forloop.last %},{% endunless %}
+                                {% endfor %}
                               ]
                             };
                           }
 
-                          sellingPlanInput = form.querySelector('[name="selling_plan"]');
+                          let sellingPlanInput = form.querySelector('[name="selling_plan"]');
                           if (!sellingPlanInput) {
                             sellingPlanInput = document.createElement('input');
                             sellingPlanInput.type = 'hidden';
@@ -1330,8 +1202,124 @@
                           }
                           
                           const radioButtons = picker.querySelectorAll('.subscription-radio');
-                          intervalSelect = picker.querySelector('[data-interval-select]');
+                          const intervalSelect = picker.querySelector('[data-interval-select]');
                           const options = picker.querySelectorAll('.subscription-option');
+
+                          function updateSellingPlan() {
+                            const selectedOption = picker.querySelector('.subscription-radio:checked');
+                            if (!selectedOption || !sellingPlanInput) return;
+
+                            if (selectedOption.value === 'subscription' && intervalSelect) {
+                              const planId = intervalSelect.options[intervalSelect.selectedIndex].dataset.planId;
+                              sellingPlanInput.value = planId || '';
+                              
+                              // Also update Seal Subscriptions hidden input if it exists
+                              const sealSubsSellingPlanInput = form.querySelector('[data-sls-selling_plan]');
+                              if (sealSubsSellingPlanInput) {
+                                sealSubsSellingPlanInput.value = planId || '';
+                              }
+                            } else {
+                              sellingPlanInput.value = '';
+                              
+                              // Also update Seal Subscriptions hidden input
+                              const sealSubsSellingPlanInput = form.querySelector('[data-sls-selling_plan]');
+                              if (sealSubsSellingPlanInput) {
+                                sealSubsSellingPlanInput.value = '';
+                              }
+                            }
+                          }
+
+                          function updatePrices() {
+                            if (!form || !productData) return;
+                            const variantIdInput = form.querySelector('[name="id"]');
+                            if (!variantIdInput || !variantIdInput.value) return;
+                            
+                            const variantId = parseInt(variantIdInput.value);
+                            const variant = productData.variants.find(v => v.id === variantId);
+                            if (!variant) return;
+
+                            const selectedOption = picker.querySelector('.subscription-radio:checked');
+                            if (!selectedOption) return;
+
+                            const oneTimePriceEl = picker.querySelector('[data-one-time-price]');
+                            const oneTimeCompareEl = picker.querySelector('[data-one-time-compare]');
+                            const subscriptionPriceEl = picker.querySelector('[data-subscription-price]');
+                            const subscriptionCompareEl = picker.querySelector('[data-subscription-compare]');
+
+                            // Update one-time price - try to get from Seal Subscriptions first
+                            if (oneTimePriceEl) {
+                              const sealSubsOneTimePrice = document.querySelector('.sls-one-time-price .sls-price .money');
+                              if (sealSubsOneTimePrice) {
+                                oneTimePriceEl.innerHTML = sealSubsOneTimePrice.outerHTML;
+                              } else {
+                                const priceCents = variant.price;
+                                const priceFormatted = formatMoney(priceCents);
+                                oneTimePriceEl.innerHTML = '<span class="money">' + priceFormatted + '</span>';
+                              }
+                            }
+                            if (oneTimeCompareEl) {
+                              const sealSubsOneTimeCompare = document.querySelector('.sls-one-time-price .sls-original-price .money');
+                              if (sealSubsOneTimeCompare) {
+                                oneTimeCompareEl.innerHTML = sealSubsOneTimeCompare.outerHTML;
+                                oneTimeCompareEl.style.display = '';
+                              } else if (variant.compare_at_price && variant.compare_at_price > variant.price) {
+                                const comparePriceCents = variant.compare_at_price;
+                                const comparePriceFormatted = formatMoney(comparePriceCents);
+                                oneTimeCompareEl.innerHTML = '<span class="money">' + comparePriceFormatted + '</span>';
+                                oneTimeCompareEl.style.display = '';
+                              } else {
+                                oneTimeCompareEl.style.display = 'none';
+                              }
+                            }
+
+                            // Update subscription price - try to get from Seal Subscriptions first
+                            if (selectedOption.value === 'subscription' && intervalSelect && subscriptionPriceEl) {
+                              const planId = parseInt(intervalSelect.options[intervalSelect.selectedIndex].dataset.planId);
+                              
+                              // Try to get price from Seal Subscriptions
+                              const sealSubsSubPrice = document.querySelector('.sls-selling-plan-group-price .sls-price .money');
+                              if (sealSubsSubPrice) {
+                                subscriptionPriceEl.innerHTML = sealSubsSubPrice.outerHTML;
+                              } else {
+                                const allocation = variant.selling_plan_allocations.find(a => a.selling_plan_id === planId);
+                                if (allocation) {
+                                  const subPriceCents = allocation.price;
+                                  const subPriceFormatted = formatMoney(subPriceCents);
+                                  subscriptionPriceEl.innerHTML = '<span class="money">' + subPriceFormatted + '</span>';
+                                }
+                              }
+
+                              if (subscriptionCompareEl) {
+                                const sealSubsSubCompare = document.querySelector('.sls-selling-plan-group-price .sls-original-price .money');
+                                if (sealSubsSubCompare) {
+                                  subscriptionCompareEl.innerHTML = sealSubsSubCompare.outerHTML;
+                                  subscriptionCompareEl.style.display = '';
+                                } else {
+                                  const allocation = variant.selling_plan_allocations.find(a => a.selling_plan_id === planId);
+                                  if (allocation && allocation.compare_at_price && allocation.compare_at_price > allocation.price) {
+                                    const subComparePriceCents = allocation.compare_at_price;
+                                    const subComparePriceFormatted = formatMoney(subComparePriceCents);
+                                    subscriptionCompareEl.innerHTML = '<span class="money">' + subComparePriceFormatted + '</span>';
+                                    subscriptionCompareEl.style.display = '';
+                                  } else {
+                                    subscriptionCompareEl.style.display = 'none';
+                                  }
+                                }
+                              }
+                            }
+                          }
+
+                          function formatMoney(cents) {
+                            if (typeof theme !== 'undefined' && theme.moneyFormat) {
+                              return theme.moneyFormat.replace('{{amount}}', (cents / 100).toFixed(2));
+                            }
+                            const currencyCode = '{{ cart.currency.iso_code }}';
+                            const amount = (cents / 100).toFixed(2);
+                            if (currencyCode === 'EUR') {
+                              return amount.replace('.', ',') + ' ' + currencyCode;
+                            }
+                            return amount + ' ' + currencyCode;
+                          }
 
                           // Event listeners
                           radioButtons.forEach(radio => {
@@ -1391,6 +1379,11 @@
                             });
                             observer.observe(variantInput, { attributes: true, attributeFilter: ['value'] });
                           }
+
+                          // Initialize
+                          updateSellingPlan();
+                          updatePrices();
+                        }
 
                           // Initialize
                           updateSellingPlan();
@@ -1463,8 +1456,8 @@
                             const sealSubsElement = document.querySelector('.sealsubs-target-element.sealsubs-full[data-product]');
                             if (sealSubsElement) {
                               if (extractDataFromSealSubs()) {
-                                const currentForm = document.getElementById(formId);
-                                if (currentForm) {
+                                const form = document.getElementById(formId);
+                                if (form) {
                                   initSubscriptionPicker();
                                   clearInterval(hideInterval);
                                 }
@@ -1474,9 +1467,7 @@
                         }, 500);
 
                         // Stop interval after 10 seconds
-                        setTimeout(function() {
-                          clearInterval(hideInterval);
-                        }, 10000);
+                        setTimeout(() => clearInterval(hideInterval), 10000);
                       })();
                     </script>
 
