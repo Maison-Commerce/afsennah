@@ -2456,3 +2456,8 @@ cart-drawer .cart-upsell-product {
 .tiered-rewards-bar__marker-image.active .tiered-rewards-bar__marker-price svg {
     display: flex;
 }
+@media (max-width: 768px) {
+    .product-container.product-container--modern.gallery .testimonial-under-gallery {
+        display: none;
+    }
+}
