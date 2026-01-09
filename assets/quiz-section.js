@@ -374,11 +374,6 @@
             setTimeout(() => step.classList.add('active'), 50);
 
             const backBtns = step.querySelectorAll('[data-back-btn]');
-            backBtns.forEach(backBtn => {
-                if (backBtn) {
-                    backBtn.style.display = this.currentStepIndex > 0 ? 'flex' : 'none';
-                }
-            });
 
             const stepIndicator = step.querySelector('[data-step-indicator]');
             const visibleSteps = this.getVisibleSteps();
