@@ -2416,4 +2416,5 @@ cart-drawer .cart-upsell-product {
     letter-spacing: 0%;
     text-decoration: line-through;
     color: #98A2B3;
+    margin-right: 8px;
 }
