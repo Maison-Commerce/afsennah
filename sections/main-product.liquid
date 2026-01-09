@@ -829,6 +829,7 @@
 
                   {%- comment -%} Custom Subscription Picker {%- endcomment -%}
                   {%- if product.selling_plan_groups.size > 0 and block.settings.enable_subscription_picker -%}
+                    <div class="custom-subscription-picker" data-block-id="{{ block.id }}" data-form-id="{{ product_form_id }}" style="display: none;">
                     {%- liquid
                       assign first_group = product.selling_plan_groups.first
                       assign default_selling_plan = first_group.selling_plans.first
@@ -839,7 +840,6 @@
                       assign show_most_popular = block.settings.show_most_popular
                       assign default_selection = block.settings.default_selection | default: 'subscription'
                     -%}
-                    <div class="custom-subscription-picker" data-block-id="{{ block.id }}" data-form-id="{{ product_form_id }}">
                       {% if subscription_title != blank %}
                         <h2 class="subscription-picker__title">{{ subscription_title }}</h2>
                       {% endif %}
@@ -1189,23 +1189,39 @@
                           if (selectedOption.value === 'subscription' && currentIntervalSelect) {
                             const planId = currentIntervalSelect.options[currentIntervalSelect.selectedIndex].dataset.planId;
                             console.log('[Subscription Picker] Setting selling plan ID:', planId);
-                            sellingPlanInput.value = planId || '';
+                            if (sellingPlanInput) {
+                              sellingPlanInput.value = planId || '';
+                              console.log('[Subscription Picker] sellingPlanInput.value set to:', sellingPlanInput.value);
+                            } else {
+                              console.error('[Subscription Picker] sellingPlanInput is null!');
+                            }
                             
-                            // Also update Seal Subscriptions hidden input if it exists
+                            // Also update Seal Subscriptions hidden input if it exists and is different
                             const sealSubsSellingPlanInput = form.querySelector('[data-sls-selling_plan]');
-                            if (sealSubsSellingPlanInput) {
+                            if (sealSubsSellingPlanInput && sealSubsSellingPlanInput !== sellingPlanInput) {
                               sealSubsSellingPlanInput.value = planId || '';
+                              console.log('[Subscription Picker] Also updated Seal Subscriptions input');
                             }
                           } else {
                             console.log('[Subscription Picker] Clearing selling plan (one-time purchase)');
-                            sellingPlanInput.value = '';
+                            if (sellingPlanInput) {
+                              sellingPlanInput.value = '';
+                              console.log('[Subscription Picker] sellingPlanInput.value cleared');
+                            }
                             
-                            // Also update Seal Subscriptions hidden input
+                            // Also update Seal Subscriptions hidden input if it exists and is different
                             const sealSubsSellingPlanInput = form.querySelector('[data-sls-selling_plan]');
-                            if (sealSubsSellingPlanInput) {
+                            if (sealSubsSellingPlanInput && sealSubsSellingPlanInput !== sellingPlanInput) {
                               sealSubsSellingPlanInput.value = '';
                             }
                           }
+                          
+                          // Log final state for debugging
+                          console.log('[Subscription Picker] Final selling_plan inputs in form:');
+                          const allSellingPlanInputs = form.querySelectorAll('[name="selling_plan"]');
+                          allSellingPlanInputs.forEach((input, index) => {
+                            console.log('[Subscription Picker] Input', index + ':', input, 'value:', input.value, 'id:', input.id);
+                          });
                         }
 
                         // Format money helper
@@ -1412,25 +1428,30 @@
                           }
 
                           // Check for existing selling_plan input (from Seal Subscriptions or our own)
-                          sellingPlanInput = form.querySelector('[name="selling_plan"]');
-                          if (!sellingPlanInput) {
-                            console.log('[Subscription Picker] Creating new selling_plan input');
-                            sellingPlanInput = document.createElement('input');
-                            sellingPlanInput.type = 'hidden';
-                            sellingPlanInput.name = 'selling_plan';
-                            sellingPlanInput.id = 'selling_plan_' + blockId;
-                            // Insert before submit button or at the end of form
-                            const submitButton = form.querySelector('button[type="submit"]');
-                            if (submitButton) {
-                              submitButton.parentNode.insertBefore(sellingPlanInput, submitButton);
-                            } else {
-                              form.appendChild(sellingPlanInput);
-                            }
+                          // Find or create selling_plan input
+                          // First check for Seal Subscriptions input
+                          let sealSubsInput = form.querySelector('[data-sls-selling_plan]');
+                          if (sealSubsInput) {
+                            console.log('[Subscription Picker] Found Seal Subscriptions selling_plan input, using it');
+                            sellingPlanInput = sealSubsInput;
                           } else {
-                            console.log('[Subscription Picker] Found existing selling_plan input:', sellingPlanInput);
-                            // If it's Seal Subscriptions input, we'll use it
-                            if (sellingPlanInput.hasAttribute('data-sls-selling_plan')) {
-                              console.log('[Subscription Picker] Using Seal Subscriptions selling_plan input');
+                            // Check for any existing selling_plan input
+                            sellingPlanInput = form.querySelector('[name="selling_plan"]');
+                            if (!sellingPlanInput) {
+                              console.log('[Subscription Picker] Creating new selling_plan input');
+                              sellingPlanInput = document.createElement('input');
+                              sellingPlanInput.type = 'hidden';
+                              sellingPlanInput.name = 'selling_plan';
+                              sellingPlanInput.id = 'selling_plan_' + blockId;
+                              // Insert before submit button or at the end of form
+                              const submitButton = form.querySelector('button[type="submit"]');
+                              if (submitButton) {
+                                submitButton.parentNode.insertBefore(sellingPlanInput, submitButton);
+                              } else {
+                                form.appendChild(sellingPlanInput);
+                              }
+                            } else {
+                              console.log('[Subscription Picker] Found existing selling_plan input:', sellingPlanInput);
                             }
                           }
                           console.log('[Subscription Picker] sellingPlanInput:', sellingPlanInput, 'Current value:', sellingPlanInput.value);
@@ -1465,6 +1486,34 @@
                                   sealSubsSub.checked = true;
                                   sealSubsSub.dispatchEvent(new Event('change', { bubbles: true }));
                                 }
+                              }
+                            });
+                          });
+
+                          // Add click handlers to subscription options (blocks)
+                          console.log('[Subscription Picker] Setting up click handlers on subscription options, count:', options.length);
+                          options.forEach(option => {
+                            option.addEventListener('click', function(e) {
+                              // Don't trigger if clicking on radio, label, select, or button
+                              if (e.target.closest('.subscription-radio') || 
+                                  e.target.closest('label') || 
+                                  e.target.closest('select') ||
+                                  e.target.closest('button') ||
+                                  e.target.tagName === 'BUTTON') {
+                                console.log('[Subscription Picker] Click ignored - clicked on interactive element');
+                                return;
+                              }
+                              
+                              console.log('[Subscription Picker] Option block clicked:', this);
+                              const radio = this.querySelector('.subscription-radio');
+                              if (radio) {
+                                console.log('[Subscription Picker] Triggering radio change, current value:', radio.value);
+                                radio.checked = true;
+                                // Trigger change event to update selling plan and prices
+                                const changeEvent = new Event('change', { bubbles: true });
+                                radio.dispatchEvent(changeEvent);
+                              } else {
+                                console.warn('[Subscription Picker] No radio found in option block');
                               }
                             });
                           });
