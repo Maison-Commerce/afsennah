@@ -27,7 +27,7 @@
   {% if section.settings.answers_layout == 'two_columns' %}
     .quiz-step-{{ section.id }} .quiz-answers {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: minmax(20px, 1fr) minmax(20px, 1fr);
       gap: 12px;
     }
   {% else %}
@@ -42,7 +42,7 @@
     {% if section.settings.answers_layout_mobile == 'two_columns' %}
       .quiz-step-{{ section.id }} .quiz-answers {
         display: grid;
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: minmax(20px, 1fr) minmax(20px, 1fr);
         gap: 12px;
       }
     {% else %}
@@ -513,7 +513,7 @@
   {% if section.settings.answers_layout == 'two_columns' %}
     #shopify-section-{{ section.id }} .quiz-answers {
       display: grid !important;
-      grid-template-columns: repeat(2, 1fr) !important;
+      grid-template-columns: minmax(20px, 1fr) minmax(20px, 1fr) !important;
     }
   {% endif %}
 
