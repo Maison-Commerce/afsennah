@@ -851,19 +851,20 @@
                           
                           <div class="subscription-option__content">
                             <div class="subscription-option__content-header">
-                           
-                              <div class="subscription-option__radio">
-                                  <input type="radio" 
-                                        name="subscription_type_{{ block.id }}" 
-                                        id="one-time-{{ block.id }}" 
-                                        value="one-time" 
-                                        {% if default_selection == 'one-time' %}checked{% endif %}
-                                        class="subscription-radio">
-                                  <span class="subscription-radio-custom"></span>
+                              <div class="content-header__leftside">
+                                <div class="subscription-option__radio">
+                                    <input type="radio" 
+                                          name="subscription_type_{{ block.id }}" 
+                                          id="one-time-{{ block.id }}" 
+                                          value="one-time" 
+                                          {% if default_selection == 'one-time' %}checked{% endif %}
+                                          class="subscription-radio">
+                                    <span class="subscription-radio-custom"></span>
+                                </div>
+                                <label class="subscription-option__label" for="one-time-{{ block.id }}" data-one-time-label>
+                                  {{ one_time_label }}
+                                </label>
                               </div>
-                              <label class="subscription-option__label" for="one-time-{{ block.id }}" data-one-time-label>
-                                {{ one_time_label }}
-                              </label>
                               <div class="subscription-option__price">
                                 <div class="subscription-price">
                                   <span class="subscription-price__current" data-one-time-price>
@@ -888,21 +889,23 @@
                         
                           <div class="subscription-option__content">
                             <div class="subscription-option__content-header">
-                                <div class="subscription-option__radio">
-                                  <input type="radio" 
-                                        name="subscription_type_{{ block.id }}" 
-                                        id="subscription-{{ block.id }}" 
-                                        value="subscription" 
-                                        {% if default_selection == 'subscription' %}checked{% endif %}
-                                        class="subscription-radio">
-                                    <span class="subscription-radio-custom"></span>
-                                </div>
-                              <label class="subscription-option__label" for="subscription-{{ block.id }}" data-subscribe-label>
-                                {{ subscribe_label }}
-                                {% if block.settings.savings_badge_text != blank %}
-                                  <span class="subscription-savings-badge" data-savings-badge>{{ block.settings.savings_badge_text }}</span>
-                                {% endif %}
-                              </label>
+                              <div class="content-header__leftside">
+                                  <div class="subscription-option__radio">
+                                    <input type="radio" 
+                                          name="subscription_type_{{ block.id }}" 
+                                          id="subscription-{{ block.id }}" 
+                                          value="subscription" 
+                                          {% if default_selection == 'subscription' %}checked{% endif %}
+                                          class="subscription-radio">
+                                      <span class="subscription-radio-custom"></span>
+                                  </div>
+                                <label class="subscription-option__label" for="subscription-{{ block.id }}" data-subscribe-label>
+                                  {{ subscribe_label }}
+                                  {% if block.settings.savings_badge_text != blank %}
+                                    <span class="subscription-savings-badge" data-savings-badge>{{ block.settings.savings_badge_text }}</span>
+                                  {% endif %}
+                                </label>
+                              </div>
                               <div class="subscription-option__price">
                                 <div class="subscription-price">
                                   <span class="subscription-price__current" data-subscription-price>
