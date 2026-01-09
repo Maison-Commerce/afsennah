@@ -858,10 +858,10 @@
                                    value="one-time" 
                                    {% if default_selection == 'one-time' %}checked{% endif %}
                                    class="subscription-radio">
-                            <span class="subscription-radio-custom"></span>
-                          </div>
+                                  </div>
                           <div class="subscription-option__content">
                             <label class="subscription-option__label" for="one-time-{{ block.id }}" data-one-time-label>
+                              <span class="subscription-radio-custom"></span>
                               {{ one_time_label }}
                             </label>
                             <div class="subscription-option__price">
@@ -891,10 +891,10 @@
                                    value="subscription" 
                                    {% if default_selection == 'subscription' %}checked{% endif %}
                                    class="subscription-radio">
-                            <span class="subscription-radio-custom"></span>
                           </div>
                           <div class="subscription-option__content">
-                          <label class="subscription-option__label" for="subscription-{{ block.id }}" data-subscribe-label>
+                            <label class="subscription-option__label" for="subscription-{{ block.id }}" data-subscribe-label>
+                            <span class="subscription-radio-custom"></span>
                             {{ subscribe_label }}
                             {% if block.settings.savings_badge_text != blank %}
                               <span class="subscription-savings-badge" data-savings-badge>{{ block.settings.savings_badge_text }}</span>
