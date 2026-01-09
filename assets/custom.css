@@ -2467,6 +2467,14 @@ cart-drawer .cart-upsell-product {
     font-size: 12px;
 }
 
+.product-item-upsells .loox-rating-label {
+    font-family: "Neue Haas Grotesk Display Pro";
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 150%;
+    letter-spacing: 0%;
+    color: rgba(44, 41, 38, 0.75);
+}
 
 @media (max-width: 768px) {
     .product-container.product-container--modern.gallery .testimonial-under-gallery {
