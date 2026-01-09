@@ -59,8 +59,19 @@
 
   @media (max-width: 768px) {
     .maison_commerce_maison_header_announcement_bar__container {
-      justify-content: center;
+      justify-content: flex-start;
       gap: 0;
+      overflow-x: auto;
+      overflow-y: hidden;
+      scroll-behavior: auto;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+
+    .maison_commerce_maison_header_announcement_bar__container::-webkit-scrollbar {
+      display: none;
     }
   }
 
@@ -73,8 +84,10 @@
   }
 
   @media (max-width: 768px) {
-    .maison_commerce_maison_header_announcement_bar__item:not(:first-child) {
-      display: none;
+    .maison_commerce_maison_header_announcement_bar__item {
+      min-width: 100%;
+      justify-content: center;
+      scroll-snap-align: start;
     }
   }
 
@@ -128,6 +141,102 @@
     }
   }
 </style>
+
+<script>
+  (function() {
+    const container = document.querySelector('#shopify-section-{{ section.id }} .maison_commerce_maison_header_announcement_bar__container');
+    if (!container) return;
+
+    let autoScrollInterval = null;
+    let currentIndex = 0;
+    let scrollPosition = 0;
+    const scrollSpeed = 0.3;
+    let isPaused = false;
+
+    function initAutoScroll() {
+      // Only initialize on mobile
+      if (window.innerWidth > 768) {
+        if (autoScrollInterval) {
+          clearInterval(autoScrollInterval);
+          autoScrollInterval = null;
+        }
+        return;
+      }
+
+      // Don't initialize if already initialized
+      if (autoScrollInterval) return;
+
+      const items = container.querySelectorAll('.maison_commerce_maison_header_announcement_bar__item');
+      if (items.length <= 1) return;
+
+      const itemWidth = container.clientWidth;
+      const totalWidth = itemWidth * items.length;
+
+      function autoScroll() {
+        if (isPaused) return;
+
+        scrollPosition += scrollSpeed;
+        
+        // When we reach the end, reset to start for seamless loop
+        if (scrollPosition >= totalWidth - itemWidth) {
+          scrollPosition = 0;
+        }
+
+        container.scrollLeft = scrollPosition;
+      }
+
+      // Start auto-scrolling every 16ms (~60fps)
+      autoScrollInterval = setInterval(autoScroll, 16);
+
+      // Pause on hover/touch
+      container.addEventListener('mouseenter', () => {
+        isPaused = true;
+      });
+
+      container.addEventListener('mouseleave', () => {
+        isPaused = false;
+        scrollPosition = container.scrollLeft;
+      });
+
+      // Touch events for mobile
+      let touchStartX = 0;
+      let touchStartScrollLeft = 0;
+
+      container.addEventListener('touchstart', (e) => {
+        isPaused = true;
+        touchStartX = e.touches[0].clientX;
+        touchStartScrollLeft = container.scrollLeft;
+      });
+
+      container.addEventListener('touchend', () => {
+        isPaused = false;
+        scrollPosition = container.scrollLeft;
+      });
+    }
+
+    // Initialize on load
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initAutoScroll);
+    } else {
+      initAutoScroll();
+    }
+
+    // Re-initialize on resize
+    let resizeTimeout;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(() => {
+        if (autoScrollInterval) {
+          clearInterval(autoScrollInterval);
+          autoScrollInterval = null;
+        }
+        scrollPosition = 0;
+        container.scrollLeft = 0;
+        initAutoScroll();
+      }, 250);
+    });
+  })();
+</script>
 
 {% schema %}
 {
