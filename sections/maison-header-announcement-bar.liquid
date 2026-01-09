@@ -1,8 +1,32 @@
 <div class="maison_commerce_maison_header_announcement_bar">
-  <div class="maison_commerce_maison_header_announcement_bar__container swiper" id="announcement-bar-{{ section.id }}">
+  {% comment %} Desktop: Regular announcement blocks {% endcomment %}
+  <div class="maison_commerce_maison_header_announcement_bar__container maison_commerce_maison_header_announcement_bar__container--desktop">
+    {% for block in section.blocks %}
+      {% if block.type == 'announcement' %}
+        <div class="maison_commerce_maison_header_announcement_bar__item" {{ block.shopify_attributes }}>
+          <div class="maison_commerce_maison_header_announcement_bar__icon-wrapper">
+            <svg class="maison_commerce_maison_header_announcement_bar__icon" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M3 8L6 11L13 4" stroke="#1A365D" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          {% if block.settings.text != blank %}
+            <p class="maison_commerce_maison_header_announcement_bar__text">
+              {{ block.settings.text }}
+            </p>
+          {% endif %}
+        </div>
+        {% unless forloop.last %}
+          <div class="maison_commerce_maison_header_announcement_bar__divider"></div>
+        {% endunless %}
+      {% endif %}
+    {% endfor %}
+  </div>
+
+  {% comment %} Mobile: Swiper slider with mobile_announcement blocks {% endcomment %}
+  <div class="maison_commerce_maison_header_announcement_bar__container maison_commerce_maison_header_announcement_bar__container--mobile swiper" id="announcement-bar-mobile-{{ section.id }}">
     <div class="swiper-wrapper">
       {% for block in section.blocks %}
-        {% if block.type == 'announcement' %}
+        {% if block.type == 'mobile_announcement' %}
           <div class="maison_commerce_maison_header_announcement_bar__item swiper-slide" {{ block.shopify_attributes }}>
             <div class="maison_commerce_maison_header_announcement_bar__icon-wrapper">
               <svg class="maison_commerce_maison_header_announcement_bar__icon" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -15,9 +39,6 @@
               </p>
             {% endif %}
           </div>
-          {% unless forloop.last %}
-            <div class="maison_commerce_maison_header_announcement_bar__divider swiper-slide"></div>
-          {% endunless %}
         {% endif %}
       {% endfor %}
     </div>
@@ -54,41 +75,37 @@
     margin: 0 auto;
   }
 
-  /* Desktop: Flex layout */
-  @media (min-width: 769px) {
-    .maison_commerce_maison_header_announcement_bar__container.swiper {
-      display: flex;
-      align-items: center;
-      justify-content: {{ section.settings.alignment }};
-      gap: {{ section.settings.item_gap_desktop }}px;
-      flex-wrap: wrap;
-    }
+  /* Desktop Container */
+  .maison_commerce_maison_header_announcement_bar__container--desktop {
+    display: flex;
+    align-items: center;
+    justify-content: {{ section.settings.alignment }};
+    gap: {{ section.settings.item_gap_desktop }}px;
+    flex-wrap: wrap;
+  }
 
-    .maison_commerce_maison_header_announcement_bar__container .swiper-wrapper {
-      display: flex;
-      flex-wrap: wrap;
-      width: 100%;
-      gap: {{ section.settings.item_gap_desktop }}px;
-      justify-content: {{ section.settings.alignment }};
-    }
-
-    .maison_commerce_maison_header_announcement_bar__container .swiper-slide {
-      width: auto !important;
-      flex-shrink: 0;
+  @media (max-width: 768px) {
+    .maison_commerce_maison_header_announcement_bar__container--desktop {
+      display: none;
     }
   }
 
-  /* Mobile: Swiper slider */
+  /* Mobile Container */
+  .maison_commerce_maison_header_announcement_bar__container--mobile {
+    display: none;
+    overflow: hidden;
+  }
+
   @media (max-width: 768px) {
-    .maison_commerce_maison_header_announcement_bar__container {
-      overflow: hidden;
+    .maison_commerce_maison_header_announcement_bar__container--mobile {
+      display: block;
     }
 
-    .maison_commerce_maison_header_announcement_bar__container .swiper-wrapper {
+    .maison_commerce_maison_header_announcement_bar__container--mobile .swiper-wrapper {
       display: flex;
     }
 
-    .maison_commerce_maison_header_announcement_bar__container .swiper-slide {
+    .maison_commerce_maison_header_announcement_bar__container--mobile .swiper-slide {
       width: 100%;
       flex-shrink: 0;
     }
@@ -152,31 +169,13 @@
     background-color: {{ section.settings.divider_color }};
     flex-shrink: 0;
   }
-
-  @media (max-width: 768px) {
-    .maison_commerce_maison_header_announcement_bar__divider {
-      display: none;
-    }
-  }
-
-  /* Swiper overrides for mobile */
-  @media (max-width: 768px) {
-    #shopify-section-{{ section.id }} .swiper-wrapper {
-      display: flex;
-    }
-
-    #shopify-section-{{ section.id }} .swiper-slide {
-      width: 100%;
-      flex-shrink: 0;
-    }
-  }
 </style>
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 <script>
   (function() {
-    const container = document.querySelector('#announcement-bar-{{ section.id }}');
+    const container = document.querySelector('#announcement-bar-mobile-{{ section.id }}');
     if (!container) return;
 
     let swiperInstance = null;
@@ -194,9 +193,9 @@
       // Don't initialize if already initialized
       if (swiperInstance) return;
 
-      // Count only announcement items (not dividers)
-      const announcementItems = container.querySelectorAll('.maison_commerce_maison_header_announcement_bar__item');
-      if (announcementItems.length <= 1) return;
+      // Count mobile announcement items
+      const mobileItems = container.querySelectorAll('.swiper-slide');
+      if (mobileItems.length <= 1) return;
 
       swiperInstance = new Swiper(container, {
         slidesPerView: 1,
@@ -209,8 +208,6 @@
         },
         speed: 500,
         allowTouchMove: true,
-        // Only loop through announcement items, skip dividers
-        loopedSlides: announcementItems.length,
       });
     }
 
@@ -525,7 +522,19 @@
   "blocks": [
     {
       "type": "announcement",
-      "name": "Announcement",
+      "name": "Announcement (Desktop)",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text",
+          "default": "Carbon neutral"
+        }
+      ]
+    },
+    {
+      "type": "mobile_announcement",
+      "name": "Mobile Announcement",
       "settings": [
         {
           "type": "text",
@@ -560,6 +569,30 @@
         },
         {
           "type": "announcement",
+          "settings": {
+            "text": "Sulfate free"
+          }
+        },
+        {
+          "type": "mobile_announcement",
+          "settings": {
+            "text": "Carbon neutral"
+          }
+        },
+        {
+          "type": "mobile_announcement",
+          "settings": {
+            "text": "Mineral oils cruelty-free"
+          }
+        },
+        {
+          "type": "mobile_announcement",
+          "settings": {
+            "text": "Phthalate free"
+          }
+        },
+        {
+          "type": "mobile_announcement",
           "settings": {
             "text": "Sulfate free"
           }
