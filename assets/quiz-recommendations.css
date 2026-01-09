@@ -1789,6 +1789,7 @@
         .maison_commerce_maison_upsell_package__button {
             padding: 8px 16px;
             font-size: 14px;
+            gap: 0;
         }
 
         .maison_commerce_maison_upsell_package__footer {
