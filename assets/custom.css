@@ -2456,6 +2456,10 @@ cart-drawer .cart-upsell-product {
 .tiered-rewards-bar__marker-image.active .tiered-rewards-bar__marker-price svg {
     display: flex;
 }
+
+.product-item-upsells .opposing-items__left.product-info-label h2 {
+    font-size: 24px;
+}
 @media (max-width: 768px) {
     .product-container.product-container--modern.gallery .testimonial-under-gallery {
         display: none;
@@ -2470,11 +2474,12 @@ cart-drawer .cart-upsell-product {
     .testimonial-under-gallery.testimonial-desktop {
         display: none !important;
     }
+    .product-item-upsells .opposing-items__left.product-info-label h2,
+    .video-slide-title {
+        font-size: 18px;
+    }
 }
 
 
 
-.product-item-upsells .opposing-items__left.product-info-label h2 {
-    font-size: 24px;
-}
 
