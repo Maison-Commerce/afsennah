@@ -1182,7 +1182,7 @@ video-section-play-button {
 }
 .tiered-rewards-bar__marker-image .tiered-rewards-bar__marker-price {
     color: rgba(35, 35, 35, 0.75);
-    font-family: "Gotham", inherit;
+    font-family: "Gotham";
     font-weight: 500;
     font-style: Medium;
     font-size: 10px;
