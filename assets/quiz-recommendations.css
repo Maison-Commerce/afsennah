@@ -1364,6 +1364,10 @@
             display: block;
         }
 
+        .gift-progress-section-mobile .gift-progress-header {
+            display: none;
+        }
+
         .recommendations-right .gift-progress-section {
             display: none;
         }
