@@ -851,31 +851,29 @@
                       <div class="subscription-picker__options">
                         <!-- One-time Purchase Option -->
                         <div class="subscription-option {% if default_selection == 'one-time' %}subscription-option--active{% endif %}" data-option-type="one-time">
-                          <div class="subscription-option__header">
-                            <div class="subscription-option__radio">
-                              <input type="radio" 
-                                     name="subscription_type_{{ block.id }}" 
-                                     id="one-time-{{ block.id }}" 
-                                     value="one-time" 
-                                     {% if default_selection == 'one-time' %}checked{% endif %}
-                                     class="subscription-radio">
-                              <span class="subscription-radio-custom"></span>
-                            </div>
-                            <div class="subscription-option__content">
-                              <label class="subscription-option__label" for="one-time-{{ block.id }}">
-                                {{ one_time_label }}
-                              </label>
-                              <div class="subscription-option__price">
-                                <div class="subscription-price">
-                                  <span class="subscription-price__current" data-one-time-price>
-                                    {% render 'price', product: product, show_currency_code: false, for_variant_picker: true, current_variant: current_variant %}
+                          <div class="subscription-option__radio">
+                            <input type="radio" 
+                                   name="subscription_type_{{ block.id }}" 
+                                   id="one-time-{{ block.id }}" 
+                                   value="one-time" 
+                                   {% if default_selection == 'one-time' %}checked{% endif %}
+                                   class="subscription-radio">
+                            <span class="subscription-radio-custom"></span>
+                          </div>
+                          <div class="subscription-option__content">
+                            <label class="subscription-option__label" for="one-time-{{ block.id }}">
+                              {{ one_time_label }}
+                            </label>
+                            <div class="subscription-option__price">
+                              <div class="subscription-price">
+                                <span class="subscription-price__current" data-one-time-price>
+                                  {% render 'price', product: product, show_currency_code: false, for_variant_picker: true, current_variant: current_variant %}
+                                </span>
+                                {% if current_variant.compare_at_price > current_variant.price %}
+                                  <span class="subscription-price__original" data-one-time-compare>
+                                    {% render 'price', product: product, show_currency_code: false, for_variant_picker: true, current_variant: current_variant, price_type: 'compare' %}
                                   </span>
-                                  {% if current_variant.compare_at_price > current_variant.price %}
-                                    <span class="subscription-price__original" data-one-time-compare>
-                                      {% render 'price', product: product, show_currency_code: false, for_variant_picker: true, current_variant: current_variant, price_type: 'compare' %}
-                                    </span>
-                                  {% endif %}
-                                </div>
+                                {% endif %}
                               </div>
                             </div>
                           </div>
@@ -886,43 +884,40 @@
                           {% if show_most_popular and most_popular_text != blank %}
                             <div class="subscription-option__badge">{{ most_popular_text }}</div>
                           {% endif %}
-                          <div class="subscription-option__header">
-                            <div class="subscription-option__radio">
-                              <input type="radio" 
-                                     name="subscription_type_{{ block.id }}" 
-                                     id="subscription-{{ block.id }}" 
-                                     value="subscription" 
-                                     {% if default_selection == 'subscription' %}checked{% endif %}
-                                     class="subscription-radio">
-                              <span class="subscription-radio-custom"></span>
-                            </div>
-                            <div class="subscription-option__content">
-                              <label class="subscription-option__label" for="subscription-{{ block.id }}" data-subscribe-label>
-                                {{ subscribe_label }}
-                                {% if block.settings.savings_badge_text != blank %}
-                                  <span class="subscription-savings-badge" data-savings-badge>{{ block.settings.savings_badge_text }}</span>
-                                {% endif %}
-                              </label>
-                              <div class="subscription-option__price">
-                                <div class="subscription-price">
-                                  <span class="subscription-price__current" data-subscription-price>
-                                    {%- if default_selling_plan -%}
-                                      {%- for allocation in current_variant.selling_plan_allocations -%}
-                                        {%- if allocation.selling_plan.id == default_selling_plan.id -%}
-                                          <span class="money">{{ allocation.price | money }}</span>
-                                        {%- endif -%}
-                                      {%- endfor -%}
-                                    {%- endif -%}
-                                  </span>
-                                  <span class="subscription-price__original" data-subscription-compare>
-                                    {% render 'price', product: product, show_currency_code: false, for_variant_picker: true, current_variant: current_variant, price_type: 'compare' %}
-                                  </span>
-                                </div>
+                          <div class="subscription-option__radio">
+                            <input type="radio" 
+                                   name="subscription_type_{{ block.id }}" 
+                                   id="subscription-{{ block.id }}" 
+                                   value="subscription" 
+                                   {% if default_selection == 'subscription' %}checked{% endif %}
+                                   class="subscription-radio">
+                            <span class="subscription-radio-custom"></span>
+                          </div>
+                          <div class="subscription-option__content">
+                          <label class="subscription-option__label" for="subscription-{{ block.id }}" data-subscribe-label>
+                            {{ subscribe_label }}
+                            {% if block.settings.savings_badge_text != blank %}
+                              <span class="subscription-savings-badge" data-savings-badge>{{ block.settings.savings_badge_text }}</span>
+                            {% endif %}
+                          </label>
+                            <div class="subscription-option__price">
+                              <div class="subscription-price">
+                                <span class="subscription-price__current" data-subscription-price>
+                                  {%- if default_selling_plan -%}
+                                    {%- for allocation in current_variant.selling_plan_allocations -%}
+                                      {%- if allocation.selling_plan.id == default_selling_plan.id -%}
+                                        <span class="money">{{ allocation.price | money }}</span>
+                                      {%- endif -%}
+                                    {%- endfor -%}
+                                  {%- endif -%}
+                                </span>
+                                <span class="subscription-price__original" data-subscription-compare>
+                                  {% render 'price', product: product, show_currency_code: false, for_variant_picker: true, current_variant: current_variant, price_type: 'compare' %}
+                                </span>
                               </div>
                             </div>
-                          </div>
-                          
-                          <div class="subscription-option__expandable" data-subscription-expandable>
+                            
+                            <div class="subscription-option__expandable" data-subscription-expandable>
                               {% if first_group.selling_plans.size > 1 %}
                                 <div class="subscription-option__interval">
                                   <label class="subscription-interval-label" data-interval-label>{{ block.settings.interval_label | default: 'Deliver & Pay every' }}</label>
@@ -1858,15 +1853,8 @@
                         cursor: pointer;
                         transition: all 0.3s ease;
                         display: flex;
-                        flex-direction: column;
-                        gap: 0;
-                      }
-
-                      .subscription-option__header {
-                        display: flex;
                         gap: 16px;
                         align-items: flex-start;
-                        width: 100%;
                       }
 
                       .subscription-option:hover {
@@ -1940,20 +1928,15 @@
                       .subscription-option__content {
                         flex: 1;
                         min-width: 0;
-                        display: flex;
-                        justify-content: space-between;
-                        align-items: center;
-                        gap: 16px;
                       }
 
                       .subscription-option__label {
                         display: block;
                         font-size: 16px;
                         font-weight: 600;
-                        margin-bottom: 0;
+                        margin-bottom: 12px;
                         cursor: pointer;
                         color: #1A365D;
-                        flex: 1;
                       }
 
                       .subscription-savings-badge {
@@ -1968,10 +1951,7 @@
                       }
 
                       .subscription-option__price {
-                        margin-bottom: 0;
-                        flex-shrink: 0;
-                        display: flex;
-                        align-items: center;
+                        margin-bottom: 16px;
                       }
 
                       .subscription-price {
