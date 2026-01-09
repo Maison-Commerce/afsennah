@@ -1836,6 +1836,7 @@ height: 100%;
     line-height: 150%;
     letter-spacing: 0%;
     color: #232323;
+    opacity: 0.5;
 }
 .product-form .label {
     margin-bottom: 12px;
