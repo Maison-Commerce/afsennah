@@ -2398,3 +2398,7 @@ cart-drawer .cart-upsell-product__add-btn {
     letter-spacing: 0%;
 }
 
+cart-drawer .cart-upsell-product__add-btn {
+    border-radius:8px;
+    border: 1px solid #E5E5F4;
+}
