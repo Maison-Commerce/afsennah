@@ -2066,27 +2066,35 @@
                       .subscription-option__benefits li {
                         display: flex;
                         align-items: flex-start;
-                        gap: 12px;
+                        gap: 4px;
                         margin-bottom: 12px;
                         position: relative;
+
+                        font-family: "Gotham";
+                        font-weight: 400;
+                        font-style: Book;
+                        font-size: 12px;
+                        line-height: 150%;
+                        letter-spacing: 0%;
+                        text-align: center;
+                        vertical-align: middle;
+
                       }
 
                       /* Default checkmark icon if no custom icon */
                       .subscription-option__benefits li::before {
-                        content: ' ';
-                        color: #1A365D;
-                        font-weight: bold;
+                        content: '';
                         flex-shrink: 0;
-                        background: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNiAxNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEzLjMzMzMgNEw1Ljk5OTk2IDExLjMzMzNMMi42NjY2MyA4IiBzdHJva2U9IiMxQTM2NUQiIHN0cm9rZS13aWR0aD0iMS41IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4KPC9zdmc+Cg==");
                         margin-top: 2px;
                         width: 20px;
                         height: 20px;
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                        background: #F5F3FF;
+                        display: block;
+                        background-image: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNiAxNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEzLjMzMzMgNEw1Ljk5OTk2IDExLjMzMzNMMi42NjY2MyA4IiBzdHJva2U9IiMxQTM2NUQiIHN0cm9rZS13aWR0aD0iMS41IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4KPC9zdmc+Cg==");
+                        background-color: #F5F3FF;
+                        background-size: 16px 16px;
+                        background-repeat: no-repeat;
+                        background-position: center;
                         border-radius: 50%;
-                        font-size: 12px;
                       }
 
                       /* Hide default checkmark if custom icon/SVG is present */
