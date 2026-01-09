@@ -94,7 +94,7 @@
             endfor
             assign cart_hash = cart_hash | remove_first: ',' | sha256
           -%}
-          <a href="{{ routes.cart_url }}" data-hash="{{ cart_hash }}" class="maison_commerce_maison_header__icon-link maison_commerce_maison_header__cart-link cart-link" aria-label="{{ 'sections.header.cart' | t }}">
+          <a href="{{ routes.cart_url }}" data-hash="{{ cart_hash }}" class="maison_commerce_maison_header__icon-link maison_commerce_maison_header__cart-link cart-link">
             {% render 'icon-bag' %}
             {% if cart.item_count > 0 %}
               <span class="maison_commerce_maison_header__cart-count">{{ cart.item_count }}</span>
