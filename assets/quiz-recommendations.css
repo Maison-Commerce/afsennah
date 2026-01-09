@@ -1363,6 +1363,7 @@
         /* Show mobile gift progress section, hide desktop one */
         .gift-progress-section-mobile {
             display: block;
+            margin-top: 0;
         }
 
         .gift-progress-section-mobile .gift-progress-header {
