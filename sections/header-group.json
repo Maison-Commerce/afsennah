@@ -168,7 +168,7 @@
         "quiz_button_bg_color": "#fffbc0",
         "quiz_button_text_color": "#1a365d",
         "quiz_button_border_radius": 8,
-        "quiz_button_padding_vertical": 12,
+        "quiz_button_padding_vertical": 8,
         "quiz_button_padding_horizontal": 18,
         "quiz_button_padding_vertical_mobile": 8,
         "quiz_button_padding_horizontal_mobile": 24,
