@@ -1438,13 +1438,13 @@
                           const subscriptionCompareEl = picker.querySelector('[data-subscription-compare]');
                           const currentIntervalSelect = picker.querySelector('[data-interval-select]');
 
-                          // Update one-time price - try to get from Seal Subscriptions first
-                          // Only update if not already set from Seal Subscriptions
-                          if (oneTimePriceEl && !oneTimePriceEl.querySelector('.money')) {
+                          // Update one-time price - always update based on current variant
+                          if (oneTimePriceEl) {
                             const sealSubsOneTimePrice = document.querySelector('.sls-one-time-price .sls-price .money');
                             if (sealSubsOneTimePrice) {
                               oneTimePriceEl.innerHTML = sealSubsOneTimePrice.outerHTML;
                             } else {
+                              // Use variant price from productData
                               const priceCents = variant.price;
                               const priceFormatted = formatMoney(priceCents);
                               oneTimePriceEl.innerHTML = '<span class="money">' + priceFormatted + '</span>';
