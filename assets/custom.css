@@ -2564,3 +2564,7 @@ cart-drawer .cart-upsell-product {
     vertical-align: middle;
     color: #1D211E;
 }
+
+.subscription-picker__details {
+    display: none;
+}
