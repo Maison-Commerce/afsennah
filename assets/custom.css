@@ -1868,6 +1868,8 @@ height: 100%;
 }
 .sealsubs-target-element .sls-option[type="radio"]:checked + .sls-custom-radio::after {
     box-shadow: inset 6px 6px #F1F1F9 !important;
+    width: 6px !important;
+    height: 6px !important;
 }
 
 .sls-option-container.seal-table.sls-active .sls-custom-radio {
