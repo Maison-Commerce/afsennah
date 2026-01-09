@@ -2119,7 +2119,7 @@
                       }
 
                       /* Default checkmark icon if no custom icon */
-                      .subscription-option__benefits li::before {
+                      {% comment %} .subscription-option__benefits li::before {
                         content: '✓';
                         color: #1A365D;
                         font-weight: bold;
@@ -2133,7 +2133,7 @@
                         background: #F5F3FF;
                         border-radius: 50%;
                         font-size: 12px;
-                      }
+                      } {% endcomment %}
 
                       /* Hide default checkmark if custom icon/SVG is present */
                       .subscription-option__benefits li:has(svg)::before,
