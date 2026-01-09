@@ -74,7 +74,7 @@
         "primary_button_font_size_desktop": 16,
         "primary_button_font_size_mobile": 14,
         "secondary_button_text": "See How It Works",
-        "secondary_button_url": "#",
+        "secondary_button_url": "shopify://pages/ingredients",
         "secondary_button_bg_color": "#ebebf6",
         "secondary_button_font_size_desktop": 16,
         "button_text_color": "#1a365d"
