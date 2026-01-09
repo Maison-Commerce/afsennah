@@ -2533,5 +2533,13 @@ cart-drawer .cart-upsell-product {
     font-size: 32px;
     line-height: 130%;
     letter-spacing: 0%;
+}
+.product-form .shopify-block .loox-rating-label {
+    font-family: "Gotham";
+    font-weight: 400;
+    font-style: Book;
+    font-size: 14px;
+    line-height: 150%;
+    letter-spacing: 0;
 
 }
