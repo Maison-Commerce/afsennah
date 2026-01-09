@@ -150,7 +150,7 @@
 
     {%- for block in section.blocks -%}
     {%- if block.type == 'testimonial_under_gallery' and block.settings.left_side -%}
-      {% render 'testimonial-under-gallery', block: block %}
+      {% render 'testimonial-under-gallery', block: block, render_version: 'desktop' %}
     {%- endif -%}
   {%- endfor -%}
   </div>
@@ -1990,6 +1990,10 @@
                 label_right: block.settings.label_right
               %}
             </div>
+
+          {% when 'testimonial_under_gallery' %}
+            {%- comment -%} Render in product info for mobile (desktop version is rendered under gallery if left_side is enabled) {%- endcomment -%}
+            {% render 'testimonial-under-gallery', block: block, render_version: 'mobile' %}
 
         {% endcase %}
       {% endfor %}
