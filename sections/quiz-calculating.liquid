@@ -5,6 +5,12 @@
 
 {{ 'quiz-section.css' | asset_url | stylesheet_tag }}
 
+<!-- SwiperJS CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+
+<!-- SwiperJS JS -->
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
 {%- style -%}
   .quiz-calculating-{{ section.id }} {
   --primary-color: {{ section.settings.primary_color }};
@@ -24,20 +30,10 @@
     <!-- Left Column - Reviews (Desktop Only) -->
     {% if section.blocks.size > 0 %}
       <div class="quiz-calculating-reviews-column">
-        <div class="quiz-calculating-reviews-container-wrap">
-          <div class="quiz-calculating-reviews-container">
+        <div class="quiz-calculating-reviews-container-wrap swiper" id="quiz-calculating-reviews-{{ section.id }}">
+          <div class="quiz-calculating-reviews-container swiper-wrapper">
             {% for block in section.blocks %}
-              {% assign opacity = 100 %}
-              {% if forloop.index == 1 %}
-                {% assign opacity = 40 %}
-              {% elsif forloop.index == 2 %}
-                {% assign opacity = 70 %}
-              {% elsif forloop.index == 4 %}
-                {% assign opacity = 70 %}
-              {% elsif forloop.index == 5 %}
-                {% assign opacity = 40 %}
-              {% endif %}
-              <div class="quiz-calculating-review-card" {{ block.shopify_attributes }}>
+              <div class="quiz-calculating-review-card swiper-slide" {{ block.shopify_attributes }}>
                 <div class="quiz-calculating-review-content">
                   <div class="quiz-calculating-review-stars">
                     {% for i in (1..5) %}
@@ -188,7 +184,6 @@
   }
 
   .quiz-calculating-reviews-container-wrap{
-    display: flex;
     width: 100%;
     height: 100%;
     overflow: hidden;
@@ -197,36 +192,16 @@
   #shopify-section-{{ section.id }} .quiz-calculating-reviews-container {
     display: flex;
     flex-direction: column;
-    gap: 24px;
     align-items: center;
     justify-content: flex-start;
-    flex: 1;
-    min-height: 0;
-    overflow-y: auto;
-    overflow-x: hidden;
-    scroll-behavior: smooth;
-    scrollbar-width: thin;
-    scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
-    padding-right: 8px;
-    will-change: scroll-position;
-    height: fit-content;
+    height: auto;
   }
 
-  #shopify-section-{{ section.id }} .quiz-calculating-reviews-container::-webkit-scrollbar {
-    width: 6px;
-  }
-
-  #shopify-section-{{ section.id }} .quiz-calculating-reviews-container::-webkit-scrollbar-track {
-    background: transparent;
-  }
-
-  #shopify-section-{{ section.id }} .quiz-calculating-reviews-container::-webkit-scrollbar-thumb {
-    background: rgba(0, 0, 0, 0.2);
-    border-radius: 3px;
-  }
-
-  #shopify-section-{{ section.id }} .quiz-calculating-reviews-container::-webkit-scrollbar-thumb:hover {
-    background: rgba(0, 0, 0, 0.3);
+  #shopify-section-{{ section.id }} .quiz-calculating-review-card {
+    height: auto;
+    width: 410px;
+    display: flex;
+    flex-shrink: 0;
   }
 
   #shopify-section-{{ section.id }} .quiz-calculating-review-card {
@@ -759,7 +734,7 @@
       mutations.forEach(function(mutation) {
         if (mutation.type === 'attributes' && mutation.attributeName === 'style') {
           updateCalculatingProgress();
-          checkAndEnableAutoScroll();
+          initSwiper();
         }
       });
     });
@@ -775,169 +750,113 @@
     // Initial update
     updateCalculatingProgress();
 
-    // Enable auto-scroll for reviews container
-    let scrollInterval = null;
-    let autoScrollInitialized = false;
+    // Initialize SwiperJS for reviews container
+    let reviewsSwiper = null;
+    let swiperInitialized = false;
 
-    function enableAutoScroll() {
+    function initSwiper() {
       // Prevent multiple initializations
-      if (autoScrollInitialized) {
-        console.log('Auto-scroll already initialized');
+      if (swiperInitialized) {
         return;
       }
 
-      // Try to find the container with multiple selectors
       const calcSection = document.querySelector('[data-calculating]');
       if (!calcSection) {
-        console.log('[Auto-scroll] Calculating section not found');
         return;
       }
 
-      console.log('[Auto-scroll] Calculating section found, display:', calcSection.style.display);
-
-      const reviewsContainer = calcSection.querySelector('.quiz-calculating-reviews-container-wrap');
-      
-      if (!reviewsContainer) {
-        console.log('[Auto-scroll] Reviews container not found');
+      // Check if section is visible
+      if (calcSection.style.display === 'none') {
         return;
       }
-
-      console.log('[Auto-scroll] Reviews container found');
 
       // Check if reviews column is visible (only on desktop)
       const reviewsColumn = calcSection.querySelector('.quiz-calculating-reviews-column');
       if (!reviewsColumn) {
-        console.log('[Auto-scroll] Reviews column not found');
         return;
       }
 
       const columnStyle = window.getComputedStyle(reviewsColumn);
       if (columnStyle.display === 'none') {
-        console.log('[Auto-scroll] Reviews column is hidden (mobile view) - auto-scroll disabled');
+        // Destroy Swiper if switching to mobile
+        if (reviewsSwiper) {
+          reviewsSwiper.destroy(true, true);
+          reviewsSwiper = null;
+          swiperInitialized = false;
+        }
         return;
       }
 
-      console.log('[Auto-scroll] Reviews column is visible');
+      // Check if Swiper container exists
+      const swiperContainer = document.getElementById('quiz-calculating-reviews-{{ section.id }}');
+      if (!swiperContainer) {
+        return;
+      }
 
-      // Wait a bit for content to render
+      // Wait a bit for DOM to be ready
       setTimeout(() => {
-        // Force a reflow to ensure accurate measurements
-        reviewsContainer.offsetHeight;
-        
-        // Check if container has scrollable content
-        const scrollHeight = reviewsContainer.scrollHeight;
-        const clientHeight = reviewsContainer.clientHeight;
-        const maxScroll = scrollHeight - clientHeight;
-        
-        console.log('[Auto-scroll] scrollHeight:', scrollHeight, 'clientHeight:', clientHeight, 'maxScroll:', maxScroll);
-        
-        if (maxScroll <= 0) {
-          console.log('[Auto-scroll] No scrollable content - not starting');
-          // Try again after a longer delay in case content is still loading
-          setTimeout(() => {
-            const retryScrollHeight = reviewsContainer.scrollHeight;
-            const retryClientHeight = reviewsContainer.clientHeight;
-            const retryMaxScroll = retryScrollHeight - retryClientHeight;
-            console.log('[Auto-scroll] Retry - scrollHeight:', retryScrollHeight, 'clientHeight:', retryClientHeight, 'maxScroll:', retryMaxScroll);
-            if (retryMaxScroll > 0) {
-              autoScrollInitialized = false; // Reset flag to allow retry
-              enableAutoScroll();
-            }
-          }, 1000);
+        // Destroy existing Swiper if it exists
+        if (reviewsSwiper) {
+          reviewsSwiper.destroy(true, true);
+          reviewsSwiper = null;
+        }
+
+        // Check if Swiper is available
+        if (typeof Swiper === 'undefined') {
+          console.log('[Swiper] SwiperJS not loaded yet');
           return;
         }
 
-        console.log('[Auto-scroll] Starting auto-scroll with maxScroll:', maxScroll);
-        autoScrollInitialized = true;
+        // Initialize Swiper
+        reviewsSwiper = new Swiper('#quiz-calculating-reviews-{{ section.id }}', {
+          direction: 'vertical',
+          slidesPerView: 'auto',
+          spaceBetween: 24,
+          loop: true,
+          autoplay: {
+            delay: 3000,
+            disableOnInteraction: false,
+            pauseOnMouseEnter: true
+          },
+          speed: 500,
+          allowTouchMove: false,
+          grabCursor: false
+        });
 
-        // Clear any existing interval
-        if (scrollInterval) {
-          clearInterval(scrollInterval);
-        }
-
-        // Disable smooth scrolling for auto-scroll (it interferes with programmatic scrolling)
-        reviewsContainer.style.scrollBehavior = 'auto';
-
-        // Auto-scroll function with seamless looping - smoother animation
-        let scrollPosition = 0;
-        const scrollSpeed = 0.5; // pixels per frame (smaller = smoother)
-        
-        function autoScroll() {
-          const currentScrollHeight = reviewsContainer.scrollHeight;
-          const currentClientHeight = reviewsContainer.clientHeight;
-          const currentMaxScroll = currentScrollHeight - currentClientHeight;
-          
-          if (currentMaxScroll <= 0) return;
-
-          // Increment scroll position smoothly
-          scrollPosition += scrollSpeed;
-          
-          // Reset to top when reaching bottom for seamless loop
-          if (scrollPosition >= currentMaxScroll) {
-            scrollPosition = 0;
-          }
-          
-          // Apply smooth scroll position
-          reviewsContainer.scrollTop = scrollPosition;
-        }
-
-        // Start auto-scrolling every 16ms (~60fps for smoother animation)
-        scrollInterval = setInterval(autoScroll, 16);
-        console.log('[Auto-scroll] Interval started:', scrollInterval);
-
-        // Pause on hover (reviewsColumn already found above)
-        if (reviewsColumn) {
-          reviewsColumn.addEventListener('mouseenter', () => {
-            console.log('[Auto-scroll] Paused on hover');
-            if (scrollInterval) {
-              clearInterval(scrollInterval);
-              scrollInterval = null;
-            }
-          });
-          
-          reviewsColumn.addEventListener('mouseleave', () => {
-            console.log('[Auto-scroll] Resumed after hover');
-            // Restart scrolling with current position
-            scrollPosition = reviewsContainer.scrollTop;
-            scrollInterval = setInterval(autoScroll, 16);
-          });
-        }
-      }, 200);
-    }
-
-    // Initialize auto-scroll when calculating section is visible
-    function checkAndEnableAutoScroll() {
-      const calcSection = document.querySelector('[data-calculating]');
-      const isVisible = calcSection && calcSection.style.display !== 'none';
-      console.log('[Auto-scroll] Checking... visible:', isVisible, 'initialized:', autoScrollInitialized);
-      
-      if (isVisible && !autoScrollInitialized) {
-        console.log('[Auto-scroll] Section visible, will initialize');
-        // Wait a bit longer for DOM to be ready and content to load
-        setTimeout(() => {
-          enableAutoScroll();
-        }, 500);
-      }
+        swiperInitialized = true;
+        console.log('[Swiper] Reviews Swiper initialized');
+      }, 300);
     }
 
     // Initial check
-    checkAndEnableAutoScroll();
+    initSwiper();
 
     // Also check after delays in case the section is already visible
     setTimeout(() => {
-      checkAndEnableAutoScroll();
+      initSwiper();
     }, 1000);
 
     setTimeout(() => {
-      checkAndEnableAutoScroll();
+      initSwiper();
     }, 2000);
 
-    // Also listen for window resize in case user resizes to desktop view
+    // Listen for window resize
+    let resizeTimeout;
     window.addEventListener('resize', () => {
-      setTimeout(() => {
-        checkAndEnableAutoScroll();
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(() => {
+        swiperInitialized = false; // Reset flag to allow re-initialization
+        initSwiper();
       }, 300);
     });
+
+    // Re-initialize on Shopify theme editor events
+    if (typeof Shopify !== 'undefined' && Shopify.designMode) {
+      document.addEventListener('shopify:section:load', () => {
+        swiperInitialized = false;
+        initSwiper();
+      });
+    }
   })();
 </script>
 
