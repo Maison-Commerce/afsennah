@@ -890,12 +890,12 @@
                             <span class="subscription-radio-custom"></span>
                           </div>
                           <div class="subscription-option__content">
-                            <label class="subscription-option__label" for="subscription-{{ block.id }}">
-                              {{ subscribe_label }}
-                              {% if block.settings.savings_badge_text != blank %}
-                                <span class="subscription-savings-badge">{{ block.settings.savings_badge_text }}</span>
-                              {% endif %}
-                            </label>
+                          <label class="subscription-option__label" for="subscription-{{ block.id }}" data-subscribe-label>
+                            {{ subscribe_label }}
+                            {% if block.settings.savings_badge_text != blank %}
+                              <span class="subscription-savings-badge" data-savings-badge>{{ block.settings.savings_badge_text }}</span>
+                            {% endif %}
+                          </label>
                             <div class="subscription-option__price">
                               <div class="subscription-price">
                                 <span class="subscription-price__current" data-subscription-price>
@@ -915,7 +915,7 @@
                             
                             {% if first_group.selling_plans.size > 1 %}
                               <div class="subscription-option__interval">
-                                <label class="subscription-interval-label">{{ block.settings.interval_label | default: 'Deliver & Pay every' }}</label>
+                                <label class="subscription-interval-label" data-interval-label>{{ block.settings.interval_label | default: 'Deliver & Pay every' }}</label>
                                 <select class="subscription-interval-select" name="subscription_interval_{{ block.id }}" data-interval-select>
                                   {% for plan in first_group.selling_plans %}
                                     <option value="{{ plan.id }}" 
@@ -928,11 +928,11 @@
                               </div>
                             {% endif %}
                             
-                            {% if block.settings.subscription_benefits != blank %}
-                              <div class="subscription-option__benefits">
+                            <div class="subscription-option__benefits" data-subscription-benefits>
+                              {% if block.settings.subscription_benefits != blank %}
                                 {{ block.settings.subscription_benefits }}
-                              </div>
-                            {% endif %}
+                              {% endif %}
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -949,8 +949,10 @@
                               </span>
                               <span class="subscription-details__label">{{ block.settings.subscription_details_label | default: 'Subscription details' }}</span>
                             </summary>
-                            <div class="subscription-details__content">
-                              {{ block.settings.subscription_details }}
+                            <div class="subscription-details__content" data-subscription-details>
+                              {% if block.settings.subscription_details != blank %}
+                                {{ block.settings.subscription_details }}
+                              {% endif %}
                             </div>
                           </details>
                         </div>
@@ -964,24 +966,230 @@
                         const picker = document.querySelector('.custom-subscription-picker[data-block-id="' + blockId + '"]');
                         if (!picker) return;
 
+                        let productData = null;
+                        let sealSubsData = null;
+
+                        // Hide Seal Subscriptions block
+                        function hideSealSubscriptions() {
+                          const sealSubsElements = document.querySelectorAll('.sealsubs-target-element.sealsubs-full, .sealsubs-container');
+                          sealSubsElements.forEach(el => {
+                            if (el) {
+                              el.style.display = 'none';
+                              el.setAttribute('aria-hidden', 'true');
+                            }
+                          });
+                        }
+
+                        // Parse data from Seal Subscriptions
+                        function parseSealSubscriptionsData() {
+                          const sealSubsElement = document.querySelector('.sealsubs-target-element.sealsubs-full[data-product]');
+                          if (!sealSubsElement) return null;
+
+                          try {
+                            const productJson = sealSubsElement.getAttribute('data-product');
+                            if (!productJson) return null;
+
+                            const data = JSON.parse(productJson);
+                            return data;
+                          } catch (e) {
+                            console.error('Error parsing Seal Subscriptions data:', e);
+                            return null;
+                          }
+                        }
+
+                        // Extract data from Seal Subscriptions and update our picker
+                        function extractDataFromSealSubs() {
+                          sealSubsData = parseSealSubscriptionsData();
+                          if (!sealSubsData) return false;
+
+                          // Extract selling plan groups
+                          if (sealSubsData.selling_plan_groups && sealSubsData.selling_plan_groups.length > 0) {
+                            const group = sealSubsData.selling_plan_groups[0];
+                            
+                            // Extract selling plans
+                            const sellingPlans = group.selling_plans || [];
+                            
+                            // Extract variants with allocations
+                            const variants = sealSubsData.variants || [];
+
+                            // Update productData
+                            productData = {
+                              variants: variants.map(v => ({
+                                id: v.id,
+                                price: v.price,
+                                compare_at_price: v.compare_at_price || v.price,
+                                selling_plan_allocations: (v.selling_plan_allocations || []).map(a => ({
+                                  selling_plan_id: a.selling_plan_id,
+                                  price: a.price,
+                                  compare_at_price: a.compare_at_price || a.price
+                                }))
+                              })),
+                              selling_plans: sellingPlans.map(plan => ({
+                                id: plan.id,
+                                name: plan.name,
+                                options: plan.options || [],
+                                description: plan.description || ''
+                              })),
+                              groupName: group.name || 'Subscribe & save',
+                              intervalLabel: (group.options && group.options[0] && group.options[0].name) || 'Deliver & Pay every'
+                            };
+
+                            // Update UI with extracted data
+                            updatePickerFromSealSubs();
+                            return true;
+                          }
+                          return false;
+                        }
+
+                        // Update picker UI with Seal Subscriptions data
+                        function updatePickerFromSealSubs() {
+                          if (!productData || !picker) return;
+
+                          // Update subscription label from Seal Subscriptions
+                          const subscribeLabel = picker.querySelector('[data-subscribe-label]');
+                          if (subscribeLabel) {
+                            const sealSubsLabel = document.querySelector('.sls-selling-plan-group-name');
+                            if (sealSubsLabel) {
+                              const savingsBadge = subscribeLabel.querySelector('[data-savings-badge]');
+                              subscribeLabel.innerHTML = sealSubsLabel.textContent.trim();
+                              if (savingsBadge) {
+                                subscribeLabel.appendChild(savingsBadge);
+                              }
+                            } else if (productData.groupName) {
+                              const savingsBadge = subscribeLabel.querySelector('[data-savings-badge]');
+                              subscribeLabel.innerHTML = productData.groupName;
+                              if (savingsBadge) {
+                                subscribeLabel.appendChild(savingsBadge);
+                              }
+                            }
+                          }
+
+                          // Update savings badge from Seal Subscriptions
+                          const savingsBadge = picker.querySelector('[data-savings-badge]');
+                          if (savingsBadge) {
+                            const sealSubsBadge = document.querySelector('.sls-savings-badge');
+                            if (sealSubsBadge) {
+                              savingsBadge.textContent = sealSubsBadge.textContent.trim();
+                            }
+                          }
+
+                          // Update interval label from Seal Subscriptions
+                          const intervalLabel = picker.querySelector('[data-interval-label]');
+                          if (intervalLabel) {
+                            const sealSubsIntervalLabel = document.querySelector('.selling-plan-group-options-name-select label');
+                            if (sealSubsIntervalLabel) {
+                              intervalLabel.textContent = sealSubsIntervalLabel.textContent.trim();
+                            } else if (productData.intervalLabel) {
+                              intervalLabel.textContent = productData.intervalLabel;
+                            }
+                          }
+
+                          // Update interval select options from Seal Subscriptions
+                          const intervalSelect = picker.querySelector('[data-interval-select]');
+                          if (intervalSelect) {
+                            const sealSubsSelect = document.querySelector('.sls-select[name="subs_interval"]');
+                            if (sealSubsSelect && sealSubsSelect.options.length > 0) {
+                              intervalSelect.innerHTML = '';
+                              Array.from(sealSubsSelect.options).forEach((option, index) => {
+                                const newOption = document.createElement('option');
+                                newOption.value = option.value;
+                                newOption.dataset.planId = option.value;
+                                newOption.textContent = option.textContent.trim();
+                                if (index === 0) newOption.selected = true;
+                                intervalSelect.appendChild(newOption);
+                              });
+                            } else if (productData.selling_plans.length > 0) {
+                              intervalSelect.innerHTML = '';
+                              productData.selling_plans.forEach((plan, index) => {
+                                const option = document.createElement('option');
+                                option.value = plan.id;
+                                option.dataset.planId = plan.id;
+                                option.textContent = plan.options[0]?.value || plan.name;
+                                if (index === 0) option.selected = true;
+                                intervalSelect.appendChild(option);
+                              });
+                            }
+                          }
+
+                          // Update subscription benefits/description from Seal Subscriptions
+                          const benefitsEl = picker.querySelector('[data-subscription-benefits]');
+                          if (benefitsEl) {
+                            const sealSubsDescription = document.querySelector('.sls-selling-plan-description-content');
+                            if (sealSubsDescription) {
+                              benefitsEl.innerHTML = '<p>' + sealSubsDescription.textContent.trim() + '</p>';
+                            } else if (productData.selling_plans.length > 0) {
+                              const description = productData.selling_plans[0].description || '';
+                              if (description) {
+                                benefitsEl.innerHTML = '<p>' + description + '</p>';
+                              }
+                            }
+                          }
+
+                          // Update subscription details from Seal Subscriptions
+                          const detailsContent = picker.querySelector('[data-subscription-details]');
+                          if (detailsContent) {
+                            const sealSubsDetails = document.querySelector('.sls-more-info-popup-content');
+                            if (sealSubsDetails) {
+                              detailsContent.innerHTML = sealSubsDetails.innerHTML;
+                            }
+                          }
+                        }
+
                         function initSubscriptionPicker() {
                           if (!picker || !picker.parentNode) {
-                            return; // Picker was removed
+                            return;
                           }
 
                           const form = document.getElementById(formId);
                           if (!form) {
-                            // Retry if form not ready (e.g., Seal Subscriptions app injects content)
                             setTimeout(initSubscriptionPicker, 100);
                             return;
                           }
 
-                          // Check if Seal Subscriptions app has injected content
-                          const sealSubsElement = form.querySelector('.sealsubs-target-element');
-                          if (sealSubsElement) {
-                            // Hide our custom picker if Seal Subscriptions is active
-                            picker.style.display = 'none';
-                            return;
+                          // Hide Seal Subscriptions block
+                          hideSealSubscriptions();
+
+                          // Try to extract data from Seal Subscriptions
+                          const hasSealSubsData = extractDataFromSealSubs();
+
+                          // If no Seal Subscriptions data, use default product data
+                          if (!hasSealSubsData) {
+                            productData = {
+                              variants: [
+                                {% for variant in product.variants %}
+                                {
+                                  id: {{ variant.id }},
+                                  price: {{ variant.price }},
+                                  compare_at_price: {{ variant.compare_at_price | default: variant.price }},
+                                  selling_plan_allocations: [
+                                    {% for allocation in variant.selling_plan_allocations %}
+                                    {
+                                      selling_plan_id: {{ allocation.selling_plan.id }},
+                                      price: {{ allocation.price }},
+                                      compare_at_price: {{ allocation.compare_at_price | default: allocation.price }}
+                                    }{% unless forloop.last %},{% endunless %}
+                                    {% endfor %}
+                                  ]
+                                }{% unless forloop.last %},{% endunless %}
+                                {% endfor %}
+                              ],
+                              selling_plans: [
+                                {% for plan in first_group.selling_plans %}
+                                {
+                                  id: {{ plan.id }},
+                                  name: {{ plan.name | json }},
+                                  options: [
+                                    {% for option in plan.options %}
+                                    {
+                                      name: {{ option.name | json }},
+                                      value: {{ option.value | json }}
+                                    }{% unless forloop.last %},{% endunless %}
+                                    {% endfor %}
+                                  ]
+                                }{% unless forloop.last %},{% endunless %}
+                                {% endfor %}
+                              ]
+                            };
                           }
 
                           let sellingPlanInput = form.querySelector('[name="selling_plan"]');
@@ -997,44 +1205,6 @@
                           const intervalSelect = picker.querySelector('[data-interval-select]');
                           const options = picker.querySelectorAll('.subscription-option');
 
-                          // Product data for price updates
-                          const productData = {
-                            variants: [
-                              {% for variant in product.variants %}
-                              {
-                                id: {{ variant.id }},
-                                price: {{ variant.price }},
-                                compare_at_price: {{ variant.compare_at_price | default: variant.price }},
-                                selling_plan_allocations: [
-                                  {% for allocation in variant.selling_plan_allocations %}
-                                  {
-                                    selling_plan_id: {{ allocation.selling_plan.id }},
-                                    price: {{ allocation.price }},
-                                    compare_at_price: {{ allocation.compare_at_price | default: allocation.price }}
-                                  }{% unless forloop.last %},{% endunless %}
-                                  {% endfor %}
-                                ]
-                              }{% unless forloop.last %},{% endunless %}
-                              {% endfor %}
-                            ],
-                            selling_plans: [
-                              {% for plan in first_group.selling_plans %}
-                              {
-                                id: {{ plan.id }},
-                                name: {{ plan.name | json }},
-                                options: [
-                                  {% for option in plan.options %}
-                                  {
-                                    name: {{ option.name | json }},
-                                    value: {{ option.value | json }}
-                                  }{% unless forloop.last %},{% endunless %}
-                                  {% endfor %}
-                                ]
-                              }{% unless forloop.last %},{% endunless %}
-                              {% endfor %}
-                            ]
-                          };
-
                           function updateSellingPlan() {
                             const selectedOption = picker.querySelector('.subscription-radio:checked');
                             if (!selectedOption || !sellingPlanInput) return;
@@ -1042,13 +1212,25 @@
                             if (selectedOption.value === 'subscription' && intervalSelect) {
                               const planId = intervalSelect.options[intervalSelect.selectedIndex].dataset.planId;
                               sellingPlanInput.value = planId || '';
+                              
+                              // Also update Seal Subscriptions hidden input if it exists
+                              const sealSubsSellingPlanInput = form.querySelector('[data-sls-selling_plan]');
+                              if (sealSubsSellingPlanInput) {
+                                sealSubsSellingPlanInput.value = planId || '';
+                              }
                             } else {
                               sellingPlanInput.value = '';
+                              
+                              // Also update Seal Subscriptions hidden input
+                              const sealSubsSellingPlanInput = form.querySelector('[data-sls-selling_plan]');
+                              if (sealSubsSellingPlanInput) {
+                                sealSubsSellingPlanInput.value = '';
+                              }
                             }
                           }
 
                           function updatePrices() {
-                            if (!form) return;
+                            if (!form || !productData) return;
                             const variantIdInput = form.querySelector('[name="id"]');
                             if (!variantIdInput || !variantIdInput.value) return;
                             
@@ -1064,14 +1246,23 @@
                             const subscriptionPriceEl = picker.querySelector('[data-subscription-price]');
                             const subscriptionCompareEl = picker.querySelector('[data-subscription-compare]');
 
-                            // Update one-time price
+                            // Update one-time price - try to get from Seal Subscriptions first
                             if (oneTimePriceEl) {
-                              const priceCents = variant.price;
-                              const priceFormatted = formatMoney(priceCents);
-                              oneTimePriceEl.innerHTML = '<span class="money">' + priceFormatted + '</span>';
+                              const sealSubsOneTimePrice = document.querySelector('.sls-one-time-price .sls-price .money');
+                              if (sealSubsOneTimePrice) {
+                                oneTimePriceEl.innerHTML = sealSubsOneTimePrice.outerHTML;
+                              } else {
+                                const priceCents = variant.price;
+                                const priceFormatted = formatMoney(priceCents);
+                                oneTimePriceEl.innerHTML = '<span class="money">' + priceFormatted + '</span>';
+                              }
                             }
                             if (oneTimeCompareEl) {
-                              if (variant.compare_at_price && variant.compare_at_price > variant.price) {
+                              const sealSubsOneTimeCompare = document.querySelector('.sls-one-time-price .sls-original-price .money');
+                              if (sealSubsOneTimeCompare) {
+                                oneTimeCompareEl.innerHTML = sealSubsOneTimeCompare.outerHTML;
+                                oneTimeCompareEl.style.display = '';
+                              } else if (variant.compare_at_price && variant.compare_at_price > variant.price) {
                                 const comparePriceCents = variant.compare_at_price;
                                 const comparePriceFormatted = formatMoney(comparePriceCents);
                                 oneTimeCompareEl.innerHTML = '<span class="money">' + comparePriceFormatted + '</span>';
@@ -1081,16 +1272,31 @@
                               }
                             }
 
-                            // Update subscription price
+                            // Update subscription price - try to get from Seal Subscriptions first
                             if (selectedOption.value === 'subscription' && intervalSelect && subscriptionPriceEl) {
                               const planId = parseInt(intervalSelect.options[intervalSelect.selectedIndex].dataset.planId);
-                              const allocation = variant.selling_plan_allocations.find(a => a.selling_plan_id === planId);
-                              if (allocation) {
-                                const subPriceCents = allocation.price;
-                                const subPriceFormatted = formatMoney(subPriceCents);
-                                subscriptionPriceEl.innerHTML = '<span class="money">' + subPriceFormatted + '</span>';
-                                if (subscriptionCompareEl) {
-                                  if (allocation.compare_at_price && allocation.compare_at_price > allocation.price) {
+                              
+                              // Try to get price from Seal Subscriptions
+                              const sealSubsSubPrice = document.querySelector('.sls-selling-plan-group-price .sls-price .money');
+                              if (sealSubsSubPrice) {
+                                subscriptionPriceEl.innerHTML = sealSubsSubPrice.outerHTML;
+                              } else {
+                                const allocation = variant.selling_plan_allocations.find(a => a.selling_plan_id === planId);
+                                if (allocation) {
+                                  const subPriceCents = allocation.price;
+                                  const subPriceFormatted = formatMoney(subPriceCents);
+                                  subscriptionPriceEl.innerHTML = '<span class="money">' + subPriceFormatted + '</span>';
+                                }
+                              }
+
+                              if (subscriptionCompareEl) {
+                                const sealSubsSubCompare = document.querySelector('.sls-selling-plan-group-price .sls-original-price .money');
+                                if (sealSubsSubCompare) {
+                                  subscriptionCompareEl.innerHTML = sealSubsSubCompare.outerHTML;
+                                  subscriptionCompareEl.style.display = '';
+                                } else {
+                                  const allocation = variant.selling_plan_allocations.find(a => a.selling_plan_id === planId);
+                                  if (allocation && allocation.compare_at_price && allocation.compare_at_price > allocation.price) {
                                     const subComparePriceCents = allocation.compare_at_price;
                                     const subComparePriceFormatted = formatMoney(subComparePriceCents);
                                     subscriptionCompareEl.innerHTML = '<span class="money">' + subComparePriceFormatted + '</span>';
@@ -1122,6 +1328,22 @@
                               this.closest('.subscription-option').classList.add('subscription-option--active');
                               updateSellingPlan();
                               updatePrices();
+                              
+                              // Sync with Seal Subscriptions
+                              const sealSubsRadios = document.querySelectorAll('.sls-option[data-type]');
+                              if (this.value === 'one-time') {
+                                const sealSubsOneTime = Array.from(sealSubsRadios).find(r => r.dataset.type === 'one_time');
+                                if (sealSubsOneTime) {
+                                  sealSubsOneTime.checked = true;
+                                  sealSubsOneTime.dispatchEvent(new Event('change', { bubbles: true }));
+                                }
+                              } else if (this.value === 'subscription') {
+                                const sealSubsSub = Array.from(sealSubsRadios).find(r => r.dataset.type === 'subscription');
+                                if (sealSubsSub) {
+                                  sealSubsSub.checked = true;
+                                  sealSubsSub.dispatchEvent(new Event('change', { bubbles: true }));
+                                }
+                              }
                             });
                           });
 
@@ -1129,6 +1351,13 @@
                             intervalSelect.addEventListener('change', function() {
                               updateSellingPlan();
                               updatePrices();
+                              
+                              // Sync with Seal Subscriptions interval select
+                              const sealSubsInterval = document.querySelector('.sls-select[name="subs_interval"]');
+                              if (sealSubsInterval) {
+                                sealSubsInterval.value = this.value;
+                                sealSubsInterval.dispatchEvent(new Event('change', { bubbles: true }));
+                              }
                             });
                           }
 
@@ -1156,18 +1385,103 @@
                           updatePrices();
                         }
 
+                          // Initialize
+                          updateSellingPlan();
+                          updatePrices();
+
+                          // Monitor for Seal Subscriptions injection and update data
+                          const observer = new MutationObserver(function(mutations) {
+                            const sealSubsElement = document.querySelector('.sealsubs-target-element.sealsubs-full[data-product]');
+                            if (sealSubsElement) {
+                              hideSealSubscriptions();
+                              if (extractDataFromSealSubs()) {
+                                updatePrices();
+                                updateSellingPlan();
+                              }
+                            }
+                            
+                            // Sync with Seal Subscriptions radio buttons if they change
+                            const sealSubsRadios = document.querySelectorAll('.sls-option[data-type]');
+                            sealSubsRadios.forEach(radio => {
+                              if (!radio.hasAttribute('data-synced')) {
+                                radio.setAttribute('data-synced', 'true');
+                                radio.addEventListener('change', function() {
+                                  const ourRadios = picker.querySelectorAll('.subscription-radio');
+                                  if (this.dataset.type === 'one_time') {
+                                    ourRadios[0]?.click();
+                                  } else if (this.dataset.type === 'subscription') {
+                                    ourRadios[1]?.click();
+                                    // Sync interval select
+                                    const sealSubsInterval = document.querySelector('.sls-select[name="subs_interval"]');
+                                    if (sealSubsInterval && intervalSelect) {
+                                      intervalSelect.value = sealSubsInterval.value;
+                                      updateSellingPlan();
+                                      updatePrices();
+                                    }
+                                  }
+                                });
+                              }
+                            });
+                          });
+
+                          // Observe form for Seal Subscriptions injection
+                          if (form) {
+                            observer.observe(form, {
+                              childList: true,
+                              subtree: true,
+                              attributes: true,
+                              attributeFilter: ['data-product']
+                            });
+                          }
+                        }
+
                         // Wait for DOM and potential Seal Subscriptions injection
                         if (document.readyState === 'loading') {
                           document.addEventListener('DOMContentLoaded', function() {
                             setTimeout(initSubscriptionPicker, 500);
+                            // Also try after longer delay for Seal Subscriptions
+                            setTimeout(initSubscriptionPicker, 2000);
                           });
                         } else {
                           setTimeout(initSubscriptionPicker, 500);
+                          setTimeout(initSubscriptionPicker, 2000);
                         }
+
+                        // Hide Seal Subscriptions immediately and continuously
+                        hideSealSubscriptions();
+                        const hideInterval = setInterval(function() {
+                          hideSealSubscriptions();
+                          // Try to extract data if not already extracted
+                          if (!sealSubsData) {
+                            const sealSubsElement = document.querySelector('.sealsubs-target-element.sealsubs-full[data-product]');
+                            if (sealSubsElement) {
+                              if (extractDataFromSealSubs()) {
+                                const form = document.getElementById(formId);
+                                if (form) {
+                                  initSubscriptionPicker();
+                                  clearInterval(hideInterval);
+                                }
+                              }
+                            }
+                          }
+                        }, 500);
+
+                        // Stop interval after 10 seconds
+                        setTimeout(() => clearInterval(hideInterval), 10000);
                       })();
                     </script>
 
                     <style>
+                      /* Hide Seal Subscriptions block */
+                      .sealsubs-target-element.sealsubs-full,
+                      .sealsubs-container {
+                        display: none !important;
+                        visibility: hidden !important;
+                        opacity: 0 !important;
+                        height: 0 !important;
+                        overflow: hidden !important;
+                      }
+
                       .custom-subscription-picker {
                         margin-bottom: 24px;
                       }
