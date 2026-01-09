@@ -136,22 +136,24 @@
 
   /* Desktop: show desktop version, hide mobile */
   @media screen and (min-width: 750px) {
-    .testimonial-under-gallery-{{ block.id }}.testimonial-desktop {
-      display: flex;
-    }
-    .testimonial-under-gallery-{{ block.id }}.testimonial-mobile {
+    .testimonial-under-gallery-{{ block.id }} {
       display: none !important;
     }
+    .product-container.product-container--modern.gallery .testimonial-under-gallery-{{ block.id }}.testimonial-desktop {
+      display: flex !important;
+    }
+  
   }
 
   /* Mobile: hide desktop version, show mobile (without image) */
   @media screen and (max-width: 749px) {
-    .testimonial-under-gallery-{{ block.id }}.testimonial-desktop {
+      .testimonial-under-gallery-{{ block.id }}. {
+        display: flex !important;
+      }
+     .product-container.product-container--modern.gallery .testimonial-under-gallery-{{ block.id }} {
       display: none !important;
     }
-    .testimonial-under-gallery-{{ block.id }}.testimonial-mobile {
-      display: block;
-    }
+ 
     .testimonial-under-gallery-{{ block.id }}.testimonial-mobile .testimonial-image {
       display: none !important;
     }
