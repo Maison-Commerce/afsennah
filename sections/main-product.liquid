@@ -1075,9 +1075,6 @@
                             // Update UI with extracted data
                             updatePickerFromSealSubs();
                             
-                            // Update all product data from Seal Subscriptions
-                            updateAllProductDataFromSealSubs();
-                            
                             // Show picker after data is extracted
                             if (picker) {
                               picker.style.display = '';
@@ -1423,183 +1420,6 @@
                           }
                         }
 
-                        // Update product title from Seal Subscriptions (if available)
-                        function updateProductTitleFromSealSubs() {
-                          console.log('[Product Data] updateProductTitleFromSealSubs called');
-                          console.log('[Product Data] sealSubsData:', sealSubsData);
-                          
-                          // Шукаємо title в різних місцях:
-                          // 1. В data-product JSON
-                          // 2. В HTML елементі sealsubs-target-element (всі атрибути)
-                          // 3. В дочірніх елементах sealsubs
-                          
-                          let productTitle = null;
-                          
-                          // Перевіряємо data-product JSON
-                          if (sealSubsData && sealSubsData.title) {
-                            productTitle = sealSubsData.title;
-                            console.log('[Product Data] Found title in Seal Subscriptions data:', productTitle);
-                          } else {
-                            // Шукаємо в HTML елементі sealsubs
-                            const sealSubsElement = document.querySelector('.sealsubs-target-element.sealsubs-full[data-product]');
-                            if (sealSubsElement) {
-                              console.log('[Product Data] Seal Subscriptions element found, checking for title...');
-                              console.log('[Product Data] Element attributes:', Array.from(sealSubsElement.attributes).map(a => a.name + '=' + a.value));
-                              
-                              // Перевіряємо всі можливі атрибути з title
-                              const possibleTitleAttrs = ['data-title', 'data-product-title', 'title', 'data-name'];
-                              for (const attr of possibleTitleAttrs) {
-                                const attrValue = sealSubsElement.getAttribute(attr);
-                                if (attrValue) {
-                                  productTitle = attrValue;
-                                  console.log('[Product Data] Found title in ' + attr + ' attribute:', productTitle);
-                                  break;
-                                }
-                              }
-                              
-                              // Якщо не знайдено в атрибутах, шукаємо в дочірніх елементах
-                              if (!productTitle) {
-                                const titleSelectors = [
-                                  'h1', 'h2', 'h3', 
-                                  '.product-title', 
-                                  '[data-product-title]',
-                                  '.sls-product-title',
-                                  '.product-name',
-                                  '[data-name]'
-                                ];
-                                
-                                for (const selector of titleSelectors) {
-                                  const titleInElement = sealSubsElement.querySelector(selector);
-                                  if (titleInElement) {
-                                    productTitle = titleInElement.textContent.trim();
-                                    console.log('[Product Data] Found title in sealsubs element using selector "' + selector + '":', productTitle);
-                                    break;
-                                  }
-                                }
-                              }
-                              
-                              // Якщо все ще не знайдено, перевіряємо весь текстовий вміст першого дочірнього елемента
-                              if (!productTitle) {
-                                const firstChild = sealSubsElement.firstElementChild;
-                                if (firstChild) {
-                                  const textContent = firstChild.textContent.trim();
-                                  if (textContent && textContent.length > 0 && textContent.length < 200) {
-                                    // Якщо текст виглядає як title (не дуже довгий)
-                                    productTitle = textContent;
-                                    console.log('[Product Data] Found title in first child text content:', productTitle);
-                                  }
-                                }
-                              }
-                            } else {
-                              console.log('[Product Data] Seal Subscriptions element not found');
-                            }
-                          }
-                          
-                          // Якщо title не знайдено, залишаємо з Shopify
-                          if (!productTitle) {
-                            console.log('[Product Data] No title found in Seal Subscriptions, keeping Shopify title');
-                            return;
-                          }
-                          
-                          // Оновлюємо title на сторінці
-                          const titleEl = document.querySelector('.product-title');
-                          if (titleEl) {
-                            console.log('[Product Data] Updating product title from Seal Subscriptions:', productTitle);
-                            titleEl.textContent = productTitle;
-                          } else {
-                            console.warn('[Product Data] Product title element not found on page');
-                          }
-                        }
-
-                        // Update all product prices on the page from Seal Subscriptions
-                        function updateProductPricesFromSealSubs() {
-                          console.log('[Product Data] updateProductPricesFromSealSubs called');
-                          if (!sealSubsData || !sealSubsData.variants || !form) {
-                            console.log('[Product Data] Missing Seal Subscriptions data or form');
-                            return;
-                          }
-                          
-                          const variantIdInput = form.querySelector('[name="id"]');
-                          if (!variantIdInput || !variantIdInput.value) {
-                            console.log('[Product Data] No variant ID input or value');
-                            return;
-                          }
-                          
-                          const variantId = parseInt(variantIdInput.value);
-                          const variant = sealSubsData.variants.find(v => parseInt(v.id) === variantId);
-                          if (!variant) {
-                            console.log('[Product Data] Variant not found in Seal Subscriptions data:', variantId);
-                            return;
-                          }
-                          
-                          console.log('[Product Data] Found variant in Seal Subscriptions data:', variant);
-                          
-                          // Оновити основну ціну через price snippet структуру
-                          // Шукаємо .price__current .js-value для поточної ціни
-                          const currentPriceEl = document.querySelector('.product-info__price .price__current .js-value');
-                          if (currentPriceEl) {
-                            const priceFormatted = formatMoney(variant.price);
-                            // Оновлюємо вміст, зберігаючи структуру
-                            if (currentPriceEl.querySelector('.money')) {
-                              currentPriceEl.querySelector('.money').textContent = priceFormatted;
-                            } else {
-                              // Якщо немає .money, оновлюємо напряму
-                              currentPriceEl.innerHTML = priceFormatted;
-                            }
-                            console.log('[Product Data] Updated current price:', priceFormatted);
-                          }
-                          
-                          // Оновити compare at price якщо є
-                          const wasPriceEl = document.querySelector('.product-info__price .price__was .js-value');
-                          if (variant.compare_at_price && variant.compare_at_price > variant.price) {
-                            const comparePriceFormatted = formatMoney(variant.compare_at_price);
-                            if (wasPriceEl) {
-                              // Показати елемент з старою ціною
-                              const wasPriceContainer = wasPriceEl.closest('.price__was');
-                              if (wasPriceContainer) {
-                                wasPriceContainer.style.display = '';
-                                if (wasPriceEl.querySelector('.money')) {
-                                  wasPriceEl.querySelector('.money').textContent = comparePriceFormatted;
-                                } else {
-                                  wasPriceEl.innerHTML = comparePriceFormatted;
-                                }
-                                console.log('[Product Data] Updated compare price:', comparePriceFormatted);
-                              }
-                            }
-                            // Додати клас price--on-sale до контейнера
-                            const priceContainer = document.querySelector('.product-info__price .price');
-                            if (priceContainer) {
-                              priceContainer.classList.add('price--on-sale');
-                            }
-                          } else if (wasPriceEl) {
-                            // Сховати елемент з старою ціною, якщо compare_at_price не більше price
-                            const wasPriceContainer = wasPriceEl.closest('.price__was');
-                            if (wasPriceContainer) {
-                              wasPriceContainer.style.display = 'none';
-                            }
-                            const priceContainer = document.querySelector('.product-info__price .price');
-                            if (priceContainer) {
-                              priceContainer.classList.remove('price--on-sale');
-                            }
-                          }
-                        }
-
-                        // Main function to update all product data from Seal Subscriptions
-                        function updateAllProductDataFromSealSubs() {
-                          console.log('[Product Data] updateAllProductDataFromSealSubs called');
-                          
-                          if (!sealSubsData) {
-                            console.log('[Product Data] No Seal Subscriptions data available');
-                            return;
-                          }
-                          
-                          // Оновити назву (якщо є)
-                          updateProductTitleFromSealSubs();
-                          
-                          // Оновити ціни
-                          updateProductPricesFromSealSubs();
-                        }
-
                         function initSubscriptionPicker() {
                           console.log('[Subscription Picker] initSubscriptionPicker called, isInitialized:', isInitialized);
                           if (isInitialized || !picker || !picker.parentNode) {
@@ -1780,8 +1600,7 @@
                             productSection.addEventListener('on:variant:change', function(evt) {
                               console.log('[Subscription Picker] Variant changed event:', evt.detail);
                               if (evt.detail && evt.detail.variant) {
-                                updatePrices(); // Для subscription picker
-                                updateProductPricesFromSealSubs(); // Для всіх цін на сторінці
+                                updatePrices();
                               }
                             });
                           }
@@ -1791,13 +1610,11 @@
                             console.log('[Subscription Picker] Setting up variant input observer');
                             variantInput.addEventListener('change', function() {
                               console.log('[Subscription Picker] Variant input changed');
-                              updatePrices(); // Для subscription picker
-                              updateProductPricesFromSealSubs(); // Для всіх цін на сторінці
+                              updatePrices();
                             });
                             const observer = new MutationObserver(function() {
                               console.log('[Subscription Picker] Variant input mutation detected');
-                              updatePrices(); // Для subscription picker
-                              updateProductPricesFromSealSubs(); // Для всіх цін на сторінці
+                              updatePrices();
                             });
                             observer.observe(variantInput, { attributes: true, attributeFilter: ['value'] });
                           }
@@ -1813,7 +1630,6 @@
                             setTimeout(function() {
                               updatePrices();
                               updateSellingPlan();
-                              updateProductPricesFromSealSubs(); // Оновити всі ціни на сторінці
                             }, 50);
                           }
                         }
@@ -1901,7 +1717,6 @@
                                   console.log('[Subscription Picker] Updating prices and selling plan');
                                   updatePrices();
                                   updateSellingPlan();
-                                  updateProductPricesFromSealSubs(); // Оновити всі ціни на сторінці
                                 }
                               }
                             }, timeSinceLastUpdate < UPDATE_DEBOUNCE_MS ? UPDATE_DEBOUNCE_MS - timeSinceLastUpdate : 100);
@@ -1932,8 +1747,6 @@
                               // Wait a bit before initializing to ensure DOM is ready
                               setTimeout(function() {
                                 initSubscriptionPicker();
-                                // Оновити всі дані продукту після ініціалізації
-                                updateAllProductDataFromSealSubs();
                               }, 100);
                             }
                           } else {
