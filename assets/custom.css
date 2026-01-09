@@ -2476,6 +2476,16 @@ cart-drawer .cart-upsell-product {
     color: rgba(44, 41, 38, 0.75);
 }
 
+.product-item-upsells .product-upsell-card__price-current {
+    font-family: "Neue Haas Grotesk Display Pro";
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 150%;
+    letter-spacing: 0%;
+    text-align: center;
+    color: #2E432F;
+}
+
 @media (max-width: 768px) {
     .product-container.product-container--modern.gallery .testimonial-under-gallery {
         display: none;
