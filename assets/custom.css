@@ -1212,7 +1212,9 @@ video-section-play-button {
     border: 1px solid #fff;
     background: #1A365D;
 }
-
+.tiered-rewards-bar__banner .tiered-rewards-bar__banner-text p {
+    margin: 0;
+}
 
 @media (max-width: 767px) {
     .tiered-rewards-bar__banner {
