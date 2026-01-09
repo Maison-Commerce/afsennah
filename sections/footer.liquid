@@ -58,6 +58,9 @@
                 {% if block.settings.menu != blank %}
                   <ul class="maison_commerce_maison_footer__menu-list">
                     {% for link in block.settings.menu.links %}
+                      <script>
+                        console.log('link.url', '{{ link.url }}')
+                      </script>
                       <li class="maison_commerce_maison_footer__menu-item">
                         <a href="{{ link.url }}" class="maison_commerce_maison_footer__menu-link">
                           {{ link.title }}
