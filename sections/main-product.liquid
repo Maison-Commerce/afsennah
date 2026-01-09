@@ -1857,12 +1857,16 @@
                         background: #FFFFFF;
                         cursor: pointer;
                         transition: all 0.3s ease;
+                        display: flex;
+                        gap: 16px;
+                        align-items: flex-start;
                       }
 
                       .subscription-option__header {
                         display: flex;
                         gap: 16px;
                         align-items: flex-start;
+                        flex: 1;
                       }
 
                       .subscription-option:hover {
@@ -1936,16 +1940,13 @@
                       .subscription-option__content {
                         flex: 1;
                         min-width: 0;
-                        display: flex;
-                        flex-direction: column;
-                        gap: 0;
                       }
 
                       .subscription-option__label {
                         display: block;
                         font-size: 16px;
                         font-weight: 600;
-                        margin-bottom: 0;
+                        margin-bottom: 12px;
                         cursor: pointer;
                         color: #1A365D;
                       }
@@ -1962,8 +1963,7 @@
                       }
 
                       .subscription-option__price {
-                        margin-top: 8px;
-                        margin-bottom: 0;
+                        margin-bottom: 16px;
                       }
 
                       .subscription-price {
