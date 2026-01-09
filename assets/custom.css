@@ -2582,6 +2582,9 @@ cart-drawer .cart-upsell-product {
     align-items: center;
     gap: 8px;
 }
+.subscription-option__price,
 .subscription-option__label {
     margin: 0 !important;
 }
+
+
