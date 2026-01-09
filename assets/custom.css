@@ -2386,6 +2386,7 @@ justify-content: space-between;
 cart-drawer .cart-upsell-product__title {
     font-size: 12px;
 }
-cart-drawer .cart-upsell-product__price {
+cart-drawer .cart-upsell-product__price,
+cart-drawer .cart-upsell-product__price .cart-upsell-product__price-current {
     font-size: 12px;
 }
