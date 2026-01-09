@@ -2512,3 +2512,14 @@ cart-drawer .cart-upsell-product {
 .sls-savings-badge {
     background-color: #E98C36 !important;
 }
+
+.subscription-title {
+    margin: 0;
+    font-family: "Gotham";
+    font-weight: 500;
+    font-style: Medium;
+    font-size: 14px;
+    line-height: 150%;
+    letter-spacing: 0%;
+    color: #1D211E;
+}
