@@ -1059,17 +1059,31 @@
                             console.log('[Subscription Picker] Variants count:', variants.length);
 
                             // Update productData
+                            // Preserve existing compare_at_price if not provided in Seal Subscriptions data
+                            const existingVariants = productData && productData.variants ? productData.variants : [];
+                            
                             productData = {
-                              variants: variants.map(v => ({
-                                id: parseInt(v.id), // Ensure ID is a number
-                                price: v.price,
-                                compare_at_price: v.compare_at_price || v.price,
-                                selling_plan_allocations: (v.selling_plan_allocations || []).map(a => ({
-                                  selling_plan_id: parseInt(a.selling_plan_id), // Ensure ID is a number
-                                  price: a.price,
-                                  compare_at_price: a.compare_at_price || a.price
-                                }))
-                              })),
+                              variants: variants.map(v => {
+                                const variantId = parseInt(v.id);
+                                // Try to find existing variant to preserve compare_at_price if not in Seal Subscriptions data
+                                const existingVariant = existingVariants.find(ev => parseInt(ev.id) === variantId);
+                                
+                                return {
+                                  id: variantId, // Ensure ID is a number
+                                  price: v.price,
+                                  // Use compare_at_price from Seal Subscriptions if available, otherwise use existing or price
+                                  compare_at_price: (v.compare_at_price !== undefined && v.compare_at_price !== null && v.compare_at_price !== v.price) 
+                                    ? v.compare_at_price 
+                                    : (existingVariant && existingVariant.compare_at_price && existingVariant.compare_at_price > v.price)
+                                      ? existingVariant.compare_at_price
+                                      : v.price,
+                                  selling_plan_allocations: (v.selling_plan_allocations || []).map(a => ({
+                                    selling_plan_id: parseInt(a.selling_plan_id), // Ensure ID is a number
+                                    price: a.price,
+                                    compare_at_price: a.compare_at_price || a.price
+                                  }))
+                                };
+                              }),
                               selling_plans: sellingPlans.map(plan => ({
                                 id: parseInt(plan.id), // Ensure ID is a number
                                 name: plan.name,
@@ -1570,12 +1584,9 @@
                           // Hide Seal Subscriptions block
                           hideSealSubscriptions();
 
-                          // Try to extract data from Seal Subscriptions
-                          const hasSealSubsData = extractDataFromSealSubs();
-                          console.log('[Subscription Picker] Has Seal Subscriptions data:', hasSealSubsData);
-
-                          // If no Seal Subscriptions data, use default product data
-                          if (!hasSealSubsData) {
+                          // Initialize productData with default data from Liquid first
+                          // This ensures we have compare_at_price values even if Seal Subscriptions doesn't provide them
+                          if (!productData) {
                             productData = {
                               variants: [
                                 {% for variant in product.variants %}
@@ -1614,7 +1625,13 @@
                                 {%- endif -%}
                               ]
                             };
+                            console.log('[Subscription Picker] Initialized productData from Liquid:', productData);
                           }
+
+                          // Try to extract data from Seal Subscriptions and update productData
+                          // This will preserve compare_at_price from initial productData if not in Seal Subscriptions
+                          const hasSealSubsData = extractDataFromSealSubs();
+                          console.log('[Subscription Picker] Has Seal Subscriptions data:', hasSealSubsData);
 
                           // Check for existing selling_plan input (from Seal Subscriptions or our own)
                           // Find or create selling_plan input
