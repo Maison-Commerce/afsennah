@@ -1239,8 +1239,8 @@
         "drop_right_rotation": 42,
         "drop_opacity": 1,
         "drop_blur": 0,
-        "drop_left_width": 400,
-        "drop_left_height": 403,
+        "drop_left_width": 500,
+        "drop_left_height": 400,
         "drop_right_width": 319,
         "drop_right_height": 326
       }
