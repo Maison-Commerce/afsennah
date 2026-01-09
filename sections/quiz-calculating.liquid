@@ -130,33 +130,38 @@
       <!-- Mobile Reviews Carousel -->
       {% if section.blocks.size > 0 %}
         <div class="quiz-calculating-mobile-reviews">
-          <div class="quiz-calculating-mobile-reviews-container">
-            {% for block in section.blocks %}
-              <div class="quiz-calculating-mobile-review-card" {{ block.shopify_attributes }}>
-                <div class="quiz-calculating-mobile-review-content">
-                  <div class="quiz-calculating-mobile-review-stars">
-                    {% for i in (1..5) %}
-                      <svg width="12" height="12" viewBox="0 0 20 20" fill="none">
-                        <path d="M10 1.66669L12.575 6.88335L18.3333 7.72502L14.1667 11.7834L15.15 17.5167L10 14.8084L4.85 17.5167L5.83333 11.7834L1.66667 7.72502L7.425 6.88335L10 1.66669Z" fill="#E98C36" stroke="#E98C36" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                      </svg>
-                    {% endfor %}
-                  </div>
-                  <div class="quiz-calculating-mobile-review-text">{{ block.settings.review_text }}</div>
-                  <div class="quiz-calculating-mobile-review-author">
-                    <span class="quiz-calculating-mobile-review-author-name">{{ block.settings.author_name }}</span>
-                    <svg width="3" height="3" viewBox="0 0 3 3" fill="none" class="quiz-calculating-mobile-review-dot">
-                      <circle cx="1.5" cy="1.5" r="1.5" fill="#2C2926"/>
-                    </svg>
-                    <div class="quiz-calculating-mobile-review-verified">
-                      <svg width="12" height="12" viewBox="0 0 16 16" fill="none">
-                        <path d="M8 0L10.06 5.90667L16 6.82667L11.3333 11.1733L12.12 17.3333L8 14.6667L3.88 17.3333L4.66667 11.1733L0 6.82667L5.94 5.90667L8 0Z" fill="#2C2926"/>
-                      </svg>
-                      <span class="quiz-calculating-mobile-review-verified-text">Verified Buyer</span>
+          <div class="quiz-calculating-mobile-reviews-container swiper" id="quiz-calculating-mobile-reviews-{{ section.id }}">
+            <div class="swiper-wrapper">
+              {% comment %} Duplicate reviews multiple times for seamless infinite loop {% endcomment %}
+              {% for i in (1..5) %}
+                {% for block in section.blocks %}
+                  <div class="quiz-calculating-mobile-review-card swiper-slide" {% if i == 1 %}{{ block.shopify_attributes }}{% endif %}>
+                    <div class="quiz-calculating-mobile-review-content">
+                      <div class="quiz-calculating-mobile-review-stars">
+                        {% for j in (1..5) %}
+                          <svg width="12" height="12" viewBox="0 0 20 20" fill="none">
+                            <path d="M10 1.66669L12.575 6.88335L18.3333 7.72502L14.1667 11.7834L15.15 17.5167L10 14.8084L4.85 17.5167L5.83333 11.7834L1.66667 7.72502L7.425 6.88335L10 1.66669Z" fill="#E98C36" stroke="#E98C36" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                          </svg>
+                        {% endfor %}
+                      </div>
+                      <div class="quiz-calculating-mobile-review-text">{{ block.settings.review_text }}</div>
+                      <div class="quiz-calculating-mobile-review-author">
+                        <span class="quiz-calculating-mobile-review-author-name">{{ block.settings.author_name }}</span>
+                        <svg width="3" height="3" viewBox="0 0 3 3" fill="none" class="quiz-calculating-mobile-review-dot">
+                          <circle cx="1.5" cy="1.5" r="1.5" fill="#2C2926"/>
+                        </svg>
+                        <div class="quiz-calculating-mobile-review-verified">
+                          <svg width="12" height="12" viewBox="0 0 16 16" fill="none">
+                            <path d="M8 0L10.06 5.90667L16 6.82667L11.3333 11.1733L12.12 17.3333L8 14.6667L3.88 17.3333L4.66667 11.1733L0 6.82667L5.94 5.90667L8 0Z" fill="#2C2926"/>
+                          </svg>
+                          <span class="quiz-calculating-mobile-review-verified-text">Verified Buyer</span>
+                        </div>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </div>
-            {% endfor %}
+                {% endfor %}
+              {% endfor %}
+            </div>
           </div>
         </div>
       {% endif %}
@@ -503,25 +508,19 @@
   #shopify-section-{{ section.id }} .quiz-calculating-mobile-reviews {
     display: none;
     width: 100%;
-    overflow-x: auto;
     padding: 20px 0;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-  }
-
-  #shopify-section-{{ section.id }} .quiz-calculating-mobile-reviews::-webkit-scrollbar {
-    display: none;
+    overflow: hidden;
   }
 
   #shopify-section-{{ section.id }} .quiz-calculating-mobile-reviews-container {
-    display: flex;
-    gap: 12px;
+    width: 100%;
+    overflow: hidden;
     padding: 0 20px;
   }
 
   #shopify-section-{{ section.id }} .quiz-calculating-mobile-review-card {
-    flex: 0 0 310px;
+    width: 310px;
+    flex-shrink: 0;
     background: white;
     border-radius: 12px;
     box-shadow: 0px 1.514px 6.055px rgba(0, 0, 0, 0.06);
@@ -739,6 +738,7 @@
         if (mutation.type === 'attributes' && mutation.attributeName === 'style') {
           updateCalculatingProgress();
           initSwiper();
+          initMobileSwiper();
         }
       });
     });
@@ -915,16 +915,174 @@
       }, 300);
     }
 
+    // Initialize SwiperJS for mobile reviews container
+    let mobileReviewsSwiper = null;
+    let mobileSwiperInitialized = false;
+
+    function initMobileSwiper() {
+      // Prevent multiple initializations
+      if (mobileSwiperInitialized) {
+        return;
+      }
+
+      const calcSection = document.querySelector('[data-calculating]');
+      if (!calcSection) {
+        return;
+      }
+
+      // Check if section is visible
+      if (calcSection.style.display === 'none') {
+        return;
+      }
+
+      // Check if mobile reviews container is visible (only on mobile)
+      const mobileReviews = calcSection.querySelector('.quiz-calculating-mobile-reviews');
+      if (!mobileReviews) {
+        return;
+      }
+
+      const mobileReviewsStyle = window.getComputedStyle(mobileReviews);
+      if (mobileReviewsStyle.display === 'none') {
+        // Destroy Swiper if switching to desktop
+        if (mobileReviewsSwiper) {
+          mobileReviewsSwiper.destroy(true, true);
+          mobileReviewsSwiper = null;
+          mobileSwiperInitialized = false;
+        }
+        return;
+      }
+
+      // Check if Swiper container exists
+      const mobileSwiperContainer = document.getElementById('quiz-calculating-mobile-reviews-{{ section.id }}');
+      if (!mobileSwiperContainer) {
+        return;
+      }
+
+      // Wait a bit for DOM to be ready
+      setTimeout(() => {
+        // Destroy existing Swiper if it exists
+        if (mobileReviewsSwiper) {
+          mobileReviewsSwiper.destroy(true, true);
+          mobileReviewsSwiper = null;
+        }
+
+        // Check if Swiper is available
+        if (typeof Swiper === 'undefined') {
+          console.log('[Mobile Swiper] SwiperJS not loaded yet');
+          return;
+        }
+
+        // Initialize Swiper with horizontal scrolling
+        mobileReviewsSwiper = new Swiper('#quiz-calculating-mobile-reviews-{{ section.id }}', {
+          direction: 'horizontal',
+          slidesPerView: 'auto',
+          spaceBetween: 12,
+          loop: false, // Disable Swiper's loop, we'll handle it manually
+          autoplay: false,
+          speed: 0,
+          allowTouchMove: false,
+          grabCursor: false,
+          freeMode: false,
+          effect: 'slide',
+          watchSlidesProgress: true,
+          watchSlidesVisibility: true
+        });
+
+        // Smooth continuous horizontal scrolling
+        let mobileSmoothScrollAnimation = null;
+        let isMobileScrolling = false;
+        let isMobilePaused = false;
+        const mobileScrollSpeed = 0.5; // pixels per frame
+        let mobileOneSetWidth = null;
+
+        function calculateMobileOneSetWidth() {
+          if (mobileOneSetWidth !== null) return mobileOneSetWidth;
+
+          const slides = mobileReviewsSwiper.slides;
+          if (!slides || slides.length === 0) return 0;
+
+          const originalBlockCount = {{ section.blocks.size }};
+          mobileOneSetWidth = 0;
+
+          // Sum width of first set of slides (original reviews)
+          for (let i = 0; i < originalBlockCount; i++) {
+            if (slides[i]) {
+              mobileOneSetWidth += slides[i].offsetWidth + 12; // 12 is spaceBetween
+            }
+          }
+
+          return mobileOneSetWidth;
+        }
+
+        function startMobileSmoothScroll() {
+          if (isMobileScrolling || !mobileReviewsSwiper || !mobileReviewsSwiper.initialized) return;
+
+          isMobileScrolling = true;
+          const setWidth = calculateMobileOneSetWidth();
+
+          function animate() {
+            if (!mobileReviewsSwiper || !mobileReviewsSwiper.initialized || !mobileReviewsSwiper.el) {
+              isMobileScrolling = false;
+              return;
+            }
+
+            if (!isMobilePaused) {
+              const wrapper = mobileReviewsSwiper.wrapperEl;
+              if (wrapper && setWidth > 0) {
+                let currentTranslate = mobileReviewsSwiper.getTranslate();
+
+                // Calculate new translate position (horizontal, so we subtract)
+                let newTranslate = currentTranslate - mobileScrollSpeed;
+
+                // Seamless loop: when we've scrolled past one full set, reset seamlessly
+                if (newTranslate <= -setWidth) {
+                  newTranslate = newTranslate + setWidth;
+                }
+
+                mobileReviewsSwiper.setTranslate(newTranslate);
+              }
+            }
+
+            mobileSmoothScrollAnimation = requestAnimationFrame(animate);
+          }
+
+          mobileSmoothScrollAnimation = requestAnimationFrame(animate);
+        }
+
+        // Start smooth scrolling after initialization
+        setTimeout(() => {
+          startMobileSmoothScroll();
+        }, 500);
+
+        // Pause/resume on hover
+        if (mobileSwiperContainer && mobileReviews) {
+          mobileReviews.addEventListener('mouseenter', () => {
+            isMobilePaused = true;
+          });
+
+          mobileReviews.addEventListener('mouseleave', () => {
+            isMobilePaused = false;
+          });
+        }
+
+        mobileSwiperInitialized = true;
+        console.log('[Mobile Swiper] Mobile Reviews Swiper initialized');
+      }, 300);
+    }
+
     // Initial check
     initSwiper();
+    initMobileSwiper();
 
     // Also check after delays in case the section is already visible
     setTimeout(() => {
       initSwiper();
+      initMobileSwiper();
     }, 1000);
 
     setTimeout(() => {
       initSwiper();
+      initMobileSwiper();
     }, 2000);
 
     // Listen for window resize
@@ -933,7 +1091,9 @@
       clearTimeout(resizeTimeout);
       resizeTimeout = setTimeout(() => {
         swiperInitialized = false; // Reset flag to allow re-initialization
+        mobileSwiperInitialized = false;
         initSwiper();
+        initMobileSwiper();
       }, 300);
     });
 
@@ -941,7 +1101,9 @@
     if (typeof Shopify !== 'undefined' && Shopify.designMode) {
       document.addEventListener('shopify:section:load', () => {
         swiperInitialized = false;
+        mobileSwiperInitialized = false;
         initSwiper();
+        initMobileSwiper();
       });
     }
   })();
