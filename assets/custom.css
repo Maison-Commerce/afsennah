@@ -2461,7 +2461,12 @@ cart-drawer .cart-upsell-product {
         display: none;
     }
     
- 
+    .testimonial-under-gallery {
+        display: flex !important;
+    }
+    .product-container.product-container--modern.gallery .testimonial-under-gallery {
+      display: none !important;
+    }
 }
 
 
