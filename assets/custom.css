@@ -2506,10 +2506,10 @@ cart-drawer .cart-upsell-product {
     .video-slide-title {
         font-size: 18px;
     }
-    .quiz-cta-wrapper.buy-buttons-main-quiz-button,
+    /* .quiz-cta-wrapper.buy-buttons-main-quiz-button,
     .buy-buttons-main-quiz-button {
         display: flex !important;
-    }
+    } */
 }
 
 .sls-savings-badge {
