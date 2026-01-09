@@ -1226,6 +1226,9 @@ video-section-play-button {
         width: 32px;
         right: -30px;
     }
+    .tiered-rewards-bar {
+        margin-top: 0;
+    }
     
     .tiered-rewards-bar__marker-image img,
     .tiered-rewards-bar__marker-icon {
