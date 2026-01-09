@@ -265,13 +265,41 @@
           "settings": {
             "text": "Sulfate free"
           }
+        },
+        "mobile_announcement_YQBWbe": {
+          "type": "mobile_announcement",
+          "settings": {
+            "text": "Carbon neutral"
+          }
+        },
+        "mobile_announcement_T6LQVi": {
+          "type": "mobile_announcement",
+          "settings": {
+            "text": "Mineral oils cruelty-free"
+          }
+        },
+        "mobile_announcement_BAiFXV": {
+          "type": "mobile_announcement",
+          "settings": {
+            "text": "Phthalate free"
+          }
+        },
+        "mobile_announcement_CHHedD": {
+          "type": "mobile_announcement",
+          "settings": {
+            "text": "Sulfate free"
+          }
         }
       },
       "block_order": [
         "announcement_ffTUfA",
         "announcement_KipELF",
         "announcement_etEh4w",
-        "announcement_dNBiqK"
+        "announcement_dNBiqK",
+        "mobile_announcement_YQBWbe",
+        "mobile_announcement_T6LQVi",
+        "mobile_announcement_BAiFXV",
+        "mobile_announcement_CHHedD"
       ],
       "name": "Maison Announcement Bar",
       "settings": {
