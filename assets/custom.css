@@ -1180,6 +1180,16 @@ video-section-play-button {
     height: 7.3px;
     display: block;
 }
+
+.cart-item__title a {
+    font-family: "Gotham";
+    font-weight: 500;
+    font-style: Medium;
+    font-size: 16px;
+    line-height: 150%;
+    letter-spacing: 0%;
+    color: #232323;
+}
 .tiered-rewards-bar__marker-image .tiered-rewards-bar__marker-price {
     color: rgba(35, 35, 35, 0.75);
     font-family: "Gotham";
