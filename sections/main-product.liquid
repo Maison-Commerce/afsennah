@@ -1046,17 +1046,17 @@
                             // Update productData
                             productData = {
                               variants: variants.map(v => ({
-                                id: v.id,
+                                id: parseInt(v.id), // Ensure ID is a number
                                 price: v.price,
                                 compare_at_price: v.compare_at_price || v.price,
                                 selling_plan_allocations: (v.selling_plan_allocations || []).map(a => ({
-                                  selling_plan_id: a.selling_plan_id,
+                                  selling_plan_id: parseInt(a.selling_plan_id), // Ensure ID is a number
                                   price: a.price,
                                   compare_at_price: a.compare_at_price || a.price
                                 }))
                               })),
                               selling_plans: sellingPlans.map(plan => ({
-                                id: plan.id,
+                                id: parseInt(plan.id), // Ensure ID is a number
                                 name: plan.name,
                                 options: plan.options || [],
                                 description: plan.description || ''
@@ -1236,10 +1236,27 @@
                           }
                           
                           const variantId = parseInt(variantIdInput.value);
-                          console.log('[Subscription Picker] Current variant ID:', variantId);
-                          const variant = productData.variants.find(v => v.id === variantId);
+                          console.log('[Subscription Picker] Current variant ID:', variantId, 'Type:', typeof variantId);
+                          console.log('[Subscription Picker] Available variant IDs:', productData.variants.map(v => ({ id: v.id, type: typeof v.id })));
+                          const variant = productData.variants.find(v => {
+                            // Ensure both IDs are numbers for comparison
+                            const vId = typeof v.id === 'string' ? parseInt(v.id) : (typeof v.id === 'number' ? v.id : parseInt(v.id));
+                            const compareId = typeof variantId === 'string' ? parseInt(variantId) : variantId;
+                            const match = vId === compareId;
+                            if (match) {
+                              console.log('[Subscription Picker] Variant match found:', vId, '===', compareId);
+                            }
+                            return match;
+                          });
                           if (!variant) {
-                            console.log('[Subscription Picker] Variant not found in productData');
+                            console.warn('[Subscription Picker] Variant not found in productData. Looking for:', variantId);
+                            console.log('[Subscription Picker] ProductData variants:', productData.variants);
+                            // Try to find by string comparison as fallback
+                            const variantStr = productData.variants.find(v => String(v.id) === String(variantId));
+                            if (variantStr) {
+                              console.log('[Subscription Picker] Found variant by string comparison');
+                              return; // Still return to avoid errors, but log the issue
+                            }
                             return;
                           }
                           console.log('[Subscription Picker] Found variant:', variant);
@@ -1281,18 +1298,29 @@
 
                           // Update subscription price - try to get from Seal Subscriptions first
                           if (selectedOption.value === 'subscription' && currentIntervalSelect && subscriptionPriceEl) {
-                            const planId = parseInt(currentIntervalSelect.options[currentIntervalSelect.selectedIndex].dataset.planId);
+                            const planIdStr = currentIntervalSelect.options[currentIntervalSelect.selectedIndex].dataset.planId;
+                            const planId = parseInt(planIdStr);
+                            console.log('[Subscription Picker] Looking for selling plan allocation with ID:', planId, 'Type:', typeof planId);
+                            console.log('[Subscription Picker] Available allocations:', variant.selling_plan_allocations.map(a => ({ id: a.selling_plan_id, type: typeof a.selling_plan_id })));
                             
                             // Try to get price from Seal Subscriptions
                             const sealSubsSubPrice = document.querySelector('.sls-selling-plan-group-price .sls-price .money');
                             if (sealSubsSubPrice) {
+                              console.log('[Subscription Picker] Using price from Seal Subscriptions');
                               subscriptionPriceEl.innerHTML = sealSubsSubPrice.outerHTML;
                             } else {
-                              const allocation = variant.selling_plan_allocations.find(a => a.selling_plan_id === planId);
+                              const allocation = variant.selling_plan_allocations.find(a => {
+                                const aId = typeof a.selling_plan_id === 'string' ? parseInt(a.selling_plan_id) : (typeof a.selling_plan_id === 'number' ? a.selling_plan_id : parseInt(a.selling_plan_id));
+                                const compareId = typeof planId === 'string' ? parseInt(planId) : planId;
+                                return aId === compareId;
+                              });
                               if (allocation) {
+                                console.log('[Subscription Picker] Found allocation:', allocation);
                                 const subPriceCents = allocation.price;
                                 const subPriceFormatted = formatMoney(subPriceCents);
                                 subscriptionPriceEl.innerHTML = '<span class="money">' + subPriceFormatted + '</span>';
+                              } else {
+                                console.warn('[Subscription Picker] Allocation not found for plan ID:', planId);
                               }
                             }
 
@@ -1302,7 +1330,11 @@
                                 subscriptionCompareEl.innerHTML = sealSubsSubCompare.outerHTML;
                                 subscriptionCompareEl.style.display = '';
                               } else {
-                                const allocation = variant.selling_plan_allocations.find(a => a.selling_plan_id === planId);
+                                const allocation = variant.selling_plan_allocations.find(a => {
+                                  const aId = typeof a.selling_plan_id === 'string' ? parseInt(a.selling_plan_id) : (typeof a.selling_plan_id === 'number' ? a.selling_plan_id : parseInt(a.selling_plan_id));
+                                  const compareId = typeof planId === 'string' ? parseInt(planId) : planId;
+                                  return aId === compareId;
+                                });
                                 if (allocation && allocation.compare_at_price && allocation.compare_at_price > allocation.price) {
                                   const subComparePriceCents = allocation.compare_at_price;
                                   const subComparePriceFormatted = formatMoney(subComparePriceCents);
@@ -1490,38 +1522,54 @@
 
                           observerActive = true;
 
+                          // Debounce function to prevent too frequent updates
+                          let updateTimeout = null;
+                          let lastUpdateTime = 0;
+                          const UPDATE_DEBOUNCE_MS = 500; // Wait 500ms before processing updates
+
                           // Create observer for Seal Subscriptions injection
                           const sealSubsObserver = new MutationObserver(function(mutations) {
-                            console.log('[Subscription Picker] MutationObserver triggered, mutations:', mutations.length);
-                            let shouldUpdate = false;
-                            
-                            mutations.forEach(function(mutation) {
-                              console.log('[Subscription Picker] Mutation type:', mutation.type, 'addedNodes:', mutation.addedNodes.length);
-                              // Check if Seal Subscriptions element was added
+                            // Filter out mutations that are not relevant
+                            const relevantMutations = mutations.filter(function(mutation) {
+                              // Only process if Seal Subscriptions elements are involved
                               if (mutation.addedNodes.length > 0) {
-                                mutation.addedNodes.forEach(function(node) {
-                                  if (node.nodeType === 1) {
-                                    if (node.classList && (
-                                      node.classList.contains('sealsubs-target-element') ||
-                                      node.classList.contains('sealsubs-container') ||
-                                      node.querySelector('.sealsubs-target-element')
-                                    )) {
-                                      console.log('[Subscription Picker] Seal Subscriptions element detected in mutation');
-                                      shouldUpdate = true;
+                                for (let i = 0; i < mutation.addedNodes.length; i++) {
+                                  const node = mutation.addedNodes[i];
+                                  if (node.nodeType === 1 && node.classList) {
+                                    if (node.classList.contains('sealsubs-target-element') ||
+                                        node.classList.contains('sealsubs-container') ||
+                                        node.querySelector('.sealsubs-target-element')) {
+                                      return true;
                                     }
                                   }
-                                });
+                                }
                               }
-                              
-                              // Check for data-product attribute changes
+                              // Process data-product attribute changes
                               if (mutation.type === 'attributes' && mutation.attributeName === 'data-product') {
-                                console.log('[Subscription Picker] data-product attribute changed');
-                                shouldUpdate = true;
+                                return true;
                               }
+                              return false;
                             });
 
-                            if (shouldUpdate) {
-                              console.log('[Subscription Picker] Update needed, processing...');
+                            if (relevantMutations.length === 0) {
+                              return; // Skip if no relevant mutations
+                            }
+
+                            console.log('[Subscription Picker] MutationObserver triggered, relevant mutations:', relevantMutations.length);
+                            
+                            // Clear previous timeout
+                            if (updateTimeout) {
+                              clearTimeout(updateTimeout);
+                            }
+
+                            // Debounce the update
+                            const now = Date.now();
+                            const timeSinceLastUpdate = now - lastUpdateTime;
+                            
+                            updateTimeout = setTimeout(function() {
+                              console.log('[Subscription Picker] Processing update after debounce');
+                              lastUpdateTime = Date.now();
+                              
                               // Hide Seal Subscriptions
                               hideSealSubscriptions();
                               
@@ -1536,7 +1584,7 @@
                                   updateSellingPlan();
                                 }
                               }
-                            }
+                            }, timeSinceLastUpdate < UPDATE_DEBOUNCE_MS ? UPDATE_DEBOUNCE_MS - timeSinceLastUpdate : 100);
                           });
 
                           // Observe buy-buttons container for changes
