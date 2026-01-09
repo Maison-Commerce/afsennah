@@ -559,6 +559,15 @@
 
       <div data-merge="footer">
         {% if cart.items != empty %}
+          {%- liquid
+            assign cart_compare_at_total = 0
+            for item in cart.items
+              if item.variant.compare_at_price > 0
+                assign item_compare_at_total = item.variant.compare_at_price | times: item.quantity
+                assign cart_compare_at_total = cart_compare_at_total | plus: item_compare_at_total
+              endif
+            endfor
+          -%}
           {%- if cart.cart_level_discount_applications != blank -%}
             <ul class="cart-discount-list">
               {%- for discount_application in cart.cart_level_discount_applications -%}
@@ -576,9 +585,11 @@
             {{ 'cart.summary.subtotal' | t }}:
             <div class="price">
               <span>
-                {% unless cart.original_total_price == cart.total_price %}
+                {% if cart_compare_at_total > cart.total_price %}
+                  <span class="struck-out-price small-text theme-money">{{ cart_compare_at_total | money }}</span>
+                {% elsif cart.original_total_price != cart.total_price %}
                   {{ cart.original_total_price }}
-                {% endunless %}
+                {% endif %}
               </span>
               <span class="theme-money">
                 {%- if settings.cart_currency_code_enabled -%}
