@@ -255,6 +255,20 @@
             "show_in_quickbuy": false
           }
         },
+        "product_upsells_eVNWhn": {
+          "type": "product-upsells",
+          "settings": {
+            "title": "Try both and save big",
+            "subtitle": "No consultation required*",
+            "product_list": [
+              "custom-conditioner",
+              "e-gift-card",
+              "mulberry-pillowcase"
+            ],
+            "color_scheme": "default",
+            "show_in_quickbuy": false
+          }
+        },
         "testimonial_under_gallery_yE3cQA": {
           "type": "testimonial_under_gallery",
           "settings": {
@@ -277,22 +291,9 @@
             "main_image_width": 280
           }
         },
-        "product_upsells_eVNWhn": {
-          "type": "product-upsells",
-          "settings": {
-            "title": "Try both and save big",
-            "subtitle": "No consultation required*",
-            "product_list": [
-              "custom-conditioner",
-              "e-gift-card",
-              "mulberry-pillowcase"
-            ],
-            "color_scheme": "default",
-            "show_in_quickbuy": false
-          }
-        },
         "loox_reviews_loox_snippets_widget_JQFkCB": {
           "type": "shopify://apps/loox-reviews/blocks/loox-snippets-widget/5c3b337f-fd14-4df5-b1d6-80ec13e6e28e",
+          "disabled": true,
           "settings": {
             "alignment": "left",
             "max-width": "",
@@ -335,8 +336,8 @@
         "richtext_cyRJhp",
         "accordion_eCyiUV",
         "accordion_bjJGWh",
-        "testimonial_under_gallery_yE3cQA",
         "product_upsells_eVNWhn",
+        "testimonial_under_gallery_yE3cQA",
         "loox_reviews_loox_snippets_widget_JQFkCB"
       ],
       "settings": {
