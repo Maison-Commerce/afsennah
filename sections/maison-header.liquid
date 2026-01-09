@@ -7,6 +7,7 @@
 
 <header class="maison_commerce_maison_header" x-data="maison_commerce_maison_header_init()" style="position: relative;">
   <page-header data-section-id="{{ section.id }}">
+    <div id="pageheader">
   {% style %}
     #shopify-section-{{ section.id }} {
       padding: 0;
@@ -638,6 +639,7 @@
     @click="closeMobileMenu()"
     style="display: none;"
   ></div>
+</div>
 </page-header>
 </header>
 
