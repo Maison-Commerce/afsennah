@@ -2572,3 +2572,8 @@ cart-drawer .cart-upsell-product {
 .subscription-picker__options {
     flex-direction: column-reverse;
 }
+
+.subscription-option__content-header {
+    display: flex;
+    align-items: center;
+}
