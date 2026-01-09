@@ -24,8 +24,8 @@
         }
 
         giftTiersEnabled = true;
-        giftProgressText = container.dataset.progressText || '🎁 Spend [[remaining]] more to unlock your next gift!';
-        giftCompleteText = container.dataset.completeText || '🎁 You have unlocked all free gifts!';
+        giftProgressText = container.dataset.progressText || 'Spend [[remaining]] more to unlock your next gift!';
+        giftCompleteText = container.dataset.completeText || 'You have unlocked all free gifts!';
 
         // Get user gender from QuizManager
         if (window.QuizManager && window.QuizManager.answers && window.QuizManager.answers.gender) {
@@ -181,11 +181,17 @@
         if (!giftTiersEnabled) return;
 
         const cartTotal = getCartTotalForGifts();
+        // Desktop instances
         const progressBar = document.querySelector('[data-gift-progress-bar]');
         const progressLabel = document.querySelector('[data-gift-progress-label]');
         const milestonesContainer = document.querySelector('[data-gift-milestones]');
+        // Mobile instances
+        const progressBarMobile = document.querySelector('[data-gift-progress-bar-mobile]');
+        const progressLabelMobile = document.querySelector('[data-gift-progress-label-mobile]');
+        const milestonesContainerMobile = document.querySelector('[data-gift-milestones-mobile]');
 
-        if (!progressBar || !progressLabel || !milestonesContainer) return;
+        // At least one instance should exist
+        if (!progressBar && !progressBarMobile) return;
         
         // Filter tiers for positioning calculation - include tier 0 (free shipping) and tiers with products
         const tiersWithProducts = giftTiers.filter(tier => tier.isFreeShipping || tier.product);
@@ -299,7 +305,14 @@
             }
         }
         
-        progressBar.style.width = `${Math.min(Math.max(progressBarWidth, 0), 100)}%`;
+        // Update both desktop and mobile progress bars
+        const progressBarWidthValue = `${Math.min(Math.max(progressBarWidth, 0), 100)}%`;
+        if (progressBar) {
+            progressBar.style.width = progressBarWidthValue;
+        }
+        if (progressBarMobile) {
+            progressBarMobile.style.width = progressBarWidthValue;
+        }
 
         // Helper to format currency
         const formatCurrency = (amountInBaseCurrency) => {
@@ -329,9 +342,10 @@
             return `${tier.product.title}${variantTitle}`;
         };
 
-        // Update progress label (supports richtext HTML)
+        // Update progress label (supports richtext HTML) - for both desktop and mobile
+        let headerText = '';
         if (allUnlocked) {
-            progressLabel.innerHTML = giftCompleteText;
+            headerText = giftCompleteText;
         } else if (nextTier) {
             const remaining = nextTier.threshold - cartTotal;
             const lastUnlockedTier = giftTiers.filter(t => t.unlocked).pop();
@@ -340,8 +354,6 @@
             // Get gift names
             const currentGiftName = hasUnlockedGifts ? getGiftName(lastUnlockedTier) : '';
             const nextGiftName = nextTier ? getGiftName(nextTier) : '';
-            
-            let headerText;
             
             if (!hasUnlockedGifts) {
                 // No gifts unlocked yet - show simplified format: "Spend [[remaining]] more to get [[next_gift]]"
@@ -355,8 +367,6 @@
                     .replace('[[current_gift]]', currentGiftName)
                     .replace('[[next_gift]]', nextGiftName);
             }
-            
-            progressLabel.innerHTML = headerText;
         } else {
             const firstTier = giftTiers[0];
             const remaining = firstTier ? firstTier.threshold - cartTotal : 0;
@@ -365,54 +375,76 @@
             const nextGiftName = firstTier ? getGiftName(firstTier) : '';
             
             // No gifts unlocked yet - show simplified format: "Spend [[remaining]] more to get [[next_gift]]"
-            progressLabel.innerHTML = `<p>Spend ${formatCurrency(remaining)} more to get ${nextGiftName}</p>`;
+            headerText = `<p>Spend ${formatCurrency(remaining)} more to get ${nextGiftName}</p>`;
+        }
+        
+        // Update both desktop and mobile labels
+        if (progressLabel) {
+            progressLabel.innerHTML = headerText;
+        }
+        if (progressLabelMobile) {
+            progressLabelMobile.innerHTML = headerText;
         }
 
 
-        // Render milestones with product images or shipping icon
+        // Helper function to create milestone element
+        const createMilestoneElement = (tier, position) => {
+            const milestone = document.createElement('div');
+            milestone.className = `gift-milestone ${tier.unlocked ? 'reached' : ''}`;
+            milestone.dataset.tier = tier.tier;
+            milestone.style.left = `${position}%`;
+            
+            // Check if this is the free shipping tier (tier 0)
+            if (tier.isFreeShipping) {
+                // Use shipping icon instead of product image
+                milestone.innerHTML = `
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none" class="gift-milestone-icon">
+                        <g clip-path="url(#clip0_10099_16413)">
+                            <path d="M8.5293 14.7663C8.5292 14.7931 8.53579 14.8195 8.54846 14.843C8.56112 14.8666 8.57947 14.8867 8.60184 14.9014C8.62421 14.9161 8.6499 14.9249 8.67657 14.9272C8.70324 14.9295 8.73005 14.9251 8.75458 14.9144L14.7472 12.1916C14.8632 12.1395 14.9612 12.0543 15.0288 11.9466C15.0963 11.8389 15.1305 11.7136 15.127 11.5865V4.43528C15.1271 4.40852 15.1205 4.38215 15.1078 4.35857C15.0952 4.33499 15.0768 4.31494 15.0545 4.30024C15.0321 4.28554 15.0064 4.27665 14.9797 4.27438C14.9531 4.27211 14.9262 4.27653 14.9017 4.28724L8.62585 7.13873C8.59706 7.1513 8.57258 7.17201 8.55543 7.19831C8.53827 7.22462 8.52919 7.25537 8.5293 7.28678V14.7663ZM11.6833 8.57414C11.7122 8.54335 11.7471 8.51881 11.7859 8.50204C11.8246 8.48526 11.8664 8.47661 11.9086 8.47661C11.9508 8.47661 11.9926 8.48526 12.0314 8.50204C12.0701 8.51881 12.105 8.54335 12.1339 8.57414L13.0994 9.53965C13.1455 9.5833 13.177 9.64008 13.1897 9.70227C13.2023 9.76446 13.1955 9.82904 13.1702 9.88724C13.1461 9.94601 13.1051 9.99633 13.0524 10.0318C12.9997 10.0673 12.9377 10.0865 12.8741 10.0868H12.5523C12.5096 10.0868 12.4687 10.1037 12.4385 10.1339C12.4083 10.1641 12.3914 10.205 12.3914 10.2477V11.3741C12.3914 11.5022 12.3405 11.625 12.25 11.7155C12.1594 11.806 12.0366 11.8569 11.9086 11.8569C11.7806 11.8569 11.6578 11.806 11.5672 11.7155C11.4767 11.625 11.4258 11.5022 11.4258 11.3741V10.2477C11.4258 10.205 11.4089 10.1641 11.3787 10.1339C11.3485 10.1037 11.3076 10.0868 11.2649 10.0868H10.9431C10.8796 10.0865 10.8175 10.0673 10.7648 10.0318C10.7121 9.99633 10.6711 9.94601 10.647 9.88724C10.6217 9.82904 10.6149 9.76446 10.6275 9.70227C10.6402 9.64008 10.6717 9.5833 10.7178 9.53965L11.6833 8.57414Z" fill="white"/>
+                            <path d="M4.87951 6.0772C4.8575 6.0628 4.83178 6.05513 4.80548 6.05513C4.77919 6.05513 4.75346 6.0628 4.73146 6.0772C4.70939 6.09211 4.69138 6.11227 4.67902 6.13586C4.66666 6.15945 4.66035 6.18574 4.66066 6.21237V7.49973C4.66066 7.62776 4.60979 7.75055 4.51926 7.84109C4.42872 7.93162 4.30593 7.98249 4.1779 7.98249C4.04986 7.98249 3.92707 7.93162 3.83654 7.84109C3.746 7.75055 3.69514 7.62776 3.69514 7.49973V5.68455C3.6939 5.65262 3.68354 5.62171 3.66529 5.59547C3.64704 5.56924 3.62166 5.54878 3.59215 5.53651L0.547553 4.24915C0.523295 4.23813 0.496958 4.23242 0.470312 4.23242C0.443665 4.23242 0.417328 4.23813 0.39307 4.24915C0.371399 4.26446 0.353676 4.2847 0.341365 4.3082C0.329055 4.3317 0.322508 4.35779 0.322266 4.38433V11.5871C0.3229 11.7142 0.361136 11.8382 0.432155 11.9436C0.503174 12.049 0.603798 12.131 0.721346 12.1793L7.33836 14.9471C7.36221 14.9595 7.38871 14.966 7.4156 14.966C7.44249 14.966 7.46898 14.9595 7.49284 14.9471C7.51482 14.9336 7.53292 14.9147 7.54534 14.8921C7.55776 14.8695 7.56407 14.8441 7.56364 14.8183V7.30019C7.56375 7.26878 7.55467 7.23803 7.53751 7.21172C7.52036 7.18541 7.49588 7.1647 7.46709 7.15214L4.87951 6.0772Z" fill="white"/>
+                            <path d="M10.2345 1.81592C10.2579 1.79958 10.2762 1.77711 10.2876 1.75098C10.2989 1.72485 10.3029 1.69609 10.2989 1.66788C10.2986 1.63738 10.2892 1.60766 10.272 1.58246C10.2549 1.55726 10.2306 1.5377 10.2023 1.52627L7.98165 0.547878C7.90043 0.512435 7.81278 0.494141 7.72417 0.494141C7.63557 0.494141 7.54791 0.512435 7.4667 0.547878L1.28739 3.21914C1.25858 3.23344 1.2343 3.25545 1.21725 3.28272C1.20021 3.30999 1.19106 3.34146 1.19084 3.37363C1.18619 3.40662 1.19332 3.4402 1.21098 3.46845C1.22864 3.49671 1.2557 3.51783 1.28739 3.52811L3.9844 4.65454C4.0057 4.66394 4.02872 4.6688 4.05199 4.6688C4.07527 4.6688 4.09828 4.66394 4.11958 4.65454L10.2345 1.81592Z" fill="white"/>
+                            <path d="M7.97621 6.31526C7.99628 6.32495 8.01829 6.32998 8.04058 6.32998C8.06287 6.32998 8.08487 6.32495 8.10494 6.31526L14.2006 3.541C14.2294 3.52844 14.2538 3.50773 14.271 3.48142C14.2882 3.45512 14.2972 3.42436 14.2971 3.39296C14.2968 3.36246 14.2875 3.33274 14.2703 3.30754C14.2531 3.28234 14.2289 3.26278 14.2006 3.25135L11.8125 2.20859C11.7912 2.19919 11.7682 2.19434 11.7449 2.19434C11.7217 2.19434 11.6987 2.19919 11.6774 2.20859L5.5946 5.03434C5.56581 5.0469 5.54133 5.06761 5.52418 5.09392C5.50702 5.12022 5.49794 5.15098 5.49805 5.18238C5.5007 5.21393 5.51161 5.24422 5.52969 5.27021C5.54777 5.2962 5.57238 5.31697 5.60104 5.33043L7.97621 6.31526Z" fill="white"/>
+                        </g>
+                        <defs>
+                            <clipPath id="clip0_10099_16413">
+                                <rect width="15.4483" height="15.4483" fill="white"/>
+                            </clipPath>
+                        </defs>
+                    </svg>
+                `;
+            } else {
+                // Regular product tier - use product image
+                const variant = tier.variantId ? tier.product.variants.find(v => v.id === tier.variantId) : tier.product.variants[0];
+                const imageUrl = variant?.featured_image?.src || tier.product.featured_image?.src || tier.product.featured_image || '';
+                
+                if (imageUrl) {
+                    const img = document.createElement('img');
+                    img.src = imageUrl;
+                    img.alt = tier.product.title;
+                    img.className = 'gift-milestone-image';
+                    milestone.appendChild(img);
+                }
+            }
+            
+            return milestone;
+        };
+
+        // Render milestones with product images or shipping icon - for both desktop and mobile
         if (milestonesContainer) {
             milestonesContainer.innerHTML = '';
             tiersWithProducts.forEach((tier) => {
                 const position = tierPositionMap.get(tier.tier);
-                
-                const milestone = document.createElement('div');
-                milestone.className = `gift-milestone ${tier.unlocked ? 'reached' : ''}`;
-                milestone.dataset.tier = tier.tier;
-                milestone.style.left = `${position}%`;
-                
-                // Check if this is the free shipping tier (tier 0)
-                if (tier.isFreeShipping) {
-                    // Use shipping icon instead of product image
-                    milestone.innerHTML = `
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none" class="gift-milestone-icon">
-                            <g clip-path="url(#clip0_10099_16413)">
-                                <path d="M8.5293 14.7663C8.5292 14.7931 8.53579 14.8195 8.54846 14.843C8.56112 14.8666 8.57947 14.8867 8.60184 14.9014C8.62421 14.9161 8.6499 14.9249 8.67657 14.9272C8.70324 14.9295 8.73005 14.9251 8.75458 14.9144L14.7472 12.1916C14.8632 12.1395 14.9612 12.0543 15.0288 11.9466C15.0963 11.8389 15.1305 11.7136 15.127 11.5865V4.43528C15.1271 4.40852 15.1205 4.38215 15.1078 4.35857C15.0952 4.33499 15.0768 4.31494 15.0545 4.30024C15.0321 4.28554 15.0064 4.27665 14.9797 4.27438C14.9531 4.27211 14.9262 4.27653 14.9017 4.28724L8.62585 7.13873C8.59706 7.1513 8.57258 7.17201 8.55543 7.19831C8.53827 7.22462 8.52919 7.25537 8.5293 7.28678V14.7663ZM11.6833 8.57414C11.7122 8.54335 11.7471 8.51881 11.7859 8.50204C11.8246 8.48526 11.8664 8.47661 11.9086 8.47661C11.9508 8.47661 11.9926 8.48526 12.0314 8.50204C12.0701 8.51881 12.105 8.54335 12.1339 8.57414L13.0994 9.53965C13.1455 9.5833 13.177 9.64008 13.1897 9.70227C13.2023 9.76446 13.1955 9.82904 13.1702 9.88724C13.1461 9.94601 13.1051 9.99633 13.0524 10.0318C12.9997 10.0673 12.9377 10.0865 12.8741 10.0868H12.5523C12.5096 10.0868 12.4687 10.1037 12.4385 10.1339C12.4083 10.1641 12.3914 10.205 12.3914 10.2477V11.3741C12.3914 11.5022 12.3405 11.625 12.25 11.7155C12.1594 11.806 12.0366 11.8569 11.9086 11.8569C11.7806 11.8569 11.6578 11.806 11.5672 11.7155C11.4767 11.625 11.4258 11.5022 11.4258 11.3741V10.2477C11.4258 10.205 11.4089 10.1641 11.3787 10.1339C11.3485 10.1037 11.3076 10.0868 11.2649 10.0868H10.9431C10.8796 10.0865 10.8175 10.0673 10.7648 10.0318C10.7121 9.99633 10.6711 9.94601 10.647 9.88724C10.6217 9.82904 10.6149 9.76446 10.6275 9.70227C10.6402 9.64008 10.6717 9.5833 10.7178 9.53965L11.6833 8.57414Z" fill="white"/>
-                                <path d="M4.87951 6.0772C4.8575 6.0628 4.83178 6.05513 4.80548 6.05513C4.77919 6.05513 4.75346 6.0628 4.73146 6.0772C4.70939 6.09211 4.69138 6.11227 4.67902 6.13586C4.66666 6.15945 4.66035 6.18574 4.66066 6.21237V7.49973C4.66066 7.62776 4.60979 7.75055 4.51926 7.84109C4.42872 7.93162 4.30593 7.98249 4.1779 7.98249C4.04986 7.98249 3.92707 7.93162 3.83654 7.84109C3.746 7.75055 3.69514 7.62776 3.69514 7.49973V5.68455C3.6939 5.65262 3.68354 5.62171 3.66529 5.59547C3.64704 5.56924 3.62166 5.54878 3.59215 5.53651L0.547553 4.24915C0.523295 4.23813 0.496958 4.23242 0.470312 4.23242C0.443665 4.23242 0.417328 4.23813 0.39307 4.24915C0.371399 4.26446 0.353676 4.2847 0.341365 4.3082C0.329055 4.3317 0.322508 4.35779 0.322266 4.38433V11.5871C0.3229 11.7142 0.361136 11.8382 0.432155 11.9436C0.503174 12.049 0.603798 12.131 0.721346 12.1793L7.33836 14.9471C7.36221 14.9595 7.38871 14.966 7.4156 14.966C7.44249 14.966 7.46898 14.9595 7.49284 14.9471C7.51482 14.9336 7.53292 14.9147 7.54534 14.8921C7.55776 14.8695 7.56407 14.8441 7.56364 14.8183V7.30019C7.56375 7.26878 7.55467 7.23803 7.53751 7.21172C7.52036 7.18541 7.49588 7.1647 7.46709 7.15214L4.87951 6.0772Z" fill="white"/>
-                                <path d="M10.2345 1.81592C10.2579 1.79958 10.2762 1.77711 10.2876 1.75098C10.2989 1.72485 10.3029 1.69609 10.2989 1.66788C10.2986 1.63738 10.2892 1.60766 10.272 1.58246C10.2549 1.55726 10.2306 1.5377 10.2023 1.52627L7.98165 0.547878C7.90043 0.512435 7.81278 0.494141 7.72417 0.494141C7.63557 0.494141 7.54791 0.512435 7.4667 0.547878L1.28739 3.21914C1.25858 3.23344 1.2343 3.25545 1.21725 3.28272C1.20021 3.30999 1.19106 3.34146 1.19084 3.37363C1.18619 3.40662 1.19332 3.4402 1.21098 3.46845C1.22864 3.49671 1.2557 3.51783 1.28739 3.52811L3.9844 4.65454C4.0057 4.66394 4.02872 4.6688 4.05199 4.6688C4.07527 4.6688 4.09828 4.66394 4.11958 4.65454L10.2345 1.81592Z" fill="white"/>
-                                <path d="M7.97621 6.31526C7.99628 6.32495 8.01829 6.32998 8.04058 6.32998C8.06287 6.32998 8.08487 6.32495 8.10494 6.31526L14.2006 3.541C14.2294 3.52844 14.2538 3.50773 14.271 3.48142C14.2882 3.45512 14.2972 3.42436 14.2971 3.39296C14.2968 3.36246 14.2875 3.33274 14.2703 3.30754C14.2531 3.28234 14.2289 3.26278 14.2006 3.25135L11.8125 2.20859C11.7912 2.19919 11.7682 2.19434 11.7449 2.19434C11.7217 2.19434 11.6987 2.19919 11.6774 2.20859L5.5946 5.03434C5.56581 5.0469 5.54133 5.06761 5.52418 5.09392C5.50702 5.12022 5.49794 5.15098 5.49805 5.18238C5.5007 5.21393 5.51161 5.24422 5.52969 5.27021C5.54777 5.2962 5.57238 5.31697 5.60104 5.33043L7.97621 6.31526Z" fill="white"/>
-                            </g>
-                            <defs>
-                                <clipPath id="clip0_10099_16413">
-                                    <rect width="15.4483" height="15.4483" fill="white"/>
-                                </clipPath>
-                            </defs>
-                        </svg>
-                    `;
-                } else {
-                    // Regular product tier - use product image
-                    const variant = tier.variantId ? tier.product.variants.find(v => v.id === tier.variantId) : tier.product.variants[0];
-                    const imageUrl = variant?.featured_image?.src || tier.product.featured_image?.src || tier.product.featured_image || '';
-                    
-                    if (imageUrl) {
-                        const img = document.createElement('img');
-                        img.src = imageUrl;
-                        img.alt = tier.product.title;
-                        img.className = 'gift-milestone-image';
-                        milestone.appendChild(img);
-                    }
-                }
-                
+                const milestone = createMilestoneElement(tier, position);
                 milestonesContainer.appendChild(milestone);
+            });
+        }
+        
+        if (milestonesContainerMobile) {
+            milestonesContainerMobile.innerHTML = '';
+            tiersWithProducts.forEach((tier) => {
+                const position = tierPositionMap.get(tier.tier);
+                const milestone = createMilestoneElement(tier, position);
+                milestonesContainerMobile.appendChild(milestone);
             });
         }
     }
@@ -421,10 +453,12 @@
         if (initialized) return;
 
         if (!window.QuizManager || !window.QuizManager.recommendedProducts) {
+            console.log('No recommended products found');
             return;
         }
 
         let productHandles = window.QuizManager.recommendedProducts;
+        console.log('Product handles from QuizManager:', productHandles);
 
         // Get custom sort order from data attribute
         const recommendationsSection = document.querySelector('[data-recommendations]');
@@ -436,12 +470,14 @@
         bogoProductHandles = bogoProductsData ? bogoProductsData.split(',').map(h => h.trim()).filter(h => h) : [];
         bogoBadgeText = recommendationsSection?.dataset.bogoBadgeText || 'BUY 1 GET 1 FREE';
         bogoCartText = recommendationsSection?.dataset.bogoCartText || 'Buy 1 Get 1 Free';
+        console.log('BOGO settings loaded:', { bogoEnabled, bogoProductHandles, bogoBadgeText, bogoCartText });
 
         // Initialize tiered gift system
         initGiftTiers();
 
         if (sortOrder && sortOrder.trim() !== '') {
             const sortOrderHandles = sortOrder.split(',').map(h => h.trim()).filter(h => h);
+            console.log('Custom sort order:', sortOrderHandles);
 
             // Reorder productHandles based on sortOrder
             // First, add products from sortOrder that are in recommendedProducts
@@ -458,6 +494,7 @@
 
             // Then add any remaining recommended products not in sortOrder
             productHandles = [...orderedHandles, ...remainingHandles];
+            console.log('Reordered product handles:', productHandles);
         }
 
         const topPicksContainer = document.querySelector('[data-section-products="top-picks"]');
@@ -471,6 +508,7 @@
         }
 
         if (productHandles.length === 0) {
+            console.log('No product handles to fetch');
             return;
         }
 
@@ -479,18 +517,21 @@
         // Fetch quiz recommended products
         const fetchPromises = productHandles.map(handle => {
             if (!handle) return Promise.resolve(null);
+            console.log('Fetching product:', handle);
             return fetch(`/products/${handle}.js`)
                 .then(response => response.ok ? response.json() : null)
                 .catch(() => null);
         });
 
         Promise.all(fetchPromises).then(products => {
+            console.log('Fetched products:', products);
             
             // Store all products globally for access in updateProductCardButtons
             window.quizRecommendationsProducts = products.filter(p => p !== null);
             
             // Section 1: Top 3 picks (auto-added to cart)
             const topPicks = products.slice(0, 3).filter(p => p !== null);
+            console.log('Top picks (Section 1):', topPicks.length, 'products');
             
             topPicks.forEach((product, index) => {
                 productStates[product.id] = { removed: false, quantity: 1 };
@@ -515,9 +556,11 @@
 
             // Section 2: Additional recommendations (not auto-added)
             const additionalProducts = products.slice(3).filter(p => p !== null);
+            console.log('Additional products (Section 2):', additionalProducts.length, 'products');
             
             // Store additional products globally for upsell package blocks
             window.quizRecommendationsAdditionalProducts = additionalProducts;
+            console.log('Stored additional products for upsell package:', additionalProducts.length, 'products');
             
             // Check if there are any upsell package blocks - if so, hide Section 2
             const upsellBlocks = document.querySelectorAll('[data-upsell-package-block]');
@@ -568,6 +611,7 @@
         // Section 3: Accessories (manual product list from settings)
         // accessoryHandles will be passed from inline script
         const accessoryHandles = window.quizRecommendationsConfig?.accessoryHandles || [];
+        console.log('Accessory handles (Section 3):', accessoryHandles);
         
         // Get the accessories section element and divider
         const accessoriesSection = document.querySelector('[data-section="accessories"]');
@@ -588,12 +632,14 @@
                 const handle = typeof item === 'string' ? item : (item?.handle || null);
                 if (!handle) return Promise.resolve(null);
                 
+                console.log('Fetching accessory product:', handle);
                 return fetch(`/products/${handle}.js`)
                     .then(response => response.ok ? response.json() : null)
                     .catch(() => null);
             });
 
             Promise.all(accessoryPromises).then(accessories => {
+                console.log('Fetched accessories:', accessories);
                 const validAccessories = accessories.filter(product => product !== null);
                 
                 validAccessories.forEach((product) => {
@@ -671,7 +717,7 @@
                     : 'USD';
                 Currency.convertAll(shopCurrency, '[name=currencies]');
             } catch (e) {
-
+                console.log('Currency conversion update failed:', e);
             }
         }
         // Also try alternate method for different currency converter apps
@@ -1202,9 +1248,17 @@
                     const currentQty = productStates[product.id].quantity || 1;
                     const selectedVariantId = parseInt(card.dataset.variantId);
 
+                    console.log('Purchase option changed:', {
+                        productId: product.id,
+                        variantId: selectedVariantId,
+                        sellingPlanId: sellingPlanId,
+                        quantity: currentQty,
+                        section: section
+                    });
 
                     // Only update cart if product is in cart (check by variantId)
                     const itemInCart = cartItems.find(item => item.variantId === selectedVariantId);
+                    console.log('Item in cart:', itemInCart ? 'Yes' : 'No');
 
                     if (itemInCart) {
                         // Create updated product with selected variant info
@@ -1332,6 +1386,7 @@
             }
         }
 
+        console.log('Cart updated. Current cart items:', cartItems.length);
 
         updateCartDisplay();
         
@@ -1436,24 +1491,39 @@
         // This function removes a product from cart AND updates the product card state
         // It's used by both the product card remove button and the cart item remove button
 
+        console.log('=== removeProductFromCart START ===');
+        console.log('Product:', product.title, 'ID:', product.id);
+        console.log('Variant ID:', variantId);
+
         // Find the product card - try multiple selectors
         let productCard = document.querySelector(`[data-product-id="${product.id}"]`);
 
         // If it's a custom element, look for the actual recommended-product-card inside it
         if (productCard && productCard.tagName === 'PRODUCT-BLOCK') {
+            console.log('Found PRODUCT-BLOCK, looking for recommended-product-card inside...');
             const innerCard = productCard.querySelector('.recommended-product-card');
             if (innerCard) {
+                console.log('Found inner recommended-product-card');
                 productCard = innerCard;
             }
         }
 
+        console.log('Product card found:', !!productCard);
+
+        if (productCard) {
+            console.log('Product card element:', productCard);
+            console.log('Product card tag:', productCard.tagName);
+            console.log('Product card classes before:', productCard.className);
+        }
 
         if (productCard && productStates[product.id]) {
+            console.log('ProductState exists:', productStates[product.id]);
 
             // Update state
             productStates[product.id].removed = true;
             productCard.classList.add('removed');
 
+            console.log('Product card classes after:', productCard.className);
 
             // Update buttons - search more deeply
             let addBtn = productCard.querySelector('[data-add-btn]');
@@ -1461,15 +1531,20 @@
 
             // If not found, search globally by product ID and button attributes
             if (!addBtn || !removeBtn) {
+                console.log('Buttons not found in productCard, searching globally...');
                 const allCards = document.querySelectorAll(`[data-product-id="${product.id}"]`);
+                console.log('Found', allCards.length, 'elements with product ID');
 
                 allCards.forEach((card, index) => {
+                    console.log(`Card ${index}:`, card.tagName, card.className);
                     const tempAdd = card.querySelector('[data-add-btn]');
                     const tempRemove = card.querySelector('[data-remove-btn]');
                     if (tempAdd) {
+                        console.log(`  - Found add button in card ${index}`);
                         addBtn = tempAdd;
                     }
                     if (tempRemove) {
+                        console.log(`  - Found remove button in card ${index}`);
                         removeBtn = tempRemove;
                     }
                 });
