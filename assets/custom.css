@@ -2429,8 +2429,8 @@ cart-drawer .cart-upsell-product {
 .tiered-rewards-bar__marker-image .tiered-rewards-bar__marker-price svg {
     display: none;
     position: absolute;
-    top: 0;
-    left: -20px;
+    top: 3px;
+    left: -16px;
 }
 .tiered-rewards-bar__marker-image.active .tiered-rewards-bar__marker-price svg {
     display: flex;
