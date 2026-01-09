@@ -2609,3 +2609,24 @@ cart-drawer .cart-upsell-product {
     color: #1A365D;
     padding: 1px 8px;
 }
+
+
+.subscription-price__current {
+    font-family: "Avenir Next";
+    font-weight: 500;
+    font-style: Medium;
+    font-size: 16px;
+    line-height: 150%;
+    letter-spacing: 0%;
+    color: #1A365D;
+}
+
+.subscription-price__original {
+color: #627690;
+font-family: "Avenir Next";
+font-weight: 400;
+font-size: 14px;
+line-height: 150%;
+letter-spacing: 0%;
+text-decoration: line-through;
+}
