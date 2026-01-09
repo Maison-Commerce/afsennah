@@ -1221,7 +1221,12 @@ video-section-play-button {
         font-size: 13px;
         padding: 10px 12px;
     }
-    
+    .js-cart-drawer {
+        height: 100vh;
+        width: 100vw;
+        margin: 0;
+        border-radius: 0;
+    }
     .tiered-rewards-bar__marker-image {
         width: 32px;
         right: -30px;
