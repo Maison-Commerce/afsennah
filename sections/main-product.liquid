@@ -861,7 +861,7 @@
                             <span class="subscription-radio-custom"></span>
                           </div>
                           <div class="subscription-option__content">
-                            <label class="subscription-option__label" for="one-time-{{ block.id }}">
+                            <label class="subscription-option__label" for="one-time-{{ block.id }}" data-one-time-label>
                               {{ one_time_label }}
                             </label>
                             <div class="subscription-option__price">
@@ -1105,15 +1105,46 @@
                             return;
                           }
 
+                          // Update one-time purchase label from Seal Subscriptions
+                          const oneTimeLabel = picker.querySelector('[data-one-time-label]');
+                          if (oneTimeLabel) {
+                            // Find one-time label in Seal Subscriptions (option container with data-one-time-option-radio)
+                            const sealSubsOneTimeContainer = document.querySelector('.sls-option-container[data-one-time-option-radio]');
+                            if (sealSubsOneTimeContainer) {
+                              const sealSubsOneTimeLabelEl = sealSubsOneTimeContainer.querySelector('.sls-selling-plan-group-name');
+                              if (sealSubsOneTimeLabelEl) {
+                                oneTimeLabel.textContent = sealSubsOneTimeLabelEl.textContent.trim();
+                                console.log('[Subscription Picker] Updated one-time label to:', oneTimeLabel.textContent);
+                              }
+                            }
+                          }
+
                           // Update subscription label from Seal Subscriptions
                           const subscribeLabel = picker.querySelector('[data-subscribe-label]');
                           if (subscribeLabel) {
-                            const sealSubsLabel = document.querySelector('.sls-selling-plan-group-name');
-                            if (sealSubsLabel) {
-                              const savingsBadge = subscribeLabel.querySelector('[data-savings-badge]');
-                              subscribeLabel.innerHTML = sealSubsLabel.textContent.trim();
-                              if (savingsBadge) {
-                                subscribeLabel.appendChild(savingsBadge);
+                            // Find subscription label in Seal Subscriptions (active option container)
+                            const sealSubsSubContainer = document.querySelector('.sls-option-container.sls-active[data-selling-plan-group]');
+                            if (sealSubsSubContainer) {
+                              const sealSubsLabel = sealSubsSubContainer.querySelector('.sls-selling-plan-group-name');
+                              if (sealSubsLabel) {
+                                // Clone the label element to preserve structure
+                                const labelClone = sealSubsLabel.cloneNode(true);
+                                // Remove the badge from cloned element if it exists
+                                const badgeInClone = labelClone.querySelector('.sls-savings-badge');
+                                if (badgeInClone) {
+                                  badgeInClone.remove();
+                                }
+                                // Get clean text without badge
+                                let cleanLabelText = labelClone.textContent.trim();
+                                // Also try to remove badge text if it's in the text
+                                cleanLabelText = cleanLabelText.replace(/\s*SAVE\s+\d+%$/i, '').trim();
+                                
+                                const savingsBadge = subscribeLabel.querySelector('[data-savings-badge]');
+                                subscribeLabel.innerHTML = cleanLabelText;
+                                if (savingsBadge) {
+                                  subscribeLabel.appendChild(savingsBadge);
+                                }
+                                console.log('[Subscription Picker] Updated subscribe label to:', cleanLabelText);
                               }
                             } else if (productData.groupName) {
                               const savingsBadge = subscribeLabel.querySelector('[data-savings-badge]');
