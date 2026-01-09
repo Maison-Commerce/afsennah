@@ -1312,7 +1312,7 @@
         "title_color": "#2c2926",
         "title_subtitle_gap": 4,
         "subtitle_font_size_desktop": 16,
-        "subtitle_font_size_mobile": 16,
+        "subtitle_font_size_mobile": 14,
         "subtitle_color": "#2f3936bf"
       }
     }
