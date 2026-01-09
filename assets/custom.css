@@ -1223,6 +1223,7 @@ video-section-play-button {
     .tiered-rewards-bar__marker-image {
         width: 32px;
         height: 32px;
+        right: -30px;
     }
     
     .tiered-rewards-bar__marker-image img,
@@ -1230,7 +1231,6 @@ video-section-play-button {
         width: 30px;
         height: 30px;
     }
-    
     .tiered-rewards-bar__marker-price {
         font-size: 12px;
         line-height: 12px;
