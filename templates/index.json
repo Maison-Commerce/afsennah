@@ -241,7 +241,7 @@
         "banner_padding_mobile": 18,
         "banner_gap": 18,
         "cta_text": "Get Your Custom Formula",
-        "cta_url": "#",
+        "cta_url": "shopify://pages/get-your-formula",
         "cta_bg_color": "#fafbfc",
         "cta_text_color": "#1a365d",
         "cta_border_radius": 12,
