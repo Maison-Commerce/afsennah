@@ -199,9 +199,9 @@
       "settings": {
         "question_id": "age",
         "question_title": "Select your age",
-        "question_subtitle": "",
-        "question_description": "",
-        "info_text": "",
+        "question_subtitle": "Please choose the option that works best for you:",
+        "question_description": "Please choose the option that works best for you:",
+        "info_text": "<p>Please choose the option that works best for you:</p>",
         "desktop_image_female": "shopify://shop_images/awfawfw.png",
         "desktop_image_male": "shopify://shop_images/wgawgawgw.png",
         "free_text_mode": false,
