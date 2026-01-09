@@ -92,7 +92,7 @@
       "settings": {
         "question_id": "gender",
         "question_title": "What's your gender?",
-        "question_subtitle": "",
+        "question_subtitle": "Please choose the option that works best for you:",
         "question_description": "",
         "info_text": "",
         "desktop_image_female": "shopify://shop_images/awfawfw.png",
@@ -199,8 +199,8 @@
       "settings": {
         "question_id": "age",
         "question_title": "Select your age",
-        "question_subtitle": "",
-        "question_description": "Please choose the option that works best for you:",
+        "question_subtitle": "Please choose the option that works best for you:",
+        "question_description": "",
         "info_text": "",
         "desktop_image_female": "shopify://shop_images/awfawfw.png",
         "desktop_image_male": "shopify://shop_images/wgawgawgw.png",
