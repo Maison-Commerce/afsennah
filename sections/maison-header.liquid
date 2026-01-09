@@ -87,7 +87,7 @@
               </a>
             {% endif %}
           {% endif %}
-                  {%- liquid
+          {%- liquid
             assign cart_hash = ''
             for item in cart.items
               assign cart_hash = cart_hash | append: ',' | append: item.key | append: '|' | append: item.quantity
