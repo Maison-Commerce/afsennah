@@ -1411,14 +1411,29 @@
                             };
                           }
 
+                          // Check for existing selling_plan input (from Seal Subscriptions or our own)
                           sellingPlanInput = form.querySelector('[name="selling_plan"]');
                           if (!sellingPlanInput) {
+                            console.log('[Subscription Picker] Creating new selling_plan input');
                             sellingPlanInput = document.createElement('input');
                             sellingPlanInput.type = 'hidden';
                             sellingPlanInput.name = 'selling_plan';
                             sellingPlanInput.id = 'selling_plan_' + blockId;
-                            form.appendChild(sellingPlanInput);
+                            // Insert before submit button or at the end of form
+                            const submitButton = form.querySelector('button[type="submit"]');
+                            if (submitButton) {
+                              submitButton.parentNode.insertBefore(sellingPlanInput, submitButton);
+                            } else {
+                              form.appendChild(sellingPlanInput);
+                            }
+                          } else {
+                            console.log('[Subscription Picker] Found existing selling_plan input:', sellingPlanInput);
+                            // If it's Seal Subscriptions input, we'll use it
+                            if (sellingPlanInput.hasAttribute('data-sls-selling_plan')) {
+                              console.log('[Subscription Picker] Using Seal Subscriptions selling_plan input');
+                            }
                           }
+                          console.log('[Subscription Picker] sellingPlanInput:', sellingPlanInput, 'Current value:', sellingPlanInput.value);
                           
                           const radioButtons = picker.querySelectorAll('.subscription-radio');
                           intervalSelect = picker.querySelector('[data-interval-select]');
