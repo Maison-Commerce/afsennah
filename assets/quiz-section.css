@@ -240,7 +240,7 @@
 
 .quiz-answers {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: minmax(20px, 1fr) minmax(20px, 1fr);
     gap: 16px;
     margin: 32px 0;
 }
