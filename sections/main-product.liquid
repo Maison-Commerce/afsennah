@@ -877,14 +877,6 @@
 
                     </a>
                   </div>
-
-                  <style>
-                    @media (max-width: 767px) {
-                      .{{ block.id }}-main-quiz-button {
-                        display: none!important;
-                      }
-                    }
-                  </style>
                     
                   <!-- Regular Buy Buttons (Hidden by JS if quiz not completed) -->
                   <div class="quantity-submit-row input-row {% if enable_dynamic_payment_button %}has-spb{% endif %} js-regular-buy-buttons">
@@ -1010,7 +1002,9 @@
                   } else if (!quizCompleted) {
                     // Hide regular buy buttons, show quiz CTA
                     if (regularButtons) regularButtons.style.display = 'none';
-                    if (quizCTA) quizCTA.style.display = 'block !important';
+                    if (quizCTA) {
+                      quizCTA.style.setProperty('display', 'block', 'important');
+                    }
                   } else {
                     // Show regular buy buttons, hide quiz CTA
                     if (regularButtons) regularButtons.style.display = '';
