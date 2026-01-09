@@ -899,6 +899,7 @@
         cursor: pointer;
         background: #fff;
         transition: all 0.2s;
+        font-family: 'Avenir Next', sans-serif;
     }
 
     .purchase-option:hover {
