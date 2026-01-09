@@ -3976,7 +3976,7 @@ const PageHeader = class extends HTMLElement {
         .then((data) => {
           const template = document.createElement('template');
           template.innerHTML = data.header;
-          const selectorsForRefresh = ['#pageheader .logo-area__right__inner .cart-link .cart-link__icon .cart-link__count'];
+          const selectorsForRefresh = ['#pageheader .logo-area__right__inner .cart-link .cart-link__count'];
           for (let i = 0; i < selectorsForRefresh.length; i += 1) {
             const newEl = template.content.querySelector(selectorsForRefresh[i]);
             const currentEl = this.querySelector(selectorsForRefresh[i]);
