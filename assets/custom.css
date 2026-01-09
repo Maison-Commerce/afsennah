@@ -2552,3 +2552,14 @@ cart-drawer .cart-upsell-product {
     letter-spacing: 0%;
     color: rgba(28, 28, 28, 0.75);
 }
+
+.sls-selling-plan-group-name {
+    font-family: "Gotham";
+    font-weight: 500;
+    font-style: Medium;
+    font-size: 16px;
+    line-height: 150%;
+    letter-spacing: 0%;
+    vertical-align: middle;
+    color: #1D211E;
+}
