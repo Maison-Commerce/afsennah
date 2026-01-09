@@ -880,6 +880,7 @@
         text-transform: uppercase;
         letter-spacing: 0.5px;
         margin-bottom: 12px;
+        font-family: 'Avenir Next', sans-serif;
     }
 
     .product-purchase-options {
