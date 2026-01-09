@@ -922,7 +922,7 @@
                             </div>
                           </div>
                           
-                          <div class="subscription-option__expandable" data-subscription-expandable>
+                          <div class="subscription-option__expandable" data-subscription-expandable {% if default_selection == 'subscription' %}data-initial{% endif %}>
                               {% if first_group.selling_plans.size > 1 %}
                                 <div class="subscription-option__interval">
                                   <label class="subscription-interval-label" data-interval-label>{{ block.settings.interval_label | default: 'Deliver & Pay every' }}</label>
@@ -1530,10 +1530,29 @@
                           // Event listeners
                           console.log('[Subscription Picker] Setting up event listeners, radio buttons:', radioButtons.length);
                           
-                          // Set initial state - show expandable content for active option
+                          // Set initial state - show expandable content for active option immediately
+                          // First, set initial state without animation for active block
+                          const activeOption = picker.querySelector('.subscription-option--active');
+                          if (activeOption) {
+                            const expandable = activeOption.querySelector('.subscription-option__expandable');
+                            if (expandable && expandable.hasAttribute('data-initial')) {
+                              // Set initial state without transition
+                              expandable.style.transition = 'none';
+                              expandable.style.maxHeight = expandable.scrollHeight + 'px';
+                              expandable.style.opacity = '1';
+                              expandable.style.marginTop = '16px';
+                              // Remove data-initial and restore transition after a brief moment
+                              setTimeout(function() {
+                                expandable.removeAttribute('data-initial');
+                                expandable.style.transition = '';
+                              }, 50);
+                            }
+                          }
+                          
+                          // Then update all states with animation
                           setTimeout(function() {
                             updateExpandableState();
-                          }, 100);
+                          }, 150);
                           
                           radioButtons.forEach(radio => {
                             radio.addEventListener('change', function() {
@@ -1983,6 +2002,11 @@
                         max-height: 2000px;
                         opacity: 1;
                         margin-top: 16px;
+                      }
+
+                      /* Initial state for active block - show expandable immediately without animation */
+                      .subscription-option--active .subscription-option__expandable[data-initial] {
+                        transition: none;
                       }
 
                       .subscription-option__interval {
