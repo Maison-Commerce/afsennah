@@ -24,8 +24,8 @@
         }
 
         giftTiersEnabled = true;
-        giftProgressText = container.dataset.progressText || 'Spend [[remaining]] more to unlock your next gift!';
-        giftCompleteText = container.dataset.completeText || 'You have unlocked all free gifts!';
+        giftProgressText = container.dataset.progressText || '🎁 Spend [[remaining]] more to unlock your next gift!';
+        giftCompleteText = container.dataset.completeText || '🎁 You have unlocked all free gifts!';
 
         // Get user gender from QuizManager
         if (window.QuizManager && window.QuizManager.answers && window.QuizManager.answers.gender) {
