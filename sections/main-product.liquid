@@ -1073,6 +1073,16 @@
                             if (picker) {
                               picker.style.display = '';
                               console.log('[Subscription Picker] Showing picker after data extraction');
+                              
+                              // Update prices and selling plan immediately after showing picker
+                              // Wait a bit for DOM to be ready
+                              setTimeout(function() {
+                                if (form && productData) {
+                                  console.log('[Subscription Picker] Updating prices and selling plan immediately after data extraction');
+                                  updatePrices();
+                                  updateSellingPlan();
+                                }
+                              }, 100);
                             }
                             
                             return true;
@@ -1573,6 +1583,16 @@
                           // Mark as initialized
                           isInitialized = true;
                           console.log('[Subscription Picker] Initialization complete');
+                          
+                          // Update prices and selling plan immediately after initialization
+                          if (productData && form) {
+                            console.log('[Subscription Picker] Updating prices and selling plan after initialization');
+                            // Small delay to ensure all DOM elements are ready
+                            setTimeout(function() {
+                              updatePrices();
+                              updateSellingPlan();
+                            }, 50);
+                          }
                         }
 
                         // Setup MutationObserver on buy-buttons container
@@ -1685,7 +1705,10 @@
                               if (picker) {
                                 picker.style.display = '';
                               }
-                              initSubscriptionPicker();
+                              // Wait a bit before initializing to ensure DOM is ready
+                              setTimeout(function() {
+                                initSubscriptionPicker();
+                              }, 100);
                             }
                           } else {
                             console.log('[Subscription Picker] Seal Subscriptions not found yet');
