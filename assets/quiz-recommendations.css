@@ -129,9 +129,11 @@
     /* Mobile Gift Progress Section - Hidden on Desktop */
     .gift-progress-section-mobile {
         display: none;
+        margin-top: 24px;
         margin-bottom: 24px;
         border-radius: 12px;
         padding: 0;
+        background: transparent;
     }
 
     .gift-progress-header{
