@@ -851,29 +851,31 @@
                       <div class="subscription-picker__options">
                         <!-- One-time Purchase Option -->
                         <div class="subscription-option {% if default_selection == 'one-time' %}subscription-option--active{% endif %}" data-option-type="one-time">
-                          <div class="subscription-option__radio">
-                            <input type="radio" 
-                                   name="subscription_type_{{ block.id }}" 
-                                   id="one-time-{{ block.id }}" 
-                                   value="one-time" 
-                                   {% if default_selection == 'one-time' %}checked{% endif %}
-                                   class="subscription-radio">
-                            <span class="subscription-radio-custom"></span>
-                          </div>
-                          <div class="subscription-option__content">
-                            <label class="subscription-option__label" for="one-time-{{ block.id }}">
-                              {{ one_time_label }}
-                            </label>
-                            <div class="subscription-option__price">
-                              <div class="subscription-price">
-                                <span class="subscription-price__current" data-one-time-price>
-                                  {% render 'price', product: product, show_currency_code: false, for_variant_picker: true, current_variant: current_variant %}
-                                </span>
-                                {% if current_variant.compare_at_price > current_variant.price %}
-                                  <span class="subscription-price__original" data-one-time-compare>
-                                    {% render 'price', product: product, show_currency_code: false, for_variant_picker: true, current_variant: current_variant, price_type: 'compare' %}
+                          <div class="subscription-option__header">
+                            <div class="subscription-option__radio">
+                              <input type="radio" 
+                                     name="subscription_type_{{ block.id }}" 
+                                     id="one-time-{{ block.id }}" 
+                                     value="one-time" 
+                                     {% if default_selection == 'one-time' %}checked{% endif %}
+                                     class="subscription-radio">
+                              <span class="subscription-radio-custom"></span>
+                            </div>
+                            <div class="subscription-option__content">
+                              <label class="subscription-option__label" for="one-time-{{ block.id }}">
+                                {{ one_time_label }}
+                              </label>
+                              <div class="subscription-option__price">
+                                <div class="subscription-price">
+                                  <span class="subscription-price__current" data-one-time-price>
+                                    {% render 'price', product: product, show_currency_code: false, for_variant_picker: true, current_variant: current_variant %}
                                   </span>
-                                {% endif %}
+                                  {% if current_variant.compare_at_price > current_variant.price %}
+                                    <span class="subscription-price__original" data-one-time-compare>
+                                      {% render 'price', product: product, show_currency_code: false, for_variant_picker: true, current_variant: current_variant, price_type: 'compare' %}
+                                    </span>
+                                  {% endif %}
+                                </div>
                               </div>
                             </div>
                           </div>
@@ -884,60 +886,65 @@
                           {% if show_most_popular and most_popular_text != blank %}
                             <div class="subscription-option__badge">{{ most_popular_text }}</div>
                           {% endif %}
-                          <div class="subscription-option__radio">
-                            <input type="radio" 
-                                   name="subscription_type_{{ block.id }}" 
-                                   id="subscription-{{ block.id }}" 
-                                   value="subscription" 
-                                   {% if default_selection == 'subscription' %}checked{% endif %}
-                                   class="subscription-radio">
-                            <span class="subscription-radio-custom"></span>
-                          </div>
-                          <div class="subscription-option__content">
-                          <label class="subscription-option__label" for="subscription-{{ block.id }}" data-subscribe-label>
-                            {{ subscribe_label }}
-                            {% if block.settings.savings_badge_text != blank %}
-                              <span class="subscription-savings-badge" data-savings-badge>{{ block.settings.savings_badge_text }}</span>
-                            {% endif %}
-                          </label>
-                            <div class="subscription-option__price">
-                              <div class="subscription-price">
-                                <span class="subscription-price__current" data-subscription-price>
-                                  {%- if default_selling_plan -%}
-                                    {%- for allocation in current_variant.selling_plan_allocations -%}
-                                      {%- if allocation.selling_plan.id == default_selling_plan.id -%}
-                                        <span class="money">{{ allocation.price | money }}</span>
-                                      {%- endif -%}
-                                    {%- endfor -%}
-                                  {%- endif -%}
-                                </span>
-                                <span class="subscription-price__original" data-subscription-compare>
-                                  {% render 'price', product: product, show_currency_code: false, for_variant_picker: true, current_variant: current_variant, price_type: 'compare' %}
-                                </span>
+                          <div class="subscription-option__header">
+                            <div class="subscription-option__radio">
+                              <input type="radio" 
+                                     name="subscription_type_{{ block.id }}" 
+                                     id="subscription-{{ block.id }}" 
+                                     value="subscription" 
+                                     {% if default_selection == 'subscription' %}checked{% endif %}
+                                     class="subscription-radio">
+                              <span class="subscription-radio-custom"></span>
+                            </div>
+                            <div class="subscription-option__content">
+                              <label class="subscription-option__label" for="subscription-{{ block.id }}" data-subscribe-label>
+                                {{ subscribe_label }}
+                                {% if block.settings.savings_badge_text != blank %}
+                                  <span class="subscription-savings-badge" data-savings-badge>{{ block.settings.savings_badge_text }}</span>
+                                {% endif %}
+                              </label>
+                              <div class="subscription-option__price">
+                                <div class="subscription-price">
+                                  <span class="subscription-price__current" data-subscription-price>
+                                    {%- if default_selling_plan -%}
+                                      {%- for allocation in current_variant.selling_plan_allocations -%}
+                                        {%- if allocation.selling_plan.id == default_selling_plan.id -%}
+                                          <span class="money">{{ allocation.price | money }}</span>
+                                        {%- endif -%}
+                                      {%- endfor -%}
+                                    {%- endif -%}
+                                  </span>
+                                  <span class="subscription-price__original" data-subscription-compare>
+                                    {% render 'price', product: product, show_currency_code: false, for_variant_picker: true, current_variant: current_variant, price_type: 'compare' %}
+                                  </span>
+                                </div>
                               </div>
                             </div>
-                            
-                            {% if first_group.selling_plans.size > 1 %}
-                              <div class="subscription-option__interval">
-                                <label class="subscription-interval-label" data-interval-label>{{ block.settings.interval_label | default: 'Deliver & Pay every' }}</label>
-                                <select class="subscription-interval-select" name="subscription_interval_{{ block.id }}" data-interval-select>
-                                  {% for plan in first_group.selling_plans %}
-                                    <option value="{{ plan.id }}" 
-                                            data-plan-id="{{ plan.id }}"
-                                            {% if forloop.first %}selected{% endif %}>
-                                      {{ plan.options[0].value }}
-                                    </option>
-                                  {% endfor %}
-                                </select>
-                              </div>
-                            {% endif %}
-                            
-                            <div class="subscription-option__benefits" data-subscription-benefits>
-                              {% if block.settings.use_custom_benefits %}
-                                {% if block.settings.subscription_benefits != blank %}
-                                  {{ block.settings.subscription_benefits }}
-                                {% endif %}
+                          </div>
+                          
+                          <div class="subscription-option__expandable" data-subscription-expandable>
+                              {% if first_group.selling_plans.size > 1 %}
+                                <div class="subscription-option__interval">
+                                  <label class="subscription-interval-label" data-interval-label>{{ block.settings.interval_label | default: 'Deliver & Pay every' }}</label>
+                                  <select class="subscription-interval-select" name="subscription_interval_{{ block.id }}" data-interval-select>
+                                    {% for plan in first_group.selling_plans %}
+                                      <option value="{{ plan.id }}" 
+                                              data-plan-id="{{ plan.id }}"
+                                              {% if forloop.first %}selected{% endif %}>
+                                        {{ plan.options[0].value }}
+                                      </option>
+                                    {% endfor %}
+                                  </select>
+                                </div>
                               {% endif %}
+                              
+                              <div class="subscription-option__benefits" data-subscription-benefits>
+                                {% if block.settings.use_custom_benefits %}
+                                  {% if block.settings.subscription_benefits != blank %}
+                                    {{ block.settings.subscription_benefits }}
+                                  {% endif %}
+                                {% endif %}
+                              </div>
                             </div>
                           </div>
                         </div>
@@ -1049,7 +1056,7 @@
                             const variants = sealSubsData.variants || [];
                             console.log('[Subscription Picker] Variants count:', variants.length);
 
-                            // Update productData
+                            // Update productData with all information from Seal Subscriptions
                             productData = {
                               variants: variants.map(v => ({
                                 id: parseInt(v.id), // Ensure ID is a number
@@ -1058,6 +1065,7 @@
                                 selling_plan_allocations: (v.selling_plan_allocations || []).map(a => ({
                                   selling_plan_id: parseInt(a.selling_plan_id), // Ensure ID is a number
                                   price: a.price,
+                                  per_delivery_price: a.per_delivery_price || a.price,
                                   compare_at_price: a.compare_at_price || a.price
                                 }))
                               })),
@@ -1065,10 +1073,12 @@
                                 id: parseInt(plan.id), // Ensure ID is a number
                                 name: plan.name,
                                 options: plan.options || [],
-                                description: plan.description || ''
+                                description: plan.description || '',
+                                price_adjustments: plan.price_adjustments || []
                               })),
                               groupName: group.name || 'Subscribe & save',
-                              intervalLabel: (group.options && group.options[0] && group.options[0].name) || 'Deliver & Pay every'
+                              intervalLabel: (group.options && group.options[0] && group.options[0].name) || 'Deliver & Pay every',
+                              rawData: sealSubsData // Store raw data for reference
                             };
                             console.log('[Subscription Picker] Product data updated:', productData);
 
@@ -1105,70 +1115,51 @@
                             return;
                           }
 
-                          // Update subscription label from Seal Subscriptions
+                          // Update subscription label from productData (from data-product)
                           const subscribeLabel = picker.querySelector('[data-subscribe-label]');
-                          if (subscribeLabel) {
-                            const sealSubsLabel = document.querySelector('.sls-selling-plan-group-name');
-                            if (sealSubsLabel) {
-                              const savingsBadge = subscribeLabel.querySelector('[data-savings-badge]');
-                              subscribeLabel.innerHTML = sealSubsLabel.textContent.trim();
-                              if (savingsBadge) {
-                                subscribeLabel.appendChild(savingsBadge);
-                              }
-                            } else if (productData.groupName) {
-                              const savingsBadge = subscribeLabel.querySelector('[data-savings-badge]');
-                              subscribeLabel.innerHTML = productData.groupName;
-                              if (savingsBadge) {
-                                subscribeLabel.appendChild(savingsBadge);
-                              }
-                            }
+                          if (subscribeLabel && productData.groupName) {
+                            const savingsBadge = subscribeLabel.querySelector('[data-savings-badge]');
+                            const badgeText = savingsBadge ? savingsBadge.outerHTML : '';
+                            subscribeLabel.innerHTML = productData.groupName + (badgeText ? ' ' + badgeText : '');
+                            console.log('[Subscription Picker] Updated subscribe label to:', productData.groupName);
                           }
 
-                          // Update savings badge from Seal Subscriptions
+                          // Update savings badge from productData (from data-product)
                           const savingsBadge = picker.querySelector('[data-savings-badge]');
-                          if (savingsBadge) {
-                            const sealSubsBadge = document.querySelector('.sls-savings-badge');
-                            if (sealSubsBadge) {
-                              savingsBadge.textContent = sealSubsBadge.textContent.trim();
+                          if (savingsBadge && productData.selling_plans.length > 0) {
+                            // Get discount percentage from first selling plan's price_adjustments
+                            const firstPlan = productData.selling_plans[0];
+                            if (firstPlan.price_adjustments && firstPlan.price_adjustments.length > 0) {
+                              const adjustment = firstPlan.price_adjustments[0];
+                              if (adjustment.value_type === 'percentage') {
+                                savingsBadge.textContent = 'SAVE ' + adjustment.value + '%';
+                                console.log('[Subscription Picker] Updated savings badge to:', savingsBadge.textContent);
+                              }
                             }
                           }
 
-                          // Update interval label from Seal Subscriptions
+                          // Update interval label from productData (from data-product)
                           const intervalLabel = picker.querySelector('[data-interval-label]');
-                          if (intervalLabel) {
-                            const sealSubsIntervalLabel = document.querySelector('.selling-plan-group-options-name-select label');
-                            if (sealSubsIntervalLabel) {
-                              intervalLabel.textContent = sealSubsIntervalLabel.textContent.trim();
-                            } else if (productData.intervalLabel) {
-                              intervalLabel.textContent = productData.intervalLabel;
-                            }
+                          if (intervalLabel && productData.intervalLabel) {
+                            intervalLabel.textContent = productData.intervalLabel;
+                            console.log('[Subscription Picker] Updated interval label to:', productData.intervalLabel);
                           }
 
-                          // Update interval select options from Seal Subscriptions
+                          // Update interval select options from productData (from data-product)
                           const intervalSelect = picker.querySelector('[data-interval-select]');
-                          if (intervalSelect) {
-                            const sealSubsSelect = document.querySelector('.sls-select[name="subs_interval"]');
-                            if (sealSubsSelect && sealSubsSelect.options.length > 0) {
-                              intervalSelect.innerHTML = '';
-                              Array.from(sealSubsSelect.options).forEach((option, index) => {
-                                const newOption = document.createElement('option');
-                                newOption.value = option.value;
-                                newOption.dataset.planId = option.value;
-                                newOption.textContent = option.textContent.trim();
-                                if (index === 0) newOption.selected = true;
-                                intervalSelect.appendChild(newOption);
-                              });
-                            } else if (productData.selling_plans.length > 0) {
-                              intervalSelect.innerHTML = '';
-                              productData.selling_plans.forEach((plan, index) => {
-                                const option = document.createElement('option');
-                                option.value = plan.id;
-                                option.dataset.planId = plan.id;
-                                option.textContent = plan.options[0]?.value || plan.name;
-                                if (index === 0) option.selected = true;
-                                intervalSelect.appendChild(option);
-                              });
-                            }
+                          if (intervalSelect && productData.selling_plans.length > 0) {
+                            intervalSelect.innerHTML = '';
+                            productData.selling_plans.forEach((plan, index) => {
+                              const option = document.createElement('option');
+                              option.value = plan.id;
+                              option.dataset.planId = plan.id;
+                              // Get interval value from plan options
+                              const intervalValue = plan.options && plan.options[0] ? plan.options[0].value : plan.name;
+                              option.textContent = intervalValue;
+                              if (index === 0) option.selected = true;
+                              intervalSelect.appendChild(option);
+                            });
+                            console.log('[Subscription Picker] Updated interval select with', productData.selling_plans.length, 'options');
                           }
 
                           // Update subscription benefits/description from Seal Subscriptions
@@ -1516,13 +1507,46 @@
                           intervalSelect = picker.querySelector('[data-interval-select]');
                           const options = picker.querySelectorAll('.subscription-option');
 
+                          // Function to update expandable state
+                          function updateExpandableState() {
+                            options.forEach(opt => {
+                              const expandable = opt.querySelector('.subscription-option__expandable');
+                              if (expandable) {
+                                if (opt.classList.contains('subscription-option--active')) {
+                                  // Show expandable content
+                                  expandable.style.maxHeight = expandable.scrollHeight + 'px';
+                                  expandable.style.opacity = '1';
+                                  expandable.style.marginTop = '16px';
+                                } else {
+                                  // Hide expandable content
+                                  expandable.style.maxHeight = '0';
+                                  expandable.style.opacity = '0';
+                                  expandable.style.marginTop = '0';
+                                }
+                              }
+                            });
+                          }
+                          
                           // Event listeners
                           console.log('[Subscription Picker] Setting up event listeners, radio buttons:', radioButtons.length);
+                          
+                          // Set initial state - show expandable content for active option
+                          setTimeout(function() {
+                            updateExpandableState();
+                          }, 100);
+                          
                           radioButtons.forEach(radio => {
                             radio.addEventListener('change', function() {
                               console.log('[Subscription Picker] Radio changed to:', this.value);
+                              const currentOption = this.closest('.subscription-option');
+                              
+                              // Update active state
                               options.forEach(opt => opt.classList.remove('subscription-option--active'));
-                              this.closest('.subscription-option').classList.add('subscription-option--active');
+                              currentOption.classList.add('subscription-option--active');
+                              
+                              // Update expandable content with smooth animation
+                              updateExpandableState();
+                              
                               updateSellingPlan();
                               updatePrices();
                               
@@ -1550,11 +1574,12 @@
                           console.log('[Subscription Picker] Setting up click handlers on subscription options, count:', options.length);
                           options.forEach(option => {
                             option.addEventListener('click', function(e) {
-                              // Don't trigger if clicking on radio, label, select, or button
+                              // Don't trigger if clicking on radio, label, select, button, or inside expandable
                               if (e.target.closest('.subscription-radio') || 
                                   e.target.closest('label') || 
                                   e.target.closest('select') ||
                                   e.target.closest('button') ||
+                                  e.target.closest('.subscription-option__expandable') ||
                                   e.target.tagName === 'BUTTON') {
                                 console.log('[Subscription Picker] Click ignored - clicked on interactive element');
                                 return;
@@ -1821,6 +1846,13 @@
                         align-items: flex-start;
                       }
 
+                      .subscription-option__header {
+                        display: flex;
+                        gap: 16px;
+                        align-items: flex-start;
+                        flex: 1;
+                      }
+
                       .subscription-option:hover {
                         border-color: #CCCCE8;
                       }
@@ -1935,6 +1967,22 @@
                         font-size: 18px;
                         color: #999;
                         text-decoration: line-through;
+                      }
+
+                      .subscription-option__expandable {
+                        max-height: 0;
+                        overflow: hidden;
+                        opacity: 0;
+                        transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
+                                    opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
+                                    margin-top 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+                        margin-top: 0;
+                      }
+
+                      .subscription-option--active .subscription-option__expandable {
+                        max-height: 2000px;
+                        opacity: 1;
+                        margin-top: 16px;
                       }
 
                       .subscription-option__interval {
