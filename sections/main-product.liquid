@@ -851,10 +851,7 @@
                       <div class="subscription-picker__options">
                         <!-- One-time Purchase Option -->
                         <div class="subscription-option {% if default_selection == 'one-time' %}subscription-option--active{% endif %}" data-option-type="one-time">
-                        
-                          <div class="subscription-option__content">
-                            <label class="subscription-option__label" for="one-time-{{ block.id }}">
-                                <div class="subscription-option__radio">
+                          <div class="subscription-option__radio">
                             <input type="radio" 
                                    name="subscription_type_{{ block.id }}" 
                                    id="one-time-{{ block.id }}" 
@@ -862,7 +859,10 @@
                                    {% if default_selection == 'one-time' %}checked{% endif %}
                                    class="subscription-radio">
                             <span class="subscription-radio-custom"></span>
-                          </div>{{ one_time_label }}
+                          </div>
+                          <div class="subscription-option__content">
+                            <label class="subscription-option__label" for="one-time-{{ block.id }}">
+                              {{ one_time_label }}
                             </label>
                             <div class="subscription-option__price">
                               <div class="subscription-price">
@@ -884,10 +884,7 @@
                           {% if show_most_popular and most_popular_text != blank %}
                             <div class="subscription-option__badge">{{ most_popular_text }}</div>
                           {% endif %}
-                        
-                          <div class="subscription-option__content">
-                          <label class="subscription-option__label" for="subscription-{{ block.id }}" data-subscribe-label>
-                              <div class="subscription-option__radio">
+                          <div class="subscription-option__radio">
                             <input type="radio" 
                                    name="subscription_type_{{ block.id }}" 
                                    id="subscription-{{ block.id }}" 
@@ -896,6 +893,8 @@
                                    class="subscription-radio">
                             <span class="subscription-radio-custom"></span>
                           </div>
+                          <div class="subscription-option__content">
+                          <label class="subscription-option__label" for="subscription-{{ block.id }}" data-subscribe-label>
                             {{ subscribe_label }}
                             {% if block.settings.savings_badge_text != blank %}
                               <span class="subscription-savings-badge" data-savings-badge>{{ block.settings.savings_badge_text }}</span>
