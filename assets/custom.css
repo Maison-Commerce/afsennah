@@ -2401,6 +2401,7 @@ cart-drawer .cart-upsell-product__add-btn {
 cart-drawer .cart-upsell-product__add-btn {
     border-radius:8px;
     border: 1px solid #E5E5F4;
+    color: #1A365D;
 }
 
 cart-drawer .cart-upsell-product {
