@@ -860,20 +860,22 @@
                                    class="subscription-radio">
                           </div>
                           <div class="subscription-option__content">
-                            <span class="subscription-radio-custom"></span>
-                            <label class="subscription-option__label" for="one-time-{{ block.id }}" data-one-time-label>
-                              {{ one_time_label }}
-                            </label>
-                            <div class="subscription-option__price">
-                              <div class="subscription-price">
-                                <span class="subscription-price__current" data-one-time-price>
-                                  {% render 'price', product: product, show_currency_code: false, for_variant_picker: true, current_variant: current_variant %}
-                                </span>
-                                {% if current_variant.compare_at_price > current_variant.price %}
-                                  <span class="subscription-price__original" data-one-time-compare>
-                                    {% render 'price', product: product, show_currency_code: false, for_variant_picker: true, current_variant: current_variant, price_type: 'compare' %}
+                            <div class="subscription-option__content">
+                              <span class="subscription-radio-custom"></span>
+                              <label class="subscription-option__label" for="one-time-{{ block.id }}" data-one-time-label>
+                                {{ one_time_label }}
+                              </label>
+                              <div class="subscription-option__price">
+                                <div class="subscription-price">
+                                  <span class="subscription-price__current" data-one-time-price>
+                                    {% render 'price', product: product, show_currency_code: false, for_variant_picker: true, current_variant: current_variant %}
                                   </span>
-                                {% endif %}
+                                  {% if current_variant.compare_at_price > current_variant.price %}
+                                    <span class="subscription-price__original" data-one-time-compare>
+                                      {% render 'price', product: product, show_currency_code: false, for_variant_picker: true, current_variant: current_variant, price_type: 'compare' %}
+                                    </span>
+                                  {% endif %}
+                                </div>
                               </div>
                             </div>
                           </div>
@@ -893,27 +895,29 @@
                                    class="subscription-radio">
                           </div>
                           <div class="subscription-option__content">
-                            <span class="subscription-radio-custom"></span>
-                            <label class="subscription-option__label" for="subscription-{{ block.id }}" data-subscribe-label>
-                            {{ subscribe_label }}
-                            {% if block.settings.savings_badge_text != blank %}
-                              <span class="subscription-savings-badge" data-savings-badge>{{ block.settings.savings_badge_text }}</span>
-                            {% endif %}
-                          </label>
-                            <div class="subscription-option__price">
-                              <div class="subscription-price">
-                                <span class="subscription-price__current" data-subscription-price>
-                                  {%- if default_selling_plan -%}
-                                    {%- for allocation in current_variant.selling_plan_allocations -%}
-                                      {%- if allocation.selling_plan.id == default_selling_plan.id -%}
-                                        <span class="money">{{ allocation.price | money }}</span>
-                                      {%- endif -%}
-                                    {%- endfor -%}
-                                  {%- endif -%}
-                                </span>
-                                <span class="subscription-price__original" data-subscription-compare>
-                                  {% render 'price', product: product, show_currency_code: false, for_variant_picker: true, current_variant: current_variant, price_type: 'compare' %}
-                                </span>
+                            <div class="subscription-option__content">
+                              <span class="subscription-radio-custom"></span>
+                              <label class="subscription-option__label" for="subscription-{{ block.id }}" data-subscribe-label>
+                                {{ subscribe_label }}
+                                {% if block.settings.savings_badge_text != blank %}
+                                  <span class="subscription-savings-badge" data-savings-badge>{{ block.settings.savings_badge_text }}</span>
+                                {% endif %}
+                              </label>
+                              <div class="subscription-option__price">
+                                <div class="subscription-price">
+                                  <span class="subscription-price__current" data-subscription-price>
+                                    {%- if default_selling_plan -%}
+                                      {%- for allocation in current_variant.selling_plan_allocations -%}
+                                        {%- if allocation.selling_plan.id == default_selling_plan.id -%}
+                                          <span class="money">{{ allocation.price | money }}</span>
+                                        {%- endif -%}
+                                      {%- endfor -%}
+                                    {%- endif -%}
+                                  </span>
+                                  <span class="subscription-price__original" data-subscription-compare>
+                                    {% render 'price', product: product, show_currency_code: false, for_variant_picker: true, current_variant: current_variant, price_type: 'compare' %}
+                                  </span>
+                                </div>
                               </div>
                             </div>
                             
