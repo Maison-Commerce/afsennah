@@ -1232,6 +1232,7 @@ video-section-play-button {
     
     .tiered-rewards-bar__banner {
         margin-bottom: 0;
+        padding-bottom: 0;
     }
     .tiered-rewards-bar__marker-image img,
     .tiered-rewards-bar__marker-icon {
