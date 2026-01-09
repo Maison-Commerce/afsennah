@@ -283,7 +283,7 @@
   },
   "cart": {
     "general": {
-      "title": "Your cart",
+      "title": "My Cart",
       "backorder": "Product is backordered and will ship as soon as it is back in stock.",
       "free_shipping": "Your order is eligible for free shipping!",
       "free_shipping_deficit_html": "Spend <strong>{{ amount }}<\/strong> more for <strong>free shipping<\/strong>!",
