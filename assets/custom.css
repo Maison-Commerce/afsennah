@@ -2704,6 +2704,7 @@ display: flex !important;
     }
     cart-drawer .cart-upsell-product__add-btn {
         margin-top: 0;
+        padding: 6px;
     }
     
 }
