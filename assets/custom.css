@@ -2676,6 +2676,7 @@ display: flex !important;
         align-items: flex-end;
         justify-content: flex-end;
         width: fit-content;
+        max-width: 100px;
     }
     .cart-item__price-wrapper {
         flex-direction: column;
