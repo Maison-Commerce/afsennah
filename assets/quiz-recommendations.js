@@ -135,10 +135,11 @@
                 }
             }
             
-            // Apply upsell discount (50% off) if applicable
-            if (item.isUpsellDiscount) {
-                variantPrice = variantPrice * 0.5; // 50% discount
-            }
+            // For upsell items, use regular price (no percentage discount applied)
+            // The discount is already reflected in compare_at_price vs regular price
+            // if (item.isUpsellDiscount) {
+            //     variantPrice = variantPrice * 0.5; // 50% discount - REMOVED
+            // }
 
             total += variantPrice * item.quantity;
         });
@@ -1711,32 +1712,22 @@
                     totalDiscount += productDiscount + subscriptionDiscount;
                 }
             } else {
-                // For one-time items, check for upsell discount first, then compare_at_price
+                // For one-time items, check for compare_at_price (product discount)
                 const variant = item.product.variants.find(v => v.id === parseInt(item.variantId));
                 
-                // Check if this item has upsell discount (50% off)
-                if (item.isUpsellDiscount) {
-                    // Apply 50% discount
-                    const originalPrice = variantPrice;
-                    const discountedPrice = variantPrice * 0.5; // 50% discount
-                    subtotal += originalPrice * item.quantity;
-                    totalDiscount += (originalPrice - discountedPrice) * item.quantity;
-                    // Store discounted price for display
-                    item._upsellDiscountedPrice = discountedPrice;
+                // For upsell items, use compare_at_price as original and regular price as discounted
+                // For regular items, also check compare_at_price
+                const compareAtPrice = variant && variant.compare_at_price && variant.compare_at_price > variantPrice 
+                    ? variant.compare_at_price 
+                    : null;
+                
+                if (compareAtPrice) {
+                    // If there's a compare_at_price, use it as original price
+                    subtotal += compareAtPrice * item.quantity;
+                    totalDiscount += (compareAtPrice - variantPrice) * item.quantity;
                 } else {
-                    // Check for compare_at_price (product discount)
-                    const compareAtPrice = variant && variant.compare_at_price && variant.compare_at_price > variantPrice 
-                        ? variant.compare_at_price 
-                        : null;
-                    
-                    if (compareAtPrice) {
-                        // If there's a product discount, add original price to subtotal and discount to totalDiscount
-                        subtotal += compareAtPrice * item.quantity;
-                        totalDiscount += (compareAtPrice - variantPrice) * item.quantity;
-                    } else {
-                        // No discount, just add price to subtotal
-                        subtotal += variantPrice * item.quantity;
-                    }
+                    // No compare_at_price, just add regular price to subtotal
+                    subtotal += variantPrice * item.quantity;
                 }
                 
                 onetimeItems.push(item);
@@ -1846,22 +1837,12 @@
             }
             const price = variantPrice;
             
-            // Check if this item has upsell discount (50% off)
-            let itemTotal;
-            let originalTotal;
-            
-            if (item.isUpsellDiscount) {
-                // Apply 50% discount
-                originalTotal = price * item.quantity;
-                itemTotal = originalTotal * 0.5; // 50% discount
-            } else {
-                itemTotal = price * item.quantity;
-                originalTotal = null;
-            }
-
-            // Check for compare_at_price (product discount) - only if no upsell discount
-            const hasCompareAtPrice = !item.isUpsellDiscount && variant && variant.compare_at_price && variant.compare_at_price > price;
+            // Use compare_at_price as original price, regular price as discounted price
+            // This applies to both upsell items and regular items
+            const hasCompareAtPrice = variant && variant.compare_at_price && variant.compare_at_price > price;
             const compareAtTotal = hasCompareAtPrice ? variant.compare_at_price * item.quantity : null;
+            const itemTotal = price * item.quantity;
+            const originalTotal = compareAtTotal;
 
             // Get variant title if there are multiple variants
             let productName = item.product.title;
@@ -1870,16 +1851,9 @@
             }
 
             // Determine price HTML
+            // Use compare_at_price as original price if available, otherwise show regular price only
             let priceHTML = '';
-            if (item.isUpsellDiscount) {
-                // Show discounted price with original price crossed out
-                priceHTML = `
-                    <div class="cart-item-price">
-                        <span>${formatMoney(itemTotal)}</span>
-                        <span class="cart-item-price-original">${formatMoney(originalTotal)}</span>
-                    </div>
-                `;
-            } else if (hasCompareAtPrice) {
+            if (hasCompareAtPrice) {
                 priceHTML = `
                     <div class="cart-item-price">
                         <span>${formatMoney(itemTotal)}</span>
@@ -2341,8 +2315,9 @@
             
             if (products.length === 0) return;
 
-            // Calculate total price with 50% discount
-            let totalPrice = 0;
+            // Calculate total price using compare_at_price as original and regular price as discounted
+            let totalRegularPrice = 0;
+            let totalCompareAtPrice = 0;
             products.forEach(product => {
                 if (product.variants && product.variants.length > 0) {
                     // Use first available variant, or first variant if none available
@@ -2350,13 +2325,21 @@
                     if (variant && variant.price) {
                         // Convert price from cents to dollars
                         const priceInDollars = variant.price / 100;
-                        totalPrice += priceInDollars;
+                        totalRegularPrice += priceInDollars;
+                        
+                        // Use compare_at_price if available, otherwise use regular price
+                        if (variant.compare_at_price && variant.compare_at_price > variant.price) {
+                            totalCompareAtPrice += variant.compare_at_price / 100;
+                        } else {
+                            totalCompareAtPrice += priceInDollars;
+                        }
                     }
                 }
             });
 
-            // Apply 50% discount
-            const discountedPrice = totalPrice * 0.5;
+            // Use regular price as the displayed price (discounted price)
+            // compare_at_price is used as original price if available
+            const discountedPrice = totalRegularPrice;
 
             // Update button text
             const button = block.querySelector('[data-upsell-package-button]');
