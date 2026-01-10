@@ -84,22 +84,6 @@
           "disabled": true,
           "settings": {}
         },
-        "subscription_picker_MGxfLY": {
-          "type": "subscription-picker",
-          "settings": {
-            "subscription_title": "SUBSCRIBE AND SAVE 15%",
-            "default_selection": "subscription",
-            "one_time_label": "One-time purchase",
-            "subscribe_label": "Subscribe & Save",
-            "interval_label": "Deliver & Pay every",
-            "show_most_popular": true,
-            "most_popular_text": "MOST POPULAR",
-            "savings_badge_text": "SAVE 25%",
-            "subscription_benefits": "<ul><li>Save 30% on Every Custom Formula</li><li>Pause, Skip, or Cancel After 3 Deliveries</li><li>Free Shipping + Never Run Out During Your Hair Journey</li></ul>",
-            "subscription_details_label": "Subscription details",
-            "subscription_details": "<p><strong>How subscriptions work</strong></p><p>I agree this subscription will continue until I cancel; I will be charged the amount stated above at the interval stated above to the credit or debit card used to complete this purchase.</p><p>Cancellations are only allowed after the first 3 payments have been completed. After the initial 3 payments, cancellations are effective at the end of the then-current subscription period. To avoid future charges, cancel at least 5 business days prior to renewal.</p><p>You may cancel your membership after completing 3 payments online in the account portal or by emailing us via customerservice@afsennah.com</p>"
-          }
-        },
         "buy-buttons": {
           "type": "buy-buttons",
           "settings": {
@@ -111,6 +95,19 @@
             "sub-block-label": "SUBSCRIBE AND SAVE 15%",
             "quiz_cta_text": "Get Your Formula",
             "quiz_cta_url": "shopify://pages/get-your-formula",
+            "enable_subscription_picker": true,
+            "subscription_title": "SUBSCRIBE AND SAVE 15%",
+            "default_selection": "subscription",
+            "one_time_label": "One-time purchase",
+            "subscribe_label": "Subscribe & Save",
+            "interval_label": "Deliver & Pay every",
+            "show_most_popular": true,
+            "most_popular_text": "MOST POPULAR",
+            "savings_badge_text": "SAVE 25%",
+            "subscription_benefits": "<ul><li>Save 30% on Every Custom Formula</li><li>Pause, Skip, or Cancel After 3 Deliveries</li><li>Free Shipping + Never Run Out During Your Hair Journey</li></ul>",
+            "use_custom_benefits": true,
+            "subscription_details_label": "Subscription details",
+            "subscription_details": "<p><strong>How subscriptions work</strong></p><p>I agree this subscription will continue until I cancel; I will be charged the amount stated above at the interval stated above to the credit or debit card used to complete this purchase.</p><p>Cancellations are only allowed after the first 3 payments have been completed. After the initial 3 payments, cancellations are effective at the end of the then-current subscription period. To avoid future charges, cancel at least 5 business days prior to renewal.</p><p>You may cancel your membership after completing 3 payments online in the account portal or by emailing us via customerservice@afsennah.com</p>",
             "text_above_checkout": "<p>Delivery in <strong>1-2 business days</strong></p>",
             "text_icon": "",
             "text_custom_icon": "shopify://shop_images/Shipment-In-Transit--Streamline-Ultimate.svg",
@@ -342,7 +339,6 @@
         "divider",
         "variant-picker",
         "formula_button_wd8rNQ",
-        "subscription_picker_MGxfLY",
         "buy-buttons",
         "text_UT9ray",
         "divider_Cwfcya",
