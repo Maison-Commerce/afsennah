@@ -2663,6 +2663,10 @@ display: flex !important;
     .cart-item__price-wrapper {
         gap: 4px;
     }
+    .cart-item__column.cart-item__price .cart-item__remove svg {
+        width: 16px;
+        height: 16px;
+    }
 }
 @media (max-width: 418px) {
     .cart-drawer__footer .price {
