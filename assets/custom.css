@@ -2696,7 +2696,7 @@ display: flex !important;
     .cart-item-upsells .cart-upsell-product {
         display: grid;
         gap: 8px;
-        grid-template-columns: 50px 1fr;
+        grid-template-columns: 56px 1fr;
     }
 }
 @media (max-width: 418px) {
