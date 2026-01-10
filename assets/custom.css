@@ -2587,7 +2587,9 @@ cart-drawer .cart-upsell-product {
     margin: 0 !important;
 }
 
-
+.lightly-spaced-row.text-above-checkout span {
+    margin: 0;
+}
 .subscription-option__badge {
     position: absolute;
     top: -21px;
