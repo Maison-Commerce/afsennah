@@ -2710,7 +2710,9 @@ display: flex !important;
     cart-drawer .cart-upsell-product__title {
         margin: 0;
     }
-    
+    .cart-drawer .section-footer__payment-icon {
+        width: 26px;
+    }
 }
 @media (max-width: 418px) {
     .tiered-rewards-bar__marker-image .tiered-rewards-bar__marker-price svg {
