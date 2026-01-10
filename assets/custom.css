@@ -2702,6 +2702,9 @@ display: flex !important;
         justify-content: flex-start;
         flex-wrap: wrap;
     }
+    .tiered-rewards-bar__marker-image .tiered-rewards-bar__marker-price svg {
+        left: -10px;
+    }
 }
 @media (max-width: 418px) {
     .cart-drawer__footer .price {
