@@ -450,6 +450,17 @@
             {{ 'general.search.placeholder' | t | escape }}
           </div>
         </div>
+        {% if shop.customer_accounts_enabled %}
+          {% if customer %}
+            <a href="{{ routes.account_url }}" class="maison_commerce_maison_header__icon-link" aria-label="{{ 'sections.header.account' | t }}">
+              {% render 'icon-user' %}
+            </a>
+          {% else %}
+            <a href="{{ routes.account_login_url }}" class="maison_commerce_maison_header__icon-link" aria-label="{{ 'sections.header.account' | t }}">
+              {% render 'icon-user' %}
+            </a>
+          {% endif %}
+        {% endif %}
       </div>
     {% endif %}
 
