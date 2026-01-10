@@ -2674,6 +2674,16 @@ display: flex !important;
     cart-drawer .cart-drawer__usp-badge:last-child {
         display: none;
     }
+
+    cart-drawer .cart-upsell-product {
+        flex-direction: row;
+
+    }
+    .cart-upsell-product__title {
+        text-align: left;
+    }
+
+
 }
 @media (max-width: 418px) {
     .cart-drawer__footer .price {
