@@ -45,11 +45,11 @@
     
     <div class="cart-upsell-product__price">
       <span class="cart-upsell-product__price-current">
-        {{ price | money }}
+        {{ price | money_without_trailing_zeros }}
       </span>
       {% if compare_at_price > price %}
         <span class="cart-upsell-product__price-compare">
-          {{ compare_at_price | money }}
+          {{ compare_at_price | money_without_trailing_zeros }}
         </span>
       {% endif %}
     </div>
