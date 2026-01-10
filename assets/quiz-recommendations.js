@@ -1131,6 +1131,7 @@
         // Check if product is already in cart and update button visibility
         const checkCartState = () => {
             const selectedVariantId = parseInt(card.dataset.variantId);
+            // Products without subscriptions won't have radio buttons
             const selectedOption = card.querySelector('input[type="radio"]:checked');
             const sellingPlanId = selectedOption?.dataset.sellingPlan || null;
             const numericSellingPlanId = sellingPlanId ? parseInt(sellingPlanId) : null;
@@ -1152,13 +1153,17 @@
                 if (addBtn) addBtn.style.display = 'none';
                 if (removeBtn) removeBtn.style.display = 'block';
                 card.classList.remove('removed');
-                productStates[product.id].removed = false;
+                if (productStates[product.id]) {
+                    productStates[product.id].removed = false;
+                }
             } else {
                 // Product is not in cart - show add button, hide remove button
                 if (addBtn) addBtn.style.display = 'inline-flex';
                 if (removeBtn) removeBtn.style.display = 'none';
                 card.classList.add('removed');
-                productStates[product.id].removed = true;
+                if (productStates[product.id]) {
+                    productStates[product.id].removed = true;
+                }
             }
         };
         
@@ -1409,17 +1414,22 @@
             if (isNaN(selectedVariantId)) return;
             
             // Get the selected purchase option (subscription or one-time)
+            // Products without subscriptions won't have radio buttons, so handle that case
             const selectedOption = card.querySelector('input[type="radio"]:checked');
-            if (!selectedOption) return;
             
             // Determine sellingPlanId based on the selected option
+            // For products without subscriptions, selectedOption will be null, so sellingPlanId stays null
             let numericSellingPlanId = null;
-            if (selectedOption.value === 'subscription') {
-                const sellingPlanId = selectedOption.dataset.sellingPlan;
-                numericSellingPlanId = sellingPlanId ? parseInt(sellingPlanId) : null;
-            } else if (selectedOption.value === 'onetime') {
-                numericSellingPlanId = null; // One-time purchases don't have sellingPlanId
+            if (selectedOption) {
+                if (selectedOption.value === 'subscription') {
+                    const sellingPlanId = selectedOption.dataset.sellingPlan;
+                    numericSellingPlanId = sellingPlanId ? parseInt(sellingPlanId) : null;
+                } else if (selectedOption.value === 'onetime') {
+                    numericSellingPlanId = null; // One-time purchases don't have sellingPlanId
+                }
             }
+            // If selectedOption is null, it means the product has no subscription options,
+            // so numericSellingPlanId remains null (one-time purchase only)
             
             // Check if the currently selected purchase option is in the cart
             const itemInCart = cartItems.find(item => {
@@ -1446,39 +1456,36 @@
                 // Product is not in cart - show add button, hide remove button
                 const isTopPicks = card.closest('[data-section-products]')?.dataset.sectionProducts === 'top-picks';
                 
-                if (isTopPicks) {
-                    // For top-picks, if add button doesn't exist, create it
-                    if (!addBtn) {
-                        const addButton = document.createElement('button');
-                        addButton.className = 'product-add-btn product-add-btn-corner';
-                        addButton.setAttribute('data-add-btn', '');
-                        addButton.textContent = 'Add';
-                        card.appendChild(addButton);
+                // If add button doesn't exist, create it (for both top-picks and other products)
+                if (!addBtn) {
+                    const addButton = document.createElement('button');
+                    addButton.className = isTopPicks ? 'product-add-btn product-add-btn-corner' : 'product-add-btn product-add-btn-corner';
+                    addButton.setAttribute('data-add-btn', '');
+                    addButton.textContent = 'Add';
+                    card.appendChild(addButton);
+                    
+                    // Add click handler for the new add button
+                    addButton.addEventListener('click', () => {
+                        // Find product from stored products or cartItems
+                        const product = (window.quizRecommendationsProducts || []).find(p => p.id === parseInt(productId)) ||
+                                      cartItems.find(item => item.product.id === parseInt(productId))?.product;
                         
-                        // Add click handler for the new add button
-                        addButton.addEventListener('click', () => {
-                            // Find product from stored products or cartItems
-                            const product = (window.quizRecommendationsProducts || []).find(p => p.id === parseInt(productId)) ||
-                                          cartItems.find(item => item.product.id === parseInt(productId))?.product;
+                        if (product) {
+                            const currentQty = productStates[productId]?.quantity || 1;
+                            // Products without subscriptions won't have radio buttons
+                            const selectedOption = card.querySelector('input[type="radio"]:checked');
+                            const sellingPlanId = selectedOption?.dataset.sellingPlan || null;
+                            const selectedVariantId = parseInt(card.dataset.variantId);
+                            addToCart(selectedVariantId, currentQty, product, sellingPlanId);
                             
-                            if (product) {
-                                const currentQty = productStates[productId]?.quantity || 1;
-                                const selectedOption = card.querySelector('input[type="radio"]:checked');
-                                const sellingPlanId = selectedOption?.dataset.sellingPlan || null;
-                                const selectedVariantId = parseInt(card.dataset.variantId);
-                                addToCart(selectedVariantId, currentQty, product, sellingPlanId);
-                                
-                                setTimeout(() => {
-                                    updateProductCardButtons();
-                                }, 100);
-                            }
-                        });
-                    }
-                    if (addBtn) addBtn.style.display = 'inline-flex';
-                } else {
-                    if (addBtn) addBtn.style.display = 'inline-flex';
+                            setTimeout(() => {
+                                updateProductCardButtons();
+                            }, 100);
+                        }
+                    });
                 }
                 
+                if (addBtn) addBtn.style.display = 'inline-flex';
                 if (removeBtn) removeBtn.style.display = 'none';
                 card.classList.add('removed');
                 if (productStates[productId]) {
