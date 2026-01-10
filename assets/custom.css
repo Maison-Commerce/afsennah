@@ -2637,6 +2637,9 @@ display: flex !important;
     flex-wrap: wrap;
 }
 @media (max-width: 768px) {
+    cart-drawer .cart-upsell-product__price {
+        gap: 4px;
+    }
     .cart-item__not-image {
         flex-wrap: nowrap;
     }
