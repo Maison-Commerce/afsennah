@@ -52,13 +52,14 @@
           {{ compare_at_price | money_without_trailing_zeros }}
         </span>
       {% endif %}
+      {% if discount_percent > 0 %}
+        <div class="cart-upsell-product__badge">
+          Save {{ discount_percent }}%
+        </div>
+      {% endif %}
     </div>
     
-    {% if discount_percent > 0 %}
-      <div class="cart-upsell-product__badge">
-        Save {{ discount_percent }}%
-      </div>
-    {% endif %}
+
     
     <button type="button" class="cart-upsell-product__add-btn" data-variant-id="{{ first_available_variant.id }}" aria-label="Add {{ product.title | escape }} to cart">
       <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
