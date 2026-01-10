@@ -2609,9 +2609,6 @@ cart-drawer .cart-upsell-product {
     padding: 1px 8px;
 }
 
-.cart-upsell-product__badge {
-    margin-bottom: 0;
-}
 .subscription-price__current {
     font-family: "Avenir Next";
     font-weight: 600;
