@@ -2693,6 +2693,11 @@ display: flex !important;
         width: 47px;
         height: 59px;
     }
+    .cart-item-upsells .cart-upsell-product {
+        display: grid;
+        gap: 8px;
+        grid-template-columns: 50px 1fr;
+    }
 }
 @media (max-width: 418px) {
     .cart-drawer__footer .price {
