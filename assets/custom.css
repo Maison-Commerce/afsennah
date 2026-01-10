@@ -2700,6 +2700,7 @@ display: flex !important;
     }
     cart-drawer .cart-upsell-product__price {
         justify-content: flex-start;
+        flex-wrap: wrap;
     }
 }
 @media (max-width: 418px) {
