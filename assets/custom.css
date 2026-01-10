@@ -2682,7 +2682,9 @@ display: flex !important;
     .cart-upsell-product__title {
         text-align: left;
     }
-
+    .cart-upsell-product__info {
+        padding-left: 0;
+    }
 
 }
 @media (max-width: 418px) {
