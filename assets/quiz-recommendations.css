@@ -482,6 +482,12 @@
         .gift-tier-card .gift-product-title {
             font-size: 10px;
         }
+
+        .gift-milestone {
+            font-size: 9px;
+            width: 32px;
+            height: 32px;
+        }
     }
 
     /* Gift price display in cart */
@@ -538,12 +544,6 @@
 
         .gift-tier-card .gift-product-title {
             font-size: 14px;
-        }
-
-        .gift-milestone {
-            font-size: 9px;
-            width: 32px;
-            height: 32px;
         }
     }
 
