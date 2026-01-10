@@ -2657,6 +2657,9 @@ display: flex !important;
     .cart-item__column.cart-item__price .theme-money {
         font-size: 14px;
     }
+    .cart-item__column.cart-item__price .struck-out-price .theme-money {
+        font-size: 12px;
+    }
 }
 @media (max-width: 418px) {
     .cart-drawer__footer .price {
