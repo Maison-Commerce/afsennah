@@ -2505,7 +2505,7 @@ cart-drawer .cart-upsell-product {
     }
     .product-item-upsells .opposing-items__left.product-info-label h2,
     .video-slide-title {
-        font-size: 18px;
+        font-size: 18px !important;
     }
     /* .quiz-cta-wrapper.buy-buttons-main-quiz-button,
     .buy-buttons-main-quiz-button {
