@@ -2667,6 +2667,9 @@ display: flex !important;
         width: 16px;
         height: 16px;
     }
+    .cart-drawer__usp-badge:last-child {
+        display: none;
+    }
 }
 @media (max-width: 418px) {
     .cart-drawer__footer .price {
