@@ -2660,6 +2660,9 @@ display: flex !important;
     .cart-item__column.cart-item__price .struck-out-price .theme-money {
         font-size: 12px;
     }
+    .cart-item__price-wrapper {
+        gap: 4px;
+    }
 }
 @media (max-width: 418px) {
     .cart-drawer__footer .price {
