@@ -398,6 +398,21 @@
             {{ section.settings.quiz_button_text }}
           </a>
         {% endif %}
+        {%- liquid
+          assign cart_hash = ''
+          for item in cart.items
+            assign cart_hash = cart_hash | append: ',' | append: item.key | append: '|' | append: item.quantity
+          endfor
+          assign cart_hash = cart_hash | remove_first: ',' | sha256
+        -%}
+        <a href="{{ routes.cart_url }}" data-hash="{{ cart_hash }}" class="maison_commerce_maison_header__icon-link maison_commerce_maison_header__cart-link cart-link" @click.prevent="openCartDrawer($event)">
+          <div class="cart-link__icon">
+            {% render 'icon-bag' %}
+          </div>
+          {% if cart.item_count > 0 %}
+            <span class="maison_commerce_maison_header__cart-count cart-link__count">{{ cart.item_count }}</span>
+          {% endif %}
+        </a>
         <button 
           class="maison_commerce_maison_header__mobile-menu-toggle"
           @click="toggleMobileMenu()"
