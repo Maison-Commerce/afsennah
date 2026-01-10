@@ -2683,7 +2683,7 @@ display: flex !important;
         text-align: left;
     }
     .cart-upsell-product__info {
-        padding-left: 0;
+        padding-left: 0 !important;
     }
     .cart-upsell-product__image .bg-image {
         margin: 0;
