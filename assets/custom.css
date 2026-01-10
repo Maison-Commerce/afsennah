@@ -2635,3 +2635,8 @@ display: flex !important;
     display: flex;
     flex-wrap: wrap;
 }
+@media (max-width: 768px) {
+    .cart-item__not-image {
+        flex-wrap: nowrap;
+    }
+}
