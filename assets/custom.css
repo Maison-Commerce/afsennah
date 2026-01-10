@@ -2672,7 +2672,7 @@ display: flex !important;
         width: 16px;
         height: 16px;
     }
-    cart-drawer .cart-drawer__usp-badge:last-child {
+    .cart-drawer__usp-badge:last-child {
         display: none;
     }
 
