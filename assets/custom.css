@@ -2714,6 +2714,9 @@ display: flex !important;
         width: 26px;
     }
 }
+.cart-drawer__footer .checkout-buttons a {
+    border-radius: 16px;
+}
 @media (max-width: 418px) {
     .tiered-rewards-bar__marker-image .tiered-rewards-bar__marker-price svg {
         left: -10px;
