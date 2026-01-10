@@ -148,10 +148,9 @@
   
   .cart-upsell-product__badge {
     display: inline-block;
-    padding: 1px 4px;
+    padding: 2px 8px;
     background: #FAF59B;
     border-radius: 4px;
-    font-size: 12px;
     font-weight: 600;
     width: fit-content;
     color: #1A365D;
@@ -159,7 +158,7 @@
     font-family: "Gotham";
     font-weight: 700;
     font-style: Bold;
-    font-size: 8px;
+    font-size: 10px;
     line-height: 150%;
     letter-spacing: 0%;
 
@@ -194,4 +193,12 @@
     cursor: not-allowed;
     pointer-events: none;
   }
+
+
+  @media (max-width: 768px) {
+    .cart-upsell-product__badge {
+      padding: 1px 4px;
+      font-size: 8px;
+    }
+}
 </style>
