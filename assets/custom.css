@@ -2702,6 +2702,9 @@ display: flex !important;
         justify-content: flex-start;
         flex-wrap: wrap;
     }
+    cart-drawer .cart-upsell-product__add-btn {
+        margin-top: 0;
+    }
     
 }
 @media (max-width: 418px) {
