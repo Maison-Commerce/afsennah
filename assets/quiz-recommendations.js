@@ -1581,16 +1581,35 @@
         const numericSellingPlanId = sellingPlanId ? parseInt(sellingPlanId) : null;
 
         if (quantity === 0) {
-            // Remove item from cart: filter out items that match variantId and sellingPlanId (but keep gifts and BOGO items)
-            cartItems = cartItems.filter(item => {
-                // Keep items with different variantId
-                if (parseInt(item.variantId) !== numericVariantId) return true;
-                // Keep gifts and BOGO items
-                if (item.isGift || item.isBogoFree) return true;
-                // Remove items with matching variantId and sellingPlanId
+            // Check if the item being removed is an upsell package item
+            const itemBeingRemoved = cartItems.find(item => {
+                const itemVariantId = parseInt(item.variantId);
                 const itemSellingPlanId = item.sellingPlanId ? parseInt(item.sellingPlanId) : null;
-                return itemSellingPlanId !== numericSellingPlanId;
+                return itemVariantId === numericVariantId && itemSellingPlanId === numericSellingPlanId;
             });
+            
+            const isUpsellItem = itemBeingRemoved && itemBeingRemoved.isUpsellDiscount;
+            
+            if (isUpsellItem) {
+                // Remove ALL upsell package items when any one is removed
+                cartItems = cartItems.filter(item => {
+                    // Keep gifts and BOGO items
+                    if (item.isGift || item.isBogoFree) return true;
+                    // Remove all upsell items
+                    return !item.isUpsellDiscount;
+                });
+            } else {
+                // Remove item from cart: filter out items that match variantId and sellingPlanId (but keep gifts and BOGO items)
+                cartItems = cartItems.filter(item => {
+                    // Keep items with different variantId
+                    if (parseInt(item.variantId) !== numericVariantId) return true;
+                    // Keep gifts and BOGO items
+                    if (item.isGift || item.isBogoFree) return true;
+                    // Remove items with matching variantId and sellingPlanId
+                    const itemSellingPlanId = item.sellingPlanId ? parseInt(item.sellingPlanId) : null;
+                    return itemSellingPlanId !== numericSellingPlanId;
+                });
+            }
             
             updateCartDisplay();
             
