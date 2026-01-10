@@ -2639,6 +2639,15 @@ display: flex !important;
     .cart-item__not-image {
         flex-wrap: nowrap;
     }
+    .cart-item__column.cart-item__quantity .quantity {
+        height: 30px;
+    }
+    .cart-item__column.cart-item__quantity .buttoned-input a {
+        width: 30px;
+    }
+    .cart-item__column.cart-item__quantity .buttoned-input input {
+        width: 30px;
+    }
 }
 @media (max-width: 418px) {
 .cart-item__price-wrapper {
