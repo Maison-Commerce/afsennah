@@ -1961,16 +1961,28 @@
 
         // Update mobile sticky bar total
         const mobileTotalEl = document.querySelector('[data-mobile-total-current]');
+        const mobileTotalOriginalEl = document.querySelector('[data-mobile-total-original]');
         if (mobileTotalEl) {
             mobileTotalEl.innerHTML = formatMoney(total);
         }
 
-        // Show original total if there's a discount
-        if (subtotal > total && totalOriginalEl) {
-            totalOriginalEl.style.display = 'inline';
-            totalOriginalEl.innerHTML = formatMoney(subtotal);
-        } else if (totalOriginalEl) {
-            totalOriginalEl.style.display = 'none';
+        // Show original total if there's a discount (for both desktop and mobile)
+        if (subtotal > total) {
+            if (totalOriginalEl) {
+                totalOriginalEl.style.display = 'inline';
+                totalOriginalEl.innerHTML = formatMoney(subtotal);
+            }
+            if (mobileTotalOriginalEl) {
+                mobileTotalOriginalEl.style.display = 'inline';
+                mobileTotalOriginalEl.innerHTML = formatMoney(subtotal);
+            }
+        } else {
+            if (totalOriginalEl) {
+                totalOriginalEl.style.display = 'none';
+            }
+            if (mobileTotalOriginalEl) {
+                mobileTotalOriginalEl.style.display = 'none';
+            }
         }
 
         // Add click handlers for cart item remove buttons

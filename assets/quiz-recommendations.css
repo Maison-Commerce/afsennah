@@ -1411,6 +1411,20 @@
             line-height: 21px;
         }
 
+        .mobile-sticky-bar-price-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'Avenir Next', sans-serif;
+        }
+
+        .mobile-sticky-bar-price-original {
+            font-size: 14px;
+            color: #9CA3AF;
+            text-decoration: line-through;
+            font-weight: 400;
+        }
+
         .subscription-frequency-selector {
             min-width: 220px;
         }
