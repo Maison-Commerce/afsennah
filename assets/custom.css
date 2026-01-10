@@ -2651,6 +2651,9 @@ display: flex !important;
     .cart-item__title a {
         font-size: 14px;
     }
+    .cart-item__variant {
+        font-size: 12px;
+    }
 }
 @media (max-width: 418px) {
     .cart-drawer__footer .price {
