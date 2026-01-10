@@ -2640,3 +2640,8 @@ display: flex !important;
         flex-wrap: nowrap;
     }
 }
+
+.cart-item__price-wrapper {
+    flex-direction: column;
+    align-items: flex-end;
+}
