@@ -461,7 +461,8 @@
           "type": "ingredient_item",
           "settings": {
             "title": "Saffron Oil",
-            "description": "<p>We selected hibiscus oil for its rich blend of amino acids and vitamin C a rejuvenating extract that strengthens roots, boosts shine, and restores vitality to thinning, lackluster hair.</p>",
+            "description": "<p>We thoughtfully selected the most powerful plant-based oils to craft Afsennah’s hair elixirs rich in nutrients, free from harsh additives, and designed to nourish your scalp and transform your hair with every drop.</p>",
+            "image": "shopify://shop_images/ingredient_4.png",
             "is_expanded": false
           }
         },
@@ -469,7 +470,8 @@
           "type": "ingredient_item",
           "settings": {
             "title": "Prickly Pear Seed Oil",
-            "description": "<p>We selected hibiscus oil for its rich blend of amino acids and vitamin C a rejuvenating extract that strengthens roots, boosts shine, and restores vitality to thinning, lackluster hair.</p>",
+            "description": "<p>We thoughtfully selected the most powerful plant-based oils to craft Afsennah’s hair elixirs rich in nutrients, free from harsh additives, and designed to nourish your scalp and transform your hair with every drop.</p>",
+            "image": "shopify://shop_images/ingredient_3.png",
             "is_expanded": false
           }
         },
@@ -477,7 +479,8 @@
           "type": "ingredient_item",
           "settings": {
             "title": "Rosehip Oil",
-            "description": "<p>We selected hibiscus oil for its rich blend of amino acids and vitamin C a rejuvenating extract that strengthens roots, boosts shine, and restores vitality to thinning, lackluster hair.</p>",
+            "description": "<p>We carefully chose Rosehip oil for its rich blend of vitamins, antioxidants, and fatty acids a lightweight botanical that deeply nourishes, repairs, and softens hair while restoring balance to your scalp with every use.</p>",
+            "image": "shopify://shop_images/ingredient_afsennah.png",
             "is_expanded": false
           }
         }
