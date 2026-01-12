@@ -12,11 +12,15 @@
     "main": {
       "type": "main-product",
       "blocks": {
+        "title": {
+          "type": "title",
+          "settings": {}
+        },
         "loox_reviews_loox_rating_K6cdrY": {
           "type": "shopify://apps/loox-reviews/blocks/loox-rating/5c3b337f-fd14-4df5-b1d6-80ec13e6e28e",
           "settings": {
             "contentSize": 16,
-            "pattern": "",
+            "pattern": "[rating] | [count] reviews",
             "hideText": false,
             "alignment": "",
             "layout": "",
@@ -27,17 +31,6 @@
             "emptyRatingWidget": false
           }
         },
-        "title": {
-          "type": "title",
-          "settings": {}
-        },
-        "price": {
-          "type": "price",
-          "settings": {
-            "show_tax_and_shipping": false,
-            "enable_product_reviews_by_price": false
-          }
-        },
         "richtext_9PTgzC": {
           "type": "richtext",
           "settings": {
@@ -46,12 +39,22 @@
             "icon_size": "small",
             "enable_box": false,
             "box_color": "#e0f4d5",
-            "show_in_quickbuy": false
+            "show_in_quickbuy": false,
+            "desktop_background_color": "#ffffff",
+            "desktop_border_radius": 0,
+            "desktop_padding": 0,
+            "mobile_background_color": "#ffffff",
+            "mobile_border_radius": 0,
+            "mobile_padding": 0
           }
         },
-        "formula_button_wd8rNQ": {
-          "type": "formula_button",
-          "settings": {}
+        "price": {
+          "type": "price",
+          "disabled": true,
+          "settings": {
+            "show_tax_and_shipping": false,
+            "enable_product_reviews_by_price": false
+          }
         },
         "vendor": {
           "type": "vendor",
@@ -68,13 +71,18 @@
           "type": "variant-picker",
           "settings": {
             "show_single": false,
-            "selector_style": "dropdown",
+            "selector_style": "listed",
             "dynamic_availability": "show",
             "enable_size_chart": false,
             "size_chart_label": "Size guide",
             "size_chart_variant": "Size",
             "size_chart_page": ""
           }
+        },
+        "formula_button_wd8rNQ": {
+          "type": "formula_button",
+          "disabled": true,
+          "settings": {}
         },
         "buy-buttons": {
           "type": "buy-buttons",
@@ -84,12 +92,37 @@
             "show_gift_card_recipient": true,
             "show_pickup_availability": true,
             "show_backorder_text": true,
+            "sub-block-label": "SUBSCRIBE AND SAVE 15%",
             "quiz_cta_text": "Get Your Formula",
-            "quiz_cta_url": "shopify://pages/get-your-formula"
+            "quiz_cta_url": "shopify://pages/get-your-formula",
+            "enable_subscription_picker": true,
+            "subscription_title": "SUBSCRIBE AND SAVE 15%",
+            "default_selection": "subscription",
+            "one_time_label": "One-time purchase",
+            "subscribe_label": "Subscribe & Save",
+            "interval_label": "Deliver & Pay every",
+            "show_most_popular": true,
+            "most_popular_text": "MOST POPULAR",
+            "savings_badge_text": "SAVE 25%",
+            "subscription_benefits": "<ul><li>Save 30% on Every Custom Formula</li><li>Pause, Skip, or Cancel After 3 Deliveries</li><li>Free Shipping + Never Run Out During Your Hair Journey</li></ul>",
+            "use_custom_benefits": true,
+            "subscription_details_label": "Subscription details",
+            "subscription_details": "<p><strong>How subscriptions work</strong></p><p>I agree this subscription will continue until I cancel; I will be charged the amount stated above at the interval stated above to the credit or debit card used to complete this purchase.</p><p>Cancellations are only allowed after the first 3 payments have been completed. After the initial 3 payments, cancellations are effective at the end of the then-current subscription period. To avoid future charges, cancel at least 5 business days prior to renewal.</p><p>You may cancel your membership after completing 3 payments online in the account portal or by emailing us via customerservice@afsennah.com</p>",
+            "text_above_checkout": "<p>Delivery in <strong>1-2 business days</strong></p>",
+            "text_icon": "",
+            "text_custom_icon": "shopify://shop_images/Shipment-In-Transit--Streamline-Ultimate.svg",
+            "text_icon_size": "small",
+            "enable_text_box": false,
+            "text_box_color": "#e0f4d5",
+            "show_usp_badges": true,
+            "usp_1_label": "Trichologist-Developed",
+            "usp_2_label": "Clean Ingredients",
+            "usp_3_label": "Cruelty-Free"
           }
         },
         "text_UT9ray": {
           "type": "text",
+          "disabled": true,
           "settings": {
             "text": "Delivery in 1-2 business days",
             "icon": "plane",
@@ -101,6 +134,7 @@
         },
         "divider_Cwfcya": {
           "type": "divider",
+          "disabled": true,
           "settings": {
             "show_in_quickbuy": false
           }
@@ -108,12 +142,18 @@
         "richtext_cyRJhp": {
           "type": "richtext",
           "settings": {
-            "richtext": "<p><strong>Why Custom-Made Hair Products Work Better:</strong></p><p>Because your hair isn’t “one-size-fits-all.”</p><p>Every scalp and strand has its own balance of oils, sensitivities, and growth needs which is why generic products often fall short. Afsennah Custom-made formulas are crafted specifically for <em>your</em> hair type, scalp condition, and goals. They deliver the exact nutrients your hair needs, no unnecessary fillers, no harsh ingredients.</p><p>By addressing the <em>root cause</em> of your concerns, personalized products help restore balance faster, enhance strength and shine, and create long-lasting results that standard products simply can’t match.</p><p></p>",
+            "richtext": "<h3><strong>Why Custom-Made Hair Products Work Better</strong></h3><p>Because your hair isn’t “one-size-fits-all.”</p><p>Every scalp and strand has its own balance of oils, sensitivities, and growth needs which is why generic products often fall short. <br/><br/>Custom-made formulas are crafted specifically for <em>your</em> hair type, scalp condition, and goals. They deliver the exact nutrients your hair needs no unnecessary fillers, no harsh ingredients.</p><p>By addressing the <em>root cause</em> of your concerns, personalized products help restore balance faster, enhance strength and shine, and create long-lasting results that standard products simply can’t match.</p>",
             "icon": "",
             "icon_size": "small",
             "enable_box": false,
             "box_color": "#e0f4d5",
-            "show_in_quickbuy": false
+            "show_in_quickbuy": false,
+            "desktop_background_color": "#fffef3",
+            "desktop_border_radius": 16,
+            "desktop_padding": 24,
+            "mobile_background_color": "#fffef3",
+            "mobile_border_radius": 16,
+            "mobile_padding": 24
           }
         },
         "accordion_eCyiUV": {
@@ -140,8 +180,135 @@
             "show_in_quickbuy": false
           }
         },
+        "product_upsells_eVNWhn": {
+          "type": "product-upsells",
+          "settings": {
+            "title": "Try both and save big",
+            "subtitle": "No consultation required*",
+            "product_list": [
+              "custom-conditioner",
+              "e-gift-card",
+              "mulberry-pillowcase"
+            ],
+            "color_scheme": "default",
+            "show_in_quickbuy": false
+          }
+        },
+        "video_slide_6kdLjD": {
+          "type": "video_slide",
+          "settings": {
+            "title": "Join 1500+ Happy Women",
+            "title_size": 24,
+            "media_type": "video",
+            "video": "shopify://files/videos/VD1(No Outline).mov",
+            "video_url": "https://www.youtube.com/watch?v=_9VUPq3SxOc",
+            "video_host": "youtube",
+            "video_id": "",
+            "alt_text": "Video slide",
+            "border_radius": 8,
+            "border_radius_mobile": 8
+          }
+        },
+        "video_slide_JjnLi8": {
+          "type": "video_slide",
+          "settings": {
+            "title": "Join 1500+ Happy Women",
+            "title_size": 24,
+            "media_type": "video",
+            "video": "shopify://files/videos/VD1(No Outline).mov",
+            "video_url": "https://www.youtube.com/watch?v=_9VUPq3SxOc",
+            "video_host": "youtube",
+            "video_id": "",
+            "alt_text": "Video slide",
+            "border_radius": 8,
+            "border_radius_mobile": 8
+          }
+        },
+        "video_slide_JqjU8e": {
+          "type": "video_slide",
+          "settings": {
+            "title": "Join 1500+ Happy Women",
+            "title_size": 24,
+            "media_type": "video",
+            "video": "shopify://files/videos/VD1(No Outline).mov",
+            "video_url": "https://www.youtube.com/watch?v=_9VUPq3SxOc",
+            "video_host": "youtube",
+            "video_id": "",
+            "alt_text": "Video slide",
+            "border_radius": 8,
+            "border_radius_mobile": 8
+          }
+        },
+        "video_slide_CYRENe": {
+          "type": "video_slide",
+          "settings": {
+            "title": "Join 1500+ Happy Women",
+            "title_size": 24,
+            "media_type": "video",
+            "video": "shopify://files/videos/VD1(No Outline).mov",
+            "video_url": "https://www.youtube.com/watch?v=_9VUPq3SxOc",
+            "video_host": "youtube",
+            "video_id": "",
+            "alt_text": "Video slide",
+            "border_radius": 8,
+            "border_radius_mobile": 8
+          }
+        },
+        "video_slide_bCD4fx": {
+          "type": "video_slide",
+          "settings": {
+            "title": "Join 1500+ Happy Women",
+            "title_size": 24,
+            "media_type": "video",
+            "video": "shopify://files/videos/VD1(No Outline).mov",
+            "video_url": "https://www.youtube.com/watch?v=_9VUPq3SxOc",
+            "video_host": "youtube",
+            "video_id": "",
+            "alt_text": "Video slide",
+            "border_radius": 8,
+            "border_radius_mobile": 8
+          }
+        },
+        "video_slide_n68zUW": {
+          "type": "video_slide",
+          "settings": {
+            "title": "Join 1500+ Happy Women",
+            "title_size": 24,
+            "media_type": "video",
+            "video": "shopify://files/videos/VD1(No Outline).mov",
+            "video_url": "https://www.youtube.com/watch?v=_9VUPq3SxOc",
+            "video_host": "youtube",
+            "video_id": "",
+            "alt_text": "Video slide",
+            "border_radius": 8,
+            "border_radius_mobile": 8
+          }
+        },
+        "testimonial_under_gallery_yE3cQA": {
+          "type": "testimonial_under_gallery",
+          "settings": {
+            "left_side": true,
+            "padding": 16,
+            "border_radius": 16,
+            "margin_top": 42,
+            "border_color": "#f7f7fc",
+            "background_color": "#f7f7fc",
+            "rating_icon_1": "shopify://shop_images/star_3.svg",
+            "rating_icon_2": "shopify://shop_images/star_3.svg",
+            "rating_icon_3": "shopify://shop_images/star_3.svg",
+            "rating_icon_4": "shopify://shop_images/star_3.svg",
+            "rating_icon_5": "shopify://shop_images/star_3.svg",
+            "description": "I've been telling all my family and friends about you!!! They are so excited and eager to get their oils too! ❤️",
+            "subtitle": "Lauren P.",
+            "verification_text": "Verified Buyer",
+            "verification_icon": "shopify://shop_images/Check-Badge--Streamline-Ultimate_2.svg",
+            "main_image": "shopify://shop_images/Professional_headshot_portrait_of_a_confident_woman_aged_42-45_shoulder-length_brown_hair_with_subtle_highlights_warm_genuine_smile_friendly_and_approachable_expression_natural_makeup.png",
+            "main_image_width": 280
+          }
+        },
         "loox_reviews_loox_snippets_widget_JQFkCB": {
           "type": "shopify://apps/loox-reviews/blocks/loox-snippets-widget/5c3b337f-fd14-4df5-b1d6-80ec13e6e28e",
+          "disabled": true,
           "settings": {
             "alignment": "left",
             "max-width": "",
@@ -164,20 +331,28 @@
         }
       },
       "block_order": [
-        "loox_reviews_loox_rating_K6cdrY",
         "title",
-        "price",
+        "loox_reviews_loox_rating_K6cdrY",
         "richtext_9PTgzC",
-        "formula_button_wd8rNQ",
+        "price",
         "vendor",
         "divider",
         "variant-picker",
+        "formula_button_wd8rNQ",
         "buy-buttons",
         "text_UT9ray",
         "divider_Cwfcya",
         "richtext_cyRJhp",
         "accordion_eCyiUV",
         "accordion_bjJGWh",
+        "product_upsells_eVNWhn",
+        "video_slide_6kdLjD",
+        "video_slide_JjnLi8",
+        "video_slide_JqjU8e",
+        "video_slide_CYRENe",
+        "video_slide_bCD4fx",
+        "video_slide_n68zUW",
+        "testimonial_under_gallery_yE3cQA",
         "loox_reviews_loox_snippets_widget_JQFkCB"
       ],
       "settings": {
@@ -186,13 +361,14 @@
         "show_location_underneath": false,
         "inventory_transfers_enable": false,
         "enable_sticky_columns": true,
+        "enable_modern_gallery": true,
         "enable_sticky_atc": false,
         "sticky_atc_position": "center",
         "sticky_atc_mobile": true,
         "sticky_atc_behavior": "add_to_cart",
         "sticky_atc_button_style": "secondary",
         "gallery_size": "large",
-        "gallery_layout": "carousel-under",
+        "gallery_layout": "columns-2",
         "enable_zoom": true,
         "show_alt_text": false,
         "alt_text_icon": "",
