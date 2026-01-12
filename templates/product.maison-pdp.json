@@ -1554,28 +1554,60 @@
           "type": "faq_item",
           "settings": {
             "question": "How is the serum customized to my needs?",
-            "answer": "<p>Your answer goes here.</p>"
+            "answer": "<p>After you complete our comprehensive hair quiz, our certified trichologist analyzes your scalp type, hair concerns, lifestyle factors, and goals. Based on this unique profile, we formulate a custom blend of active ingredients at specific concentrations designed specifically for you.</p>"
           }
         },
         "faq_item_rJEkPT": {
           "type": "faq_item",
           "settings": {
             "question": "How long until I see results?",
-            "answer": "<p>Your answer goes here.</p>"
+            "answer": "<p>Most women notice reduced shedding within 2-4 weeks. Visible improvements in hair thickness and scalp health typically appear around 8-12 weeks. For optimal results, we recommend consistent use for at least 3 months as this aligns with the natural hair growth cycle.</p>"
           }
         },
         "faq_item_wHJrdM": {
           "type": "faq_item",
           "settings": {
             "question": "Is it safe for sensitive skin and medical conditions?",
-            "answer": "<p>Your answer goes here.</p>"
+            "answer": "<p>Yes! Our formulas are specifically designed to be gentle on sensitive scalps and are free from harsh chemicals, sulfates, and common irritants. However, if you have specific medical conditions or are pregnant/nursing, we recommend consulting with your healthcare provider before use.</p>"
+          }
+        },
+        "faq_item_Mt3fJY": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Can I use this with other hair products?",
+            "answer": "<p>Absolutely! Our serum works alongside your regular hair care routine. Apply it directly to your scalp and use your preferred shampoo, conditioner, and styling products as normal. For best results, apply to a clean, dry scalp.</p>"
+          }
+        },
+        "faq_item_j3CdwT": {
+          "type": "faq_item",
+          "settings": {
+            "question": "What if it doesn't work for me?",
+            "answer": "<p>We offer a 60-day money-back guarantee. If you're not seeing improvement, we'll work with you to reformulate your blend at no extra cost. If you're still not satisfied, we'll provide a full refund. Your satisfaction is our priority.</p>"
+          }
+        },
+        "faq_item_xw9BEq": {
+          "type": "faq_item",
+          "settings": {
+            "question": "How do I apply the serum?",
+            "answer": "<p>Apply 10-15 drops directly to your scalp (focusing on areas of concern), massage gently for 2-3 minutes to stimulate absorption, and leave it on overnight or for at least 30 minutes before washing. Use 3-4 times per week for best results.</p>"
+          }
+        },
+        "faq_item_cb9zbx": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Can I modify my formula later?",
+            "answer": "<p>Yes! As your hair needs change (due to seasons, hormones, or lifestyle), you can retake the quiz and we'll adjust your formula accordingly. There's no additional fee for formula modifications.</p>"
           }
         }
       },
       "block_order": [
         "faq_item_fgWfG3",
         "faq_item_rJEkPT",
-        "faq_item_wHJrdM"
+        "faq_item_wHJrdM",
+        "faq_item_Mt3fJY",
+        "faq_item_j3CdwT",
+        "faq_item_xw9BEq",
+        "faq_item_cb9zbx"
       ],
       "name": "FAQ",
       "settings": {
