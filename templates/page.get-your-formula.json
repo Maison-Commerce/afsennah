@@ -2177,7 +2177,10 @@
         "section2_description": "",
         "section3_title": "Hair Accessories You didn't know Your Hair Needed",
         "section3_description": "",
-        "accessories_products": [],
+        "accessories_products": [
+          "microfiber-towel-set",
+          "mulberry-pillowcase"
+        ],
         "gift_tiers_enabled": true,
         "gift_progress_text": "<p>[[current_gift]] added! <br/>Spend [[remaining]] more to get [[next_gift]]</p>",
         "gift_complete_text": "You've unlocked all free gifts!",
