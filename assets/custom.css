@@ -1460,7 +1460,7 @@ video-section-play-button {
 
 .opposing-items__left.product-info-label h2 {
     font-family: "Swarsh Daisy";
-    font-weight: 600;
+    font-weight: 400;
     font-size: 16px;
     line-height: 150%;
     letter-spacing: 0%;
@@ -1470,7 +1470,7 @@ video-section-play-button {
 }
 .cart-item-upsells .opposing-items__left.product-info-label h2 {
     font-family: "Neue Haas Grotesk Display Pro";
-    font-weight: 600;
+    font-weight: 400;
     font-style: 65 Medium;
     font-size: 16px;
     line-height: 150%;
