@@ -1270,14 +1270,14 @@
     }
 
     .cart-total-original {
-        font-size: 16px;
+        font-size: 14px;
         color: #9CA3AF;
         text-decoration: line-through;
         font-weight: 400;
     }
 
     .cart-total-current {
-        font-size: 20px;
+        font-size: 16px;
         font-weight: 700;
         color: #1A365D;
     }
