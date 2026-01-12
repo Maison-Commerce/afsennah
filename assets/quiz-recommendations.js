@@ -2730,63 +2730,39 @@
                             const cartResponse = await fetch('/cart.js');
                             const cart = await cartResponse.json();
                             
-                            // Get all unique product handles from cart
-                            const allProductHandles = [...new Set(cart.items.map(item => item.handle))];
-                            
-                            // Build a map of products we already have
-                            const productsMap = new Map();
-                            
-                            // Add products we just fetched (upsell products)
-                            products.forEach(product => {
-                                if (product) productsMap.set(product.handle, product);
+                            // Track existing items by variant ID + selling plan ID
+                            const existingItemsMap = new Map();
+                            cartItems.forEach(item => {
+                                const key = `${item.variantId}-${item.sellingPlanId || ''}`;
+                                existingItemsMap.set(key, item);
                             });
                             
-                            // Add products from window.quizRecommendationsProducts (previously fetched)
-                            if (window.quizRecommendationsProducts) {
-                                window.quizRecommendationsProducts.forEach(product => {
-                                    if (product && !productsMap.has(product.handle)) {
-                                        productsMap.set(product.handle, product);
-                                    }
-                                });
-                            }
-                            
-                            // Fetch any missing products
-                            const missingHandles = allProductHandles.filter(handle => !productsMap.has(handle));
-                            if (missingHandles.length > 0) {
-                                const missingProductPromises = missingHandles.map(handle =>
-                                    fetch(`/products/${handle}.js`)
-                                        .then(response => response.ok ? response.json() : null)
-                                        .catch(() => null)
-                                );
-                                
-                                const missingProducts = await Promise.all(missingProductPromises);
-                                missingProducts.forEach(product => {
-                                    if (product) productsMap.set(product.handle, product);
-                                });
-                            }
-                            
-                            // Update local cartItems array from ALL cart items
-                            cartItems.length = 0;
+                            // Update existing items or add new ones
                             for (const item of cart.items) {
-                                const product = productsMap.get(item.handle);
-                                if (product) {
-                                    // Check if this item has the upsell discount property
-                                    const hasUpsellDiscount = item.properties && 
-                                        item.properties._upsell_discount === '50';
-                                    
-                                    // Check if this is a gift or BOGO item
-                                    const isGift = item.properties && item.properties._gift === 'true';
-                                    const isBogoFree = item.properties && item.properties._bogo_free === 'true';
-                                    
-                                    cartItems.push({
-                                        variantId: item.variant_id,
-                                        quantity: item.quantity,
-                                        product: product,
-                                        sellingPlanId: item.selling_plan_allocation ? item.selling_plan_allocation.selling_plan_id : null,
-                                        isGift: isGift || false,
-                                        isBogoFree: isBogoFree || false,
-                                        isUpsellDiscount: hasUpsellDiscount || false
-                                    });
+                                const itemKey = `${item.variant_id}-${item.selling_plan_allocation ? item.selling_plan_allocation.selling_plan_id : ''}`;
+                                const existingItem = existingItemsMap.get(itemKey);
+                                
+                                if (existingItem) {
+                                    // Update quantity for existing item
+                                    existingItem.quantity = item.quantity;
+                                } else {
+                                    // Add new item (upsell product)
+                                    const product = products.find(p => p.handle === item.handle);
+                                    if (product) {
+                                        // Check if this item has the upsell discount property
+                                        const hasUpsellDiscount = item.properties && 
+                                            item.properties._upsell_discount === '50';
+                                        
+                                        cartItems.push({
+                                            variantId: item.variant_id,
+                                            quantity: item.quantity,
+                                            product: product,
+                                            sellingPlanId: item.selling_plan_allocation ? item.selling_plan_allocation.selling_plan_id : null,
+                                            isGift: false,
+                                            isBogoFree: false,
+                                            isUpsellDiscount: hasUpsellDiscount || false
+                                        });
+                                    }
                                 }
                             }
                             
