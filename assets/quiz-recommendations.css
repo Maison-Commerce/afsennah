@@ -1572,7 +1572,7 @@
         }
 
         .mobile-cart-popup-body {
-            padding: 18px;
+            padding: 0 18px 18px 18px;
             overflow-y: auto;
             flex: 1;
             display: flex;
