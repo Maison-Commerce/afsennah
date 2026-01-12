@@ -517,7 +517,7 @@
     @media (max-width: 767px) {
 
         .gift-progress-section {
-            padding: 12px 8px 24px 8px;
+            padding: 12px 0 0 0;
             margin-bottom: 0;
         }
 
