@@ -2730,66 +2730,23 @@
                             const cartResponse = await fetch('/cart.js');
                             const cart = await cartResponse.json();
                             
-                            // Get all unique product handles from cart
-                            const allProductHandles = [...new Set(cart.items.map(item => item.handle))];
-                            
-                            // Fetch product data for all items in cart (including existing ones)
-                            const allProductPromises = allProductHandles.map(handle => {
-                                // Check if we already have this product from the upsell fetch
-                                const existingProduct = products.find(p => p.handle === handle);
-                                if (existingProduct) {
-                                    return Promise.resolve(existingProduct);
-                                }
-                                
-                                // Check if product exists in window.quizRecommendationsProducts
-                                const cachedProduct = (window.quizRecommendationsProducts || []).find(p => p.handle === handle);
-                                if (cachedProduct) {
-                                    return Promise.resolve(cachedProduct);
-                                }
-                                
-                                // Fetch product if not cached
-                                return fetch(`/products/${handle}.js`)
-                                    .then(response => {
-                                        if (!response.ok) {
-                                            console.error(`Failed to fetch product: ${handle}`);
-                                            return null;
-                                        }
-                                        return response.json();
-                                    })
-                                    .catch(err => {
-                                        console.error(`Error fetching product ${handle}:`, err);
-                                        return null;
-                                    });
-                            });
-                            
-                            const allProducts = await Promise.all(allProductPromises);
-                            const productsMap = new Map();
-                            allProducts.forEach(product => {
-                                if (product) {
-                                    productsMap.set(product.handle, product);
-                                }
-                            });
-                            
-                            // Update local cartItems array from full cart
+                            // Update local cartItems array
                             cartItems.length = 0;
                             for (const item of cart.items) {
-                                const product = productsMap.get(item.handle);
+                                // Find the product from our fetched products
+                                const product = products.find(p => p.handle === item.handle);
                                 if (product) {
                                     // Check if this item has the upsell discount property
                                     const hasUpsellDiscount = item.properties && 
                                         item.properties._upsell_discount === '50';
-                                    
-                                    // Check if this is a gift or BOGO item (from properties or other indicators)
-                                    const isGift = item.properties && item.properties._gift === 'true';
-                                    const isBogoFree = item.properties && item.properties._bogo_free === 'true';
                                     
                                     cartItems.push({
                                         variantId: item.variant_id,
                                         quantity: item.quantity,
                                         product: product,
                                         sellingPlanId: item.selling_plan_allocation ? item.selling_plan_allocation.selling_plan_id : null,
-                                        isGift: isGift || false,
-                                        isBogoFree: isBogoFree || false,
+                                        isGift: false,
+                                        isBogoFree: false,
                                         isUpsellDiscount: hasUpsellDiscount || false
                                     });
                                 }
