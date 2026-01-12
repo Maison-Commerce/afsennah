@@ -1944,6 +1944,7 @@
             padding: 8px 16px;
             font-size: 14px;
             gap: 4px;
+            flex-wrap: wrap;
         }
 
         .maison_commerce_maison_upsell_package__footer {
