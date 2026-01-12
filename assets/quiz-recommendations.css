@@ -1094,7 +1094,7 @@
         flex-direction: column;
         gap: 12px;
         margin-bottom: 8px;
-        padding: 24px 18px;
+        padding: 8px;
         border-radius: 8px;
         background: var(--Color-Brand-2-200, #F7F7FC);
     }
