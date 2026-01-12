@@ -325,16 +325,18 @@
                 <div class="mobile-sticky-bar-total">
                     <div class="cart-total-wrapper">
                         <span class="mobile-sticky-bar-label">Total Price (with savings)</span>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="9" viewBox="0 0 18 9" fill="none" class="mobile-sticky-bar-open-menu">
-                            <g clip-path="url(#clip0_10099_16556)">
-                                <path fill-rule="evenodd" clip-rule="evenodd" d="M8.46628 7.6177L4.22353 3.37495L5.28403 2.31445L8.99653 6.02695L12.709 2.31445L13.7695 3.37495L9.52678 7.6177C9.38614 7.75831 9.1954 7.83729 8.99653 7.83729C8.79766 7.83729 8.60693 7.75831 8.46628 7.6177Z" fill="black" fill-opacity="0.5"/>
-                            </g>
-                            <defs>
-                                <clipPath id="clip0_10099_16556">
-                                <rect width="9" height="18" fill="white" transform="matrix(0 1 -1 0 18 0)"/>
-                                </clipPath>
-                            </defs>
-                        </svg>
+                        <button class="mobile-sticky-bar-open-menu" aria-label="Open cart summary">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="9" viewBox="0 0 18 9" fill="none">
+                                <g clip-path="url(#clip0_10099_16556)">
+                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M8.46628 7.6177L4.22353 3.37495L5.28403 2.31445L8.99653 6.02695L12.709 2.31445L13.7695 3.37495L9.52678 7.6177C9.38614 7.75831 9.1954 7.83729 8.99653 7.83729C8.79766 7.83729 8.60693 7.75831 8.46628 7.6177Z" fill="black" fill-opacity="0.5"/>
+                                </g>
+                                <defs>
+                                    <clipPath id="clip0_10099_16556">
+                                    <rect width="9" height="18" fill="white" transform="matrix(0 1 -1 0 18 0)"/>
+                                    </clipPath>
+                                </defs>
+                            </svg>
+                        </button>
                     </div>
                     <div class="mobile-sticky-bar-price-wrapper">
                         <span class="mobile-sticky-bar-price-original" data-mobile-total-original style="display: none;">$0.00</span>
@@ -357,6 +359,113 @@
                 {% if section.settings.checkout_subtext != blank %}
                     <div class="checkout-subtext">{{ section.settings.checkout_subtext }}</div>
                 {% endif %}
+            </div>
+        </div>
+
+        <!-- Mobile Cart Summary Popup -->
+        <div class="mobile-cart-popup" id="mobile-cart-popup" style="display: none;">
+            <div class="mobile-cart-popup-overlay"></div>
+            <div class="mobile-cart-popup-content">
+                <div class="mobile-cart-popup-header">
+                    <h3 class="mobile-cart-popup-title">Order Summary</h3>
+                    <button class="mobile-cart-popup-close" aria-label="Close cart summary">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                            <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                </div>
+                <div class="mobile-cart-popup-body">
+                    {%- comment -%} Gift Progress Section {%- endcomment -%}
+                    {% if section.settings.gift_tiers_enabled %}
+                        <div class="gift-progress-section mobile-cart-popup-gift-progress" 
+                            data-gift-progress-section-mobile-popup
+                            data-gift-tiers-enabled="true"
+                            data-tier0-enabled="{{ section.settings.tier0_free_shipping_enabled | default: true }}"
+                            data-tier0-text="{{ section.settings.tier0_free_shipping_text | default: 'Free Shipping' }}"
+                            data-tier1-threshold="{{ section.settings.tier1_threshold | default: 100 }}"
+                            data-tier1-female="{{ section.settings.tier1_gift_female.handle | default: '' }}"
+                            data-tier1-variant-female="{{ section.settings.tier1_variant_female | default: '' }}"
+                            data-tier1-male="{{ section.settings.tier1_gift_male.handle | default: '' }}"
+                            data-tier1-variant-male="{{ section.settings.tier1_variant_male | default: '' }}"
+                            data-tier1-banner="{{ section.settings.tier1_banner_text | default: 'FREE GIFT UNLOCKED!' }}"
+                            data-tier1-description="{{ section.settings.tier1_description | default: '' }}"
+                            data-tier2-threshold="{{ section.settings.tier2_threshold | default: 0 }}"
+                            data-tier2-female="{{ section.settings.tier2_gift_female.handle | default: '' }}"
+                            data-tier2-variant-female="{{ section.settings.tier2_variant_female | default: '' }}"
+                            data-tier2-male="{{ section.settings.tier2_gift_male.handle | default: '' }}"
+                            data-tier2-variant-male="{{ section.settings.tier2_variant_male | default: '' }}"
+                            data-tier2-banner="{{ section.settings.tier2_banner_text | default: 'BONUS GIFT UNLOCKED!' }}"
+                            data-tier2-description="{{ section.settings.tier2_description | default: '' }}"
+                            data-tier3-threshold="{{ section.settings.tier3_threshold | default: 0 }}"
+                            data-tier3-female="{{ section.settings.tier3_gift_female.handle | default: '' }}"
+                            data-tier3-variant-female="{{ section.settings.tier3_variant_female | default: '' }}"
+                            data-tier3-male="{{ section.settings.tier3_gift_male.handle | default: '' }}"
+                            data-tier3-variant-male="{{ section.settings.tier3_variant_male | default: '' }}"
+                            data-tier3-banner="{{ section.settings.tier3_banner_text | default: 'VIP GIFT UNLOCKED!' }}"
+                            data-tier3-description="{{ section.settings.tier3_description | default: '' }}"
+                            data-progress-text="{{ section.settings.gift_progress_text | default: 'Add [[remaining]] more to unlock your next gift!' }}"
+                            data-complete-text="{{ section.settings.gift_complete_text | default: 'You have unlocked all free gifts!' }}"
+                        >
+                            <div class="gift-progress-header">
+                                <div class="gift-progress-header-content">
+                                    <div class="gift-progress-subtitle" data-gift-progress-label-popup>{{ section.settings.gift_progress_text | default: 'Add items to unlock gifts!' }}</div>
+                                </div>
+                            </div>
+                            <div class="gift-progress-bar-container">
+                                <div class="gift-progress-bar-track">
+                                    <div class="gift-progress-bar" data-gift-progress-bar-popup style="width: 0%"></div>
+                                    <div class="gift-progress-milestones" data-gift-milestones-popup>
+                                        {%- comment -%} Milestones will be dynamically added by JS {%- endcomment -%}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                    <div class="cart-items" data-cart-items-popup>
+                        <!-- Cart items will be added here dynamically -->
+                    </div>
+                    <div class="cart-summary-totals">
+                        <div class="cart-summary-row">
+                            <span>Subtotal:</span>
+                            <span data-subtotal-popup>$0.00</span>
+                        </div>
+                        <div class="cart-summary-row cart-discount-row" data-discount-row-popup style="display: none;">
+                            <span>Discount:</span>
+                            <span data-discount-popup>- $0.00</span>
+                        </div>
+                        <div class="cart-summary-row">
+                            <span>VAT:</span>
+                            <span>Calculated at checkout</span>
+                        </div>
+                        <div class="cart-summary-row">
+                            <span>Shipping:</span>
+                            <span id="shipping-status-popup" style="font-weight: bold;">Paid</span>
+                        </div>
+                    </div>
+                    <div class="cart-total-section">
+                        <div class="cart-total-label">Total Price (with savings)</div>
+                        <div class="cart-total-price">
+                            <span class="cart-total-original" data-total-original-popup style="display: none;">$0.00</span>
+                            <span class="cart-total-current" data-total-current-popup>$0.00</span>
+                        </div>
+                    </div>
+                    <button class="quiz-btn quiz-btn-checkout" data-checkout-btn-popup>
+                        Checkout
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
+                            <g clip-path="url(#clip0_10099_18200)">
+                                <path d="M14.625 7.125H14.0625V5.0625C14.0625 3.71984 13.5291 2.43217 12.5797 1.48277C11.6303 0.533369 10.3427 0 9 0C7.65734 0 6.36967 0.533369 5.42027 1.48277C4.47087 2.43217 3.9375 3.71984 3.9375 5.0625V7.125H3.375C2.97718 7.125 2.59564 7.28303 2.31434 7.56434C2.03304 7.84564 1.875 8.22717 1.875 8.625V16.5C1.875 16.8978 2.03304 17.2794 2.31434 17.5607C2.59564 17.842 2.97718 18 3.375 18H14.625C15.0228 18 15.4044 17.842 15.6857 17.5607C15.967 17.2794 16.125 16.8978 16.125 16.5V8.625C16.125 8.22717 15.967 7.84564 15.6857 7.56434C15.4044 7.28303 15.0228 7.125 14.625 7.125ZM9 13.875C8.70333 13.875 8.41332 13.787 8.16665 13.6222C7.91997 13.4574 7.72771 13.2231 7.61418 12.949C7.50065 12.6749 7.47094 12.3733 7.52882 12.0824C7.5867 11.7914 7.72956 11.5241 7.93934 11.3143C8.14912 11.1046 8.41639 10.9617 8.70736 10.9038C8.99834 10.8459 9.29994 10.8756 9.57403 10.9892C9.84811 11.1027 10.0824 11.295 10.2472 11.5416C10.412 11.7883 10.5 12.0783 10.5 12.375C10.5 12.572 10.4612 12.767 10.3858 12.949C10.3104 13.131 10.1999 13.2964 10.0607 13.4357C9.92137 13.5749 9.75601 13.6854 9.57403 13.7608C9.39204 13.8362 9.19698 13.875 9 13.875ZM12.1875 6.75C12.1875 6.79925 12.1778 6.84801 12.159 6.89351C12.1401 6.939 12.1125 6.98034 12.0777 7.01516C12.0428 7.04999 12.0015 7.07761 11.956 7.09646C11.9105 7.1153 11.8617 7.125 11.8125 7.125H6.1875C6.08804 7.125 5.99266 7.08549 5.92234 7.01516C5.85201 6.94484 5.8125 6.84946 5.8125 6.75V5.0625C5.8125 4.21712 6.14833 3.40637 6.7461 2.8086C7.34387 2.21082 8.15462 1.875 9 1.875C9.84538 1.875 10.6561 2.21082 11.2539 2.8086C11.8517 3.40637 12.1875 4.21712 12.1875 5.0625V6.75Z" fill="#F7F7FC"/>
+                            </g>
+                            <defs>
+                                <clipPath id="clip0_10099_18200">
+                                <rect width="18" height="18" fill="white"/>
+                                </clipPath>
+                            </defs>
+                        </svg>
+                    </button>
+                    {% if section.settings.checkout_subtext != blank %}
+                        <div class="checkout-subtext">{{ section.settings.checkout_subtext }}</div>
+                    {% endif %}
+                </div>
             </div>
         </div>
     </div>
