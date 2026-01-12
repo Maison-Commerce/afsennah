@@ -2734,4 +2734,7 @@ display: flex !important;
     .cart-drawer__footer .subtotal {
         font-size: 14px;
     }
+    .cart-drawer__footer .subtotal .theme-money {
+        font-size: 16px;
+    }
 }
