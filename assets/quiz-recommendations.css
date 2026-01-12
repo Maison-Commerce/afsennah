@@ -1476,12 +1476,11 @@
         .mobile-sticky-bar-open-menu {
             background: none;
             border: none;
-            padding: 4px;
+            padding: 0px;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-left: 8px;
         }
 
         .mobile-sticky-bar-open-menu svg {
