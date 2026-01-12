@@ -563,34 +563,23 @@
             window.quizRecommendationsAdditionalProducts = additionalProducts;
             console.log('Stored additional products for upsell package:', additionalProducts.length, 'products');
             
-            // Check if there are any upsell package blocks - if so, hide Section 2
-            const upsellBlocks = document.querySelectorAll('[data-upsell-package-block]');
-            const section2Element = document.querySelector('[data-section="additional"]');
+            // Always show Section 2 with additional products
+            additionalProducts.forEach((product) => {
+                productStates[product.id] = { removed: false, quantity: 1 };
+                const productCard = createProductCard(product, 'additional');
+                additionalContainer.appendChild(productCard);
+                // NOT auto-added to cart
+            });
             
-            if (upsellBlocks.length > 0 && section2Element) {
-                // Hide Section 2 if upsell blocks exist
-                section2Element.style.display = 'none';
-                // Also hide the divider before Section 3 if Section 2 is hidden
-                const divider = section2Element.previousElementSibling;
-                if (divider && divider.classList.contains('section-divider')) {
-                    divider.style.display = 'none';
-                }
-                
-                // Update upsell blocks text with dynamic price and product count
+            // Update upsell blocks text with dynamic price and product count if they exist
+            const upsellBlocks = document.querySelectorAll('[data-upsell-package-block]');
+            if (upsellBlocks.length > 0) {
                 upsellBlocks.forEach(block => {
                     updateUpsellPackageBlockText(block);
                 });
                 
                 // Re-initialize upsell blocks now that products are available
                 initUpsellPackageBlocks();
-            } else {
-                // Show Section 2 normally if no upsell blocks
-                additionalProducts.forEach((product) => {
-                    productStates[product.id] = { removed: false, quantity: 1 };
-                    const productCard = createProductCard(product, 'additional');
-                    additionalContainer.appendChild(productCard);
-                    // NOT auto-added to cart
-                });
             }
 
             // Add legacy gift product if exists (only if tiered gifts are NOT enabled)
