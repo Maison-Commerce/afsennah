@@ -17,6 +17,7 @@
     let userGender = 'female'; // Default to female, will be set from quiz answers
 
     function initGiftTiers() {
+        // Check any gift tiers container (desktop, mobile, or popup)
         const container = document.querySelector('[data-gift-tiers-enabled]');
         if (!container || container.dataset.giftTiersEnabled !== 'true') {
             giftTiersEnabled = false;
@@ -166,15 +167,17 @@
     // Update shipping status based on Tier 0 (free shipping) unlock status
     function updateShippingStatus() {
         const shippingStatusEl = document.getElementById('shipping-status');
-        if (!shippingStatusEl) return;
+        const shippingStatusPopup = document.getElementById('shipping-status-popup');
         
         // Find Tier 0 (free shipping tier)
         const tier0 = giftTiers.find(tier => tier.tier === 0 && tier.isFreeShipping);
+        const statusText = (tier0 && tier0.unlocked) ? 'Free' : 'Paid';
         
-        if (tier0 && tier0.unlocked) {
-            shippingStatusEl.textContent = 'Free';
-        } else {
-            shippingStatusEl.textContent = 'Paid';
+        if (shippingStatusEl) {
+            shippingStatusEl.textContent = statusText;
+        }
+        if (shippingStatusPopup) {
+            shippingStatusPopup.textContent = statusText;
         }
     }
 
@@ -190,9 +193,13 @@
         const progressBarMobile = document.querySelector('[data-gift-progress-bar-mobile]');
         const progressLabelMobile = document.querySelector('[data-gift-progress-label-mobile]');
         const milestonesContainerMobile = document.querySelector('[data-gift-milestones-mobile]');
+        // Popup instances
+        const progressBarPopup = document.querySelector('[data-gift-progress-bar-popup]');
+        const progressLabelPopup = document.querySelector('[data-gift-progress-label-popup]');
+        const milestonesContainerPopup = document.querySelector('[data-gift-milestones-popup]');
 
         // At least one instance should exist
-        if (!progressBar && !progressBarMobile) return;
+        if (!progressBar && !progressBarMobile && !progressBarPopup) return;
         
         // Filter tiers for positioning calculation - include tier 0 (free shipping) and tiers with products
         const tiersWithProducts = giftTiers.filter(tier => tier.isFreeShipping || tier.product);
@@ -306,13 +313,16 @@
             }
         }
         
-        // Update both desktop and mobile progress bars
+        // Update desktop, mobile, and popup progress bars
         const progressBarWidthValue = `${Math.min(Math.max(progressBarWidth, 0), 100)}%`;
         if (progressBar) {
             progressBar.style.width = progressBarWidthValue;
         }
         if (progressBarMobile) {
             progressBarMobile.style.width = progressBarWidthValue;
+        }
+        if (progressBarPopup) {
+            progressBarPopup.style.width = progressBarWidthValue;
         }
 
         // Helper to format currency
@@ -379,12 +389,15 @@
             headerText = `<p>Spend ${formatCurrency(remaining)} more to get ${nextGiftName}</p>`;
         }
         
-        // Update both desktop and mobile labels
+        // Update desktop, mobile, and popup labels
         if (progressLabel) {
             progressLabel.innerHTML = headerText;
         }
         if (progressLabelMobile) {
             progressLabelMobile.innerHTML = headerText;
+        }
+        if (progressLabelPopup) {
+            progressLabelPopup.innerHTML = headerText;
         }
 
 
@@ -430,7 +443,7 @@
             return milestone;
         };
 
-        // Render milestones with product images or shipping icon - for both desktop and mobile
+        // Render milestones with product images or shipping icon - for desktop, mobile, and popup
         if (milestonesContainer) {
             milestonesContainer.innerHTML = '';
             tiersWithProducts.forEach((tier) => {
@@ -446,6 +459,15 @@
                 const position = tierPositionMap.get(tier.tier);
                 const milestone = createMilestoneElement(tier, position);
                 milestonesContainerMobile.appendChild(milestone);
+            });
+        }
+        
+        if (milestonesContainerPopup) {
+            milestonesContainerPopup.innerHTML = '';
+            tiersWithProducts.forEach((tier) => {
+                const position = tierPositionMap.get(tier.tier);
+                const milestone = createMilestoneElement(tier, position);
+                milestonesContainerPopup.appendChild(milestone);
             });
         }
     }
@@ -1635,10 +1657,17 @@
 
     function updateCartDisplay() {
         const cartItemsContainer = document.querySelector('[data-cart-items]');
+        const cartItemsContainerPopup = document.querySelector('[data-cart-items-popup]');
 
         if (!cartItemsContainer) return;
 
         cartItemsContainer.innerHTML = '';
+        
+        // Also clear popup cart items container if it exists
+        if (cartItemsContainerPopup) {
+            cartItemsContainerPopup.innerHTML = '';
+        }
+        
         let subtotal = 0;
         let totalDiscount = 0;
         let itemCount = 0;
@@ -1888,32 +1917,177 @@
             cartItemsContainer.appendChild(itemGroup);
         });
 
+        // Helper function to render cart items to a container
+        const renderCartItemsToContainer = (container) => {
+            if (!container) return;
+            
+            // Check if cart is empty (no items to display)
+            const hasItemsToDisplay = subscriptionGroups && Object.keys(subscriptionGroups).length > 0 || onetimeItems.length > 0;
+            
+            if (!hasItemsToDisplay) {
+                // Show empty cart message
+                const emptyCartMessage = document.createElement('div');
+                emptyCartMessage.className = 'cart-empty-message';
+                emptyCartMessage.textContent = 'Your cart is empty';
+                container.appendChild(emptyCartMessage);
+            } else {
+                // Render subscription groups
+                Object.keys(subscriptionGroups).forEach(planName => {
+                    const group = subscriptionGroups[planName];
+                    group.forEach(({ item, price, originalPrice, discount }) => {
+                        const itemGroup = document.createElement('div');
+                        itemGroup.className = 'cart-item-group';
+                        
+                        const itemTotal = price * item.quantity;
+                        const originalTotal = originalPrice * item.quantity;
+                        const hasSubscriptionDiscount = itemTotal < originalTotal;
+                        
+                        const cartItem = document.createElement('div');
+                        cartItem.className = 'cart-item cart-subscription-item';
+                        cartItem.dataset.variantId = item.variantId;
+                        cartItem.dataset.sellingPlanId = item.sellingPlanId || '';
+                        
+                        let productName = item.product.title;
+                        let variant = null;
+                        if (item.product.variants.length > 1) {
+                            variant = item.product.variants.find(v => v.id === parseInt(item.variantId));
+                            if (variant && variant.title !== 'Default Title') {
+                                productName += ` - ${variant.title}`;
+                            }
+                        } else {
+                            variant = item.product.variants[0];
+                        }
+                        
+                        const hasCompareAtPrice = variant && variant.compare_at_price && variant.compare_at_price > originalPrice;
+                        const compareAtTotal = hasCompareAtPrice ? variant.compare_at_price * item.quantity : null;
+                        
+                        let priceHTML = '';
+                        if (hasCompareAtPrice) {
+                            priceHTML = `
+                                <div class="cart-item-price">
+                                    <span>${formatMoney(itemTotal)}</span>
+                                    <span class="cart-item-price-original">${formatMoney(compareAtTotal)}</span>
+                                </div>
+                            `;
+                        } else if (hasSubscriptionDiscount) {
+                            priceHTML = `
+                                <div class="cart-item-price">
+                                    <span>${formatMoney(itemTotal)}</span>
+                                    <span class="cart-item-price-original">${formatMoney(originalTotal)}</span>
+                                </div>
+                            `;
+                        } else {
+                            priceHTML = `<div class="cart-item-price">${formatMoney(itemTotal)}</div>`;
+                        }
+                        
+                        const productImage = item.product.featured_image || '';
+                        const imageHTML = productImage ? `<img src="${productImage}" alt="${productName}" class="cart-item-image">` : '';
+                        
+                        cartItem.innerHTML = `
+                            ${imageHTML}
+                            <div class="cart-item-info">
+                                <span class="cart-item-name">${productName}</span>
+                                ${priceHTML}
+                            </div>
+                            <button class="cart-item-remove" data-cart-remove aria-label="Remove item">
+                                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                    <path d="M2.5 4.99996H17.5M15.8333 4.99996V16.6666C15.8333 17.5 15 18.3333 14.1667 18.3333H5.83333C5 18.3333 4.16667 17.5 4.16667 16.6666V4.99996M6.66667 4.99996V3.33329C6.66667 2.49996 7.5 1.66663 8.33333 1.66663H11.6667C12.5 1.66663 13.3333 2.49996 13.3333 3.33329V4.99996M8.33333 9.16663V14.1666M11.6667 9.16663V14.1666" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </button>
+                        `;
+                        itemGroup.appendChild(cartItem);
+                        container.appendChild(itemGroup);
+                    });
+                });
+                
+                // Render one-time items
+                onetimeItems.forEach(item => {
+                    let variant;
+                    let variantPrice;
+                    if (item.product.selectedVariant) {
+                        variant = item.product.selectedVariant;
+                        variantPrice = variant.price;
+                    } else {
+                        variant = item.product.variants.find(v => v.id === parseInt(item.variantId));
+                        if (!variant) {
+                            variant = item.product.variants[0];
+                        }
+                        variantPrice = variant.price;
+                    }
+                    const price = variantPrice;
+                    
+                    const hasCompareAtPrice = variant && variant.compare_at_price && variant.compare_at_price > price;
+                    const compareAtTotal = hasCompareAtPrice ? variant.compare_at_price * item.quantity : null;
+                    const itemTotal = price * item.quantity;
+                    
+                    let productName = item.product.title;
+                    if (item.product.variants.length > 1 && variant.title !== 'Default Title') {
+                        productName += ` - ${variant.title}`;
+                    }
+                    
+                    let priceHTML = '';
+                    if (hasCompareAtPrice) {
+                        priceHTML = `
+                            <div class="cart-item-price">
+                                <span>${formatMoney(itemTotal)}</span>
+                                <span class="cart-item-price-original">${formatMoney(compareAtTotal)}</span>
+                            </div>
+                        `;
+                    } else {
+                        priceHTML = `<div class="cart-item-price">${formatMoney(itemTotal)}</div>`;
+                    }
+                    
+                    const itemGroup = document.createElement('div');
+                    itemGroup.className = 'cart-item-group';
+                    
+                    const productImage = item.product.featured_image || '';
+                    const imageHTML = productImage ? `<img src="${productImage}" alt="${productName}" class="cart-item-image">` : '';
+                    
+                    const cartItem = document.createElement('div');
+                    cartItem.className = 'cart-item';
+                    cartItem.dataset.variantId = item.variantId;
+                    cartItem.dataset.sellingPlanId = item.sellingPlanId || '';
+                    cartItem.innerHTML = `
+                        ${imageHTML}
+                        <div class="cart-item-info">
+                            <span class="cart-item-name">${productName}</span>
+                            ${priceHTML}
+                        </div>
+                        <button class="cart-item-remove" data-cart-remove aria-label="Remove item">
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path d="M2.5 4.99996H17.5M15.8333 4.99996V16.6666C15.8333 17.5 15 18.3333 14.1667 18.3333H5.83333C5 18.3333 4.16667 17.5 4.16667 16.6666V4.99996M6.66667 4.99996V3.33329C6.66667 2.49996 7.5 1.66663 8.33333 1.66663H11.6667C12.5 1.66663 13.3333 2.49996 13.3333 3.33329V4.99996M8.33333 9.16663V14.1666M11.6667 9.16663V14.1666" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </button>
+                    `;
+                    itemGroup.appendChild(cartItem);
+                    container.appendChild(itemGroup);
+                });
+                
+                // Add dividers between cart item groups (except after the last one)
+                const allGroups = container.querySelectorAll('.cart-item-group');
+                allGroups.forEach((group, index) => {
+                    if (index < allGroups.length - 1) {
+                        if (!group.nextElementSibling || !group.nextElementSibling.classList.contains('cart-item-group-divider')) {
+                            const divider = document.createElement('div');
+                            divider.className = 'cart-item-group-divider';
+                            group.parentNode.insertBefore(divider, group.nextSibling);
+                        }
+                    }
+                });
+            }
+        };
+        
+        // Render to main cart container
+        renderCartItemsToContainer(cartItemsContainer);
+        
+        // Render to popup cart container
+        renderCartItemsToContainer(cartItemsContainerPopup);
+        
         // Check if cart is empty (no items to display)
         const hasItemsToDisplay = subscriptionGroups && Object.keys(subscriptionGroups).length > 0 || onetimeItems.length > 0;
-        
-        if (!hasItemsToDisplay) {
-            // Show empty cart message
-            const emptyCartMessage = document.createElement('div');
-            emptyCartMessage.className = 'cart-empty-message';
-            emptyCartMessage.textContent = 'Your cart is empty';
-            cartItemsContainer.appendChild(emptyCartMessage);
-        } else {
-            // Add dividers between cart item groups (except after the last one)
-            const allGroups = cartItemsContainer.querySelectorAll('.cart-item-group');
-            allGroups.forEach((group, index) => {
-                if (index < allGroups.length - 1) {
-                    // Check if divider already exists
-                    if (!group.nextElementSibling || !group.nextElementSibling.classList.contains('cart-item-group-divider')) {
-                        const divider = document.createElement('div');
-                        divider.className = 'cart-item-group-divider';
-                        group.parentNode.insertBefore(divider, group.nextSibling);
-                    }
-                }
-            });
-        }
 
         // Enable/disable checkout button based on cart state
-        const checkoutBtns = document.querySelectorAll('[data-checkout-btn], .quiz-btn-checkout, .mobile-sticky-bar-checkout');
+        const checkoutBtns = document.querySelectorAll('[data-checkout-btn], [data-checkout-btn-popup], .quiz-btn-checkout, .mobile-sticky-bar-checkout');
         checkoutBtns.forEach(btn => {
             if (!hasItemsToDisplay) {
                 btn.disabled = true;
@@ -1924,28 +2098,68 @@
             }
         });
 
-        // Update totals section
+        // Update totals section (desktop)
         const subtotalEl = document.querySelector('[data-subtotal]');
         const discountRowEl = document.querySelector('[data-discount-row]');
         const discountEl = document.querySelector('[data-discount]');
         const totalOriginalEl = document.querySelector('[data-total-original]');
         const totalCurrentEl = document.querySelector('[data-total-current]');
 
+        // Update totals section (popup)
+        const subtotalElPopup = document.querySelector('[data-subtotal-popup]');
+        const discountRowElPopup = document.querySelector('[data-discount-row-popup]');
+        const discountElPopup = document.querySelector('[data-discount-popup]');
+        const totalOriginalElPopup = document.querySelector('[data-total-original-popup]');
+        const totalCurrentElPopup = document.querySelector('[data-total-current-popup]');
+
+        const total = subtotal - totalDiscount;
+        
+        // Update desktop totals
         if (subtotalEl) {
             subtotalEl.innerHTML = formatMoney(subtotal);
         }
-
-        const total = subtotal - totalDiscount;
         if (totalDiscount > 0) {
             if (discountRowEl) discountRowEl.style.display = 'flex';
             if (discountEl) discountEl.innerHTML = `- ${formatMoney(totalDiscount)}`;
         } else {
             if (discountRowEl) discountRowEl.style.display = 'none';
         }
-
-        // Update total price section
         if (totalCurrentEl) {
             totalCurrentEl.innerHTML = formatMoney(total);
+        }
+        if (subtotal > total) {
+            if (totalOriginalEl) {
+                totalOriginalEl.style.display = 'inline';
+                totalOriginalEl.innerHTML = formatMoney(subtotal);
+            }
+        } else {
+            if (totalOriginalEl) {
+                totalOriginalEl.style.display = 'none';
+            }
+        }
+        
+        // Update popup totals
+        if (subtotalElPopup) {
+            subtotalElPopup.innerHTML = formatMoney(subtotal);
+        }
+        if (totalDiscount > 0) {
+            if (discountRowElPopup) discountRowElPopup.style.display = 'flex';
+            if (discountElPopup) discountElPopup.innerHTML = `- ${formatMoney(totalDiscount)}`;
+        } else {
+            if (discountRowElPopup) discountRowElPopup.style.display = 'none';
+        }
+        if (totalCurrentElPopup) {
+            totalCurrentElPopup.innerHTML = formatMoney(total);
+        }
+        if (subtotal > total) {
+            if (totalOriginalElPopup) {
+                totalOriginalElPopup.style.display = 'inline';
+                totalOriginalElPopup.innerHTML = formatMoney(subtotal);
+            }
+        } else {
+            if (totalOriginalElPopup) {
+                totalOriginalElPopup.style.display = 'none';
+            }
         }
 
         // Update mobile sticky bar total
@@ -1954,32 +2168,27 @@
         if (mobileTotalEl) {
             mobileTotalEl.innerHTML = formatMoney(total);
         }
-
-        // Show original total if there's a discount (for both desktop and mobile)
         if (subtotal > total) {
-            if (totalOriginalEl) {
-                totalOriginalEl.style.display = 'inline';
-                totalOriginalEl.innerHTML = formatMoney(subtotal);
-            }
             if (mobileTotalOriginalEl) {
                 mobileTotalOriginalEl.style.display = 'inline';
                 mobileTotalOriginalEl.innerHTML = formatMoney(subtotal);
             }
         } else {
-            if (totalOriginalEl) {
-                totalOriginalEl.style.display = 'none';
-            }
             if (mobileTotalOriginalEl) {
                 mobileTotalOriginalEl.style.display = 'none';
             }
         }
 
-        // Add click handlers for cart item remove buttons
-        const removeButtons = cartItemsContainer.querySelectorAll('[data-cart-remove]');
-        removeButtons.forEach(button => {
-            button.addEventListener('click', (e) => {
+        // Add click handlers for cart item remove buttons (both desktop and popup)
+        const allRemoveButtons = document.querySelectorAll('[data-cart-remove]');
+        allRemoveButtons.forEach(button => {
+            // Remove existing listeners by cloning and replacing
+            const newButton = button.cloneNode(true);
+            button.parentNode.replaceChild(newButton, button);
+            
+            newButton.addEventListener('click', (e) => {
                 e.stopPropagation();
-                const cartItemEl = button.closest('.cart-item');
+                const cartItemEl = newButton.closest('.cart-item');
                 const variantId = parseInt(cartItemEl.dataset.variantId);
                 const sellingPlanId = cartItemEl.dataset.sellingPlanId ? parseInt(cartItemEl.dataset.sellingPlanId) : null;
 
@@ -2009,6 +2218,81 @@
         
         // Update shipping status
         updateShippingStatus();
+        
+        // Also update popup shipping status
+        const shippingStatusPopup = document.getElementById('shipping-status-popup');
+        if (shippingStatusPopup) {
+            const shippingStatusEl = document.getElementById('shipping-status');
+            if (shippingStatusEl) {
+                shippingStatusPopup.textContent = shippingStatusEl.textContent;
+            }
+        }
+    }
+    
+    // Mobile Cart Popup functionality
+    function initMobileCartPopup() {
+        const openMenuBtn = document.querySelector('.mobile-sticky-bar-open-menu');
+        const popup = document.getElementById('mobile-cart-popup');
+        const closeBtn = document.querySelector('.mobile-cart-popup-close');
+        const overlay = document.querySelector('.mobile-cart-popup-overlay');
+        const popupCheckoutBtn = document.querySelector('[data-checkout-btn-popup]');
+        
+        if (!openMenuBtn || !popup) return;
+        
+        function openPopup() {
+            popup.style.display = 'flex';
+            setTimeout(() => {
+                popup.classList.add('active');
+                openMenuBtn.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }, 10);
+        }
+        
+        function closePopup() {
+            popup.classList.remove('active');
+            openMenuBtn.classList.remove('active');
+            setTimeout(() => {
+                popup.style.display = 'none';
+                document.body.style.overflow = '';
+            }, 300);
+        }
+        
+        openMenuBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            openPopup();
+        });
+        
+        if (closeBtn) {
+            closeBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                closePopup();
+            });
+        }
+        
+        if (overlay) {
+            overlay.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                closePopup();
+            });
+        }
+        
+        // Handle checkout button in popup
+        if (popupCheckoutBtn) {
+            popupCheckoutBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                checkout();
+            });
+        }
+        
+        // Close popup on escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && popup.classList.contains('active')) {
+                closePopup();
+            }
+        });
     }
 
     const cartToggle = document.querySelector('[data-cart-toggle]');
@@ -2272,6 +2556,9 @@
             checkout();
         });
     });
+    
+    // Initialize mobile cart popup
+    initMobileCartPopup();
 
     // Track initialized blocks to prevent double initialization
     const initializedUpsellBlocks = new Set();
@@ -2671,12 +2958,14 @@
             setTimeout(() => {
                 initRecommendations();
                 initUpsellPackageBlocks();
+                initMobileCartPopup();
             }, 100);
         });
     } else {
         setTimeout(() => {
             initRecommendations();
             initUpsellPackageBlocks();
+            initMobileCartPopup();
         }, 100);
     }
 })();
