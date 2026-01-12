@@ -3,6 +3,12 @@
         padding: 40px 20px;
     }
 
+    .cart-total-wrapper{
+        display: flex;
+        align-items: center;
+        gap: 4px;
+    }
+
     .recommendations-layout {
         display: flex;
         align-items: stretch;
