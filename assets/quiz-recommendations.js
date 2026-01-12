@@ -2652,9 +2652,9 @@
                             throw new Error('No products could be fetched');
                         }
 
-                        // Prepare cart items for Shopify API - only include available products
-                        const itemsToAdd = [];
+                        // Add products visually to local cartItems array (like other products)
                         const skippedProducts = [];
+                        let addedCount = 0;
                         
                         for (const product of products) {
                             if (product && product.variants && product.variants.length > 0) {
@@ -2662,31 +2662,30 @@
                                 const availableVariant = product.variants.find(v => v.available);
                                 
                                 if (availableVariant) {
-                                    // Check if product has subscription options
-                                    const hasSubscription = product.selling_plan_groups && product.selling_plan_groups.length > 0;
+                                    // Check if product already exists in cart
+                                    const existingItemIndex = cartItems.findIndex(item =>
+                                        parseInt(item.variantId) === availableVariant.id &&
+                                        !item.sellingPlanId && // One-time purchase
+                                        !item.isGift &&
+                                        !item.isBogoFree
+                                    );
                                     
-                                    // Prepare item data - explicitly set as one-time purchase
-                                    const itemData = {
-                                        id: availableVariant.id,
-                                        quantity: 1,
-                                        properties: {
-                                            '_upsell_discount': '50',
-                                            '_upsell_discount_type': 'percentage'
-                                        }
-                                    };
-                                    
-                                    // Explicitly ensure one-time purchase by NOT including selling_plan
-                                    // Shopify defaults to one-time purchase when selling_plan is omitted
-                                    // If we wanted subscription, we would add: itemData.selling_plan = planId
-                                    // By omitting it, we ensure one-time purchase
-                                    
-                                    if (hasSubscription) {
-                                        console.log(`Product "${product.title}" has subscription options, but adding as ONE-TIME PURCHASE (no selling_plan)`);
+                                    if (existingItemIndex !== -1) {
+                                        // Update quantity if already exists
+                                        cartItems[existingItemIndex].quantity += 1;
+                                    } else {
+                                        // Add new item with upsell discount flag
+                                        cartItems.push({
+                                            variantId: availableVariant.id,
+                                            quantity: 1,
+                                            product: product,
+                                            sellingPlanId: null, // One-time purchase
+                                            isGift: false,
+                                            isBogoFree: false,
+                                            isUpsellDiscount: true
+                                        });
                                     }
-                                    
-                                    console.log(`Adding "${product.title}" with 50% discount property`);
-                                    
-                                    itemsToAdd.push(itemData);
+                                    addedCount++;
                                 } else {
                                     // No available variants - skip this product
                                     skippedProducts.push(product.title || product.handle);
@@ -2697,15 +2696,8 @@
                                 console.log(`Skipping product with no variants: ${product?.title || product?.handle || 'Unknown product'}`);
                             }
                         }
-                        
-                        // Log what we're adding
-                        console.log('Upsell Package: Items to add (all as ONE-TIME PURCHASE):', itemsToAdd.map(item => ({
-                            variantId: item.id,
-                            quantity: item.quantity,
-                            selling_plan: item.selling_plan || 'NONE (one-time purchase)'
-                        })));
 
-                        if (itemsToAdd.length === 0) {
+                        if (addedCount === 0) {
                             throw new Error('No available products found to add to cart');
                         }
 
@@ -2714,76 +2706,22 @@
                             console.log(`Skipped ${skippedProducts.length} unavailable product(s):`, skippedProducts);
                         }
 
-                        console.log(`Adding ${itemsToAdd.length} available product(s) to cart`);
+                        console.log(`Added ${addedCount} available product(s) to cart visually`);
 
-                        // Add all available products to cart via Shopify API
-                        const response = await fetch('/cart/add.js', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                            },
-                            body: JSON.stringify({ items: itemsToAdd })
-                        });
+                        // Update cart display and related functions
+                        updateCartDisplay();
+                        updateGiftTiers();
+                        updateProductCardButtons();
+                        
+                        // Trigger cart update event
+                        document.dispatchEvent(new CustomEvent('cart:updated'));
 
-                        if (response.ok) {
-                            // Reload cart from Shopify to sync
-                            const cartResponse = await fetch('/cart.js');
-                            const cart = await cartResponse.json();
-                            
-                            // Track existing items by variant ID + selling plan ID
-                            const existingItemsMap = new Map();
-                            cartItems.forEach(item => {
-                                const key = `${item.variantId}-${item.sellingPlanId || ''}`;
-                                existingItemsMap.set(key, item);
-                            });
-                            
-                            // Update existing items or add new ones
-                            for (const item of cart.items) {
-                                const itemKey = `${item.variant_id}-${item.selling_plan_allocation ? item.selling_plan_allocation.selling_plan_id : ''}`;
-                                const existingItem = existingItemsMap.get(itemKey);
-                                
-                                if (existingItem) {
-                                    // Update quantity for existing item
-                                    existingItem.quantity = item.quantity;
-                                } else {
-                                    // Add new item (upsell product)
-                                    const product = products.find(p => p.handle === item.handle);
-                                    if (product) {
-                                        // Check if this item has the upsell discount property
-                                        const hasUpsellDiscount = item.properties && 
-                                            item.properties._upsell_discount === '50';
-                                        
-                                        cartItems.push({
-                                            variantId: item.variant_id,
-                                            quantity: item.quantity,
-                                            product: product,
-                                            sellingPlanId: item.selling_plan_allocation ? item.selling_plan_allocation.selling_plan_id : null,
-                                            isGift: false,
-                                            isBogoFree: false,
-                                            isUpsellDiscount: hasUpsellDiscount || false
-                                        });
-                                    }
-                                }
-                            }
-                            
-                            // Update cart display and related functions
-                            updateCartDisplay();
-                            updateGiftTiers();
-                            updateProductCardButtons();
-                            
-                            // Trigger cart update event
-                            document.dispatchEvent(new CustomEvent('cart:updated'));
-
-                            // Show success feedback
-                            button.innerHTML = 'Added to Cart!';
-                            setTimeout(() => {
-                                button.innerHTML = originalText;
-                                button.disabled = false;
-                            }, 2000);
-                        } else {
-                            const errorData = await response.json();
-                            throw new Error(errorData.description || 'Failed to add products to cart');
-                        }
+                        // Show success feedback
+                        button.innerHTML = 'Added to Cart!';
+                        setTimeout(() => {
+                            button.innerHTML = originalText;
+                            button.disabled = false;
+                        }, 2000);
                     } catch (error) {
                         console.error('Error adding products to cart:', error);
                         button.innerHTML = originalText;
