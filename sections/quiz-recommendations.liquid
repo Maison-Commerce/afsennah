@@ -129,31 +129,7 @@
                     <div class="section-products" data-section-products="top-picks"></div>
                 </div>
 
-                <!-- Section 2: Additional Recommendations (Not auto-added) -->
-                <div class="recommendations-section" data-section="additional">
-                    {% if section.settings.section2_title != blank %}
-                        <h3 class="section-title">{{ section.settings.section2_title }}</h3>
-                    {% endif %}
-                    {% if section.settings.section2_description != blank %}
-                        <div class="section-description">{{ section.settings.section2_description }}</div>
-                    {% endif %}
-                    <div class="section-products" data-section-products="additional"></div>
-                </div>
-
-                <hr class="section-divider">
-
-                <!-- Section 3: Accessories (Manual products, not auto-added) -->
-                <div class="recommendations-section" data-section="accessories">
-                    {% if section.settings.section3_title != blank %}
-                        <h3 class="section-title">{{ section.settings.section3_title }}</h3>
-                    {% endif %}
-                    {% if section.settings.section3_description != blank %}
-                        <div class="section-description">{{ section.settings.section3_description }}</div>
-                    {% endif %}
-                    <div class="section-products" data-section-products="accessories"></div>
-                </div>
-
-                <!-- Upsell Package Blocks -->
+                 <!-- Upsell Package Blocks -->
                 {% for block in section.blocks %}
                     {% case block.type %}
                         {% when 'upsell_package' %}
@@ -215,6 +191,30 @@
                             </div>
                     {% endcase %}
                 {% endfor %}
+
+                <!-- Section 2: Additional Recommendations (Not auto-added) -->
+                <div class="recommendations-section" data-section="additional">
+                    {% if section.settings.section2_title != blank %}
+                        <h3 class="section-title">{{ section.settings.section2_title }}</h3>
+                    {% endif %}
+                    {% if section.settings.section2_description != blank %}
+                        <div class="section-description">{{ section.settings.section2_description }}</div>
+                    {% endif %}
+                    <div class="section-products" data-section-products="additional"></div>
+                </div>
+
+                <hr class="section-divider">
+
+                <!-- Section 3: Accessories (Manual products, not auto-added) -->
+                <div class="recommendations-section" data-section="accessories">
+                    {% if section.settings.section3_title != blank %}
+                        <h3 class="section-title">{{ section.settings.section3_title }}</h3>
+                    {% endif %}
+                    {% if section.settings.section3_description != blank %}
+                        <div class="section-description">{{ section.settings.section3_description }}</div>
+                    {% endif %}
+                    <div class="section-products" data-section-products="accessories"></div>
+                </div>
             </div>
         </div>
 
