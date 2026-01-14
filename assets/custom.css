@@ -2741,3 +2741,10 @@ display: flex !important;
         gap: 5px;
     }
 }
+
+.cart-upsell-product__add-btn[data-requires-quiz="true"] svg {
+    display: none;
+}
+.cart-upsell-product__add-btn[data-requires-quiz="true"] {
+    font-size: 12px
+}
