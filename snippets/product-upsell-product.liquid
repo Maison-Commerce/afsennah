@@ -17,7 +17,7 @@
     assign custom_aspect_ratio = custom_aspect_ratio | at_least: 0.6
   endif
 -%}
-<div class="product-upsell-card" data-product-id="{{ product.id }}" data-variant-id="{{ first_available_variant.id }}">
+<div class="product-upsell-card" data-product-id="{{ product.id }}" data-variant-id="{{ first_available_variant.id }}" data-product-tags="{{ product.tags | json | escape }}" data-quiz-url="/pages/get-your-formula" data-quiz-text="Get Your Formula">
   <div class="product-upsell-card__content">
     <div class="product-upsell-card__image">
       <a href="{{ product.url }}" class="product-upsell-card__image-link">
@@ -61,7 +61,7 @@
   </div>
   
   <button type="button" class="product-upsell-card__add-btn" data-variant-id="{{ first_available_variant.id }}" aria-label="Add {{ product.title | escape }} to cart">
-    <span>Add</span>
+    <span class="product-upsell-card__btn-text">Add</span>
   </button>
 </div>
 
@@ -224,6 +224,51 @@
 
 <script>
   (function() {
+    // Initialize product upsell button states (check quiz status and update button text)
+    function initProductUpsellButtonStates() {
+      const productCards = document.querySelectorAll('.product-upsell-card');
+      
+      productCards.forEach(productCard => {
+        const addBtn = productCard.querySelector('.product-upsell-card__add-btn');
+        const btnText = productCard.querySelector('.product-upsell-card__btn-text');
+        
+        if (!addBtn || !btnText) return;
+        
+        // Get product tags
+        const productTagsJson = productCard.dataset.productTags;
+        let productTags = [];
+        try {
+          productTags = productTagsJson ? JSON.parse(productTagsJson) : [];
+        } catch (e) {
+          console.warn('[Product Upsell] Error parsing product tags:', e);
+        }
+        
+        // Check if product has "no consult" tag
+        const hasNoConsultTag = productTags.some(tag =>
+          tag.toLowerCase() === 'no consult' || tag.toLowerCase() === 'no-consult'
+        );
+        
+        // Check if quiz is completed
+        const quizCompleted = localStorage.getItem('quiz_completed') === 'true';
+        
+        // Get quiz URL and text from data attributes
+        const quizUrl = productCard.dataset.quizUrl || '/pages/get-your-formula';
+        const quizText = productCard.dataset.quizText || 'Get Your Formula';
+        
+        // Update button state
+        if (!hasNoConsultTag && !quizCompleted) {
+          // Show "Get Your Formula" button
+          btnText.textContent = quizText;
+          addBtn.dataset.requiresQuiz = 'true';
+          addBtn.dataset.quizUrl = quizUrl;
+        } else {
+          // Show regular "Add" button
+          btnText.textContent = 'Add';
+          addBtn.dataset.requiresQuiz = 'false';
+        }
+      });
+    }
+    
     // Initialize product upsell add to cart buttons
     function initProductUpsellButtons() {
       const addButtons = document.querySelectorAll('.product-upsell-card__add-btn');
@@ -243,6 +288,42 @@
           
           if (!variantId) {
             console.warn('[Product Upsell] No variantId found');
+            return;
+          }
+          
+          // Check if product requires quiz
+          const requiresQuiz = this.dataset.requiresQuiz === 'true';
+          
+          if (requiresQuiz) {
+            // Get quiz URL and redirect
+            const quizUrl = this.dataset.quizUrl || productCard?.dataset.quizUrl || '/pages/get-your-formula';
+            console.log('[Product Upsell] Product requires quiz, redirecting to:', quizUrl);
+            window.location.href = quizUrl;
+            return;
+          }
+          
+          // Get product tags to verify
+          const productTagsJson = productCard?.dataset.productTags;
+          let productTags = [];
+          try {
+            productTags = productTagsJson ? JSON.parse(productTagsJson) : [];
+          } catch (e) {
+            console.warn('[Product Upsell] Error parsing product tags:', e);
+          }
+          
+          // Check if product has "no consult" tag
+          const hasNoConsultTag = productTags.some(tag =>
+            tag.toLowerCase() === 'no consult' || tag.toLowerCase() === 'no-consult'
+          );
+          
+          // Check if quiz is completed
+          const quizCompleted = localStorage.getItem('quiz_completed') === 'true';
+          
+          // If product doesn't have "no consult" tag and quiz is not completed, redirect to quiz
+          if (!hasNoConsultTag && !quizCompleted) {
+            const quizUrl = productCard?.dataset.quizUrl || '/pages/get-your-formula';
+            console.log('[Product Upsell] Quiz not completed, redirecting to:', quizUrl);
+            window.location.href = quizUrl;
             return;
           }
           
@@ -293,14 +374,19 @@
             // Show success state briefly
             this.classList.remove('loading');
             this.classList.add('is-success');
-            const originalText = this.querySelector('span').textContent;
-            this.querySelector('span').textContent = 'Added!';
-            
-            setTimeout(() => {
-              this.classList.remove('is-success');
-              this.querySelector('span').textContent = originalText;
+            const btnText = this.querySelector('.product-upsell-card__btn-text');
+            if (btnText) {
+              const originalText = btnText.textContent;
+              btnText.textContent = 'Added!';
+              
+              setTimeout(() => {
+                this.classList.remove('is-success');
+                btnText.textContent = originalText;
+                this.disabled = false;
+              }, 1500);
+            } else {
               this.disabled = false;
-            }, 1500);
+            }
             
           } catch (error) {
             console.error('[Product Upsell] Error adding to cart:', error);
@@ -317,8 +403,12 @@
     
     // Initialize on page load
     if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', initProductUpsellButtons);
+      document.addEventListener('DOMContentLoaded', () => {
+        initProductUpsellButtonStates();
+        initProductUpsellButtons();
+      });
     } else {
+      initProductUpsellButtonStates();
       initProductUpsellButtons();
     }
     
@@ -327,6 +417,7 @@
       mutations.forEach((mutation) => {
         mutation.addedNodes.forEach((node) => {
           if (node.nodeType === 1 && (node.classList?.contains('product-upsell-card') || node.querySelector?.('.product-upsell-card'))) {
+            initProductUpsellButtonStates();
             initProductUpsellButtons();
           }
         });
