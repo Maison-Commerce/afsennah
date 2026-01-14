@@ -23,7 +23,7 @@
     assign custom_aspect_ratio = custom_aspect_ratio | at_least: 0.6
   endif
 -%}
-<div class="cart-upsell-product" data-product-id="{{ product.id }}" data-variant-id="{{ first_available_variant.id }}">
+<div class="cart-upsell-product" data-product-id="{{ product.id }}" data-variant-id="{{ first_available_variant.id }}" data-product-tags="{{ product.tags | json | escape }}" data-quiz-url="/pages/get-your-formula" data-quiz-text="Get Your Formula">
   <div class="cart-upsell-product__image">
     <a href="{{ product.url }}" class="cart-upsell-product__image-link">
       {% if product.featured_media %}
@@ -66,7 +66,7 @@
       <path d="M4.16666 9.99996H15.8333M9.99999 4.16663V15.8333" stroke="#1A365D" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
 
-      <span>Add</span>
+      <span class="cart-upsell-product__btn-text">Add</span>
     </button>
   </div>
 </div>
@@ -209,3 +209,75 @@
     }
 }
 </style>
+
+<script>
+  (function() {
+    // Initialize cart upsell buttons - check quiz status and update button text
+    function initCartUpsellButtonState() {
+      const productCards = document.querySelectorAll('.cart-upsell-product');
+      
+      productCards.forEach(productCard => {
+        const addBtn = productCard.querySelector('.cart-upsell-product__add-btn');
+        const btnText = productCard.querySelector('.cart-upsell-product__btn-text');
+        
+        if (!addBtn || !btnText) return;
+        
+        // Get product tags
+        const productTagsJson = productCard.dataset.productTags;
+        let productTags = [];
+        try {
+          productTags = productTagsJson ? JSON.parse(productTagsJson) : [];
+        } catch (e) {
+          console.warn('[Cart Upsell] Error parsing product tags:', e);
+        }
+        
+        // Check if product has "no consult" tag
+        const hasNoConsultTag = productTags.some(tag =>
+          tag.toLowerCase() === 'no consult' || tag.toLowerCase() === 'no-consult'
+        );
+        
+        // Check if quiz is completed
+        const quizCompleted = localStorage.getItem('quiz_completed') === 'true';
+        
+        // Get quiz URL and text from data attributes
+        const quizUrl = productCard.dataset.quizUrl || '/pages/get-your-formula';
+        const quizText = productCard.dataset.quizText || 'Get Your Formula';
+        
+        // Update button state
+        if (!hasNoConsultTag && !quizCompleted) {
+          // Show "Get Your Formula" button
+          btnText.textContent = quizText;
+          addBtn.dataset.requiresQuiz = 'true';
+          addBtn.dataset.quizUrl = quizUrl;
+        } else {
+          // Show regular "Add" button
+          btnText.textContent = 'Add';
+          addBtn.dataset.requiresQuiz = 'false';
+        }
+      });
+    }
+    
+    // Initialize on page load
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initCartUpsellButtonState);
+    } else {
+      initCartUpsellButtonState();
+    }
+    
+    // Re-initialize when new products are loaded (for carousel)
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        mutation.addedNodes.forEach((node) => {
+          if (node.nodeType === 1 && (node.classList?.contains('cart-upsell-product') || node.querySelector?.('.cart-upsell-product'))) {
+            initCartUpsellButtonState();
+          }
+        });
+      });
+    });
+    
+    observer.observe(document.body, {
+      childList: true,
+      subtree: true
+    });
+  })();
+</script>
