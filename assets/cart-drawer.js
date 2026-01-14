@@ -21,6 +21,8 @@ class CartDrawer extends SideDrawer {
       this.querySelectorAll('cc-cart-cross-sell').forEach((el) => el.init());
       // Re-initialize upsell buttons after cart merge
       this.initUpsellButtons();
+      // Update button states
+      this.updateUpsellButtonStates();
     });
   }
 
@@ -96,6 +98,42 @@ class CartDrawer extends SideDrawer {
       
       if (!variantId) {
         console.warn('[Cart Upsell] No variantId found, aborting');
+        return;
+      }
+      
+      // Check if product requires quiz
+      const requiresQuiz = addBtn.dataset.requiresQuiz === 'true';
+      
+      if (requiresQuiz) {
+        // Get quiz URL and redirect
+        const quizUrl = addBtn.dataset.quizUrl || productCard?.dataset.quizUrl || '/pages/get-your-formula';
+        console.log('[Cart Upsell] Product requires quiz, redirecting to:', quizUrl);
+        window.location.href = quizUrl;
+        return;
+      }
+      
+      // Get product tags to verify
+      const productTagsJson = productCard?.dataset.productTags;
+      let productTags = [];
+      try {
+        productTags = productTagsJson ? JSON.parse(productTagsJson) : [];
+      } catch (e) {
+        console.warn('[Cart Upsell] Error parsing product tags:', e);
+      }
+      
+      // Check if product has "no consult" tag
+      const hasNoConsultTag = productTags.some(tag =>
+        tag.toLowerCase() === 'no consult' || tag.toLowerCase() === 'no-consult'
+      );
+      
+      // Check if quiz is completed
+      const quizCompleted = localStorage.getItem('quiz_completed') === 'true';
+      
+      // If product doesn't have "no consult" tag and quiz is not completed, redirect to quiz
+      if (!hasNoConsultTag && !quizCompleted) {
+        const quizUrl = productCard?.dataset.quizUrl || '/pages/get-your-formula';
+        console.log('[Cart Upsell] Quiz not completed, redirecting to:', quizUrl);
+        window.location.href = quizUrl;
         return;
       }
       
@@ -226,6 +264,8 @@ class CartDrawer extends SideDrawer {
       
       if (hasNewButtons) {
         console.log('[Cart Upsell] New upsell buttons detected');
+        // Update button states for new buttons
+        this.updateUpsellButtonStates();
       }
     });
     
@@ -239,6 +279,56 @@ class CartDrawer extends SideDrawer {
     // Check existing buttons
     const buttons = this.querySelectorAll('.cart-upsell-product__add-btn');
     console.log('[Cart Upsell] Found buttons in cart drawer:', buttons.length);
+    
+    // Initialize button states (check quiz status and update button text)
+    this.updateUpsellButtonStates();
+  }
+  
+  /**
+   * Update upsell button states based on quiz completion and product tags
+   */
+  updateUpsellButtonStates() {
+    const productCards = this.querySelectorAll('.cart-upsell-product');
+    
+    productCards.forEach(productCard => {
+      const addBtn = productCard.querySelector('.cart-upsell-product__add-btn');
+      const btnText = productCard.querySelector('.cart-upsell-product__btn-text');
+      
+      if (!addBtn || !btnText) return;
+      
+      // Get product tags
+      const productTagsJson = productCard.dataset.productTags;
+      let productTags = [];
+      try {
+        productTags = productTagsJson ? JSON.parse(productTagsJson) : [];
+      } catch (e) {
+        console.warn('[Cart Upsell] Error parsing product tags:', e);
+      }
+      
+      // Check if product has "no consult" tag
+      const hasNoConsultTag = productTags.some(tag =>
+        tag.toLowerCase() === 'no consult' || tag.toLowerCase() === 'no-consult'
+      );
+      
+      // Check if quiz is completed
+      const quizCompleted = localStorage.getItem('quiz_completed') === 'true';
+      
+      // Get quiz URL and text from data attributes
+      const quizUrl = productCard.dataset.quizUrl || '/pages/get-your-formula';
+      const quizText = productCard.dataset.quizText || 'Get Your Formula';
+      
+      // Update button state
+      if (!hasNoConsultTag && !quizCompleted) {
+        // Show "Get Your Formula" button
+        btnText.textContent = quizText;
+        addBtn.dataset.requiresQuiz = 'true';
+        addBtn.dataset.quizUrl = quizUrl;
+      } else {
+        // Show regular "Add" button
+        btnText.textContent = 'Add';
+        addBtn.dataset.requiresQuiz = 'false';
+      }
+    });
   }
 }
 
