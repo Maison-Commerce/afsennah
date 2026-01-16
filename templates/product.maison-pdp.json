@@ -621,7 +621,7 @@
       "name": "Why Women Choose",
       "settings": {
         "heading": "Why Women Choose Afsennah",
-        "cta_text": "Get Hair Quiz",
+        "cta_text": "Start Your Consultation Here",
         "cta_url": "shopify://pages/online-consultation",
         "max_width": 1200,
         "cards_max_width": 1100,
@@ -1278,7 +1278,7 @@
         "tab_text_color": "#2f3936",
         "tab_active_bg_color": "#fbf7bd",
         "tab_active_text_color": "#1a365d",
-        "cta_text": "Take hair quiz",
+        "cta_text": "Start Your Consultation Here",
         "cta_link": "shopify://pages/online-consultation",
         "cta_max_width": 480,
         "cta_padding_vertical": 16,
