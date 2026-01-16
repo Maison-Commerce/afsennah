@@ -32,7 +32,7 @@
           "type": "button",
           "settings": {
             "button_label": "Get Your Formula",
-            "button_link": "shopify://pages/get-your-formula",
+            "button_link": "shopify://pages/online-consultation",
             "button_style": "primary"
           }
         }
@@ -311,7 +311,7 @@
           "type": "button",
           "settings": {
             "button": "GET YOUR FORMULA",
-            "url": "shopify://pages/get-your-formula",
+            "url": "shopify://pages/online-consultation",
             "open_in_new_tab": false,
             "button_style": "outline",
             "button_custom": false,
@@ -487,7 +487,7 @@
           "disabled": true,
           "settings": {
             "button_label": "GET YOUR FORMULA",
-            "button_link": "shopify://pages/get-your-formula",
+            "button_link": "shopify://pages/online-consultation",
             "button_style": "primary"
           }
         }
@@ -514,28 +514,28 @@
           "type": "image",
           "settings": {
             "image": "shopify://shop_images/4_c30eac97-cac0-4976-83b8-2e24f98f8a5d.png",
-            "url": "shopify://pages/get-your-formula"
+            "url": "shopify://pages/online-consultation"
           }
         },
         "image_FxXrfD": {
           "type": "image",
           "settings": {
             "image": "shopify://shop_images/1_2c556f88-cbad-448f-8fa8-6907ec8ddec8.png",
-            "url": "shopify://pages/get-your-formula"
+            "url": "shopify://pages/online-consultation"
           }
         },
         "image_iXtNRh": {
           "type": "image",
           "settings": {
             "image": "shopify://shop_images/2_92e54834-f1f8-4167-98a6-0cdf96b4572a.png",
-            "url": "shopify://pages/get-your-formula"
+            "url": "shopify://pages/online-consultation"
           }
         },
         "image_9k4agA": {
           "type": "image",
           "settings": {
             "image": "shopify://shop_images/roller.png",
-            "url": "shopify://pages/get-your-formula"
+            "url": "shopify://pages/online-consultation"
           }
         }
       },
@@ -612,7 +612,7 @@
           "settings": {
             "image": "shopify://shop_images/1_4a9ea6a7-b5c8-4272-9788-7fa83b865ae0.png",
             "text": "Free Mulberry Silk Scrunchie on orders above €150",
-            "url": "shopify://pages/get-your-formula"
+            "url": "shopify://pages/online-consultation"
           }
         },
         "collection_kwekGR": {
@@ -620,7 +620,7 @@
           "settings": {
             "image": "shopify://shop_images/4_204f1130-5895-4821-9ea1-b8e380cc6d59.png",
             "text": "Free Shipping on orders above €100",
-            "url": "shopify://pages/get-your-formula"
+            "url": "shopify://pages/online-consultation"
           }
         },
         "collection_gP4G8X": {
@@ -628,7 +628,7 @@
           "settings": {
             "image": "shopify://shop_images/2_c8c3070b-de48-4a93-b430-e76a78169bd2.png",
             "text": "Free Custom Hair Growth Oil on orders above €200",
-            "url": "shopify://pages/get-your-formula"
+            "url": "shopify://pages/online-consultation"
           }
         },
         "collection_zq38tH": {
@@ -636,7 +636,7 @@
           "settings": {
             "image": "shopify://shop_images/3_1534f30c-3cb2-42ae-b664-ceaf6d76dfe3.png",
             "text": "Free Microneedle Scalp Roller on orders above €250",
-            "url": "shopify://pages/get-your-formula"
+            "url": "shopify://pages/online-consultation"
           }
         }
       },
@@ -724,7 +724,7 @@
           "type": "button",
           "settings": {
             "button": "GET YOUR FORMULA HERE",
-            "button_url": "shopify://pages/get-your-formula",
+            "button_url": "shopify://pages/online-consultation",
             "button_custom": false,
             "button_font": "josefin_sans_n4",
             "button_size": 14,
@@ -752,7 +752,7 @@
           "settings": {
             "title": "CYBER MONDAY IS HERE",
             "text": "LIMITED TIME OFFER! 1 + 1 FREE",
-            "url": "shopify://pages/get-your-formula"
+            "url": "shopify://pages/online-consultation"
           }
         },
         "reference_wYtpLC": {
@@ -760,7 +760,7 @@
           "settings": {
             "title": "FREE SHIPPING",
             "text": "ON ORDERS ABOVE €100",
-            "url": "shopify://pages/get-your-formula"
+            "url": "shopify://pages/online-consultation"
           }
         }
       },
@@ -906,7 +906,7 @@
             "button_label_1": "GET FULLER & THICKER HAIR",
             "button_url_1": "shopify://collections/women",
             "button_label_2": "Not sure? Take our 1-min quiz",
-            "button_url_2": "shopify://pages/get-your-formula",
+            "button_url_2": "shopify://pages/online-consultation",
             "text_alignment": "bottom left"
           }
         }
@@ -1033,7 +1033,7 @@
             "input_border_color": "#d9daf4",
             "input_focus_border_color": "#a6a8de",
             "input_placeholder_color": "#787878",
-            "submit_link": "shopify://pages/get-your-formula",
+            "submit_link": "shopify://pages/online-consultation",
             "button_border_radius": 50,
             "button_background_color": "#feea89",
             "button_hover_background_color": "#f76928",
@@ -1549,7 +1549,7 @@
           "type": "button",
           "settings": {
             "button_label": "Get Your formula",
-            "button_link": "shopify://pages/get-your-formula",
+            "button_link": "shopify://pages/online-consultation",
             "button_style": "primary"
           }
         }

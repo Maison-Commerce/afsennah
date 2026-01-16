@@ -94,7 +94,7 @@
             "show_backorder_text": true,
             "sub-block-label": "SUBSCRIBE AND SAVE 15%",
             "quiz_cta_text": "Get Your Formula",
-            "quiz_cta_url": "shopify://pages/get-your-formula",
+            "quiz_cta_url": "shopify://pages/online-consultation",
             "enable_subscription_picker": true,
             "subscription_title": "SUBSCRIBE AND SAVE 15%",
             "default_selection": "subscription",
