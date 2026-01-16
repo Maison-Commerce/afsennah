@@ -1,10 +1,19 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "main": {
       "type": "main-product",
       "blocks": {
         "loox_reviews_loox_rating_K6cdrY": {
-          "type": "shopify:\/\/apps\/loox-reviews\/blocks\/loox-rating\/5c3b337f-fd14-4df5-b1d6-80ec13e6e28e",
+          "type": "shopify://apps/loox-reviews/blocks/loox-rating/5c3b337f-fd14-4df5-b1d6-80ec13e6e28e",
           "settings": {
             "contentSize": 16,
             "pattern": "",
@@ -32,7 +41,7 @@
         "richtext_9PTgzC": {
           "type": "richtext",
           "settings": {
-            "richtext": "<p>{{ product.metafields.custom.productline.value }}<\/p>",
+            "richtext": "<p>{{ product.metafields.custom.productline.value }}</p>",
             "icon": "",
             "icon_size": "small",
             "enable_box": false,
@@ -76,7 +85,7 @@
             "show_pickup_availability": true,
             "show_backorder_text": true,
             "quiz_cta_text": "Get Your Formula",
-            "quiz_cta_url": "shopify:\/\/pages\/get-your-formula"
+            "quiz_cta_url": "shopify://pages/online-consultation"
           }
         },
         "text_UT9ray": {
@@ -99,7 +108,7 @@
         "richtext_cyRJhp": {
           "type": "richtext",
           "settings": {
-            "richtext": "<p><strong>Why Custom-Made Hair Products Work Better:<\/strong><\/p><p>Because your hair isn’t “one-size-fits-all.”<\/p><p>Every scalp and strand has its own balance of oils, sensitivities, and growth needs which is why generic products often fall short. Afsennah Custom-made formulas are crafted specifically for <em>your<\/em> hair type, scalp condition, and goals. They deliver the exact nutrients your hair needs, no unnecessary fillers, no harsh ingredients.<\/p><p>By addressing the <em>root cause<\/em> of your concerns, personalized products help restore balance faster, enhance strength and shine, and create long-lasting results that standard products simply can’t match.<\/p><p><\/p>",
+            "richtext": "<p><strong>Why Custom-Made Hair Products Work Better:</strong></p><p>Because your hair isn’t “one-size-fits-all.”</p><p>Every scalp and strand has its own balance of oils, sensitivities, and growth needs which is why generic products often fall short. Afsennah Custom-made formulas are crafted specifically for <em>your</em> hair type, scalp condition, and goals. They deliver the exact nutrients your hair needs, no unnecessary fillers, no harsh ingredients.</p><p>By addressing the <em>root cause</em> of your concerns, personalized products help restore balance faster, enhance strength and shine, and create long-lasting results that standard products simply can’t match.</p><p></p>",
             "icon": "",
             "icon_size": "small",
             "enable_box": false,
@@ -112,7 +121,7 @@
           "settings": {
             "title": "How to Use",
             "icon": "",
-            "content": "<p>{{ product.metafields.custom.how_to_use | metafield_tag }}<\/p>",
+            "content": "<p>{{ product.metafields.custom.how_to_use | metafield_tag }}</p>",
             "page": "",
             "custom_liquid": "",
             "open": false,
@@ -124,7 +133,7 @@
           "settings": {
             "title": "Ingredients",
             "icon": "",
-            "content": "<p>{{ product.metafields.custom.ingredients | metafield_tag }}<\/p>",
+            "content": "<p>{{ product.metafields.custom.ingredients | metafield_tag }}</p>",
             "page": "",
             "custom_liquid": "",
             "open": false,
@@ -132,7 +141,7 @@
           }
         },
         "loox_reviews_loox_snippets_widget_JQFkCB": {
-          "type": "shopify:\/\/apps\/loox-reviews\/blocks\/loox-snippets-widget\/5c3b337f-fd14-4df5-b1d6-80ec13e6e28e",
+          "type": "shopify://apps/loox-reviews/blocks/loox-snippets-widget/5c3b337f-fd14-4df5-b1d6-80ec13e6e28e",
           "settings": {
             "alignment": "left",
             "max-width": "",
@@ -229,7 +238,7 @@
         "ingredient_a87QWK": {
           "type": "ingredient",
           "settings": {
-            "ingredient_image": "shopify:\/\/shop_images\/4_db19b1e5-e5a2-40d4-a63b-398fd4288eb1.png",
+            "ingredient_image": "shopify://shop_images/4_db19b1e5-e5a2-40d4-a63b-398fd4288eb1.png",
             "ingredient_name": "Hibiscus Oil",
             "ingredient_description": "We selected hibiscus oil for its rich blend of amino acids and vitamin C a rejuvenating extract that strengthens roots, boosts shine, and restores vitality to thinning, lackluster hair.",
             "card_bg_color": "#ffffff",
@@ -239,7 +248,7 @@
         "ingredient_XpT6Wq": {
           "type": "ingredient",
           "settings": {
-            "ingredient_image": "shopify:\/\/shop_images\/ingredient_4.png",
+            "ingredient_image": "shopify://shop_images/ingredient_4.png",
             "ingredient_name": "Saffron Oil",
             "ingredient_description": "We thoughtfully selected the most powerful plant-based oils to craft Afsennah’s hair elixirs rich in nutrients, free from harsh additives, and designed to nourish your scalp and transform your hair with every drop.",
             "card_bg_color": "#ffffff",
@@ -249,7 +258,7 @@
         "ingredient_PHNkeT": {
           "type": "ingredient",
           "settings": {
-            "ingredient_image": "shopify:\/\/shop_images\/ingredient_3.png",
+            "ingredient_image": "shopify://shop_images/ingredient_3.png",
             "ingredient_name": "Prickly Pear Seed Oil",
             "ingredient_description": "We thoughtfully selected the most powerful plant-based oils to craft Afsennah’s hair elixirs rich in nutrients, free from harsh additives, and designed to nourish your scalp and transform your hair with every drop.",
             "card_bg_color": "#ffffff",
@@ -259,7 +268,7 @@
         "ingredient_Uz4h4H": {
           "type": "ingredient",
           "settings": {
-            "ingredient_image": "shopify:\/\/shop_images\/ingredient_afsennah.png",
+            "ingredient_image": "shopify://shop_images/ingredient_afsennah.png",
             "ingredient_name": "Rosehip Oil",
             "ingredient_description": "We carefully chose Rosehip oil for its rich blend of vitamins, antioxidants, and fatty acids a lightweight botanical that deeply nourishes, repairs, and softens hair while restoring balance to your scalp with every use.",
             "card_bg_color": "#ffffff",
@@ -283,7 +292,7 @@
         "section_title": "Naturally powerful ingredients",
         "section_subtitle": "Your formula is uniquely yours. We target your goals with multi-benefit ingredients like:",
         "cta_text": "SEE ALL OUR INGREDIENTS",
-        "cta_url": "shopify:\/\/pages\/ingredients"
+        "cta_url": "shopify://pages/ingredients"
       }
     },
     "video_product_slider_JCam3g": {
@@ -292,60 +301,60 @@
         "video_product_card_jUV3AB": {
           "type": "video_product_card",
           "settings": {
-            "video": "shopify:\/\/files\/videos\/hair-growth-oil_R7yshec7.mp4",
+            "video": "shopify://files/videos/hair-growth-oil_R7yshec7.mp4",
             "autoplay": true,
             "loop": true,
             "muted": true,
             "controls": false,
-            "card_text": "<p>Transform thinning hair into thicker, stronger strands with every drop!<\/p>",
+            "card_text": "<p>Transform thinning hair into thicker, stronger strands with every drop!</p>",
             "product": "custom-hair-growth-oil-for-her"
           }
         },
         "video_product_card_3LBWwY": {
           "type": "video_product_card",
           "settings": {
-            "video": "shopify:\/\/files\/videos\/hair-treatment-yellow_BouNogGI.mp4",
+            "video": "shopify://files/videos/hair-treatment-yellow_BouNogGI.mp4",
             "autoplay": true,
             "loop": true,
             "muted": true,
             "controls": false,
-            "card_text": "<p>Repair, strengthen, and transform your hair  made just for you.<\/p>",
+            "card_text": "<p>Repair, strengthen, and transform your hair  made just for you.</p>",
             "product": "custom-hair-treatment"
           }
         },
         "video_product_card_nTEmGN": {
           "type": "video_product_card",
           "settings": {
-            "video": "shopify:\/\/files\/videos\/9ad83910849943d2b707235f5f144df0_Za7WQCtB.mp4",
+            "video": "shopify://files/videos/9ad83910849943d2b707235f5f144df0_Za7WQCtB.mp4",
             "autoplay": true,
             "loop": true,
             "muted": true,
             "controls": false,
-            "card_text": "<p>Lightweight leave-in oil that repairs and strengthens every strand.<\/p>",
+            "card_text": "<p>Lightweight leave-in oil that repairs and strengthens every strand.</p>",
             "product": "custom-hair-elixir"
           }
         },
         "video_product_card_MncF3B": {
           "type": "video_product_card",
           "settings": {
-            "video": "shopify:\/\/files\/videos\/scalp-tonic-on-dry-hair_h1numMhy.mp4",
+            "video": "shopify://files/videos/scalp-tonic-on-dry-hair_h1numMhy.mp4",
             "autoplay": true,
             "loop": true,
             "muted": true,
             "controls": false,
-            "card_text": "<p>Daily tonic that strengthens roots and reduces hair fall.<\/p>",
+            "card_text": "<p>Daily tonic that strengthens roots and reduces hair fall.</p>",
             "product": "custom-scalp-tonic"
           }
         },
         "video_product_card_7HGaN6": {
           "type": "video_product_card",
           "settings": {
-            "video": "shopify:\/\/files\/videos\/scalp-roller_FC1vzDv1.mp4",
+            "video": "shopify://files/videos/scalp-roller_FC1vzDv1.mp4",
             "autoplay": true,
             "loop": true,
             "muted": true,
             "controls": false,
-            "card_text": "<p>Boost absorption. Stimulate growth. Renew your scalp.<\/p>",
+            "card_text": "<p>Boost absorption. Stimulate growth. Renew your scalp.</p>",
             "product": "micro-needle-scalp-roller"
           }
         }
@@ -363,7 +372,7 @@
         "full_width": true,
         "button_text": "Get your formula",
         "quiz_cta_text": "Get Your Formula",
-        "quiz_url": "\/pages\/get-your-formula"
+        "quiz_url": "/pages/get-your-formula"
       }
     },
     "custom_content_DiwQ9R": {
@@ -381,7 +390,7 @@
             "title": "{{ product.title }}",
             "title_size": 42,
             "title_size_mobile": 24,
-            "text": "<p>hoi hoi hoi hoi <\/p>",
+            "text": "<p>hoi hoi hoi hoi </p>",
             "button_label": "",
             "button_link": "",
             "button_style": "primary"
@@ -391,8 +400,8 @@
           "type": "video",
           "settings": {
             "width": "third",
-            "video_shopify": "shopify:\/\/files\/videos\/9ad83910849943d2b707235f5f144df0.MOV",
-            "video_external": "https:\/\/www.youtube.com\/watch?v=_9VUPq3SxOc",
+            "video_shopify": "shopify://files/videos/9ad83910849943d2b707235f5f144df0.MOV",
+            "video_external": "https://www.youtube.com/watch?v=_9VUPq3SxOc",
             "video_description": "",
             "autoplay": false
           }
@@ -414,7 +423,7 @@
       "type": "apps",
       "blocks": {
         "loox_reviews_loox_dynamic_section_rpFfVd": {
-          "type": "shopify:\/\/apps\/loox-reviews\/blocks\/loox-dynamic-section\/5c3b337f-fd14-4df5-b1d6-80ec13e6e28e",
+          "type": "shopify://apps/loox-reviews/blocks/loox-dynamic-section/5c3b337f-fd14-4df5-b1d6-80ec13e6e28e",
           "settings": {
             "only_photos": false,
             "aggregated": false,
@@ -453,21 +462,21 @@
           "type": "question",
           "settings": {
             "title": "Question",
-            "answer": "<p>Answer<\/p>"
+            "answer": "<p>Answer</p>"
           }
         },
         "question_QDVkBX": {
           "type": "question",
           "settings": {
             "title": "Question",
-            "answer": "<p>Answer<\/p>"
+            "answer": "<p>Answer</p>"
           }
         },
         "question_DzYz94": {
           "type": "question",
           "settings": {
             "title": "Question",
-            "answer": "<p>Answer<\/p>"
+            "answer": "<p>Answer</p>"
           }
         }
       },

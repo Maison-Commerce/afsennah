@@ -1,1 +1,1946 @@
-{"sections":{"background_video_BR9RpN":{"type":"background-video","blocks":{"subheading_JAkkmg":{"type":"subheading","settings":{"subheading":"Customized hair & scalp care formulated by our Advanced Trichologist"}},"heading_neyRx9":{"type":"heading","settings":{"title":"The search for the right hair and scalp care is over","heading_max_width":15,"title_size":36,"title_size_mobile":24,"use_h1":true}},"button_KPrcNw":{"type":"button","settings":{"button_label":"Get Your Formula","button_link":"shopify:\/\/pages\/get-your-formula","button_style":"primary"}}},"block_order":["subheading_JAkkmg","heading_neyRx9","button_KPrcNw"],"disabled":true,"custom_css":["@media (max-width: 767px) {.text-overlay__button-row {display: none; }}",".section-background-video {padding-top: 32px;}","@media (max-width: 1440px) {.section-background-video {padding-top: 20px; } .section-background-video {padding-top: 20px; }}"," {@media (max-width: 767px) {padding: 0 20px; }}"],"name":"Background video","settings":{"video_shopify":"shopify:\/\/files\/videos\/bb8d445b7e7e48388fdb39c1ad89e8f4.mov","video_external":"","video_description":"","placeholder_image":"shopify:\/\/shop_images\/B1A9175_1_HD_1_5.jpg","text_alignment":"bottom right","height_desktop":680,"height_mobile":500,"full_width":true,"overlay_style":"box"}},"ss_hero_24_G7kegJ":{"type":"ss-hero-24","blocks":{"review_ckW9P3":{"type":"review","settings":{"first_image":"shopify:\/\/shop_images\/Untitled_design.png","second_image":"shopify:\/\/shop_images\/random_foto.png","third_image":"shopify:\/\/shop_images\/long-blond-hair.jpg","image_size":36,"image_size_mobile":28,"image_radius":100,"image_border_thickness":1,"stars_count":4.5,"stars_size":18,"stars_size_mobile":16,"review":"150K+ Women Growing With Us","stars_text":"Highly Rated 4.7","review_custom":false,"review_font":"josefin_sans_n4","review_size":16,"review_size_mobile":13,"review_height":130,"review_mt":16,"review_mt_mobile":10,"review_color":"#000000","count_color":"#000000","stars_color":"#ffffff","stars_bg_color":"#02b17b","stars_bg_half_color":"#dddddd","image_border_color":"#ffffff"}},"heading_nnefNN":{"type":"heading","disabled":true,"settings":{"heading":"<h1>Hero <strong>#24<\/strong><\/h1>","heading_custom":false,"heading_font":"josefin_sans_n4","heading_size":54,"heading_size_mobile":52,"heading_height":130,"heading_mt":24,"heading_mt_mobile":20,"heading_color":"#000000","heading_border_color":"#ffffff"}},"text_aibLH6":{"type":"text","disabled":true,"settings":{"text":"<p>Tell your brand's story through images<\/p>","text_custom":false,"text_font":"josefin_sans_n4","text_size":18,"text_size_mobile":18,"text_height":150,"text_mt":20,"text_mt_mobile":20,"text_color":"#000000"}},"button_kiYmNG":{"type":"button","disabled":true,"settings":{"button":"Shop this","url":"","button_custom":false,"button_font":"josefin_sans_n4","button_size":16,"button_size_mobile":16,"button_height":100,"button_padding_horizontal":52,"button_padding_horizontal_mobile":40,"button_padding_vertical":20,"button_padding_vertical_mobile":20,"button_radius":8,"button_border_thickness":1,"button_mt":16,"button_mt_mobile":12,"button_style":"outline","button_color":"#ffffff","button_hover_color":"#ffffff","button_bg_color":"#17c87c","button_bg_hover_color":"#17c87c","button_border_color":"#17c87c","button_border_hover_color":"#17c87c"}},"button_3ngAUT":{"type":"button","disabled":true,"settings":{"button":"Shop all","url":"","button_custom":false,"button_font":"josefin_sans_n4","button_size":16,"button_size_mobile":16,"button_height":100,"button_padding_horizontal":40,"button_padding_horizontal_mobile":34,"button_padding_vertical":20,"button_padding_vertical_mobile":20,"button_radius":8,"button_border_thickness":1,"button_mt":16,"button_mt_mobile":12,"button_style":"outline","button_color":"#17c87c","button_hover_color":"#ffffff","button_bg_color":"rgba(0,0,0,0)","button_bg_hover_color":"#17c87c","button_border_color":"#17c87c","button_border_hover_color":"#17c87c"}},"text_haxAKX":{"type":"text","disabled":true,"settings":{"text":"<p>Additional text<\/p>","text_custom":false,"text_font":"josefin_sans_n4","text_size":18,"text_size_mobile":18,"text_height":150,"text_mt":20,"text_mt_mobile":20,"text_color":"#000000"}}},"block_order":["review_ckW9P3","heading_nnefNN","text_aibLH6","button_kiYmNG","button_3ngAUT","text_haxAKX"],"disabled":true,"name":"SS - Hero #24","settings":{"layout_height":"fixed_height","layout_fixed_height":650,"layout_fixed_height_mobile":730,"bg_image":"shopify:\/\/shop_images\/desktop_banner_winter_sale_take_2.png","bg_image_mobile":"shopify:\/\/shop_images\/winter_sale_banner_mobile_take_2.png","bg_image_overlay":0,"content_max_width":40,"content_align":"left","content_align_mobile":"left","content_vertical_align":"start","content_vertical_align_mobile":"start","bg_image_overlay_color":"#000000","background_color":"#ffffff","background_gradient":"","border_color":"#ffffff","margin_top":12,"margin_bottom":0,"margin_horizontal":0,"margin_horizontal_mobile":0.5,"padding_top":36,"padding_bottom":36,"padding_horizontal":5,"padding_horizontal_mobile":1.5,"full_width":false,"content_width":1200,"border_thickness":0,"section_radius":34,"lazy":false}},"ss_featured_product_4_6grAGM":{"type":"ss-featured-product-4","blocks":{"heading_f8TaQt":{"type":"heading","settings":{"heading":"<p>Your Hair Didn’t Fail You.<strong> The Formula Did.<\/strong><\/p>","heading_custom":false,"heading_font":"josefin_sans_n4","heading_accent_custom":true,"heading_accent_font":"josefin_sans_n4","heading_size":56,"heading_size_mobile":32,"heading_advanced":false,"heading_height":130,"heading_mt":0,"heading_mt_mobile":0,"heading_color":"#121212","heading_accent_color":"#f59e10"}},"text_gKJXFY":{"type":"text","settings":{"text":"<p>Custom hair & scalp treatments formulated after understanding <em>your<\/em> hair, not trends.<\/p>","text_custom":false,"text_font":"josefin_sans_n4","text_size":16,"text_size_mobile":14,"text_advanced":false,"text_height":150,"text_mt":20,"text_mt_mobile":16,"text_color":"#121212"}},"author_8icNHi":{"type":"author","settings":{"use_author_image":true,"author_image":"shopify:\/\/shop_images\/meisje.png","image_width":80,"image_width_mobile":64,"image_radius":50,"image_border_thickness":0,"text":"<p>Once I understood my scalp needed a custom formula, everything changed. More Hair Growth and less hairfall within weeks!<\/p>","text_custom":true,"text_font":"josefin_sans_n4","text_size":24,"text_size_mobile":12,"text_advanced":false,"text_height":150,"author_mt":24,"author_mt_mobile":12,"author":"— Aubrey","author_custom":false,"author_font":"josefin_sans_n4","author_size":14,"author_size_mobile":12,"author_advanced":false,"author_height":130,"author_name_mt":16,"author_name_mt_mobile":12,"text_color":"#121212","author_color":"#121212","image_border_color":"#121212"}},"button_ewqMD3":{"type":"button","settings":{"button":"GET YOUR FORMULA","url":"shopify:\/\/pages\/get-your-formula","open_in_new_tab":false,"button_style":"outline","button_custom":false,"button_font":"josefin_sans_n4","button_size":14,"button_size_mobile":14,"button_advanced":false,"button_height":100,"button_padding_horizontal":28,"button_padding_horizontal_mobile":28,"button_padding_vertical":16,"button_padding_vertical_mobile":16,"button_radius":100,"button_border_thickness":1,"button_mt":20,"button_mt_mobile":16,"button_color":"#121212","button_hover_color":"#ffffff","button_bg_color":"#feea89","button_bg_hover_color":"#f59e10","button_border_color":"#feea89","button_border_hover_color":"#f59e10"}},"caption_gNreea":{"type":"caption","settings":{"icon":"earth","text":"<p>Fast delivery, within 1-2 days<\/p>","text_custom":false,"text_font":"josefin_sans_n4","text_size":14,"text_size_mobile":12,"text_advanced":false,"text_height":150,"text_mt":20,"text_mt_mobile":16,"icon_color":"#f59e10","text_color":"#121212"}},"feature_YT8gwg":{"type":"feature","settings":{"icon":"leaf","text":"Natural actives, no harsh ingredients","hide_mobile":false}},"feature_Diyjnx":{"type":"feature","settings":{"icon":"heart_hand","text":"Trichologist-led & lab-developed","hide_mobile":false}},"feature_6YKUDy":{"type":"feature","settings":{"icon":"shield_check","text":"Custom-formulated for your scalp","hide_mobile":false}},"feature_96fAfU":{"type":"feature","settings":{"icon":"target","text":"Targets the root cause, not symptoms","hide_mobile":false}}},"block_order":["heading_f8TaQt","text_gKJXFY","author_8icNHi","button_ewqMD3","caption_gNreea","feature_YT8gwg","feature_Diyjnx","feature_6YKUDy","feature_96fAfU"],"name":"SS - Featured product #4","settings":{"layout":"image_content","layout_mobile":"image_content","layout_advanced":false,"image_width":45,"layout_gap":80,"layout_gap_mobile":20,"content_align":"left","content_align_mobile":"left","content_vertical_align":"center","source":"uploaded","video":"shopify:\/\/files\/videos\/VD1(No Outline).mov","video_url":"","video_ratio":"landscape","video_ratio_mobile":"landscape","video_radius":16,"video_border_thickness":0,"video_autoplay":true,"video_loop":true,"use_controls":true,"play_icon_size":16,"play_icon_size_mobile":16,"play_padding":14,"play_padding_mobile":14,"play_radius":100,"play_border_thickness":0,"first_image":"shopify:\/\/shop_images\/1_dfc4268b-d289-4ea6-b8fd-ee7272a8a36d.png","second_image":"shopify:\/\/shop_images\/3_2f256cda-737b-4609-b5cf-8b8b8b941f90.png","use_third_image":true,"third_image":"shopify:\/\/shop_images\/2_89153d8b-df30-4f68-83ab-fa99618b8ed6.png","image_ratio":"square","image_ratio_mobile":"square","image_radius":16,"image_border_thickness":0,"features_columns":"two","features_columns_mobile":"two","features_advanced":false,"features_border_thickness":1,"features_mt":20,"features_mt_mobile":20,"feature_gap":10,"feature_gap_mobile":10,"feature_mt":10,"feature_mt_mobile":10,"feature_icon_size":20,"feature_icon_size_mobile":20,"feature_text_custom":false,"feature_text_font":"josefin_sans_n4","feature_text_size":14,"feature_text_size_mobile":12,"feature_text_height":150,"feature_icon_color":"#121212","feature_text_color":"#121212","features_border_color":"#dbdbdb","image_border_color":"#121212","video_border_color":"#121212","play_color":"#121212","play_hover_color":"#121212","play_bg_color":"#ffffff","play_bg_hover_color":"#f3f3f3","play_border_color":"#121212","play_border_hover_color":"#121212","background_style":"solid","background_color":"#ffffff","background_gradient":"linear-gradient(180deg, #FFFFFF 0%, #F2F2F2 100%)","border_color":"#121212","margin_top":0,"margin_bottom":0,"margin_horizontal":0,"margin_horizontal_mobile":0,"padding_top":36,"padding_bottom":36,"padding_horizontal":5,"padding_horizontal_mobile":1.5,"width":"page","content_width":1200,"border_thickness":0,"section_radius":0,"lazy":true}},"rich_text_3dckLL":{"type":"rich-text","blocks":{"button_cY4cLz":{"type":"button","disabled":true,"settings":{"button_label":"GET YOUR FORMULA","button_link":"shopify:\/\/pages\/get-your-formula","button_style":"primary"}}},"block_order":["button_cY4cLz"],"custom_css":["{display: none; margin-top: 0; @media (max-width: 767px) {display: block; }}",".button-row,.fully-spaced-row--medium {margin-top: 10px; margin-bottom: 0;}"],"name":"Rich text","settings":{"height":"medium","text_alignment":"center","full_width":false,"color_scheme":"default"}},"ss_scrolling_images_hXEfay":{"type":"ss-scrolling-images","blocks":{"image_KN3LAX":{"type":"image","settings":{"image":"shopify:\/\/shop_images\/4_c30eac97-cac0-4976-83b8-2e24f98f8a5d.png","url":"shopify:\/\/pages\/get-your-formula"}},"image_FxXrfD":{"type":"image","settings":{"image":"shopify:\/\/shop_images\/1_2c556f88-cbad-448f-8fa8-6907ec8ddec8.png","url":"shopify:\/\/pages\/get-your-formula"}},"image_iXtNRh":{"type":"image","settings":{"image":"shopify:\/\/shop_images\/2_92e54834-f1f8-4167-98a6-0cdf96b4572a.png","url":"shopify:\/\/pages\/get-your-formula"}},"image_9k4agA":{"type":"image","settings":{"image":"shopify:\/\/shop_images\/roller.png","url":"shopify:\/\/pages\/get-your-formula"}}},"block_order":["image_KN3LAX","image_FxXrfD","image_iXtNRh","image_9k4agA"],"disabled":true,"name":"SS - Scrolling images","settings":{"heading":"<p>Unlock Gifts as You Build Your Routine<\/p>","heading_custom":false,"heading_font":"josefin_sans_n4","heading_size":30,"heading_height":130,"heading_align":"center","slider_speed":20,"slider_advanced":false,"slider_gap":10,"slider_gap_mobile":10,"slider_mt":32,"slider_direction":"left","pause_hover":false,"image_width_desktop":300,"image_width_mobile":140,"image_height_desktop":400,"image_height_mobile":200,"image_radius":10,"use_content":false,"content_liquid_glass":false,"content_liquid_hover":true,"content_position":"center","content_max_width":340,"content_max_width_mobile":340,"content_advanced":false,"content_padding_vertical":30,"content_padding_horizontal":30,"content_distance":60,"content_radius":10,"content_border_thickness":0,"use_shadow":true,"text":"<p>+150.000 women started growing their hair<\/p>","text_custom":false,"text_font":"josefin_sans_n4","text_size":24,"text_height":90,"heading_color":"#000000","content_bg":"#ffffff","content_border_color":"#000000","text_color":"#000000","background_style":"solid","background_color":"#ffffff","background_gradient":"linear-gradient(180deg, #FFFFFF 0%, #F2F2F2 100%)","border_color":"#000000","margin_top":0,"margin_bottom":0,"padding_top":36,"padding_bottom":36,"padding_horizontal":5,"padding_horizontal_mobile":1.5,"width":"full","content_width":1200,"border_thickness":0,"lazy":true}},"ss_scrolling_collections_2_QyzCML":{"type":"ss-scrolling-collections-2","blocks":{"collection_9RYXRT":{"type":"collection","settings":{"image":"shopify:\/\/shop_images\/1_4a9ea6a7-b5c8-4272-9788-7fa83b865ae0.png","text":"Free Mulberry Silk Scrunchie on orders above €150","url":"shopify:\/\/pages\/get-your-formula"}},"collection_kwekGR":{"type":"collection","settings":{"image":"shopify:\/\/shop_images\/4_204f1130-5895-4821-9ea1-b8e380cc6d59.png","text":"Free Shipping on orders above €100","url":"shopify:\/\/pages\/get-your-formula"}},"collection_gP4G8X":{"type":"collection","settings":{"image":"shopify:\/\/shop_images\/2_c8c3070b-de48-4a93-b430-e76a78169bd2.png","text":"Free Custom Hair Growth Oil on orders above €200","url":"shopify:\/\/pages\/get-your-formula"}},"collection_zq38tH":{"type":"collection","settings":{"image":"shopify:\/\/shop_images\/3_1534f30c-3cb2-42ae-b664-ceaf6d76dfe3.png","text":"Free Microneedle Scalp Roller on orders above €250","url":"shopify:\/\/pages\/get-your-formula"}}},"block_order":["collection_9RYXRT","collection_kwekGR","collection_gP4G8X","collection_zq38tH"],"disabled":true,"name":"SS - Scrolling collections #2","settings":{"collections":[],"scrolling_velocity":40,"scrolling_velocity_mobile":36,"reverse_direction":true,"pause_hover":false,"cards_gap":12,"cards_gap_mobile":12,"card_width":300,"card_width_mobile":200,"card_height":210,"card_height_mobile":110,"card_radius":20,"card_border_thickness":1,"image_width":50,"image_width_mobile":50,"text_custom":false,"text_font":"josefin_sans_n4","text_size":12,"text_size_mobile":12,"text_height":110,"text_color":"#121212","card_bg_color":"#f7f6f0","card_border_color":"#f7f6f0","background_style":"solid","background_color":"#ffffff","background_gradient":"linear-gradient(180deg, #FFFFFF 0%, #F2F2F2 100%)","border_color":"#121212","margin_top":0,"margin_bottom":0,"margin_horizontal":0,"margin_horizontal_mobile":0,"padding_top":36,"padding_bottom":36,"width":"full","content_width":1200,"border_thickness":0,"section_radius":0,"lazy":false}},"ss_hero_26_pbUxwM":{"type":"ss-hero-26","blocks":{"text_Hb7cDy":{"type":"text","settings":{"text":"<p>CYBER MONDAY IS LIVE! <\/p>","text_custom":false,"text_font":"josefin_sans_n4","text_size":26,"text_size_mobile":29,"text_height":150,"text_mt":0,"text_mt_mobile":0,"text_color":"#ffffff"}},"heading_FEzAtz":{"type":"heading","settings":{"heading":"<h1>LIMITED TIME 1+1 FREE<\/h1>","heading_custom":false,"heading_font":"josefin_sans_n4","heading_size":48,"heading_size_mobile":26,"heading_height":130,"heading_mt":6,"heading_mt_mobile":6,"heading_color":"#ffffff"}},"button_rpdB7h":{"type":"button","settings":{"button":"GET YOUR FORMULA HERE","button_url":"shopify:\/\/pages\/get-your-formula","button_custom":false,"button_font":"josefin_sans_n4","button_size":14,"button_size_mobile":24,"button_height":100,"button_padding_vertical":20,"button_padding_vertical_mobile":18,"button_padding_horizontal":90,"button_padding_horizontal_mobile":24,"button_radius":16,"button_border_thickness":1,"button_mt":20,"button_mt_mobile":20,"button_style":"non_outline","button_color":"#121212","button_hover_color":"#ffffff","button_bg_color":"#feea89","button_bg_hover_color":"#a6a8de","button_border_color":"#121212","button_border_hover_color":"#121212"}},"reference_myJfUg":{"type":"reference","settings":{"title":"CYBER MONDAY IS HERE","text":"LIMITED TIME OFFER! 1 + 1 FREE","url":"shopify:\/\/pages\/get-your-formula"}},"reference_wYtpLC":{"type":"reference","settings":{"title":"FREE SHIPPING","text":"ON ORDERS ABOVE €100","url":"shopify:\/\/pages\/get-your-formula"}}},"block_order":["text_Hb7cDy","heading_FEzAtz","button_rpdB7h","reference_myJfUg","reference_wYtpLC"],"disabled":true,"name":"SS - Hero #26","settings":{"layout_height":"fixed_height","layout_fixed_height":510,"layout_fixed_height_mobile":790,"main_width":50,"content_align":"left","content_align_mobile":"center","content_vertical_align":"end","layout_bg_type":"image","bg_image":"shopify:\/\/shop_images\/black_friday_banner.png","bg_video_url":"","image_overlay":0,"reference_block_width":320,"reference_block_padding_horizontal":20,"reference_block_padding_horizontal_mobile":20,"reference_block_padding_vertical":20,"reference_block_padding_vertical_mobile":20,"reference_block_radius":16,"reference_block_border_thickness":1,"reference_align":"left","reference_align_mobile":"left","autoplay":true,"autoplay_delay":5,"title_custom":false,"title_font":"josefin_sans_n4","title_size":16,"title_size_mobile":16,"title_height":130,"text_custom":false,"text_font":"josefin_sans_n4","text_size":14,"text_size_mobile":13,"text_height":150,"text_mt":6,"text_mt_mobile":6,"dots_size":10,"dots_size_mobile":10,"dots_show_desktop":true,"dots_show_mobile":true,"title_color":"#121212","text_color":"#000000","reference_block_bg_color":"#ffffff","reference_block_border_color":"#a6a8de","dots_color":"#a6a8de","image_overlay_color":"#121212","background_color":"#ffffff","background_gradient":"","border_color":"#121212","margin_top":0,"margin_bottom":0,"margin_horizontal":0,"margin_horizontal_mobile":0,"padding_top":36,"padding_bottom":36,"padding_horizontal":5,"padding_horizontal_mobile":1.5,"full_width":true,"content_width":1200,"border_thickness":0,"section_radius":0,"lazy":false}},"image_with_text_overlay_jiPitL":{"type":"image-with-text-overlay","blocks":{"subheading_4gBxNY":{"type":"subheading","disabled":true,"settings":{"subheading":"Tell your story"}},"heading_ztKxt4":{"type":"heading","disabled":true,"settings":{"title":"Image with text overlay","heading_max_width":15,"title_size":84,"title_size_mobile":32,"use_h1":false}},"text_yNNjHM":{"type":"text","disabled":true,"settings":{"text":"<p>Promote your brand or products with this feature section<\/p>","enlarge_text":true}}},"block_order":["subheading_4gBxNY","heading_ztKxt4","text_yNNjHM"],"disabled":true,"name":"Image with text overlay","settings":{"image":"shopify:\/\/shop_images\/Black_Friday_1_1_FREE_2025.png","mobile_image":"shopify:\/\/shop_images\/Black_Friday_1_1_FREE_2025.png","height":"fixed","height_desktop":600,"height_mobile":460,"image_link":"","full_width":true,"text_alignment":"center center","mobile_overlay_under":false,"overlay_style":"shadow"}},"slideshow_rgpbDd":{"type":"slideshow","blocks":{"image_ETJQkA":{"type":"image","settings":{"image":"shopify:\/\/shop_images\/WhatsApp_Image_2025-08-20_at_18.28.30.jpg","mobile_image":"shopify:\/\/shop_images\/WhatsApp_Image_2025-08-19_at_18.15.36.jpg","slide_link":"","subheading":"Trusted by 150,000+ Women | Rated 4.8\/5","title":"Feed your hair exactly what it craves","heading_max_width":40,"title_size":48,"title_size_mobile":32,"use_h1":true,"text":"<p>Personalized hair solutions based on what your hair & scalp actually needs!<\/p>","enlarge_text":true,"button_label_1":"GET FULLER & THICKER HAIR","button_url_1":"shopify:\/\/collections\/women","button_label_2":"Not sure? Take our 1-min quiz","button_url_2":"shopify:\/\/pages\/get-your-formula","text_alignment":"bottom left"}}},"block_order":["image_ETJQkA"],"disabled":true,"name":"Slideshow","settings":{"height":"fixed","height_desktop":600,"height_mobile":460,"full_width":true,"mobile_overlay_under":false,"overlay_style":"shadow","transition":"fade","navigation":"arrows","autoplay":true,"autoplay_speed":7,"accessibility_info":""}},"custom_collections_MHpzBV":{"type":"custom-collections","blocks":{"collection_block_kGMcWD":{"type":"collection_block","settings":{"collection":"custom-hair-oils","collection_title":"Custom Hair Products","products_to_show":8,"description_title":"LIMITED TIME OFFER!","info_title":"For Your  Specific Hair & Scalp Type","info_description":"+ less breakage after just one use","bgcolor":"#f8f6f0"}},"collection_block_NRUkkp":{"type":"collection_block","settings":{"collection":"luxury-accessories","collection_title":"Luxury Accessories","products_to_show":8,"description_title":"WHEN QUALITY ACCESSORIES GET NOTICED!","info_title":"STOP HAIR THINNING","info_description":"+ less breakage after just one use","bgcolor":"#f8f6f0"}}},"block_order":["collection_block_kGMcWD","collection_block_NRUkkp"],"name":"Custom Collections","settings":{}},"scrolling_banner_VaGMcY":{"type":"scrolling-banner","blocks":{"text_qpwAcd":{"type":"text","settings":{"text":"cruelty-free   -   carbon neutral   -   paraben free   -   sulfate free   -   phthalate free   -   free of mineral oils","color":"rgba(0,0,0,0)","link":"","use_h1":false,"stencil_all_text":false,"stencil_text":""}}},"block_order":["text_qpwAcd"],"name":"Scrolling banner","settings":{"full_width":true,"color_scheme":"default","text_size":20,"vertical_padding":30,"speed":2.5,"direction":"left","font":"base","space":50}},"1759778559811cc81e":{"type":"_blocks","blocks":{"ai_gen_block_d380afe_FpembB":{"type":"ai_gen_block_d380afe","settings":{"full_width":true,"section_padding":0,"image_width":45,"content_gap":40,"background_color":"#f8f6f0","product_image":"shopify:\/\/shop_images\/Generated_Image_October_19_2025_-_10_55PM.png","image_size":440,"image_position_desktop_x":51,"image_position_desktop_y":36,"image_position_mobile_x":50,"image_position_mobile_y":42,"text_position_desktop_x":50,"text_position_desktop_y":67,"text_position_mobile_x":50,"text_position_mobile_y":68,"overlay_font":"fira_sans_n4","overlay_text_size":20,"overlay_text_color":"#102b26","subtitle":"Get your own custom formula","title":"Start your online consultation here","subtitle_size":15,"title_size":32,"subtitle_color":"#666666","title_color":"#232323","input_placeholder":"Enter Your Name","input_text_size":16,"input_border_radius":8,"input_background_color":"#ffffff","input_text_color":"#102b26","input_border_color":"#d9daf4","input_focus_border_color":"#a6a8de","input_placeholder_color":"#787878","submit_link":"shopify:\/\/pages\/get-your-formula","button_border_radius":50,"button_background_color":"#feea89","button_hover_background_color":"#f76928","button_text_color":"#000000"},"blocks":{}}},"block_order":["ai_gen_block_d380afe_FpembB"],"custom_css":["{padding-top: 130px; @media (max-width: 767px) {padding-top: 80px; }}"],"settings":{}},"scrolling_banner_7KyRw6":{"type":"scrolling-banner","blocks":{"image_bLCT8U":{"type":"image","settings":{"image":"shopify:\/\/shop_images\/the_sun_logo_black_icon_ab8f9f3e-ca9b-4640-9f30-3c63df825ff2.png","image_width":100,"link":""}},"image_Jpx6KQ":{"type":"image","settings":{"image":"shopify:\/\/shop_images\/Elle_Icon_48cf211d-21e3-409e-ab65-5248dc24ab48.png","image_width":165,"link":""}},"image_i6pUfV":{"type":"image","settings":{"image":"shopify:\/\/shop_images\/WWD_icon_14b15f50-a934-42f2-b20a-06df43861f41.png","image_width":165,"link":""}},"image_tn8prb":{"type":"image","settings":{"image":"shopify:\/\/shop_images\/2_ba6d4558-b4d3-4553-ba03-fa117f8617ad.png","image_width":180,"link":""}},"image_8yztLb":{"type":"image","settings":{"image":"shopify:\/\/shop_images\/stop_hair_loss_icon_ec0e5326-bc30-4645-b86b-084580a9539e.png","image_width":180,"link":""}}},"block_order":["image_bLCT8U","image_Jpx6KQ","image_i6pUfV","image_tn8prb","image_8yztLb"],"custom_css":["{margin: 32px 0; @media (max-width: 1440px) {margin: 20px 0; } background: #f8f6f0;}"],"name":"Scrolling banner","settings":{"full_width":true,"color_scheme":"default","text_size":20,"vertical_padding":22,"speed":15.5,"direction":"left","font":"base","space":50}},"how_it_works_q4DCTh":{"type":"how-it-works","blocks":{"step_U3bxW3":{"type":"step","settings":{"title":"Step 1. Take our Online Consultation","image":"shopify:\/\/shop_images\/quiz_afsennah_being_filled_in.png","description":"<p>Answer the online consultation questions and get your product recommendation<\/p>"}},"step_bXgCWE":{"type":"step","settings":{"title":"Step 2. Afsennah reviews your results","image":"shopify:\/\/shop_images\/Nor_Nava_A_modern__feminine_laboratory_scene_where_a_woman_s_delicate_hand_532bdea1-2ca8-4c9e-b23c-31bf0d526b05.jpg","description":"<p>Our Founder and Advanced Trichologist will analyze and select the best possible formulation for your hair and scalp products.<\/p>"}},"step_6pEmYt":{"type":"step","settings":{"title":"Step 3. Start your hair journey Today","image":"shopify:\/\/shop_images\/women_holding_afsennah_bottles.png","description":"<p>Your journey to stronger, more beautiful hair starts with your custom formulas.<\/p>"}}},"block_order":["step_U3bxW3","step_bXgCWE","step_6pEmYt"],"name":"How It Works","settings":{"heading":"Your search is over","background_color":"#d9daf4","video_url":"shopify:\/\/products\/custom-hair-growth-oil-for-her","video_link_text":"LET'S TAKE CARE OF YOUR HAIR"}},"before_after_TwgJRc":{"type":"before-after","blocks":{"card_yCcct6":{"type":"card","settings":{"before_image":"shopify:\/\/shop_images\/14-min.png","before_text":"Before","after_image":"shopify:\/\/shop_images\/13-min.png","after_text":"After","title":"Stronger. Fuller. Healthier.","stars_count":5,"first_icon":"plant","custom_first_icon":"shopify:\/\/shop_images\/let_s_start_your_hair_journey_icon_by_afsennah.png","first_tag_text":"Regrowth","second_icon":"atc","custom_second_icon":"shopify:\/\/shop_images\/we_forumalate_your_customa_hair_oil_by_afsennah_icon_47383b3b-ceb8-41b6-81f3-a20682230ead.png","second_tag_text":"Strength","product":"custom-hair-growth-oil-for-her","product_title":"Custom Hair Growth Oil","button_url":"shopify:\/\/products\/custom-hair-growth-oil-for-her"}},"card_pVXaza":{"type":"card","settings":{"before_image":"shopify:\/\/shop_images\/30.png","before_text":"Before","after_image":"shopify:\/\/shop_images\/32.png","after_text":"After","title":"Less Hair Fall in 2 weeks","stars_count":5,"first_icon":"atc","custom_first_icon":"shopify:\/\/shop_images\/let_s_start_your_hair_journey_icon_by_afsennah.png","first_tag_text":"Save Strands","second_icon":"atc","custom_second_icon":"shopify:\/\/shop_images\/we_forumalate_your_customa_hair_oil_by_afsennah_icon_47383b3b-ceb8-41b6-81f3-a20682230ead.png","second_tag_text":"Repair Your Hair","product":"custom-scalp-tonic","product_title":"Custom Scalp Tonic","button_url":"shopify:\/\/products\/custom-scalp-tonic"}},"card_qwRhgM":{"type":"card","settings":{"before_image":"shopify:\/\/shop_images\/3_67f46ac2-6998-4216-aeab-88484f94e94b.png","before_text":"Before","after_image":"shopify:\/\/shop_images\/4_2210895a-9ff0-4c00-9762-d4cc994623cf.png","after_text":"After","title":"Hair Savior within 3 months","stars_count":5,"first_icon":"atc","custom_first_icon":"shopify:\/\/shop_images\/let_s_start_your_hair_journey_icon_by_afsennah.png","first_tag_text":"Best Shampoo","second_icon":"atc","custom_second_icon":"shopify:\/\/shop_images\/we_forumalate_your_customa_hair_oil_by_afsennah_icon_47383b3b-ceb8-41b6-81f3-a20682230ead.png","second_tag_text":"A+ Ingredients","product":"custom-shampoo-for-her","product_title":"Custom Shampoo","button_url":"shopify:\/\/products\/custom-shampoo-for-her"}},"card_b8Vefw":{"type":"card","settings":{"before_image":"shopify:\/\/shop_images\/18.png","before_text":"Before","after_image":"shopify:\/\/shop_images\/19_224801e7-218c-4430-9291-993d062425e0.png","after_text":"After","title":"Healthy Hair is all your need","stars_count":5,"first_icon":"atc","custom_first_icon":"shopify:\/\/shop_images\/let_s_start_your_hair_journey_icon_by_afsennah.png","first_tag_text":"Repair Strands","second_icon":"atc","second_tag_text":"More Volume","product":"custom-hair-treatment","product_title":"Custom Hair Treatment","button_url":"shopify:\/\/products\/custom-hair-treatment"}},"card_F9PTHH":{"type":"card","settings":{"before_image":"shopify:\/\/shop_images\/24.png","before_text":"Before","after_image":"shopify:\/\/shop_images\/22_16afe38c-7c10-4be6-bbb0-2ad04e046b20.png","after_text":"After","title":"Your Dream Hair Returns","stars_count":5,"first_icon":"atc","custom_first_icon":"shopify:\/\/shop_images\/let_s_start_your_hair_journey_icon_by_afsennah.png","first_tag_text":"First tag","second_icon":"atc","custom_second_icon":"shopify:\/\/shop_images\/we_forumalate_your_customa_hair_oil_by_afsennah_icon_47383b3b-ceb8-41b6-81f3-a20682230ead.png","second_tag_text":"Second tag","product":"custom-hair-elixir","product_title":"Custom Hair Elixir","button_url":"shopify:\/\/products\/custom-hair-elixir"}},"card_PQ4zqP":{"type":"card","settings":{"before_image":"shopify:\/\/shop_images\/26.png","before_text":"Before","after_image":"shopify:\/\/shop_images\/27.png","after_text":"After","title":"Anti Dandruff. Less Frizz.","stars_count":5,"first_icon":"atc","custom_first_icon":"shopify:\/\/shop_images\/let_s_start_your_hair_journey_icon_by_afsennah.png","first_tag_text":"Save Strands","second_icon":"atc","custom_second_icon":"shopify:\/\/shop_images\/we_forumalate_your_customa_hair_oil_by_afsennah_icon_47383b3b-ceb8-41b6-81f3-a20682230ead.png","second_tag_text":"Repair","product":"custom-shampoo-for-her","product_title":"Custom Shampoo","button_url":"shopify:\/\/products\/custom-shampoo-for-her"}}},"block_order":["card_yCcct6","card_pVXaza","card_qwRhgM","card_b8Vefw","card_F9PTHH","card_PQ4zqP"],"name":"SS - Before\/after image #9","settings":{"heading":"<h2>They did it. So can you.<\/h2>","heading_custom":true,"heading_font":"roboto_serif_n4","heading_size":36,"heading_size_mobile":24,"heading_height":130,"heading_align":"center","heading_align_mobile":"center","arrow_size":48,"arrow_size_mobile":48,"arrow_icon_size":9,"arrow_icon_size_mobile":9,"arrow_border_thickness":1,"arrow_radius":100,"arrow_hover_effect":"color","arrow_shadow":true,"arrow_show_desktop":true,"arrow_show_mobile":false,"slider_view":3,"slider_view_mobile":1.1,"slider_gap":12,"slider_gap_mobile":10,"slider_mt":28,"slider_mt_mobile":24,"card_radius":12,"card_border_thickness":0,"card_shadow":true,"image_border_thickness":1,"image_overlay":0.2,"image_ratio":"portrait","image_ratio_mobile":"portrait","image_text_custom":false,"image_text_font":"fira_sans_n3","image_text_size":13,"image_text_size_mobile":12,"image_text_height":130,"content_padding_horizontal":8,"content_padding_horizontal_mobile":8,"content_padding_vertical":8,"content_padding_vertical_mobile":8,"content_border_thickness":1,"title_custom":true,"title_font":"josefin_sans_n4","title_size":18,"title_size_mobile":18,"title_height":130,"stars_size":14,"stars_size_mobile":14,"tags_gap":12,"tags_gap_mobile":12,"tag_icon_width":14,"tag_icon_width_mobile":14,"tag_text_custom":false,"tag_text_font":"josefin_sans_n4","tag_text_size":14,"tag_text_size_mobile":14,"tag_text_height":130,"product_image_radius":8,"product_image_border_thickness":0,"product_image_ratio":"square","product_image_ratio_mobile":"square","product_title_custom":false,"product_title_font":"josefin_sans_n4","product_title_size":16,"product_title_size_mobile":14,"product_title_height":150,"button":"Shop","button_custom":false,"button_font":"josefin_sans_n4","button_size":14,"button_size_mobile":14,"button_height":100,"button_padding_vertical":8,"button_padding_vertical_mobile":8,"button_padding_horizontal":16,"button_padding_horizontal_mobile":16,"button_radius":100,"button_border_thickness":1,"button_style":"outline","bottom_text":"","bottom_text_custom":false,"bottom_text_font":"josefin_sans_n4","bottom_text_size":14,"bottom_text_size_mobile":14,"bottom_text_height":150,"bottom_text_mt":28,"bottom_text_mt_mobile":28,"bottom_text_align":"center","bottom_text_align_mobile":"center","card_bg_color":"#ffffff","card_border_color":"#121212","image_border_color":"#121212","image_overlay_color":"#121212","image_text_color":"#ffffff","content_border_color":"#121212","title_color":"#121212","stars_color":"#00b67a","tag_icon_color":"#f59e10","tag_text_color":"#121212","product_image_border_color":"#121212","product_title_color":"#121212","button_color":"#102b26","button_hover_color":"#ffffff","button_bg_color":"#feea89","button_bg_hover_color":"#f76928","button_border_color":"#feea89","button_border_hover_color":"#f76928","arrow_color":"#121212","arrow_hover_color":"#121212","arrow_bg_color":"","arrow_bg_hover_color":"","arrow_border_color":"#c7c7c7","arrow_border_hover_color":"#121212","heading_color":"#121212","bottom_text_color":"#121212","background_color":"#ffffff","background_gradient":"","border_color":"#121212","margin_top":0,"margin_bottom":0,"margin_horizontal":0,"margin_horizontal_mobile":0,"padding_top":36,"padding_bottom":36,"padding_horizontal":5,"padding_horizontal_mobile":1.5,"full_width":true,"content_width":1200,"border_thickness":0,"section_radius":0,"lazy":true}},"key_features_PxWCj9":{"type":"key-features","blocks":{"feature_p7Jrr6":{"type":"feature","settings":{"image":"shopify:\/\/shop_images\/ChatGPT_Image_7_apr_2025_23_13_38.png","bg_color":"#f1f2ff","bg_gradient":"","text_color":"#505050","heading":"1. Take our consultation","text":"<p>We’ll analyze 80+ factors—from what you eat to where you live—to understand the unique needs of your hair and skin.<\/p>","show_segments":true,"segments":4,"active_segment":"1","fill_segments":true,"show_labels":true,"label_left":"","label_middle":"","label_right":"","show_icon":false,"icon":"star"}},"feature_8dN8rW":{"type":"feature","settings":{"image":"shopify:\/\/shop_images\/IMG_4802.jpg","bg_color":"#d9daf4","bg_gradient":"","text_color":"#505050","heading":"2. Your formulas are made to order","text":"<p>Our AI-powered algorithm personalizes your products and routine, carefully selecting from 185+ clean ingredients to meet your goals.<\/p>","show_segments":true,"segments":4,"active_segment":"2","fill_segments":true,"show_labels":true,"label_left":"","label_middle":"","label_right":"","show_icon":false,"icon":"star"}},"feature_nxeecz":{"type":"feature","settings":{"image":"shopify:\/\/shop_images\/start_your_hair_journey.png","bg_color":"#f1f2ff","bg_gradient":"","text_color":"#505050","heading":"3. As you change so does your hair","text":"<p>We’ll address any new concerns, adjust your formulas with the seasons, and learn from your feedback for an always-custom fit.<\/p>","show_segments":true,"segments":4,"active_segment":"3","fill_segments":true,"show_labels":true,"label_left":"","label_middle":"","label_right":"","show_icon":false,"icon":"star"}},"feature_ttrWfn":{"type":"feature","disabled":true,"settings":{"image":"shopify:\/\/shop_images\/start_your_hair_journey.png","bg_color":"#d9daf4","bg_gradient":"","text_color":"#505050","heading":"4. Order With Confidence","text":"<p>Whether you choose a pre-custom or full custom formula, you’re getting data-driven results, less hassle, and the same luxury care Afsennah is known for.<\/p>","show_segments":true,"segments":4,"active_segment":"4","fill_segments":true,"show_labels":true,"label_left":"","label_middle":"","label_right":"","show_icon":false,"icon":"star"}}},"block_order":["feature_p7Jrr6","feature_8dN8rW","feature_nxeecz","feature_ttrWfn"],"disabled":true,"name":"Key features","settings":{"heading":"How It Works","image_max_width":700,"media_aspect_ratio":"1","image_position":"left","segment_position":"over-text"}},"image_with_text_bBVRmt":{"type":"image-with-text","blocks":{"heading_NgxUCx":{"type":"heading","settings":{"title":"formulated by our Certified Advanced Trichologist","use_h1":false}},"text_aq6bGz":{"type":"text","settings":{"text":"<p>Founded by a Certified Trichologist, Afsennah creates custom formulas powered by nature and backed by expertise made to restore your healthiest, most confident hair.<\/p>","enlarge_text":false}},"button_TAx7TD":{"type":"button","settings":{"button_label":"Get Your formula","button_link":"shopify:\/\/pages\/get-your-formula","button_style":"primary"}}},"block_order":["heading_NgxUCx","text_aq6bGz","button_TAx7TD"],"custom_css":[".button-row {@media (max-width: 767px) {text-align: center; }}"],"name":"Image with text","settings":{"image":"shopify:\/\/shop_images\/1_d8bc24b0-27ff-4cec-8a29-7acb44a04f26.png","image_2":"shopify:\/\/shop_images\/2_38bdd504-0bed-4244-8ca5-95780307359d.png","image_width":700,"image_link":"https:\/\/www.instagram.com\/afsennah\/","image_position":"left","text_alignment":"left","color_scheme":"default"}},"featured_collection_D8YLb3":{"type":"featured-collection","disabled":true,"name":"Featured collections","settings":{"title":"Featured collections","collections":["women","best-sellers","pre-custom-made","hair-care","for-him"],"show_vendor":false,"enable_carousel":true,"grid":4,"rows":1,"color_scheme":"default","show_view_all":true,"full_width":true}},"image_with_text_overlay_B8grqU":{"type":"image-with-text-overlay","blocks":{"heading_Q77jer":{"type":"heading","settings":{"title":"150,000+ 5-star reviews","heading_max_width":40,"title_size":42,"title_size_mobile":24,"use_h1":false}},"custom_liquid_nTLjxr":{"type":"custom_liquid","settings":{"custom_liquid":"<style>\n  .custom-star-rating {\n    text-align: center;\n  }\n  \n  .star-container {\n    display: flex;\n    justify-content: center;\n    gap: 2px;\n    margin-bottom: 8px;\n  }\n  \n  .star-icon {\n    width: 28px;\n    height: 28px;\n    fill: currentColor;\n    color: #fff;\n  }\n  \n  .star-text {\n    font-size: 14px;\n    font-style: italic;\n    opacity: 0.9;\n  }\n<\/style>\n\n<div class=\"custom-star-rating\">\n  <div class=\"star-container\">\n    <svg class=\"star-icon\" viewBox=\"0 0 24 24\" xmlns=\"http:\/\/www.w3.org\/2000\/svg\">\n      <path d=\"M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z\"\/>\n    <\/svg>\n    <svg class=\"star-icon\" viewBox=\"0 0 24 24\" xmlns=\"http:\/\/www.w3.org\/2000\/svg\">\n      <path d=\"M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z\"\/>\n    <\/svg>\n    <svg class=\"star-icon\" viewBox=\"0 0 24 24\" xmlns=\"http:\/\/www.w3.org\/2000\/svg\">\n      <path d=\"M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z\"\/>\n    <\/svg>\n    <svg class=\"star-icon\" viewBox=\"0 0 24 24\" xmlns=\"http:\/\/www.w3.org\/2000\/svg\">\n      <path d=\"M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z\"\/>\n    <\/svg>\n    <svg class=\"star-icon\" viewBox=\"0 0 24 24\" xmlns=\"http:\/\/www.w3.org\/2000\/svg\">\n      <path d=\"M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z\"\/>\n    <\/svg>\n  <\/div>\n  <p class=\"star-text\">*on our custom formula<\/p>\n<\/div>"}}},"block_order":["heading_Q77jer","custom_liquid_nTLjxr"],"disabled":true,"name":"Image with text overlay","settings":{"image":"shopify:\/\/shop_images\/Ontwerp_zonder_titel_2_-min.png","height":"fixed","height_desktop":400,"height_mobile":300,"image_link":"","full_width":true,"text_alignment":"center center","mobile_overlay_under":false,"overlay_style":"shadow"}},"collection_list_YRxV7m":{"type":"collection-list","blocks":{"collection_aATDin":{"type":"collection","settings":{"collection":"women","subheading":"","button_label":""}},"collection_KWihFe":{"type":"collection","settings":{"collection":"postpartum","subheading":"","button_label":""}},"collection_C98RaL":{"type":"collection","settings":{"collection":"men","subheading":"","button_label":""}},"collection_9Yh6YC":{"type":"collection","settings":{"collection":"bundle-save","subheading":"","button_label":""}}},"block_order":["collection_aATDin","collection_KWihFe","collection_C98RaL","collection_9Yh6YC"],"disabled":true,"name":"Collection list","settings":{"title":"Every Hair Journey Starts With a Choice","enable_carousel":true,"grid":4,"color_scheme":"default","full_width":false,"coll_grid_image_shape":"square","coll_grid_image_position":"center center","coll_thumb_mob_per_row":"2","coll_grid_show_count":true,"coll_text_position":"below","coll_text_position_under_mobile":false,"coll_thumb_text_align_x":"left","coll_thumb_text_align_y":"center","coll_button_style":"primary"}},"shop_the_look_87MqjM":{"type":"shop-the-look","blocks":{"heading_cwGYxV":{"type":"heading","settings":{"title":"Made for Your Hair. Proven to Transform.","heading_max_width":10,"title_size":56,"title_size_mobile":26,"use_h1":false}}},"block_order":["heading_cwGYxV"],"name":"Shop the look","settings":{"image":"shopify:\/\/shop_images\/B1A8761_HD.jpg","video_external":"","video_description":"","height":"fixed","height_desktop":600,"height_mobile":460,"product_list":["custom-hair-growth-oil-for-her","custom-hair-elixir","custom-hair-treatment"],"products_alignment":"bottom right","product_card_layout":"landscape","show_swatches":true,"full_width":true,"text_alignment":"top left","mobile_overlay_over":false,"overlay_style":"shadow"}},"image_with_text_CeXxi4":{"type":"image-with-text","blocks":{"heading_pENmcC":{"type":"heading","settings":{"title":"Customs blends, backed by science","use_h1":false}},"text_AxVKAQ":{"type":"text","settings":{"text":"<p><strong>Who knows hair and scalp better than a Trichologist?<br\/><br\/><\/strong>Our founder, Afsennah, once struggled with her own hair and scalp concerns. When no solution seemed to work, she decided to create her own. Guided by her mother’s wisdom in herbalism and her own expertise in Trichology, she developed custom-made hair and scalp products blending science and nature to help others achieve the healthy, confident hair you deserve.<\/p>","enlarge_text":false}}},"block_order":["heading_pENmcC","text_AxVKAQ"],"custom_css":["{@media (max-width: 767px) {padding: 0 20px; .fully-padded-row--medium {padding: 0; border-radius: 8px; } .container {padding: 0; } .feature-text-paired {padding: 20px; } }}"],"name":"Image with text","settings":{"image":"shopify:\/\/shop_images\/WhatsApp_Image_2025-11-09_at_12.13.57.jpg","image_width":700,"image_link":"","image_position":"left","text_alignment":"left","color_scheme":"default"}},"17597843688c30c501":{"type":"_blocks","blocks":{"ai_gen_block_0f56445_eejdTf":{"type":"ai_gen_block_0f56445","settings":{"founder_image":"shopify:\/\/shop_images\/B1A9025-5_1_HD_1.jpg","image_border_radius":12,"title":"Meet Our Founder","description":"<p>\"My Hair Was My Biggest Insecurity\"<\/p>","show_following_badge":true,"following_text":"1M+ Followers","badge_text_size":14,"badge_color_1":"#d9daf4","badge_color_2":"#f8f6f0","badge_text_color":"#102b26","instagram_url":"https:\/\/www.facebook.com\/profile.php?id=100072224775339#","facebook_url":"https:\/\/www.facebook.com\/profile.php?id=100072224775339#","tiktok_url":"","snapchat_url":"https:\/\/www.facebook.com\/profile.php?id=100072224775339#","youtube_url":"https:\/\/www.facebook.com\/profile.php?id=100072224775339#","twitter_url":"https:\/\/www.facebook.com\/profile.php?id=100072224775339#","social_icon_size":44,"social_bg_color":"#ffffff","social_bg_hover_color":"#a6a8de","social_icon_color":"#102b26","social_icon_hover_color":"#ffffff","background_color":"#ffffff","title_color":"#102b26","text_color":"#102b26","title_size":32,"text_size":16},"blocks":{}}},"block_order":["ai_gen_block_0f56445_eejdTf"],"disabled":true,"settings":{}},"logo_list_eUJUdg":{"type":"logo-list","blocks":{"logo_aJfkXt":{"type":"logo","settings":{"image":"shopify:\/\/shop_images\/Elle_Icon_48cf211d-21e3-409e-ab65-5248dc24ab48.png","image_width":160,"link":"","title":""}},"logo_caX6NM":{"type":"logo","settings":{"image":"shopify:\/\/shop_images\/The_Sun_newspaper_Icon_6b647c15-f7bc-41e3-9653-59f4beec5c35.png","image_width":160,"link":"","title":""}}},"block_order":["logo_aJfkXt","logo_caX6NM"],"disabled":true,"name":"Logo list","settings":{"title":"As seen in","image_opacity":100,"color_scheme":"default"}},"ingredients_QgUFmX":{"type":"ingredients","blocks":{"ingredient_9Q79Ci":{"type":"ingredient","settings":{"ingredient_image":"shopify:\/\/shop_images\/ingredient_4.png","ingredient_name":"Saffron Oil","ingredient_description":"We thoughtfully selected the most powerful plant-based oils to craft Afsennah’s hair elixirs rich in nutrients, free from harsh additives, and designed to nourish your scalp and transform your hair with every drop.","card_bg_color":"#ffffff","card_text_color":"#000000"}},"ingredient_8pCwGN":{"type":"ingredient","settings":{"ingredient_image":"shopify:\/\/shop_images\/ingredient_3.png","ingredient_name":"Prickly Pear Seed Oil","ingredient_description":"We thoughtfully selected the most powerful plant-based oils to craft Afsennah’s hair elixirs rich in nutrients, free from harsh additives, and designed to nourish your scalp and transform your hair with every drop.","card_bg_color":"#ffffff","card_text_color":"#000000"}},"ingredient_F9mT3q":{"type":"ingredient","settings":{"ingredient_image":"shopify:\/\/shop_images\/4_db19b1e5-e5a2-40d4-a63b-398fd4288eb1.png","ingredient_name":"Hibiscus Oil","ingredient_description":"We selected hibiscus oil for its rich blend of amino acids and vitamin C a rejuvenating extract that strengthens roots, boosts shine, and restores vitality to thinning, lackluster hair.","card_bg_color":"#ffffff","card_text_color":"#000000"}},"ingredient_BeYcjE":{"type":"ingredient","settings":{"ingredient_image":"shopify:\/\/shop_images\/ingredient_afsennah.png","ingredient_name":"Rosehip Oil","ingredient_description":"We carefully chose Rosehip oil for its rich blend of vitamins, antioxidants, and fatty acids a lightweight botanical that deeply nourishes, repairs, and softens hair while restoring balance to your scalp with every use.","card_bg_color":"#ffffff","card_text_color":"#000000"}},"ingredient_6wAdJ9":{"type":"ingredient","settings":{"ingredient_image":"shopify:\/\/shop_images\/Rahua_02b9ede4-70da-4c8a-901e-fa21a177d074.png","ingredient_name":"Oenocarpus Bataua (Rahua)","ingredient_description":"Rahua oil deeply restores elasticity, improves strand strength, and adds softness without greasiness ideal for damaged or dry hair.","card_bg_color":"#ffffff","card_text_color":"#000000"}}},"block_order":["ingredient_9Q79Ci","ingredient_8pCwGN","ingredient_F9mT3q","ingredient_BeYcjE","ingredient_6wAdJ9"],"name":"Ingredients Section","settings":{"section_bg_color":"#f8f6f0","section_text_color":"#000000","section_title":"Ingredients by nature","section_subtitle":"Your formula is yours. We use natural ingredients to give you the best possible results without the side-effects.","cta_text":"SEE ALL 185+ INGREDIENTS","cta_url":""}}},"order":["background_video_BR9RpN","ss_hero_24_G7kegJ","ss_featured_product_4_6grAGM","rich_text_3dckLL","ss_scrolling_images_hXEfay","ss_scrolling_collections_2_QyzCML","ss_hero_26_pbUxwM","image_with_text_overlay_jiPitL","slideshow_rgpbDd","custom_collections_MHpzBV","scrolling_banner_VaGMcY","1759778559811cc81e","scrolling_banner_7KyRw6","how_it_works_q4DCTh","before_after_TwgJRc","key_features_PxWCj9","image_with_text_bBVRmt","featured_collection_D8YLb3","image_with_text_overlay_B8grqU","collection_list_YRxV7m","shop_the_look_87MqjM","image_with_text_CeXxi4","17597843688c30c501","logo_list_eUJUdg","ingredients_QgUFmX"]}
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "background_video_BR9RpN": {
+      "type": "background-video",
+      "blocks": {
+        "subheading_JAkkmg": {
+          "type": "subheading",
+          "settings": {
+            "subheading": "Customized hair & scalp care formulated by our Advanced Trichologist"
+          }
+        },
+        "heading_neyRx9": {
+          "type": "heading",
+          "settings": {
+            "title": "The search for the right hair and scalp care is over",
+            "heading_max_width": 15,
+            "title_size": 36,
+            "title_size_mobile": 24,
+            "use_h1": true
+          }
+        },
+        "button_KPrcNw": {
+          "type": "button",
+          "settings": {
+            "button_label": "Get Your Formula",
+            "button_link": "shopify://pages/online-consultation",
+            "button_style": "primary"
+          }
+        }
+      },
+      "block_order": [
+        "subheading_JAkkmg",
+        "heading_neyRx9",
+        "button_KPrcNw"
+      ],
+      "disabled": true,
+      "custom_css": [
+        "@media (max-width: 767px) {.text-overlay__button-row {display: none; }}",
+        ".section-background-video {padding-top: 32px;}",
+        "@media (max-width: 1440px) {.section-background-video {padding-top: 20px; } .section-background-video {padding-top: 20px; }}",
+        " {@media (max-width: 767px) {padding: 0 20px; }}"
+      ],
+      "name": "Background video",
+      "settings": {
+        "video_shopify": "shopify://files/videos/bb8d445b7e7e48388fdb39c1ad89e8f4.mov",
+        "video_external": "",
+        "video_description": "",
+        "placeholder_image": "shopify://shop_images/B1A9175_1_HD_1_5.jpg",
+        "text_alignment": "bottom right",
+        "height_desktop": 680,
+        "height_mobile": 500,
+        "full_width": true,
+        "overlay_style": "box"
+      }
+    },
+    "ss_hero_24_G7kegJ": {
+      "type": "ss-hero-24",
+      "blocks": {
+        "review_ckW9P3": {
+          "type": "review",
+          "settings": {
+            "first_image": "shopify://shop_images/Untitled_design.png",
+            "second_image": "shopify://shop_images/random_foto.png",
+            "third_image": "shopify://shop_images/long-blond-hair.jpg",
+            "image_size": 36,
+            "image_size_mobile": 28,
+            "image_radius": 100,
+            "image_border_thickness": 1,
+            "stars_count": 4.5,
+            "stars_size": 18,
+            "stars_size_mobile": 16,
+            "review": "150K+ Women Growing With Us",
+            "stars_text": "Highly Rated 4.7",
+            "review_custom": false,
+            "review_font": "josefin_sans_n4",
+            "review_size": 16,
+            "review_size_mobile": 13,
+            "review_height": 130,
+            "review_mt": 16,
+            "review_mt_mobile": 10,
+            "review_color": "#000000",
+            "count_color": "#000000",
+            "stars_color": "#ffffff",
+            "stars_bg_color": "#02b17b",
+            "stars_bg_half_color": "#dddddd",
+            "image_border_color": "#ffffff"
+          }
+        },
+        "heading_nnefNN": {
+          "type": "heading",
+          "disabled": true,
+          "settings": {
+            "heading": "<h1>Hero <strong>#24</strong></h1>",
+            "heading_custom": false,
+            "heading_font": "josefin_sans_n4",
+            "heading_size": 54,
+            "heading_size_mobile": 52,
+            "heading_height": 130,
+            "heading_mt": 24,
+            "heading_mt_mobile": 20,
+            "heading_color": "#000000",
+            "heading_border_color": "#ffffff"
+          }
+        },
+        "text_aibLH6": {
+          "type": "text",
+          "disabled": true,
+          "settings": {
+            "text": "<p>Tell your brand's story through images</p>",
+            "text_custom": false,
+            "text_font": "josefin_sans_n4",
+            "text_size": 18,
+            "text_size_mobile": 18,
+            "text_height": 150,
+            "text_mt": 20,
+            "text_mt_mobile": 20,
+            "text_color": "#000000"
+          }
+        },
+        "button_kiYmNG": {
+          "type": "button",
+          "disabled": true,
+          "settings": {
+            "button": "Shop this",
+            "url": "",
+            "button_custom": false,
+            "button_font": "josefin_sans_n4",
+            "button_size": 16,
+            "button_size_mobile": 16,
+            "button_height": 100,
+            "button_padding_horizontal": 52,
+            "button_padding_horizontal_mobile": 40,
+            "button_padding_vertical": 20,
+            "button_padding_vertical_mobile": 20,
+            "button_radius": 8,
+            "button_border_thickness": 1,
+            "button_mt": 16,
+            "button_mt_mobile": 12,
+            "button_style": "outline",
+            "button_color": "#ffffff",
+            "button_hover_color": "#ffffff",
+            "button_bg_color": "#17c87c",
+            "button_bg_hover_color": "#17c87c",
+            "button_border_color": "#17c87c",
+            "button_border_hover_color": "#17c87c"
+          }
+        },
+        "button_3ngAUT": {
+          "type": "button",
+          "disabled": true,
+          "settings": {
+            "button": "Shop all",
+            "url": "",
+            "button_custom": false,
+            "button_font": "josefin_sans_n4",
+            "button_size": 16,
+            "button_size_mobile": 16,
+            "button_height": 100,
+            "button_padding_horizontal": 40,
+            "button_padding_horizontal_mobile": 34,
+            "button_padding_vertical": 20,
+            "button_padding_vertical_mobile": 20,
+            "button_radius": 8,
+            "button_border_thickness": 1,
+            "button_mt": 16,
+            "button_mt_mobile": 12,
+            "button_style": "outline",
+            "button_color": "#17c87c",
+            "button_hover_color": "#ffffff",
+            "button_bg_color": "rgba(0,0,0,0)",
+            "button_bg_hover_color": "#17c87c",
+            "button_border_color": "#17c87c",
+            "button_border_hover_color": "#17c87c"
+          }
+        },
+        "text_haxAKX": {
+          "type": "text",
+          "disabled": true,
+          "settings": {
+            "text": "<p>Additional text</p>",
+            "text_custom": false,
+            "text_font": "josefin_sans_n4",
+            "text_size": 18,
+            "text_size_mobile": 18,
+            "text_height": 150,
+            "text_mt": 20,
+            "text_mt_mobile": 20,
+            "text_color": "#000000"
+          }
+        }
+      },
+      "block_order": [
+        "review_ckW9P3",
+        "heading_nnefNN",
+        "text_aibLH6",
+        "button_kiYmNG",
+        "button_3ngAUT",
+        "text_haxAKX"
+      ],
+      "disabled": true,
+      "name": "SS - Hero #24",
+      "settings": {
+        "layout_height": "fixed_height",
+        "layout_fixed_height": 650,
+        "layout_fixed_height_mobile": 730,
+        "bg_image": "shopify://shop_images/desktop_banner_winter_sale_take_2.png",
+        "bg_image_mobile": "shopify://shop_images/winter_sale_banner_mobile_take_2.png",
+        "bg_image_overlay": 0,
+        "content_max_width": 40,
+        "content_align": "left",
+        "content_align_mobile": "left",
+        "content_vertical_align": "start",
+        "content_vertical_align_mobile": "start",
+        "bg_image_overlay_color": "#000000",
+        "background_color": "#ffffff",
+        "background_gradient": "",
+        "border_color": "#ffffff",
+        "margin_top": 12,
+        "margin_bottom": 0,
+        "margin_horizontal": 0,
+        "margin_horizontal_mobile": 0.5,
+        "padding_top": 36,
+        "padding_bottom": 36,
+        "padding_horizontal": 5,
+        "padding_horizontal_mobile": 1.5,
+        "full_width": false,
+        "content_width": 1200,
+        "border_thickness": 0,
+        "section_radius": 34,
+        "lazy": false
+      }
+    },
+    "ss_featured_product_4_6grAGM": {
+      "type": "ss-featured-product-4",
+      "blocks": {
+        "heading_f8TaQt": {
+          "type": "heading",
+          "settings": {
+            "heading": "<p>Your Hair Didn’t Fail You.<strong> The Formula Did.</strong></p>",
+            "heading_custom": false,
+            "heading_font": "josefin_sans_n4",
+            "heading_accent_custom": true,
+            "heading_accent_font": "josefin_sans_n4",
+            "heading_size": 56,
+            "heading_size_mobile": 32,
+            "heading_advanced": false,
+            "heading_height": 130,
+            "heading_mt": 0,
+            "heading_mt_mobile": 0,
+            "heading_color": "#121212",
+            "heading_accent_color": "#f59e10"
+          }
+        },
+        "text_gKJXFY": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Custom hair & scalp treatments formulated after understanding <em>your</em> hair, not trends.</p>",
+            "text_custom": false,
+            "text_font": "josefin_sans_n4",
+            "text_size": 16,
+            "text_size_mobile": 14,
+            "text_advanced": false,
+            "text_height": 150,
+            "text_mt": 20,
+            "text_mt_mobile": 16,
+            "text_color": "#121212"
+          }
+        },
+        "author_8icNHi": {
+          "type": "author",
+          "settings": {
+            "use_author_image": true,
+            "author_image": "shopify://shop_images/meisje.png",
+            "image_width": 80,
+            "image_width_mobile": 64,
+            "image_radius": 50,
+            "image_border_thickness": 0,
+            "text": "<p>Once I understood my scalp needed a custom formula, everything changed. More Hair Growth and less hairfall within weeks!</p>",
+            "text_custom": true,
+            "text_font": "josefin_sans_n4",
+            "text_size": 24,
+            "text_size_mobile": 12,
+            "text_advanced": false,
+            "text_height": 150,
+            "author_mt": 24,
+            "author_mt_mobile": 12,
+            "author": "— Aubrey",
+            "author_custom": false,
+            "author_font": "josefin_sans_n4",
+            "author_size": 14,
+            "author_size_mobile": 12,
+            "author_advanced": false,
+            "author_height": 130,
+            "author_name_mt": 16,
+            "author_name_mt_mobile": 12,
+            "text_color": "#121212",
+            "author_color": "#121212",
+            "image_border_color": "#121212"
+          }
+        },
+        "button_ewqMD3": {
+          "type": "button",
+          "settings": {
+            "button": "GET YOUR FORMULA",
+            "url": "shopify://pages/online-consultation",
+            "open_in_new_tab": false,
+            "button_style": "outline",
+            "button_custom": false,
+            "button_font": "josefin_sans_n4",
+            "button_size": 14,
+            "button_size_mobile": 14,
+            "button_advanced": false,
+            "button_height": 100,
+            "button_padding_horizontal": 28,
+            "button_padding_horizontal_mobile": 28,
+            "button_padding_vertical": 16,
+            "button_padding_vertical_mobile": 16,
+            "button_radius": 100,
+            "button_border_thickness": 1,
+            "button_mt": 20,
+            "button_mt_mobile": 16,
+            "button_color": "#121212",
+            "button_hover_color": "#ffffff",
+            "button_bg_color": "#feea89",
+            "button_bg_hover_color": "#f59e10",
+            "button_border_color": "#feea89",
+            "button_border_hover_color": "#f59e10"
+          }
+        },
+        "caption_gNreea": {
+          "type": "caption",
+          "settings": {
+            "icon": "earth",
+            "text": "<p>Fast delivery, within 1-2 days</p>",
+            "text_custom": false,
+            "text_font": "josefin_sans_n4",
+            "text_size": 14,
+            "text_size_mobile": 12,
+            "text_advanced": false,
+            "text_height": 150,
+            "text_mt": 20,
+            "text_mt_mobile": 16,
+            "icon_color": "#f59e10",
+            "text_color": "#121212"
+          }
+        },
+        "feature_YT8gwg": {
+          "type": "feature",
+          "settings": {
+            "icon": "leaf",
+            "text": "Natural actives, no harsh ingredients",
+            "hide_mobile": false
+          }
+        },
+        "feature_Diyjnx": {
+          "type": "feature",
+          "settings": {
+            "icon": "heart_hand",
+            "text": "Trichologist-led & lab-developed",
+            "hide_mobile": false
+          }
+        },
+        "feature_6YKUDy": {
+          "type": "feature",
+          "settings": {
+            "icon": "shield_check",
+            "text": "Custom-formulated for your scalp",
+            "hide_mobile": false
+          }
+        },
+        "feature_96fAfU": {
+          "type": "feature",
+          "settings": {
+            "icon": "target",
+            "text": "Targets the root cause, not symptoms",
+            "hide_mobile": false
+          }
+        }
+      },
+      "block_order": [
+        "heading_f8TaQt",
+        "text_gKJXFY",
+        "author_8icNHi",
+        "button_ewqMD3",
+        "caption_gNreea",
+        "feature_YT8gwg",
+        "feature_Diyjnx",
+        "feature_6YKUDy",
+        "feature_96fAfU"
+      ],
+      "name": "SS - Featured product #4",
+      "settings": {
+        "layout": "image_content",
+        "layout_mobile": "image_content",
+        "layout_advanced": false,
+        "image_width": 45,
+        "layout_gap": 80,
+        "layout_gap_mobile": 20,
+        "content_align": "left",
+        "content_align_mobile": "left",
+        "content_vertical_align": "center",
+        "source": "uploaded",
+        "video": "shopify://files/videos/VD1(No Outline).mov",
+        "video_url": "",
+        "video_ratio": "landscape",
+        "video_ratio_mobile": "landscape",
+        "video_radius": 16,
+        "video_border_thickness": 0,
+        "video_autoplay": true,
+        "video_loop": true,
+        "use_controls": true,
+        "play_icon_size": 16,
+        "play_icon_size_mobile": 16,
+        "play_padding": 14,
+        "play_padding_mobile": 14,
+        "play_radius": 100,
+        "play_border_thickness": 0,
+        "first_image": "shopify://shop_images/1_dfc4268b-d289-4ea6-b8fd-ee7272a8a36d.png",
+        "second_image": "shopify://shop_images/3_2f256cda-737b-4609-b5cf-8b8b8b941f90.png",
+        "use_third_image": true,
+        "third_image": "shopify://shop_images/2_89153d8b-df30-4f68-83ab-fa99618b8ed6.png",
+        "image_ratio": "square",
+        "image_ratio_mobile": "square",
+        "image_radius": 16,
+        "image_border_thickness": 0,
+        "features_columns": "two",
+        "features_columns_mobile": "two",
+        "features_advanced": false,
+        "features_border_thickness": 1,
+        "features_mt": 20,
+        "features_mt_mobile": 20,
+        "feature_gap": 10,
+        "feature_gap_mobile": 10,
+        "feature_mt": 10,
+        "feature_mt_mobile": 10,
+        "feature_icon_size": 20,
+        "feature_icon_size_mobile": 20,
+        "feature_text_custom": false,
+        "feature_text_font": "josefin_sans_n4",
+        "feature_text_size": 14,
+        "feature_text_size_mobile": 12,
+        "feature_text_height": 150,
+        "feature_icon_color": "#121212",
+        "feature_text_color": "#121212",
+        "features_border_color": "#dbdbdb",
+        "image_border_color": "#121212",
+        "video_border_color": "#121212",
+        "play_color": "#121212",
+        "play_hover_color": "#121212",
+        "play_bg_color": "#ffffff",
+        "play_bg_hover_color": "#f3f3f3",
+        "play_border_color": "#121212",
+        "play_border_hover_color": "#121212",
+        "background_style": "solid",
+        "background_color": "#ffffff",
+        "background_gradient": "linear-gradient(180deg, #FFFFFF 0%, #F2F2F2 100%)",
+        "border_color": "#121212",
+        "margin_top": 0,
+        "margin_bottom": 0,
+        "margin_horizontal": 0,
+        "margin_horizontal_mobile": 0,
+        "padding_top": 36,
+        "padding_bottom": 36,
+        "padding_horizontal": 5,
+        "padding_horizontal_mobile": 1.5,
+        "width": "page",
+        "content_width": 1200,
+        "border_thickness": 0,
+        "section_radius": 0,
+        "lazy": true
+      }
+    },
+    "rich_text_3dckLL": {
+      "type": "rich-text",
+      "blocks": {
+        "button_cY4cLz": {
+          "type": "button",
+          "disabled": true,
+          "settings": {
+            "button_label": "GET YOUR FORMULA",
+            "button_link": "shopify://pages/online-consultation",
+            "button_style": "primary"
+          }
+        }
+      },
+      "block_order": [
+        "button_cY4cLz"
+      ],
+      "custom_css": [
+        "{display: none; margin-top: 0; @media (max-width: 767px) {display: block; }}",
+        ".button-row,.fully-spaced-row--medium {margin-top: 10px; margin-bottom: 0;}"
+      ],
+      "name": "Rich text",
+      "settings": {
+        "height": "medium",
+        "text_alignment": "center",
+        "full_width": false,
+        "color_scheme": "default"
+      }
+    },
+    "ss_scrolling_images_hXEfay": {
+      "type": "ss-scrolling-images",
+      "blocks": {
+        "image_KN3LAX": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/4_c30eac97-cac0-4976-83b8-2e24f98f8a5d.png",
+            "url": "shopify://pages/online-consultation"
+          }
+        },
+        "image_FxXrfD": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/1_2c556f88-cbad-448f-8fa8-6907ec8ddec8.png",
+            "url": "shopify://pages/online-consultation"
+          }
+        },
+        "image_iXtNRh": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/2_92e54834-f1f8-4167-98a6-0cdf96b4572a.png",
+            "url": "shopify://pages/online-consultation"
+          }
+        },
+        "image_9k4agA": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/roller.png",
+            "url": "shopify://pages/online-consultation"
+          }
+        }
+      },
+      "block_order": [
+        "image_KN3LAX",
+        "image_FxXrfD",
+        "image_iXtNRh",
+        "image_9k4agA"
+      ],
+      "disabled": true,
+      "name": "SS - Scrolling images",
+      "settings": {
+        "heading": "<p>Unlock Gifts as You Build Your Routine</p>",
+        "heading_custom": false,
+        "heading_font": "josefin_sans_n4",
+        "heading_size": 30,
+        "heading_height": 130,
+        "heading_align": "center",
+        "slider_speed": 20,
+        "slider_advanced": false,
+        "slider_gap": 10,
+        "slider_gap_mobile": 10,
+        "slider_mt": 32,
+        "slider_direction": "left",
+        "pause_hover": false,
+        "image_width_desktop": 300,
+        "image_width_mobile": 140,
+        "image_height_desktop": 400,
+        "image_height_mobile": 200,
+        "image_radius": 10,
+        "use_content": false,
+        "content_liquid_glass": false,
+        "content_liquid_hover": true,
+        "content_position": "center",
+        "content_max_width": 340,
+        "content_max_width_mobile": 340,
+        "content_advanced": false,
+        "content_padding_vertical": 30,
+        "content_padding_horizontal": 30,
+        "content_distance": 60,
+        "content_radius": 10,
+        "content_border_thickness": 0,
+        "use_shadow": true,
+        "text": "<p>+150.000 women started growing their hair</p>",
+        "text_custom": false,
+        "text_font": "josefin_sans_n4",
+        "text_size": 24,
+        "text_height": 90,
+        "heading_color": "#000000",
+        "content_bg": "#ffffff",
+        "content_border_color": "#000000",
+        "text_color": "#000000",
+        "background_style": "solid",
+        "background_color": "#ffffff",
+        "background_gradient": "linear-gradient(180deg, #FFFFFF 0%, #F2F2F2 100%)",
+        "border_color": "#000000",
+        "margin_top": 0,
+        "margin_bottom": 0,
+        "padding_top": 36,
+        "padding_bottom": 36,
+        "padding_horizontal": 5,
+        "padding_horizontal_mobile": 1.5,
+        "width": "full",
+        "content_width": 1200,
+        "border_thickness": 0,
+        "lazy": true
+      }
+    },
+    "ss_scrolling_collections_2_QyzCML": {
+      "type": "ss-scrolling-collections-2",
+      "blocks": {
+        "collection_9RYXRT": {
+          "type": "collection",
+          "settings": {
+            "image": "shopify://shop_images/1_4a9ea6a7-b5c8-4272-9788-7fa83b865ae0.png",
+            "text": "Free Mulberry Silk Scrunchie on orders above €150",
+            "url": "shopify://pages/online-consultation"
+          }
+        },
+        "collection_kwekGR": {
+          "type": "collection",
+          "settings": {
+            "image": "shopify://shop_images/4_204f1130-5895-4821-9ea1-b8e380cc6d59.png",
+            "text": "Free Shipping on orders above €100",
+            "url": "shopify://pages/online-consultation"
+          }
+        },
+        "collection_gP4G8X": {
+          "type": "collection",
+          "settings": {
+            "image": "shopify://shop_images/2_c8c3070b-de48-4a93-b430-e76a78169bd2.png",
+            "text": "Free Custom Hair Growth Oil on orders above €200",
+            "url": "shopify://pages/online-consultation"
+          }
+        },
+        "collection_zq38tH": {
+          "type": "collection",
+          "settings": {
+            "image": "shopify://shop_images/3_1534f30c-3cb2-42ae-b664-ceaf6d76dfe3.png",
+            "text": "Free Microneedle Scalp Roller on orders above €250",
+            "url": "shopify://pages/online-consultation"
+          }
+        }
+      },
+      "block_order": [
+        "collection_9RYXRT",
+        "collection_kwekGR",
+        "collection_gP4G8X",
+        "collection_zq38tH"
+      ],
+      "disabled": true,
+      "name": "SS - Scrolling collections #2",
+      "settings": {
+        "collections": [],
+        "scrolling_velocity": 40,
+        "scrolling_velocity_mobile": 36,
+        "reverse_direction": true,
+        "pause_hover": false,
+        "cards_gap": 12,
+        "cards_gap_mobile": 12,
+        "card_width": 300,
+        "card_width_mobile": 200,
+        "card_height": 210,
+        "card_height_mobile": 110,
+        "card_radius": 20,
+        "card_border_thickness": 1,
+        "image_width": 50,
+        "image_width_mobile": 50,
+        "text_custom": false,
+        "text_font": "josefin_sans_n4",
+        "text_size": 12,
+        "text_size_mobile": 12,
+        "text_height": 110,
+        "text_color": "#121212",
+        "card_bg_color": "#f7f6f0",
+        "card_border_color": "#f7f6f0",
+        "background_style": "solid",
+        "background_color": "#ffffff",
+        "background_gradient": "linear-gradient(180deg, #FFFFFF 0%, #F2F2F2 100%)",
+        "border_color": "#121212",
+        "margin_top": 0,
+        "margin_bottom": 0,
+        "margin_horizontal": 0,
+        "margin_horizontal_mobile": 0,
+        "padding_top": 36,
+        "padding_bottom": 36,
+        "width": "full",
+        "content_width": 1200,
+        "border_thickness": 0,
+        "section_radius": 0,
+        "lazy": false
+      }
+    },
+    "ss_hero_26_pbUxwM": {
+      "type": "ss-hero-26",
+      "blocks": {
+        "text_Hb7cDy": {
+          "type": "text",
+          "settings": {
+            "text": "<p>CYBER MONDAY IS LIVE! </p>",
+            "text_custom": false,
+            "text_font": "josefin_sans_n4",
+            "text_size": 26,
+            "text_size_mobile": 29,
+            "text_height": 150,
+            "text_mt": 0,
+            "text_mt_mobile": 0,
+            "text_color": "#ffffff"
+          }
+        },
+        "heading_FEzAtz": {
+          "type": "heading",
+          "settings": {
+            "heading": "<h1>LIMITED TIME 1+1 FREE</h1>",
+            "heading_custom": false,
+            "heading_font": "josefin_sans_n4",
+            "heading_size": 48,
+            "heading_size_mobile": 26,
+            "heading_height": 130,
+            "heading_mt": 6,
+            "heading_mt_mobile": 6,
+            "heading_color": "#ffffff"
+          }
+        },
+        "button_rpdB7h": {
+          "type": "button",
+          "settings": {
+            "button": "GET YOUR FORMULA HERE",
+            "button_url": "shopify://pages/online-consultation",
+            "button_custom": false,
+            "button_font": "josefin_sans_n4",
+            "button_size": 14,
+            "button_size_mobile": 24,
+            "button_height": 100,
+            "button_padding_vertical": 20,
+            "button_padding_vertical_mobile": 18,
+            "button_padding_horizontal": 90,
+            "button_padding_horizontal_mobile": 24,
+            "button_radius": 16,
+            "button_border_thickness": 1,
+            "button_mt": 20,
+            "button_mt_mobile": 20,
+            "button_style": "non_outline",
+            "button_color": "#121212",
+            "button_hover_color": "#ffffff",
+            "button_bg_color": "#feea89",
+            "button_bg_hover_color": "#a6a8de",
+            "button_border_color": "#121212",
+            "button_border_hover_color": "#121212"
+          }
+        },
+        "reference_myJfUg": {
+          "type": "reference",
+          "settings": {
+            "title": "CYBER MONDAY IS HERE",
+            "text": "LIMITED TIME OFFER! 1 + 1 FREE",
+            "url": "shopify://pages/online-consultation"
+          }
+        },
+        "reference_wYtpLC": {
+          "type": "reference",
+          "settings": {
+            "title": "FREE SHIPPING",
+            "text": "ON ORDERS ABOVE €100",
+            "url": "shopify://pages/online-consultation"
+          }
+        }
+      },
+      "block_order": [
+        "text_Hb7cDy",
+        "heading_FEzAtz",
+        "button_rpdB7h",
+        "reference_myJfUg",
+        "reference_wYtpLC"
+      ],
+      "disabled": true,
+      "name": "SS - Hero #26",
+      "settings": {
+        "layout_height": "fixed_height",
+        "layout_fixed_height": 510,
+        "layout_fixed_height_mobile": 790,
+        "main_width": 50,
+        "content_align": "left",
+        "content_align_mobile": "center",
+        "content_vertical_align": "end",
+        "layout_bg_type": "image",
+        "bg_image": "shopify://shop_images/black_friday_banner.png",
+        "bg_video_url": "",
+        "image_overlay": 0,
+        "reference_block_width": 320,
+        "reference_block_padding_horizontal": 20,
+        "reference_block_padding_horizontal_mobile": 20,
+        "reference_block_padding_vertical": 20,
+        "reference_block_padding_vertical_mobile": 20,
+        "reference_block_radius": 16,
+        "reference_block_border_thickness": 1,
+        "reference_align": "left",
+        "reference_align_mobile": "left",
+        "autoplay": true,
+        "autoplay_delay": 5,
+        "title_custom": false,
+        "title_font": "josefin_sans_n4",
+        "title_size": 16,
+        "title_size_mobile": 16,
+        "title_height": 130,
+        "text_custom": false,
+        "text_font": "josefin_sans_n4",
+        "text_size": 14,
+        "text_size_mobile": 13,
+        "text_height": 150,
+        "text_mt": 6,
+        "text_mt_mobile": 6,
+        "dots_size": 10,
+        "dots_size_mobile": 10,
+        "dots_show_desktop": true,
+        "dots_show_mobile": true,
+        "title_color": "#121212",
+        "text_color": "#000000",
+        "reference_block_bg_color": "#ffffff",
+        "reference_block_border_color": "#a6a8de",
+        "dots_color": "#a6a8de",
+        "image_overlay_color": "#121212",
+        "background_color": "#ffffff",
+        "background_gradient": "",
+        "border_color": "#121212",
+        "margin_top": 0,
+        "margin_bottom": 0,
+        "margin_horizontal": 0,
+        "margin_horizontal_mobile": 0,
+        "padding_top": 36,
+        "padding_bottom": 36,
+        "padding_horizontal": 5,
+        "padding_horizontal_mobile": 1.5,
+        "full_width": true,
+        "content_width": 1200,
+        "border_thickness": 0,
+        "section_radius": 0,
+        "lazy": false
+      }
+    },
+    "image_with_text_overlay_jiPitL": {
+      "type": "image-with-text-overlay",
+      "blocks": {
+        "subheading_4gBxNY": {
+          "type": "subheading",
+          "disabled": true,
+          "settings": {
+            "subheading": "Tell your story"
+          }
+        },
+        "heading_ztKxt4": {
+          "type": "heading",
+          "disabled": true,
+          "settings": {
+            "title": "Image with text overlay",
+            "heading_max_width": 15,
+            "title_size": 84,
+            "title_size_mobile": 32,
+            "use_h1": false
+          }
+        },
+        "text_yNNjHM": {
+          "type": "text",
+          "disabled": true,
+          "settings": {
+            "text": "<p>Promote your brand or products with this feature section</p>",
+            "enlarge_text": true
+          }
+        }
+      },
+      "block_order": [
+        "subheading_4gBxNY",
+        "heading_ztKxt4",
+        "text_yNNjHM"
+      ],
+      "disabled": true,
+      "name": "Image with text overlay",
+      "settings": {
+        "image": "shopify://shop_images/Black_Friday_1_1_FREE_2025.png",
+        "mobile_image": "shopify://shop_images/Black_Friday_1_1_FREE_2025.png",
+        "height": "fixed",
+        "height_desktop": 600,
+        "height_mobile": 460,
+        "image_link": "",
+        "full_width": true,
+        "text_alignment": "center center",
+        "mobile_overlay_under": false,
+        "overlay_style": "shadow"
+      }
+    },
+    "slideshow_rgpbDd": {
+      "type": "slideshow",
+      "blocks": {
+        "image_ETJQkA": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/WhatsApp_Image_2025-08-20_at_18.28.30.jpg",
+            "mobile_image": "shopify://shop_images/WhatsApp_Image_2025-08-19_at_18.15.36.jpg",
+            "slide_link": "",
+            "subheading": "Trusted by 150,000+ Women | Rated 4.8/5",
+            "title": "Feed your hair exactly what it craves",
+            "heading_max_width": 40,
+            "title_size": 48,
+            "title_size_mobile": 32,
+            "use_h1": true,
+            "text": "<p>Personalized hair solutions based on what your hair & scalp actually needs!</p>",
+            "enlarge_text": true,
+            "button_label_1": "GET FULLER & THICKER HAIR",
+            "button_url_1": "shopify://collections/women",
+            "button_label_2": "Not sure? Take our 1-min quiz",
+            "button_url_2": "shopify://pages/online-consultation",
+            "text_alignment": "bottom left"
+          }
+        }
+      },
+      "block_order": [
+        "image_ETJQkA"
+      ],
+      "disabled": true,
+      "name": "Slideshow",
+      "settings": {
+        "height": "fixed",
+        "height_desktop": 600,
+        "height_mobile": 460,
+        "full_width": true,
+        "mobile_overlay_under": false,
+        "overlay_style": "shadow",
+        "transition": "fade",
+        "navigation": "arrows",
+        "autoplay": true,
+        "autoplay_speed": 7,
+        "accessibility_info": ""
+      }
+    },
+    "custom_collections_MHpzBV": {
+      "type": "custom-collections",
+      "blocks": {
+        "collection_block_kGMcWD": {
+          "type": "collection_block",
+          "settings": {
+            "collection": "custom-hair-oils",
+            "collection_title": "Custom Hair Products",
+            "products_to_show": 8,
+            "description_title": "LIMITED TIME OFFER!",
+            "info_title": "For Your  Specific Hair & Scalp Type",
+            "info_description": "+ less breakage after just one use",
+            "bgcolor": "#f8f6f0"
+          }
+        },
+        "collection_block_NRUkkp": {
+          "type": "collection_block",
+          "settings": {
+            "collection": "luxury-accessories",
+            "collection_title": "Luxury Accessories",
+            "products_to_show": 8,
+            "description_title": "WHEN QUALITY ACCESSORIES GET NOTICED!",
+            "info_title": "STOP HAIR THINNING",
+            "info_description": "+ less breakage after just one use",
+            "bgcolor": "#f8f6f0"
+          }
+        }
+      },
+      "block_order": [
+        "collection_block_kGMcWD",
+        "collection_block_NRUkkp"
+      ],
+      "name": "Custom Collections",
+      "settings": {}
+    },
+    "scrolling_banner_VaGMcY": {
+      "type": "scrolling-banner",
+      "blocks": {
+        "text_qpwAcd": {
+          "type": "text",
+          "settings": {
+            "text": "cruelty-free   -   carbon neutral   -   paraben free   -   sulfate free   -   phthalate free   -   free of mineral oils",
+            "color": "rgba(0,0,0,0)",
+            "link": "",
+            "use_h1": false,
+            "stencil_all_text": false,
+            "stencil_text": ""
+          }
+        }
+      },
+      "block_order": [
+        "text_qpwAcd"
+      ],
+      "name": "Scrolling banner",
+      "settings": {
+        "full_width": true,
+        "color_scheme": "default",
+        "text_size": 20,
+        "vertical_padding": 30,
+        "speed": 2.5,
+        "direction": "left",
+        "font": "base",
+        "space": 50
+      }
+    },
+    "1759778559811cc81e": {
+      "type": "_blocks",
+      "blocks": {
+        "ai_gen_block_d380afe_FpembB": {
+          "type": "ai_gen_block_d380afe",
+          "settings": {
+            "full_width": true,
+            "section_padding": 0,
+            "image_width": 45,
+            "content_gap": 40,
+            "background_color": "#f8f6f0",
+            "product_image": "shopify://shop_images/Generated_Image_October_19_2025_-_10_55PM.png",
+            "image_size": 440,
+            "image_position_desktop_x": 51,
+            "image_position_desktop_y": 36,
+            "image_position_mobile_x": 50,
+            "image_position_mobile_y": 42,
+            "text_position_desktop_x": 50,
+            "text_position_desktop_y": 67,
+            "text_position_mobile_x": 50,
+            "text_position_mobile_y": 68,
+            "overlay_font": "fira_sans_n4",
+            "overlay_text_size": 20,
+            "overlay_text_color": "#102b26",
+            "subtitle": "Get your own custom formula",
+            "title": "Start your online consultation here",
+            "subtitle_size": 15,
+            "title_size": 32,
+            "subtitle_color": "#666666",
+            "title_color": "#232323",
+            "input_placeholder": "Enter Your Name",
+            "input_text_size": 16,
+            "input_border_radius": 8,
+            "input_background_color": "#ffffff",
+            "input_text_color": "#102b26",
+            "input_border_color": "#d9daf4",
+            "input_focus_border_color": "#a6a8de",
+            "input_placeholder_color": "#787878",
+            "submit_link": "shopify://pages/online-consultation",
+            "button_border_radius": 50,
+            "button_background_color": "#feea89",
+            "button_hover_background_color": "#f76928",
+            "button_text_color": "#000000"
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "ai_gen_block_d380afe_FpembB"
+      ],
+      "custom_css": [
+        "{padding-top: 130px; @media (max-width: 767px) {padding-top: 80px; }}"
+      ],
+      "settings": {}
+    },
+    "scrolling_banner_7KyRw6": {
+      "type": "scrolling-banner",
+      "blocks": {
+        "image_bLCT8U": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/the_sun_logo_black_icon_ab8f9f3e-ca9b-4640-9f30-3c63df825ff2.png",
+            "image_width": 100,
+            "link": ""
+          }
+        },
+        "image_Jpx6KQ": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/Elle_Icon_48cf211d-21e3-409e-ab65-5248dc24ab48.png",
+            "image_width": 165,
+            "link": ""
+          }
+        },
+        "image_i6pUfV": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/WWD_icon_14b15f50-a934-42f2-b20a-06df43861f41.png",
+            "image_width": 165,
+            "link": ""
+          }
+        },
+        "image_tn8prb": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/2_ba6d4558-b4d3-4553-ba03-fa117f8617ad.png",
+            "image_width": 180,
+            "link": ""
+          }
+        },
+        "image_8yztLb": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/stop_hair_loss_icon_ec0e5326-bc30-4645-b86b-084580a9539e.png",
+            "image_width": 180,
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "image_bLCT8U",
+        "image_Jpx6KQ",
+        "image_i6pUfV",
+        "image_tn8prb",
+        "image_8yztLb"
+      ],
+      "custom_css": [
+        "{margin: 32px 0; @media (max-width: 1440px) {margin: 20px 0; } background: #f8f6f0;}"
+      ],
+      "name": "Scrolling banner",
+      "settings": {
+        "full_width": true,
+        "color_scheme": "default",
+        "text_size": 20,
+        "vertical_padding": 22,
+        "speed": 15.5,
+        "direction": "left",
+        "font": "base",
+        "space": 50
+      }
+    },
+    "how_it_works_q4DCTh": {
+      "type": "how-it-works",
+      "blocks": {
+        "step_U3bxW3": {
+          "type": "step",
+          "settings": {
+            "title": "Step 1. Take our Online Consultation",
+            "image": "shopify://shop_images/quiz_afsennah_being_filled_in.png",
+            "description": "<p>Answer the online consultation questions and get your product recommendation</p>"
+          }
+        },
+        "step_bXgCWE": {
+          "type": "step",
+          "settings": {
+            "title": "Step 2. Afsennah reviews your results",
+            "image": "shopify://shop_images/Nor_Nava_A_modern__feminine_laboratory_scene_where_a_woman_s_delicate_hand_532bdea1-2ca8-4c9e-b23c-31bf0d526b05.jpg",
+            "description": "<p>Our Founder and Advanced Trichologist will analyze and select the best possible formulation for your hair and scalp products.</p>"
+          }
+        },
+        "step_6pEmYt": {
+          "type": "step",
+          "settings": {
+            "title": "Step 3. Start your hair journey Today",
+            "image": "shopify://shop_images/women_holding_afsennah_bottles.png",
+            "description": "<p>Your journey to stronger, more beautiful hair starts with your custom formulas.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "step_U3bxW3",
+        "step_bXgCWE",
+        "step_6pEmYt"
+      ],
+      "name": "How It Works",
+      "settings": {
+        "heading": "Your search is over",
+        "background_color": "#d9daf4",
+        "video_url": "shopify://products/custom-hair-growth-oil-for-her",
+        "video_link_text": "LET'S TAKE CARE OF YOUR HAIR"
+      }
+    },
+    "before_after_TwgJRc": {
+      "type": "before-after",
+      "blocks": {
+        "card_yCcct6": {
+          "type": "card",
+          "settings": {
+            "before_image": "shopify://shop_images/14-min.png",
+            "before_text": "Before",
+            "after_image": "shopify://shop_images/13-min.png",
+            "after_text": "After",
+            "title": "Stronger. Fuller. Healthier.",
+            "stars_count": 5,
+            "first_icon": "plant",
+            "custom_first_icon": "shopify://shop_images/let_s_start_your_hair_journey_icon_by_afsennah.png",
+            "first_tag_text": "Regrowth",
+            "second_icon": "atc",
+            "custom_second_icon": "shopify://shop_images/we_forumalate_your_customa_hair_oil_by_afsennah_icon_47383b3b-ceb8-41b6-81f3-a20682230ead.png",
+            "second_tag_text": "Strength",
+            "product": "custom-hair-growth-oil-for-her",
+            "product_title": "Custom Hair Growth Oil",
+            "button_url": "shopify://products/custom-hair-growth-oil-for-her"
+          }
+        },
+        "card_pVXaza": {
+          "type": "card",
+          "settings": {
+            "before_image": "shopify://shop_images/30.png",
+            "before_text": "Before",
+            "after_image": "shopify://shop_images/32.png",
+            "after_text": "After",
+            "title": "Less Hair Fall in 2 weeks",
+            "stars_count": 5,
+            "first_icon": "atc",
+            "custom_first_icon": "shopify://shop_images/let_s_start_your_hair_journey_icon_by_afsennah.png",
+            "first_tag_text": "Save Strands",
+            "second_icon": "atc",
+            "custom_second_icon": "shopify://shop_images/we_forumalate_your_customa_hair_oil_by_afsennah_icon_47383b3b-ceb8-41b6-81f3-a20682230ead.png",
+            "second_tag_text": "Repair Your Hair",
+            "product": "custom-scalp-tonic",
+            "product_title": "Custom Scalp Tonic",
+            "button_url": "shopify://products/custom-scalp-tonic"
+          }
+        },
+        "card_qwRhgM": {
+          "type": "card",
+          "settings": {
+            "before_image": "shopify://shop_images/3_67f46ac2-6998-4216-aeab-88484f94e94b.png",
+            "before_text": "Before",
+            "after_image": "shopify://shop_images/4_2210895a-9ff0-4c00-9762-d4cc994623cf.png",
+            "after_text": "After",
+            "title": "Hair Savior within 3 months",
+            "stars_count": 5,
+            "first_icon": "atc",
+            "custom_first_icon": "shopify://shop_images/let_s_start_your_hair_journey_icon_by_afsennah.png",
+            "first_tag_text": "Best Shampoo",
+            "second_icon": "atc",
+            "custom_second_icon": "shopify://shop_images/we_forumalate_your_customa_hair_oil_by_afsennah_icon_47383b3b-ceb8-41b6-81f3-a20682230ead.png",
+            "second_tag_text": "A+ Ingredients",
+            "product": "custom-shampoo-for-her",
+            "product_title": "Custom Shampoo",
+            "button_url": "shopify://products/custom-shampoo-for-her"
+          }
+        },
+        "card_b8Vefw": {
+          "type": "card",
+          "settings": {
+            "before_image": "shopify://shop_images/18.png",
+            "before_text": "Before",
+            "after_image": "shopify://shop_images/19_224801e7-218c-4430-9291-993d062425e0.png",
+            "after_text": "After",
+            "title": "Healthy Hair is all your need",
+            "stars_count": 5,
+            "first_icon": "atc",
+            "custom_first_icon": "shopify://shop_images/let_s_start_your_hair_journey_icon_by_afsennah.png",
+            "first_tag_text": "Repair Strands",
+            "second_icon": "atc",
+            "second_tag_text": "More Volume",
+            "product": "custom-hair-treatment",
+            "product_title": "Custom Hair Treatment",
+            "button_url": "shopify://products/custom-hair-treatment"
+          }
+        },
+        "card_F9PTHH": {
+          "type": "card",
+          "settings": {
+            "before_image": "shopify://shop_images/24.png",
+            "before_text": "Before",
+            "after_image": "shopify://shop_images/22_16afe38c-7c10-4be6-bbb0-2ad04e046b20.png",
+            "after_text": "After",
+            "title": "Your Dream Hair Returns",
+            "stars_count": 5,
+            "first_icon": "atc",
+            "custom_first_icon": "shopify://shop_images/let_s_start_your_hair_journey_icon_by_afsennah.png",
+            "first_tag_text": "First tag",
+            "second_icon": "atc",
+            "custom_second_icon": "shopify://shop_images/we_forumalate_your_customa_hair_oil_by_afsennah_icon_47383b3b-ceb8-41b6-81f3-a20682230ead.png",
+            "second_tag_text": "Second tag",
+            "product": "custom-hair-elixir",
+            "product_title": "Custom Hair Elixir",
+            "button_url": "shopify://products/custom-hair-elixir"
+          }
+        },
+        "card_PQ4zqP": {
+          "type": "card",
+          "settings": {
+            "before_image": "shopify://shop_images/26.png",
+            "before_text": "Before",
+            "after_image": "shopify://shop_images/27.png",
+            "after_text": "After",
+            "title": "Anti Dandruff. Less Frizz.",
+            "stars_count": 5,
+            "first_icon": "atc",
+            "custom_first_icon": "shopify://shop_images/let_s_start_your_hair_journey_icon_by_afsennah.png",
+            "first_tag_text": "Save Strands",
+            "second_icon": "atc",
+            "custom_second_icon": "shopify://shop_images/we_forumalate_your_customa_hair_oil_by_afsennah_icon_47383b3b-ceb8-41b6-81f3-a20682230ead.png",
+            "second_tag_text": "Repair",
+            "product": "custom-shampoo-for-her",
+            "product_title": "Custom Shampoo",
+            "button_url": "shopify://products/custom-shampoo-for-her"
+          }
+        }
+      },
+      "block_order": [
+        "card_yCcct6",
+        "card_pVXaza",
+        "card_qwRhgM",
+        "card_b8Vefw",
+        "card_F9PTHH",
+        "card_PQ4zqP"
+      ],
+      "name": "SS - Before/after image #9",
+      "settings": {
+        "heading": "<h2>They did it. So can you.</h2>",
+        "heading_custom": true,
+        "heading_font": "roboto_serif_n4",
+        "heading_size": 36,
+        "heading_size_mobile": 24,
+        "heading_height": 130,
+        "heading_align": "center",
+        "heading_align_mobile": "center",
+        "arrow_size": 48,
+        "arrow_size_mobile": 48,
+        "arrow_icon_size": 9,
+        "arrow_icon_size_mobile": 9,
+        "arrow_border_thickness": 1,
+        "arrow_radius": 100,
+        "arrow_hover_effect": "color",
+        "arrow_shadow": true,
+        "arrow_show_desktop": true,
+        "arrow_show_mobile": false,
+        "slider_view": 3,
+        "slider_view_mobile": 1.1,
+        "slider_gap": 12,
+        "slider_gap_mobile": 10,
+        "slider_mt": 28,
+        "slider_mt_mobile": 24,
+        "card_radius": 12,
+        "card_border_thickness": 0,
+        "card_shadow": true,
+        "image_border_thickness": 1,
+        "image_overlay": 0.2,
+        "image_ratio": "portrait",
+        "image_ratio_mobile": "portrait",
+        "image_text_custom": false,
+        "image_text_font": "fira_sans_n3",
+        "image_text_size": 13,
+        "image_text_size_mobile": 12,
+        "image_text_height": 130,
+        "content_padding_horizontal": 8,
+        "content_padding_horizontal_mobile": 8,
+        "content_padding_vertical": 8,
+        "content_padding_vertical_mobile": 8,
+        "content_border_thickness": 1,
+        "title_custom": true,
+        "title_font": "josefin_sans_n4",
+        "title_size": 18,
+        "title_size_mobile": 18,
+        "title_height": 130,
+        "stars_size": 14,
+        "stars_size_mobile": 14,
+        "tags_gap": 12,
+        "tags_gap_mobile": 12,
+        "tag_icon_width": 14,
+        "tag_icon_width_mobile": 14,
+        "tag_text_custom": false,
+        "tag_text_font": "josefin_sans_n4",
+        "tag_text_size": 14,
+        "tag_text_size_mobile": 14,
+        "tag_text_height": 130,
+        "product_image_radius": 8,
+        "product_image_border_thickness": 0,
+        "product_image_ratio": "square",
+        "product_image_ratio_mobile": "square",
+        "product_title_custom": false,
+        "product_title_font": "josefin_sans_n4",
+        "product_title_size": 16,
+        "product_title_size_mobile": 14,
+        "product_title_height": 150,
+        "button": "Shop",
+        "button_custom": false,
+        "button_font": "josefin_sans_n4",
+        "button_size": 14,
+        "button_size_mobile": 14,
+        "button_height": 100,
+        "button_padding_vertical": 8,
+        "button_padding_vertical_mobile": 8,
+        "button_padding_horizontal": 16,
+        "button_padding_horizontal_mobile": 16,
+        "button_radius": 100,
+        "button_border_thickness": 1,
+        "button_style": "outline",
+        "bottom_text": "",
+        "bottom_text_custom": false,
+        "bottom_text_font": "josefin_sans_n4",
+        "bottom_text_size": 14,
+        "bottom_text_size_mobile": 14,
+        "bottom_text_height": 150,
+        "bottom_text_mt": 28,
+        "bottom_text_mt_mobile": 28,
+        "bottom_text_align": "center",
+        "bottom_text_align_mobile": "center",
+        "card_bg_color": "#ffffff",
+        "card_border_color": "#121212",
+        "image_border_color": "#121212",
+        "image_overlay_color": "#121212",
+        "image_text_color": "#ffffff",
+        "content_border_color": "#121212",
+        "title_color": "#121212",
+        "stars_color": "#00b67a",
+        "tag_icon_color": "#f59e10",
+        "tag_text_color": "#121212",
+        "product_image_border_color": "#121212",
+        "product_title_color": "#121212",
+        "button_color": "#102b26",
+        "button_hover_color": "#ffffff",
+        "button_bg_color": "#feea89",
+        "button_bg_hover_color": "#f76928",
+        "button_border_color": "#feea89",
+        "button_border_hover_color": "#f76928",
+        "arrow_color": "#121212",
+        "arrow_hover_color": "#121212",
+        "arrow_bg_color": "",
+        "arrow_bg_hover_color": "",
+        "arrow_border_color": "#c7c7c7",
+        "arrow_border_hover_color": "#121212",
+        "heading_color": "#121212",
+        "bottom_text_color": "#121212",
+        "background_color": "#ffffff",
+        "background_gradient": "",
+        "border_color": "#121212",
+        "margin_top": 0,
+        "margin_bottom": 0,
+        "margin_horizontal": 0,
+        "margin_horizontal_mobile": 0,
+        "padding_top": 36,
+        "padding_bottom": 36,
+        "padding_horizontal": 5,
+        "padding_horizontal_mobile": 1.5,
+        "full_width": true,
+        "content_width": 1200,
+        "border_thickness": 0,
+        "section_radius": 0,
+        "lazy": true
+      }
+    },
+    "key_features_PxWCj9": {
+      "type": "key-features",
+      "blocks": {
+        "feature_p7Jrr6": {
+          "type": "feature",
+          "settings": {
+            "image": "shopify://shop_images/ChatGPT_Image_7_apr_2025_23_13_38.png",
+            "bg_color": "#f1f2ff",
+            "bg_gradient": "",
+            "text_color": "#505050",
+            "heading": "1. Take our consultation",
+            "text": "<p>We’ll analyze 80+ factors—from what you eat to where you live—to understand the unique needs of your hair and skin.</p>",
+            "show_segments": true,
+            "segments": 4,
+            "active_segment": "1",
+            "fill_segments": true,
+            "show_labels": true,
+            "label_left": "",
+            "label_middle": "",
+            "label_right": "",
+            "show_icon": false,
+            "icon": "star"
+          }
+        },
+        "feature_8dN8rW": {
+          "type": "feature",
+          "settings": {
+            "image": "shopify://shop_images/IMG_4802.jpg",
+            "bg_color": "#d9daf4",
+            "bg_gradient": "",
+            "text_color": "#505050",
+            "heading": "2. Your formulas are made to order",
+            "text": "<p>Our AI-powered algorithm personalizes your products and routine, carefully selecting from 185+ clean ingredients to meet your goals.</p>",
+            "show_segments": true,
+            "segments": 4,
+            "active_segment": "2",
+            "fill_segments": true,
+            "show_labels": true,
+            "label_left": "",
+            "label_middle": "",
+            "label_right": "",
+            "show_icon": false,
+            "icon": "star"
+          }
+        },
+        "feature_nxeecz": {
+          "type": "feature",
+          "settings": {
+            "image": "shopify://shop_images/start_your_hair_journey.png",
+            "bg_color": "#f1f2ff",
+            "bg_gradient": "",
+            "text_color": "#505050",
+            "heading": "3. As you change so does your hair",
+            "text": "<p>We’ll address any new concerns, adjust your formulas with the seasons, and learn from your feedback for an always-custom fit.</p>",
+            "show_segments": true,
+            "segments": 4,
+            "active_segment": "3",
+            "fill_segments": true,
+            "show_labels": true,
+            "label_left": "",
+            "label_middle": "",
+            "label_right": "",
+            "show_icon": false,
+            "icon": "star"
+          }
+        },
+        "feature_ttrWfn": {
+          "type": "feature",
+          "disabled": true,
+          "settings": {
+            "image": "shopify://shop_images/start_your_hair_journey.png",
+            "bg_color": "#d9daf4",
+            "bg_gradient": "",
+            "text_color": "#505050",
+            "heading": "4. Order With Confidence",
+            "text": "<p>Whether you choose a pre-custom or full custom formula, you’re getting data-driven results, less hassle, and the same luxury care Afsennah is known for.</p>",
+            "show_segments": true,
+            "segments": 4,
+            "active_segment": "4",
+            "fill_segments": true,
+            "show_labels": true,
+            "label_left": "",
+            "label_middle": "",
+            "label_right": "",
+            "show_icon": false,
+            "icon": "star"
+          }
+        }
+      },
+      "block_order": [
+        "feature_p7Jrr6",
+        "feature_8dN8rW",
+        "feature_nxeecz",
+        "feature_ttrWfn"
+      ],
+      "disabled": true,
+      "name": "Key features",
+      "settings": {
+        "heading": "How It Works",
+        "image_max_width": 700,
+        "media_aspect_ratio": "1",
+        "image_position": "left",
+        "segment_position": "over-text"
+      }
+    },
+    "image_with_text_bBVRmt": {
+      "type": "image-with-text",
+      "blocks": {
+        "heading_NgxUCx": {
+          "type": "heading",
+          "settings": {
+            "title": "formulated by our Certified Advanced Trichologist",
+            "use_h1": false
+          }
+        },
+        "text_aq6bGz": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Founded by a Certified Trichologist, Afsennah creates custom formulas powered by nature and backed by expertise made to restore your healthiest, most confident hair.</p>",
+            "enlarge_text": false
+          }
+        },
+        "button_TAx7TD": {
+          "type": "button",
+          "settings": {
+            "button_label": "Get Your formula",
+            "button_link": "shopify://pages/online-consultation",
+            "button_style": "primary"
+          }
+        }
+      },
+      "block_order": [
+        "heading_NgxUCx",
+        "text_aq6bGz",
+        "button_TAx7TD"
+      ],
+      "custom_css": [
+        ".button-row {@media (max-width: 767px) {text-align: center; }}"
+      ],
+      "name": "Image with text",
+      "settings": {
+        "image": "shopify://shop_images/1_d8bc24b0-27ff-4cec-8a29-7acb44a04f26.png",
+        "image_2": "shopify://shop_images/2_38bdd504-0bed-4244-8ca5-95780307359d.png",
+        "image_width": 700,
+        "image_link": "https://www.instagram.com/afsennah/",
+        "image_position": "left",
+        "text_alignment": "left",
+        "color_scheme": "default"
+      }
+    },
+    "featured_collection_D8YLb3": {
+      "type": "featured-collection",
+      "disabled": true,
+      "name": "Featured collections",
+      "settings": {
+        "title": "Featured collections",
+        "collections": [
+          "women",
+          "best-sellers",
+          "pre-custom-made",
+          "hair-care",
+          "for-him"
+        ],
+        "show_vendor": false,
+        "enable_carousel": true,
+        "grid": 4,
+        "rows": 1,
+        "color_scheme": "default",
+        "show_view_all": true,
+        "full_width": true
+      }
+    },
+    "image_with_text_overlay_B8grqU": {
+      "type": "image-with-text-overlay",
+      "blocks": {
+        "heading_Q77jer": {
+          "type": "heading",
+          "settings": {
+            "title": "150,000+ 5-star reviews",
+            "heading_max_width": 40,
+            "title_size": 42,
+            "title_size_mobile": 24,
+            "use_h1": false
+          }
+        },
+        "custom_liquid_nTLjxr": {
+          "type": "custom_liquid",
+          "settings": {
+            "custom_liquid": "<style>\n  .custom-star-rating {\n    text-align: center;\n  }\n  \n  .star-container {\n    display: flex;\n    justify-content: center;\n    gap: 2px;\n    margin-bottom: 8px;\n  }\n  \n  .star-icon {\n    width: 28px;\n    height: 28px;\n    fill: currentColor;\n    color: #fff;\n  }\n  \n  .star-text {\n    font-size: 14px;\n    font-style: italic;\n    opacity: 0.9;\n  }\n</style>\n\n<div class=\"custom-star-rating\">\n  <div class=\"star-container\">\n    <svg class=\"star-icon\" viewBox=\"0 0 24 24\" xmlns=\"http://www.w3.org/2000/svg\">\n      <path d=\"M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z\"/>\n    </svg>\n    <svg class=\"star-icon\" viewBox=\"0 0 24 24\" xmlns=\"http://www.w3.org/2000/svg\">\n      <path d=\"M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z\"/>\n    </svg>\n    <svg class=\"star-icon\" viewBox=\"0 0 24 24\" xmlns=\"http://www.w3.org/2000/svg\">\n      <path d=\"M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z\"/>\n    </svg>\n    <svg class=\"star-icon\" viewBox=\"0 0 24 24\" xmlns=\"http://www.w3.org/2000/svg\">\n      <path d=\"M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z\"/>\n    </svg>\n    <svg class=\"star-icon\" viewBox=\"0 0 24 24\" xmlns=\"http://www.w3.org/2000/svg\">\n      <path d=\"M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z\"/>\n    </svg>\n  </div>\n  <p class=\"star-text\">*on our custom formula</p>\n</div>"
+          }
+        }
+      },
+      "block_order": [
+        "heading_Q77jer",
+        "custom_liquid_nTLjxr"
+      ],
+      "disabled": true,
+      "name": "Image with text overlay",
+      "settings": {
+        "image": "shopify://shop_images/Ontwerp_zonder_titel_2_-min.png",
+        "height": "fixed",
+        "height_desktop": 400,
+        "height_mobile": 300,
+        "image_link": "",
+        "full_width": true,
+        "text_alignment": "center center",
+        "mobile_overlay_under": false,
+        "overlay_style": "shadow"
+      }
+    },
+    "collection_list_YRxV7m": {
+      "type": "collection-list",
+      "blocks": {
+        "collection_aATDin": {
+          "type": "collection",
+          "settings": {
+            "collection": "women",
+            "subheading": "",
+            "button_label": ""
+          }
+        },
+        "collection_KWihFe": {
+          "type": "collection",
+          "settings": {
+            "collection": "postpartum",
+            "subheading": "",
+            "button_label": ""
+          }
+        },
+        "collection_C98RaL": {
+          "type": "collection",
+          "settings": {
+            "collection": "men",
+            "subheading": "",
+            "button_label": ""
+          }
+        },
+        "collection_9Yh6YC": {
+          "type": "collection",
+          "settings": {
+            "collection": "bundle-save",
+            "subheading": "",
+            "button_label": ""
+          }
+        }
+      },
+      "block_order": [
+        "collection_aATDin",
+        "collection_KWihFe",
+        "collection_C98RaL",
+        "collection_9Yh6YC"
+      ],
+      "disabled": true,
+      "name": "Collection list",
+      "settings": {
+        "title": "Every Hair Journey Starts With a Choice",
+        "enable_carousel": true,
+        "grid": 4,
+        "color_scheme": "default",
+        "full_width": false,
+        "coll_grid_image_shape": "square",
+        "coll_grid_image_position": "center center",
+        "coll_thumb_mob_per_row": "2",
+        "coll_grid_show_count": true,
+        "coll_text_position": "below",
+        "coll_text_position_under_mobile": false,
+        "coll_thumb_text_align_x": "left",
+        "coll_thumb_text_align_y": "center",
+        "coll_button_style": "primary"
+      }
+    },
+    "shop_the_look_87MqjM": {
+      "type": "shop-the-look",
+      "blocks": {
+        "heading_cwGYxV": {
+          "type": "heading",
+          "settings": {
+            "title": "Made for Your Hair. Proven to Transform.",
+            "heading_max_width": 10,
+            "title_size": 56,
+            "title_size_mobile": 26,
+            "use_h1": false
+          }
+        }
+      },
+      "block_order": [
+        "heading_cwGYxV"
+      ],
+      "name": "Shop the look",
+      "settings": {
+        "image": "shopify://shop_images/B1A8761_HD.jpg",
+        "video_external": "",
+        "video_description": "",
+        "height": "fixed",
+        "height_desktop": 600,
+        "height_mobile": 460,
+        "product_list": [
+          "custom-hair-growth-oil-for-her",
+          "custom-hair-elixir",
+          "custom-hair-treatment"
+        ],
+        "products_alignment": "bottom right",
+        "product_card_layout": "landscape",
+        "show_swatches": true,
+        "full_width": true,
+        "text_alignment": "top left",
+        "mobile_overlay_over": false,
+        "overlay_style": "shadow"
+      }
+    },
+    "image_with_text_CeXxi4": {
+      "type": "image-with-text",
+      "blocks": {
+        "heading_pENmcC": {
+          "type": "heading",
+          "settings": {
+            "title": "Customs blends, backed by science",
+            "use_h1": false
+          }
+        },
+        "text_AxVKAQ": {
+          "type": "text",
+          "settings": {
+            "text": "<p><strong>Who knows hair and scalp better than a Trichologist?<br/><br/></strong>Our founder, Afsennah, once struggled with her own hair and scalp concerns. When no solution seemed to work, she decided to create her own. Guided by her mother’s wisdom in herbalism and her own expertise in Trichology, she developed custom-made hair and scalp products blending science and nature to help others achieve the healthy, confident hair you deserve.</p>",
+            "enlarge_text": false
+          }
+        }
+      },
+      "block_order": [
+        "heading_pENmcC",
+        "text_AxVKAQ"
+      ],
+      "custom_css": [
+        "{@media (max-width: 767px) {padding: 0 20px; .fully-padded-row--medium {padding: 0; border-radius: 8px; } .container {padding: 0; } .feature-text-paired {padding: 20px; } }}"
+      ],
+      "name": "Image with text",
+      "settings": {
+        "image": "shopify://shop_images/WhatsApp_Image_2025-11-09_at_12.13.57.jpg",
+        "image_width": 700,
+        "image_link": "",
+        "image_position": "left",
+        "text_alignment": "left",
+        "color_scheme": "default"
+      }
+    },
+    "17597843688c30c501": {
+      "type": "_blocks",
+      "blocks": {
+        "ai_gen_block_0f56445_eejdTf": {
+          "type": "ai_gen_block_0f56445",
+          "settings": {
+            "founder_image": "shopify://shop_images/B1A9025-5_1_HD_1.jpg",
+            "image_border_radius": 12,
+            "title": "Meet Our Founder",
+            "description": "<p>\"My Hair Was My Biggest Insecurity\"</p>",
+            "show_following_badge": true,
+            "following_text": "1M+ Followers",
+            "badge_text_size": 14,
+            "badge_color_1": "#d9daf4",
+            "badge_color_2": "#f8f6f0",
+            "badge_text_color": "#102b26",
+            "instagram_url": "https://www.facebook.com/profile.php?id=100072224775339#",
+            "facebook_url": "https://www.facebook.com/profile.php?id=100072224775339#",
+            "tiktok_url": "",
+            "snapchat_url": "https://www.facebook.com/profile.php?id=100072224775339#",
+            "youtube_url": "https://www.facebook.com/profile.php?id=100072224775339#",
+            "twitter_url": "https://www.facebook.com/profile.php?id=100072224775339#",
+            "social_icon_size": 44,
+            "social_bg_color": "#ffffff",
+            "social_bg_hover_color": "#a6a8de",
+            "social_icon_color": "#102b26",
+            "social_icon_hover_color": "#ffffff",
+            "background_color": "#ffffff",
+            "title_color": "#102b26",
+            "text_color": "#102b26",
+            "title_size": 32,
+            "text_size": 16
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "ai_gen_block_0f56445_eejdTf"
+      ],
+      "disabled": true,
+      "settings": {}
+    },
+    "logo_list_eUJUdg": {
+      "type": "logo-list",
+      "blocks": {
+        "logo_aJfkXt": {
+          "type": "logo",
+          "settings": {
+            "image": "shopify://shop_images/Elle_Icon_48cf211d-21e3-409e-ab65-5248dc24ab48.png",
+            "image_width": 160,
+            "link": "",
+            "title": ""
+          }
+        },
+        "logo_caX6NM": {
+          "type": "logo",
+          "settings": {
+            "image": "shopify://shop_images/The_Sun_newspaper_Icon_6b647c15-f7bc-41e3-9653-59f4beec5c35.png",
+            "image_width": 160,
+            "link": "",
+            "title": ""
+          }
+        }
+      },
+      "block_order": [
+        "logo_aJfkXt",
+        "logo_caX6NM"
+      ],
+      "disabled": true,
+      "name": "Logo list",
+      "settings": {
+        "title": "As seen in",
+        "image_opacity": 100,
+        "color_scheme": "default"
+      }
+    },
+    "ingredients_QgUFmX": {
+      "type": "ingredients",
+      "blocks": {
+        "ingredient_9Q79Ci": {
+          "type": "ingredient",
+          "settings": {
+            "ingredient_image": "shopify://shop_images/ingredient_4.png",
+            "ingredient_name": "Saffron Oil",
+            "ingredient_description": "We thoughtfully selected the most powerful plant-based oils to craft Afsennah’s hair elixirs rich in nutrients, free from harsh additives, and designed to nourish your scalp and transform your hair with every drop.",
+            "card_bg_color": "#ffffff",
+            "card_text_color": "#000000"
+          }
+        },
+        "ingredient_8pCwGN": {
+          "type": "ingredient",
+          "settings": {
+            "ingredient_image": "shopify://shop_images/ingredient_3.png",
+            "ingredient_name": "Prickly Pear Seed Oil",
+            "ingredient_description": "We thoughtfully selected the most powerful plant-based oils to craft Afsennah’s hair elixirs rich in nutrients, free from harsh additives, and designed to nourish your scalp and transform your hair with every drop.",
+            "card_bg_color": "#ffffff",
+            "card_text_color": "#000000"
+          }
+        },
+        "ingredient_F9mT3q": {
+          "type": "ingredient",
+          "settings": {
+            "ingredient_image": "shopify://shop_images/4_db19b1e5-e5a2-40d4-a63b-398fd4288eb1.png",
+            "ingredient_name": "Hibiscus Oil",
+            "ingredient_description": "We selected hibiscus oil for its rich blend of amino acids and vitamin C a rejuvenating extract that strengthens roots, boosts shine, and restores vitality to thinning, lackluster hair.",
+            "card_bg_color": "#ffffff",
+            "card_text_color": "#000000"
+          }
+        },
+        "ingredient_BeYcjE": {
+          "type": "ingredient",
+          "settings": {
+            "ingredient_image": "shopify://shop_images/ingredient_afsennah.png",
+            "ingredient_name": "Rosehip Oil",
+            "ingredient_description": "We carefully chose Rosehip oil for its rich blend of vitamins, antioxidants, and fatty acids a lightweight botanical that deeply nourishes, repairs, and softens hair while restoring balance to your scalp with every use.",
+            "card_bg_color": "#ffffff",
+            "card_text_color": "#000000"
+          }
+        },
+        "ingredient_6wAdJ9": {
+          "type": "ingredient",
+          "settings": {
+            "ingredient_image": "shopify://shop_images/Rahua_02b9ede4-70da-4c8a-901e-fa21a177d074.png",
+            "ingredient_name": "Oenocarpus Bataua (Rahua)",
+            "ingredient_description": "Rahua oil deeply restores elasticity, improves strand strength, and adds softness without greasiness ideal for damaged or dry hair.",
+            "card_bg_color": "#ffffff",
+            "card_text_color": "#000000"
+          }
+        }
+      },
+      "block_order": [
+        "ingredient_9Q79Ci",
+        "ingredient_8pCwGN",
+        "ingredient_F9mT3q",
+        "ingredient_BeYcjE",
+        "ingredient_6wAdJ9"
+      ],
+      "name": "Ingredients Section",
+      "settings": {
+        "section_bg_color": "#f8f6f0",
+        "section_text_color": "#000000",
+        "section_title": "Ingredients by nature",
+        "section_subtitle": "Your formula is yours. We use natural ingredients to give you the best possible results without the side-effects.",
+        "cta_text": "SEE ALL 185+ INGREDIENTS",
+        "cta_url": ""
+      }
+    }
+  },
+  "order": [
+    "background_video_BR9RpN",
+    "ss_hero_24_G7kegJ",
+    "ss_featured_product_4_6grAGM",
+    "rich_text_3dckLL",
+    "ss_scrolling_images_hXEfay",
+    "ss_scrolling_collections_2_QyzCML",
+    "ss_hero_26_pbUxwM",
+    "image_with_text_overlay_jiPitL",
+    "slideshow_rgpbDd",
+    "custom_collections_MHpzBV",
+    "scrolling_banner_VaGMcY",
+    "1759778559811cc81e",
+    "scrolling_banner_7KyRw6",
+    "how_it_works_q4DCTh",
+    "before_after_TwgJRc",
+    "key_features_PxWCj9",
+    "image_with_text_bBVRmt",
+    "featured_collection_D8YLb3",
+    "image_with_text_overlay_B8grqU",
+    "collection_list_YRxV7m",
+    "shop_the_look_87MqjM",
+    "image_with_text_CeXxi4",
+    "17597843688c30c501",
+    "logo_list_eUJUdg",
+    "ingredients_QgUFmX"
+  ]
+}
