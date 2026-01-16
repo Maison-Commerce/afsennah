@@ -26,7 +26,7 @@
           "type": "button",
           "settings": {
             "button_label": "Get Your Personal Formula",
-            "button_link": "shopify://pages/get-your-formula",
+            "button_link": "shopify://pages/online-consultation",
             "button_style": "secondary"
           }
         }

@@ -1,1 +1,159 @@
-{"sections":{"image_with_text_overlay_iRLz9B":{"type":"image-with-text-overlay","blocks":{"heading_jD3CDp":{"type":"heading","settings":{"title":"{{ collection.title }}","heading_max_width":15,"title_size":58,"title_size_mobile":32,"use_h1":true}},"button_3JfQFA":{"type":"button","settings":{"button_label":"Get Your Personal Formula","button_link":"shopify:\/\/pages\/get-your-formula","button_style":"secondary"}}},"block_order":["heading_jD3CDp","button_3JfQFA"],"name":"Image with text overlay","settings":{"image":"{{ collection.image }}","mobile_image":"shopify:\/\/shop_images\/honest.png","height":"fixed","height_desktop":500,"height_mobile":320,"image_link":"","full_width":true,"text_alignment":"center center","mobile_overlay_under":false,"overlay_style":"shadow"}},"main":{"type":"main-collection","settings":{"show_title":false,"show_image_behind_heading":true,"heading_image_height":"small","overlay_style":"full image-overlay--bg-shadow","coll_desc_pos":"above","coll_num_per_page_int":24,"grid":4,"show_vendor":false,"show_total":true,"enable_filtering":false,"collapse_tag_sidebar_by_default":false,"collapse_filters_method":"all","show_filter_counts":false,"filter_two_columns":false,"button_grid_filter_name":"Size,Taille,Größe","auto_apply_hide_unavailable":false,"enable_sticky_filter":true,"show_sort":true,"sort_show_featured":true,"sort_show_best":true,"sort_show_alpha":true,"sort_show_price":true,"sort_show_date":true,"related_collections":[],"related_collections_style":"buttons","rel_coll_gall_aspect_ratio":"1","image_position":"center center","rel_coll_gall_enable_margin":true,"rel_coll_gall_full_width":false,"rel_coll_gall_overlay_style":"shadow","rel_coll_gall_text_alignment":"center center","rel_coll_grid_mobile":"2"}},"collection_list_Dj83Xw":{"type":"collection-list","blocks":{"collection_TJbWNw":{"type":"collection","settings":{"collection":"women","image":"shopify:\/\/shop_images\/shampoo_byafsennah.png","subheading":"","button_label":""}},"collection_VVq6Mb":{"type":"collection","settings":{"collection":"men","image":"shopify:\/\/shop_images\/27_071e39ef-e60b-4652-a2bd-9d1fdac1ee00.png","subheading":"","button_label":""}},"collection_ew8Xj6":{"type":"collection","settings":{"collection":"postpartum","image":"shopify:\/\/shop_images\/2_d5a59ac0-f68a-446a-8f89-8a0b809d2623.png","subheading":"","button_label":""}},"collection_AUFWw9":{"type":"collection","settings":{"collection":"accessories","image":"shopify:\/\/shop_images\/start_your_hair_journey.png","subheading":"","button_label":""}}},"block_order":["collection_TJbWNw","collection_VVq6Mb","collection_ew8Xj6","collection_AUFWw9"],"name":"Collection list","settings":{"title":"Explore","enable_carousel":true,"grid":4,"color_scheme":"default","full_width":false,"coll_grid_image_shape":"square","coll_grid_image_position":"center center","coll_thumb_mob_per_row":"2","coll_grid_show_count":false,"coll_text_position":"below","coll_text_position_under_mobile":false,"coll_thumb_text_align_x":"center","coll_thumb_text_align_y":"center","coll_button_style":"primary"}}},"order":["image_with_text_overlay_iRLz9B","main","collection_list_Dj83Xw"]}
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "image_with_text_overlay_iRLz9B": {
+      "type": "image-with-text-overlay",
+      "blocks": {
+        "heading_jD3CDp": {
+          "type": "heading",
+          "settings": {
+            "title": "{{ collection.title }}",
+            "heading_max_width": 15,
+            "title_size": 58,
+            "title_size_mobile": 32,
+            "use_h1": true
+          }
+        },
+        "button_3JfQFA": {
+          "type": "button",
+          "settings": {
+            "button_label": "Get Your Personal Formula",
+            "button_link": "shopify://pages/online-consultation",
+            "button_style": "secondary"
+          }
+        }
+      },
+      "block_order": [
+        "heading_jD3CDp",
+        "button_3JfQFA"
+      ],
+      "name": "Image with text overlay",
+      "settings": {
+        "image": "{{ collection.image }}",
+        "mobile_image": "shopify://shop_images/honest.png",
+        "height": "fixed",
+        "height_desktop": 500,
+        "height_mobile": 320,
+        "image_link": "",
+        "full_width": true,
+        "text_alignment": "center center",
+        "mobile_overlay_under": false,
+        "overlay_style": "shadow"
+      }
+    },
+    "main": {
+      "type": "main-collection",
+      "settings": {
+        "show_title": false,
+        "show_image_behind_heading": true,
+        "heading_image_height": "small",
+        "overlay_style": "full image-overlay--bg-shadow",
+        "coll_desc_pos": "above",
+        "coll_num_per_page_int": 24,
+        "grid": 4,
+        "show_vendor": false,
+        "show_total": true,
+        "enable_filtering": false,
+        "collapse_tag_sidebar_by_default": false,
+        "collapse_filters_method": "all",
+        "show_filter_counts": false,
+        "filter_two_columns": false,
+        "button_grid_filter_name": "Size,Taille,Größe",
+        "auto_apply_hide_unavailable": false,
+        "enable_sticky_filter": true,
+        "show_sort": true,
+        "sort_show_featured": true,
+        "sort_show_best": true,
+        "sort_show_alpha": true,
+        "sort_show_price": true,
+        "sort_show_date": true,
+        "related_collections": [],
+        "related_collections_style": "buttons",
+        "rel_coll_gall_aspect_ratio": "1",
+        "image_position": "center center",
+        "rel_coll_gall_enable_margin": true,
+        "rel_coll_gall_full_width": false,
+        "rel_coll_gall_overlay_style": "shadow",
+        "rel_coll_gall_text_alignment": "center center",
+        "rel_coll_grid_mobile": "2"
+      }
+    },
+    "collection_list_Dj83Xw": {
+      "type": "collection-list",
+      "blocks": {
+        "collection_TJbWNw": {
+          "type": "collection",
+          "settings": {
+            "collection": "women",
+            "image": "shopify://shop_images/shampoo_byafsennah.png",
+            "subheading": "",
+            "button_label": ""
+          }
+        },
+        "collection_VVq6Mb": {
+          "type": "collection",
+          "settings": {
+            "collection": "men",
+            "image": "shopify://shop_images/27_071e39ef-e60b-4652-a2bd-9d1fdac1ee00.png",
+            "subheading": "",
+            "button_label": ""
+          }
+        },
+        "collection_ew8Xj6": {
+          "type": "collection",
+          "settings": {
+            "collection": "postpartum",
+            "image": "shopify://shop_images/2_d5a59ac0-f68a-446a-8f89-8a0b809d2623.png",
+            "subheading": "",
+            "button_label": ""
+          }
+        },
+        "collection_AUFWw9": {
+          "type": "collection",
+          "settings": {
+            "collection": "accessories",
+            "image": "shopify://shop_images/start_your_hair_journey.png",
+            "subheading": "",
+            "button_label": ""
+          }
+        }
+      },
+      "block_order": [
+        "collection_TJbWNw",
+        "collection_VVq6Mb",
+        "collection_ew8Xj6",
+        "collection_AUFWw9"
+      ],
+      "name": "Collection list",
+      "settings": {
+        "title": "Explore",
+        "enable_carousel": true,
+        "grid": 4,
+        "color_scheme": "default",
+        "full_width": false,
+        "coll_grid_image_shape": "square",
+        "coll_grid_image_position": "center center",
+        "coll_thumb_mob_per_row": "2",
+        "coll_grid_show_count": false,
+        "coll_text_position": "below",
+        "coll_text_position_under_mobile": false,
+        "coll_thumb_text_align_x": "center",
+        "coll_thumb_text_align_y": "center",
+        "coll_button_style": "primary"
+      }
+    }
+  },
+  "order": [
+    "image_with_text_overlay_iRLz9B",
+    "main",
+    "collection_list_Dj83Xw"
+  ]
+}
