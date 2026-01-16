@@ -163,7 +163,7 @@
         "nav_border_radius": 16,
         "shop_all_text": "Shop All",
         "shop_all_link": "shopify://collections",
-        "quiz_button_text": "Hair Quiz",
+        "quiz_button_text": "Consultation",
         "quiz_button_url": "shopify://pages/online-consultation",
         "quiz_button_bg_color": "#fffbc0",
         "quiz_button_text_color": "#1a365d",
