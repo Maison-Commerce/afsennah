@@ -245,10 +245,18 @@
     background-color: rgba(0, 0, 0, 0.8);
   }
 
-  /* Show button only on hover */
+  /* Show button only on hover (desktop) */
   .maison_commerce_maison_sound_familiar__video-wrapper:hover .maison_commerce_maison_sound_familiar__mute-button {
     opacity: 1;
     pointer-events: auto;
+  }
+
+  /* Show button always on mobile */
+  @media (max-width: 768px) {
+    .maison_commerce_maison_sound_familiar__mute-button {
+      opacity: 1;
+      pointer-events: auto;
+    }
   }
 
   .maison_commerce_maison_sound_familiar__mute-icon {
