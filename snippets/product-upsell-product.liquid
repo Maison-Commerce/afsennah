@@ -17,7 +17,7 @@
     assign custom_aspect_ratio = custom_aspect_ratio | at_least: 0.6
   endif
 -%}
-<div class="product-upsell-card" data-product-id="{{ product.id }}" data-variant-id="{{ first_available_variant.id }}" data-product-tags="{{ product.tags | json | escape }}" data-quiz-url="/pages/get-your-formula" data-quiz-text="Get Your Formula">
+<div class="product-upsell-card" data-product-id="{{ product.id }}" data-variant-id="{{ first_available_variant.id }}" data-product-tags="{{ product.tags | json | escape }}" data-quiz-url="/pages/get-your-formula" data-quiz-text="Start Consultation">
   <div class="product-upsell-card__content">
     <div class="product-upsell-card__image">
       <a href="{{ product.url }}" class="product-upsell-card__image-link">
